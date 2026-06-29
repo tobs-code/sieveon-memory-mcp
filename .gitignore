@@ -1,0 +1,29 @@
+# Rust build
+/target/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+.venv/
+venv/
+
+# Cache & IDE
+.pytest_cache/
+.mypy_cache/
+.cache/
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Unused / archived files (not deleted, just excluded from version control)
+/_unused/
+
+# Project specific
+*.log

@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  surrealdb:
+    image: surrealdb/surrealdb:latest
+    container_name: strata-surrealdb
+    ports:
+      - "8000:8000"
+    command: start --user ${SURREALDB_USER:-root} --pass ${SURREALDB_PASS:-root} --log info
+    restart: unless-stopped
+    volumes:
+      - surrealdb-data:/data
+      - ./schema.surql:/schema.surql:ro
+      - ./helper_functions.surql:/helper_functions.surql:ro
+
+volumes:
+  surrealdb-data:

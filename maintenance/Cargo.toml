@@ -1,0 +1,12 @@
+[package]
+name = "strata-maintenance"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1.0", features = ["full"] }
+strata-common = { path = "../common" }
+uuid = { version = "1.0", features = ["v4"] }
+reqwest = { version = "0.11", features = ["json"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
