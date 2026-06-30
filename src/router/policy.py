@@ -17,7 +17,15 @@ class OverBudget(Exception):
 
 
 class BudgetTracker:
-    """Tracks resource consumption against a cost budget."""
+    """Tracks resource consumption against a cost budget with adaptive scaling."""
+    
+    # Global health factor (1.0 = healthy, < 1.0 = degraded)
+    _health_factor = 1.0
+    
+    @classmethod
+    def update_system_health(cls, factor: float) -> None:
+        """Update the global health factor to adaptively scale budgets."""
+        cls._health_factor = max(0.1, min(1.0, factor))
     
     def __init__(self, budget: str):
         self.budget = budget
@@ -37,13 +45,19 @@ class BudgetTracker:
     
     def is_over_budget(self) -> bool:
         # Simple budget enforcement: high budget gets more resources
+        # Adaptively scaled by system health factor
         limits = {
             "low": {"db_calls": 10, "tokens": 1000},
             "medium": {"db_calls": 25, "tokens": 3000},
             "high": {"db_calls": 50, "tokens": 8000},
         }
-        limit = limits.get(self.budget, limits["medium"])
-        return self.db_calls > limit["db_calls"] or self.estimated_tokens > limit["tokens"]
+        limit_config = limits.get(self.budget, limits["medium"])
+        
+        # Scale limits based on system health
+        max_db = int(limit_config["db_calls"] * self._health_factor)
+        max_tokens = int(limit_config["tokens"] * self._health_factor)
+        
+        return self.db_calls > max_db or self.estimated_tokens > max_tokens
     
     def to_dict(self) -> Dict[str, Any]:
         duration = 0.0

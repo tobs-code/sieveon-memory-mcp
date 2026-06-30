@@ -168,6 +168,59 @@ _surreal_lock = asyncio.Lock()
 _CIRCUIT_OPEN_THRESHOLD = 5  # failures before opening
 _CIRCUIT_RESET_AFTER = 10.0  # seconds before half-open retry
 _MAX_BACKOFF = 8.0  # cap jittered backoff
+_RECONNECT_INTERVAL = 30.0  # background check every 30s
+
+
+async def _background_reconnect_task():
+    """Background task to actively check connection and reset circuit breaker."""
+    global _surreal_failure_count, _surreal_circuit_open, _surreal_backoff_level
+    
+    print("[INFO] Starting background SurrealDB reconnect task")
+    while True:
+        try:
+            # Only probe if we've had failures or circuit is open
+            should_probe = False
+            async with _surreal_lock:
+                if _surreal_circuit_open or _surreal_failure_count > 0:
+                    should_probe = True
+            
+            if should_probe:
+                # Lightweight probe: INFO FOR DB
+                headers = {"Accept": "application/json", "Content-Type": "application/json"}
+                full_sql = f"USE NS {SURREAL_NS} DB {SURREAL_DB};\nINFO FOR DB;"
+                
+                async with httpx.AsyncClient() as client:
+                    response = await client.post(
+                        SURREAL_URL,
+                        content=full_sql,
+                        headers=headers,
+                        auth=SURREAL_AUTH,
+                        timeout=5.0
+                    )
+                    
+                    if response.status_code < 400:
+                        # Success! Reset everything
+                        async with _surreal_lock:
+                            if _surreal_circuit_open:
+                                print("[INFO] SurrealDB connection restored. Closing circuit.")
+                            _surreal_failure_count = 0
+                            _surreal_circuit_open = False
+                            _surreal_backoff_level = 0
+                            # Reset health factor to healthy
+                            from src.router.policy import BudgetTracker
+                            BudgetTracker.update_system_health(1.0)
+                    else:
+                        # Still failing, update health factor based on failure count
+                        from src.router.policy import BudgetTracker
+                        async with _surreal_lock:
+                            health = 1.0 - (min(_surreal_failure_count, 10) / 12.0)
+                            BudgetTracker.update_system_health(health)
+                            
+        except Exception:
+            # Silent fail in background
+            pass
+            
+        await asyncio.sleep(_RECONNECT_INTERVAL)
 
 
 def _jittered_backoff(level: int) -> float:
@@ -178,10 +231,18 @@ def _jittered_backoff(level: int) -> float:
 
 
 def _budget_aware_should_retry(sql: str) -> bool:
-    # Very simple budget heuristic: heavy queries get fewer retries.
+    """Adaptive retry logic based on query complexity and system health."""
+    from src.router.policy import BudgetTracker
+    health = BudgetTracker._health_factor
+    
+    # Heavy queries get fewer retries
     heavy = sql.strip().upper().startswith(("RELATE", "DEFINE", "CREATE"))
-    attempts = 2 if heavy else 3
-    return True  # kept for future budget enforcement hooks
+    
+    if health < 0.5:
+        # System is struggling, be very conservative
+        return 1 if heavy else 2
+    
+    return 2 if heavy else 3
 
 
 async def _query_surreal(sql: str) -> Any:
@@ -209,7 +270,7 @@ async def _query_surreal(sql: str) -> Any:
                 f"SurrealDB circuit open (failures={failure_count}); next probe in {_CIRCUIT_RESET_AFTER:.1f}s"
             )
 
-    max_retries = 3 if _budget_aware_should_retry(sql) else 2
+    max_retries = _budget_aware_should_retry(sql)
     last_exception = None
 
     async with httpx.AsyncClient() as client:
@@ -242,6 +303,9 @@ async def _query_surreal(sql: str) -> Any:
                     _surreal_failure_count = 0
                     _surreal_circuit_open = False
                     _surreal_backoff_level = 0
+                    # Success: reset health factor
+                    from src.router.policy import BudgetTracker
+                    BudgetTracker.update_system_health(1.0)
                 return data
             except Exception as exc:
                 last_exception = exc
@@ -250,6 +314,11 @@ async def _query_surreal(sql: str) -> Any:
                     _surreal_last_failure = time.time()
                     level = _surreal_backoff_level
                     _surreal_backoff_level = min(level + 1, 10)
+                    
+                    # Update health factor based on failure count
+                    from src.router.policy import BudgetTracker
+                    health = 1.0 - (min(_surreal_failure_count, 10) / 12.0)
+                    BudgetTracker.update_system_health(health)
                 
                 if attempt < max_retries - 1:
                     delay = _jittered_backoff(level)
@@ -1099,6 +1168,12 @@ async def memory_consolidate(scope: str = "local", entity: Optional[str] = None)
         return {"scope": scope, "stale_facts_found": len(stale), "status": "reviewed"}
 
     return {"error": "Invalid scope. Use 'local' or 'entity' with entity name.", "scope": scope}
+
+
+@mcp.on_startup()
+async def on_startup():
+    """Start background tasks on server startup."""
+    asyncio.create_task(_background_reconnect_task())
 
 
 if __name__ == "__main__":

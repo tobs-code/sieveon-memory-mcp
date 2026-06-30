@@ -181,27 +181,25 @@ composite = alpha * normalized_text_entropy + beta * embedding_novelty
 - **Retry:** up to **3 attempts** by default; heavy queries (`RELATE`/`DEFINE`/`CREATE`) use **2 attempts**.
 - **Jittered backoff:** full jitter (`uniform(0, min(8s, 0.5 * 2^level))`) to avoid thundering herd.
 - **Circuit breaker:** opens after **5 failures**; half-open probe after **10s** quiet period.
+- **Background Reconnect:** A dedicated async task periodically probes SurrealDB when the circuit is open, ensuring automatic recovery.
 - **Thread safety:** circuit state protected by a lock; successful calls reset failure count and backoff level.
 - **Timeouts:** `timeout=30` seconds per HTTP call to SurrealDB.
-- **Fail-closed contract:** writes are still attempted against SurrealDB. If all retries fail, a `RuntimeError` is raised with a clear message. No local/fallback cache is used.
-
-**Not (yet) implemented:** true background reconnect thread, adaptive budget enforcement beyond the simple heavy-query heuristic.
 
 ---
 
-## Cost Model
+## Cost Model & Adaptive Enforcement
 
-Budgets are now **measured and enforced** per execution.
+Budgets are **measured, enforced, and adaptively scaled** per execution.
 
-| Budget | Hard limit | Strategy examples | Enforcement |
+| Budget | Base limit | Strategy examples | Enforcement |
 |--------|------------|-------------------|-------------|
-| `low` | <= 10 DB calls / 1k estimated tokens | KG-first | result truncation / `OverBudget` exception support |
-| `medium` | <= 25 DB calls / 3k estimated tokens | Hybrid BM25+vector+temporal | result truncation |
-| `high` | <= 50 DB calls / 8k estimated tokens | Graph expansion + invalidation | best-effort truncation |
+| `low` | <= 10 DB calls / 1k tokens | KG-first | result truncation |
+| `medium` | <= 25 DB calls / 3k tokens | Hybrid BM25+vector+temporal | result truncation |
+| `high` | <= 50 DB calls / 8k tokens | Graph expansion + invalidation | best-effort truncation |
 
-- Token counting uses `tiktoken` (`gpt-3.5-turbo` encoding) where available; otherwise falls back to `chars/4`.
-- `BudgetTracker` records `db_calls` and `estimated_tokens` and exposes `OverBudget` for aborts/throttling.
-- MCP path marks budget usage finished on completion to avoid leaking trackers.
+- **Adaptive Scaling:** Limits are automatically scaled down based on a **System Health Factor**. As SurrealDB failures increase, budgets are tightened to reduce load and improve stability.
+- **Token counting:** uses `tiktoken` (`gpt-3.5-turbo` encoding) where available; otherwise falls back to `chars/4`.
+- **BudgetTracker:** records `db_calls` and `estimated_tokens` and exposes `OverBudget` for aborts/throttling.
 
 ---
 
