@@ -163,6 +163,7 @@ _surreal_circuit_open = False
 _surreal_last_failure = 0.0
 _surreal_backoff_level = 0
 _surreal_lock = asyncio.Lock()
+_reconnect_task_started = False
 
 # Circuit-breaker thresholds (budget-aware)
 _CIRCUIT_OPEN_THRESHOLD = 5  # failures before opening
@@ -246,7 +247,14 @@ def _budget_aware_should_retry(sql: str) -> bool:
 
 
 async def _query_surreal(sql: str) -> Any:
-    global _surreal_failure_count, _surreal_circuit_open, _surreal_last_failure, _surreal_backoff_level
+    global _surreal_failure_count, _surreal_circuit_open, _surreal_last_failure, _surreal_backoff_level, _reconnect_task_started
+
+    # Start background reconnect task if not already started
+    if not _reconnect_task_started:
+        async with _surreal_lock:
+            if not _reconnect_task_started:
+                asyncio.create_task(_background_reconnect_task())
+                _reconnect_task_started = True
 
     headers = {
         "Accept": "application/json",
@@ -1170,22 +1178,12 @@ async def memory_consolidate(scope: str = "local", entity: Optional[str] = None)
     return {"error": "Invalid scope. Use 'local' or 'entity' with entity name.", "scope": scope}
 
 
-@app.on_event("startup")
-async def on_startup():
-    """Start background tasks on server startup."""
-    asyncio.create_task(_background_reconnect_task())
-
-
 if __name__ == "__main__":
     # Ensure schema is loaded before starting servers
     asyncio.run(ensure_schema_loaded())
     
     # Pre-load embedding service to avoid hang on first tool call
     get_embedding_service()
-    
-    # Start background tasks manually since mcp.run() blocks and isn't the FastAPI app
-    loop = asyncio.get_event_loop()
-    loop.create_task(_background_reconnect_task())
     
     # Run FastMCP stdio server (for MCP clients)
     mcp.run()
