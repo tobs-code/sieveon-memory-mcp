@@ -53,7 +53,7 @@ if __name__ == "__main__":
     
     # Load all statements
     all_statements = []
-    for f in ["sdb/schema.surql", "sdb/helper_functions.surql", "sdb/test_data.surql"]:
+    for f in ["docs/schema.surql", "docs/helper_functions.surql", "docs/test_data.surql"]:
         stmts = load_file(f)
         all_statements.extend(stmts)
     
@@ -75,7 +75,12 @@ if __name__ == "__main__":
     print("\n✅ All loaded!")
     
     # Quick check
-    check = run_sql_batch(["SELECT count() FROM event", "SELECT count() FROM entity"])
+    check, errors = run_sql_batch(["SELECT count() FROM event", "SELECT count() FROM entity"])
     print(f"\n🔍 Quick check:")
-    print(f"   Events: {check[0]['result'][0]['count']}")
-    print(f"   Entities: {check[1]['result'][0]['count']}")
+    try:
+        event_count = check[0]['result'][0]['count'] if check and check[0] and check[0].get('result') else 0
+        entity_count = check[1]['result'][0]['count'] if check and len(check) > 1 and check[1] and check[1].get('result') else 0
+        print(f"   Events: {event_count}")
+        print(f"   Entities: {entity_count}")
+    except Exception as e:
+        print(f"   ⚠️ Could not retrieve counts: {e}")

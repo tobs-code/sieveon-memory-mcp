@@ -115,8 +115,8 @@ def create_tables_and_indexes(logger):
         "DEFINE FIELD predicate ON TABLE fact TYPE string;",    # Relationship type
         "DEFINE FIELD confidence ON TABLE fact TYPE float DEFAULT 1.0;",
         "DEFINE FIELD valid_from ON TABLE fact TYPE datetime DEFAULT time::now();",
-        "DEFINE FIELD valid_until ON TABLE fact TYPE datetime;",  # For logical invalidation
-        "DEFINE FIELD source_event ON TABLE fact TYPE record<event>;",  # Link to source event
+        "DEFINE FIELD valid_until ON TABLE fact TYPE option<datetime>;",  # For logical invalidation
+        "DEFINE FIELD source_event ON TABLE fact TYPE option<record<event>>;",  # Link to source event
         "DEFINE FIELD created_at ON TABLE fact TYPE datetime DEFAULT time::now();",
         
         # Gate log table - for entropy gate decisions
@@ -131,12 +131,14 @@ def create_tables_and_indexes(logger):
         "DEFINE FIELD timestamp ON TABLE gate_log TYPE datetime DEFAULT time::now();",
         
         # Indexes for performance
-        "DEFINE INDEX idx_event_content ON TABLE event COLUMNS content SEARCH ANALYZER search_analyzer;",
-        "DEFINE INDEX idx_event_timestamp ON TABLE event COLUMNS timestamp;",
-        "DEFINE INDEX idx_entity_name ON TABLE entity COLUMNS name STRING LENGTH 3;",
-        "DEFINE INDEX idx_fact_predicate ON TABLE fact COLUMNS predicate;",
-        "DEFINE INDEX idx_fact_validity ON TABLE fact COLUMNS valid_until;",
-        "DEFINE INDEX idx_gate_log_decision ON TABLE gate_log COLUMNS decision;"
+        "DEFINE INDEX event_timestamp ON TABLE event COLUMNS timestamp;",
+        "DEFINE INDEX event_source ON TABLE event COLUMNS source;",
+        "DEFINE ANALYZER event_analyzer TOKENIZERS class FILTERS lowercase, ascii, snowball(english);",
+        "DEFINE INDEX event_content_ft ON TABLE event FIELDS content SEARCH ANALYZER event_analyzer HIGHLIGHTS;",
+        "DEFINE INDEX event_embedding_vec ON TABLE event FIELDS embedding MTREE DIMENSION 768 DIST COSINE;",
+        "DEFINE INDEX entity_name ON TABLE entity COLUMNS name;",
+        "DEFINE INDEX fact_subject ON TABLE fact COLUMNS in;",
+        "DEFINE INDEX fact_object ON TABLE fact COLUMNS out;",
     ]
     
     full_sql = "\n".join(schema_commands)

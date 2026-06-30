@@ -1,6 +1,6 @@
-# MCP Server — Agent Memory Stack
+# MCP Server — STRATA Memory Stack
 
-Der MCP-Server exponiert den gesamten Agent Memory Stack als standardisierte Tool-Schnittstelle über das [Model Context Protocol (MCP)](https://modelcontextprotocol.io). Jeder MCP-kompatible Client (z.B. Claude Desktop, Cursor, VS Code mit MCP-Extension) kann die 10 Memory-Tools direkt aufrufen — ohne den Stack selbst hosten zu müssen.
+Der MCP-Server exponiert den gesamten STRATA Memory Stack als standardisierte Tool-Schnittstelle über das [Model Context Protocol (MCP)](https://modelcontextprotocol.io). Jeder MCP-kompatible Client (z.B. Claude Desktop, Cursor, VS Code mit MCP-Extension) kann die 10 Memory-Tools direkt aufrufen — ohne den Stack selbst hosten zu müssen.
 
 ## Architektur-Überblick
 
@@ -17,7 +17,7 @@ Der MCP-Server exponiert den gesamten Agent Memory Stack als standardisierte Too
 │         │               │               │            │      │
 │         ▼               ▼               ▼            ▼      │
 │  ┌────────────────────────────────────────────────────────┐ │
-│  │              Agent Memory Stack (Python)                │ │
+│  │              STRATA Memory Stack (Python)                │ │
 │  │  Classifier → Router → Planner → RetrievalExecutor     │ │
 │  │  EntropyGate → EmbeddingService → ConservativeMaint.   │ │
 │  └──────────────────────────┬─────────────────────────────┘ │
@@ -42,11 +42,19 @@ Der MCP-Server exponiert den gesamten Agent Memory Stack als standardisierte Too
 Python-Pakete (aus `requirements.txt`):
 
 ```
-surrealdb>=0.5.0
+requests>=2.28.0
+numpy>=1.21.0
+fastapi>=0.100.0
+uvicorn>=0.20.0
+surrealdb>=1.0.0
+python-dotenv>=1.0.0
+```
+
+Zusätzlich benötigt (muss separat installiert werden):
+
+```
 sentence-transformers>=2.2.0
 scikit-learn>=1.3.0
-numpy>=1.24.0
-requests>=2.31.0          # wird von server.py benötigt, aber nicht in requirements.txt gelistet
 mcp[fastmcp]>=1.0.0       # FastMCP SDK
 ```
 
@@ -54,7 +62,7 @@ Installation:
 
 ```bash
 pip install -r requirements.txt
-pip install requests mcp[fastmcp]
+pip install sentence-transformers scikit-learn mcp[fastmcp]
 ```
 
 ## Schnellstart
@@ -69,7 +77,7 @@ docker-compose up -d
 Prüfen, dass der Container läuft:
 
 ```bash
-docker ps --filter "name=agent-memory-surrealdb"
+docker ps --filter "name=strata-surrealdb"
 ```
 
 SurrealDB ist dann erreichbar unter `http://127.0.0.1:8000` mit Credentials `root` / `root`.
@@ -82,11 +90,11 @@ python scripts/load_schema_optimized.py
 ```
 
 Das Skript lädt nacheinander:
-- `sdb/schema.surql` — Tabellen, Felder, Indizes, Fulltext-Analyzer, Vektor-Index
-- `sdb/helper_functions.surql` — DB-seitige Funktionen (`fn::active_fact`, `fn::facts_at`, …)
-- `sdb/test_data.surql` — Beispiel-Daten (Alice, Acme Corp, …)
+- `docs/schema.surql` — Tabellen, Felder, Indizes, Fulltext-Analyzer, Vektor-Index
+- `docs/helper_functions.surql` — DB-seitige Funktionen (`fn::active_fact`, `fn::facts_at`, …)
+- `docs/test_data.surql` — Beispiel-Daten (Alice, Acme Corp, …)
 
-**Wichtig:** Der Loader prependet automatisch `USE NS agent_memory DB agent_memory;` an jeden Batch und entfernt Inline-Kommentare, damit SurrealDB 3 die Statements korrekt ausführt.
+**Wichtig:** Der Loader prependet automatisch `USE NS strata DB strata;` an jeden Batch und entfernt Inline-Kommentare, damit SurrealDB 3 die Statements korrekt ausführt.
 
 ### 3. MCP Server starten
 
@@ -103,12 +111,12 @@ Der Server spricht MCP über stdin/stdout. Die meisten MCP-Clients starten den S
 ```json
 {
   "mcpServers": {
-    "agent-memory": {
+    "STRATA-memory": {
       "command": "python",
       "args": ["-m", "src.mcp.server"],
-      "cwd": "C:\\Users\\tobs\\.cursor\\workspace\\sms",
+      "cwd": "C:\\Users\\tobs\\.cursor\\workspace\\STRATA",
       "env": {
-        "PYTHONPATH": "C:\\Users\\tobs\\.cursor\\workspace\\sms"
+        "PYTHONPATH": "C:\\Users\\tobs\\.cursor\\workspace\\STRATA"
       }
     }
   }
@@ -122,7 +130,7 @@ In `.cursor/mcp.json` oder über die VS Code MCP-Extension:
 ```json
 {
   "servers": {
-    "agent-memory": {
+    "STRATA-memory": {
       "type": "stdio",
       "command": "python",
       "args": ["-m", "src.mcp.server"],
@@ -136,7 +144,7 @@ In `.cursor/mcp.json` oder über die VS Code MCP-Extension:
 
 ### Schicht 1 — Core Memory Operations
 
-Die drei Tools, die ein Agent im täglichen Betrieb 90 % der Zeit braucht.
+Die drei Tools, die ein STRATA im täglichen Betrieb 90 % der Zeit braucht.
 
 #### `memory_store`
 
@@ -229,11 +237,13 @@ Aktualisiert einen Fact im Knowledge Graph durch logische Invalidation. Der alte
 }
 ```
 
+**Hinweis:** Subjekt und Objekt müssen bereits als Entitäten existieren. Eine automatische Entity-Erstellung findet nicht statt.
+
 ---
 
 ### Schicht 2 — Retrieval Primitives
 
-Für Agents, die mehr Kontrolle über den Retrieval-Prozess brauchen und den Router umgehen wollen.
+Für STRATAs, die mehr Kontrolle über den Retrieval-Prozess brauchen und den Router umgehen wollen.
 
 #### `event_log_search`
 
@@ -411,7 +421,7 @@ Soft-Delete: Markiert ein Event oder eine Entität als vergessen, ohne den Raw L
 }
 ```
 
-**Intern:** `UPDATE <id> SET forgotten = true, forgotten_at = time::now(), forgotten_reason = '<reason>'`
+**Intern:** `UPDATE <id> SET forgotten = true`
 
 ---
 
@@ -472,7 +482,7 @@ Datei: `src/mcp/server.py`
 
 **Framework:** [FastMCP](https://github.com/jlowin/fastmcp) — offizielle Python-Implementierung des Model Context Protocol SDKs von Anthropic.
 
-**SurrealDB-Zugriff:** Direkt über HTTP-SQL-Endpoint (`http://127.0.0.1:8000/sql`) mit Basic Auth (`root`/`root`). Jeder SQL-Batch wird mit `USE NS agent_memory DB agent_memory;` prefixiert, damit Statements nicht ins Leere laufen.
+**SurrealDB-Zugriff:** Direkt über HTTP-SQL-Endpoint (`http://127.0.0.1:8000/sql`) mit Basic Auth (`root`/`root`). Jeder SQL-Batch wird mit `USE NS strata DB strata;` prefixiert, damit Statements nicht ins Leere laufen.
 
 **Embedding-Service:** `SentenceTransformer` mit Modell `nomic-ai/nomic-embed-text-v1.5` (768 Dimensionen, CUDA wenn verfügbar). Das Modell wird lazy geladen und gecacht.
 
@@ -543,7 +553,7 @@ python scripts/load_schema_optimized.py
 SurrealDB-Container läuft nicht oder Port 8000 ist blockiert:
 
 ```bash
-docker ps --filter "name=agent-memory-surrealdb"
+docker ps --filter "name=strata-surrealdb"
 # Falls nicht running:
 cd sdb && docker-compose up -d
 ```
@@ -574,6 +584,7 @@ SurrealDBs `MTREE`-Vektor-Index ist in dieser Umgebung konfiguriert, aber der MC
 2. **Embedding-Berechnung bei `memory_store`:** Das Modell wird bei jedem Store-Call geladen (lazy). Bei hohem Throughput sollte ein persistent geladener Service verwendet werden.
 3. **`semantic_search` lädt alle Embeddings in Python:** Funktioniert bis ~50k Events. Für größere Datenmengen auf SurrealDB Vektor-Suche migrieren.
 4. **Kein Auth-Layer im MCP-Server:** Der MCP-Server selbst hat keine Authentifizierung. Zugriffskontrolle muss auf Transport-Ebene (z.B. lokaler Socket) oder im Client konfiguriert werden.
+5. **`memory_update` erstellt keine Entitäten automatisch:** Subjekt und Objekt müssen bereits als Entitäten existieren, sonst schlägt die Operation fehl.
 
 ---
 
@@ -582,11 +593,10 @@ SurrealDBs `MTREE`-Vektor-Index ist in dieser Umgebung konfiguriert, aber der MC
 | Datei | Zweck |
 |-------|-------|
 | `src/mcp/server.py` | MCP-Server-Implementierung (10 Tools) |
-| `mcp.md` | Tool-Spezifikation (4 Schichten) |
-| `sdb/schema.surql` | SurrealDB-Schema (Event Log, KG, Indizes) |
-| `sdb/helper_functions.surql` | DB-seitige Funktionen |
-| `sdb/test_data.surql` | Beispiel-Testdaten |
-| `sdb/docker-compose.yml` | SurrealDB Container-Setup |
+| `docs/schema.surql` | SurrealDB-Schema (Event Log, KG, Indizes) |
+| `docs/helper_functions.surql` | DB-seitige Funktionen |
+| `docs/test_data.surql` | Beispiel-Testdaten |
+| `docker-compose.yml` | SurrealDB Container-Setup |
 | `scripts/load_schema_optimized.py` | Schema-Loader mit USE-Prefix |
 | `src/extraction/classifier.py` | Query-Klassifizierung (5 Typen) |
 | `src/router/policy.py` | Routing-Strategien |
@@ -604,3 +614,4 @@ SurrealDBs `MTREE`-Vektor-Index ist in dieser Umgebung konfiguriert, aber der MC
 - [ ] Batch-`memory_store` für Bulk-Ingestion
 - [ ] Streaming-Responses für große Retrieval-Ergebnisse
 - [ ] Eval-Harness an MCP-Tools anbinden
+- [ ] Automatische Entity-Erstellung in `memory_update`

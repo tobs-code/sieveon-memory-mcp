@@ -2,7 +2,7 @@
 -- Testdaten für das Agent-Native Memory System
 -- ========================================
 
-USE NS agent_memory DB agent_memory;
+USE NS strata DB strata;
 
 -- 1. Events hinzufügen (Append-Only)
 CREATE event SET
@@ -38,22 +38,23 @@ CREATE entity:projekt_x SET
     type = "concept";
 
 -- 3. Facts (Kanten) mit Temporal Validity hinzufügen
-RELATE entity:alice->fact:works_at->entity:acme_corp SET
+CREATE fact SET
+    in = entity:alice,
+    out = entity:acme_corp,
+    predicate = "works_at",
     valid_from = time::now() - 5d,
-    confidence = 1.0,
-    source_event = (SELECT id FROM event WHERE content CONTAINS "arbeite bei Acme Corp").id;
+    confidence = 1.0;
 
-RELATE entity:alice->fact:knows->entity:bob SET
+CREATE fact SET
+    in = entity:alice,
+    out = entity:bob,
+    predicate = "knows",
     valid_from = time::now() - 3d,
     confidence = 0.9;
 
-RELATE entity:alice->fact:working_on->entity:projekt_x SET
+CREATE fact SET
+    in = entity:alice,
+    out = entity:projekt_x,
+    predicate = "working_on",
     valid_from = time::now() - 2d,
     confidence = 0.95;
-
--- 4. Test der Helper-Functions
--- fn::active_fact
-SELECT * FROM fn::active_fact(entity:alice, "works_at");
-
--- fn::temporal_context
-SELECT * FROM fn::temporal_context(entity:alice, 3h);

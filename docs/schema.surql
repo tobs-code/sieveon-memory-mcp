@@ -4,7 +4,7 @@
 -- ========================================
 
 -- Namespace & Database definieren
-USE NS agent_memory DB agent_memory;
+USE NS strata DB strata;
 
 -- ========================================
 -- ① Immutable Raw Event Log
@@ -17,11 +17,13 @@ DEFINE FIELD source ON event TYPE string;  -- z.B. "user_input", "system_event",
 DEFINE FIELD content ON event TYPE string; -- Der rohe Inhalt
 DEFINE FIELD embedding ON event TYPE option<vector(f32, 768)>;
 DEFINE FIELD metadata ON event TYPE option<object>;
+DEFINE FIELD forgotten ON event TYPE bool DEFAULT false;
+DEFINE FIELD forget_reason ON event TYPE option<string>;
 
 -- Indizes für den Event Log
 DEFINE INDEX event_timestamp ON event COLUMNS timestamp;
 DEFINE INDEX event_source ON event COLUMNS source;
-DEFINE ANALYZER event_analyzer TYPE FULLTEXT WITH TOKENIZERS blank, punctuation, lowercase, porter;
+DEFINE ANALYZER event_analyzer TOKENIZERS class FILTERS lowercase, ascii, snowball(english);
 DEFINE INDEX event_content_ft ON event FIELDS content SEARCH ANALYZER event_analyzer HIGHLIGHTS;
 -- Vector Index für SurrealDB 3
 DEFINE INDEX event_embedding_vec ON event FIELDS embedding MTREE DIMENSION 768 DIST COSINE;
@@ -36,10 +38,16 @@ DEFINE TABLE entity SCHEMAFULL;
 DEFINE FIELD name ON entity TYPE string;
 DEFINE FIELD type ON entity TYPE string; -- z.B. "person", "organization", "concept"
 DEFINE FIELD metadata ON entity TYPE option<object>;
+DEFINE FIELD forgotten ON entity TYPE bool DEFAULT false;
+DEFINE FIELD forget_reason ON entity TYPE option<string>;
+DEFINE FIELD created_at ON entity TYPE datetime DEFAULT time::now();
+DEFINE FIELD updated_at ON entity TYPE datetime DEFAULT time::now();
 
 -- Fakten als Kanten mit Gültigkeitszeitraum
 -- Pattern: (subject)-[edge:predicate {valid_from, valid_until}]->(object)
-DEFINE TABLE fact RELATION;
+DEFINE TABLE fact SCHEMALESS;
+DEFINE FIELD in ON fact TYPE option<record(entity)>;
+DEFINE FIELD out ON fact TYPE option<record(entity)>;
 DEFINE FIELD predicate ON fact TYPE string; -- z.B. "works_at", "located_in", "friend_of"
 DEFINE FIELD valid_from ON fact TYPE datetime DEFAULT time::now();
 DEFINE FIELD valid_until ON fact TYPE option<datetime> DEFAULT NONE;

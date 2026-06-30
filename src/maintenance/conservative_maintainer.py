@@ -6,7 +6,7 @@ import asyncio
 import time
 import uuid
 from typing import Dict, List, Any, Optional
-import requests
+import httpx
 import os
 from datetime import datetime, timedelta
 
@@ -27,20 +27,21 @@ SURREAL_NS = os.getenv("SURREALDB_NS", "strata")
 SUREAL_DB = os.getenv("SURREALDB_DB", "strata")
 
 
-def _query_surreal(sql: str) -> Any:
+async def _query_surreal(sql: str) -> Any:
     headers = {
         "Accept": "application/json",
         "Content-Type": "application/json",
     }
     full_sql = f"USE NS {SURREAL_NS} DB {SUREAL_DB};\n{sql}"
-    response = requests.post(SURREAL_URL, data=full_sql, headers=headers, auth=SURREAL_AUTH, timeout=30)
-    response.raise_for_status()
-    data = response.json()
-    if isinstance(data, list):
-        for item in data:
-            if isinstance(item, dict) and item.get("status") == "ERR":
-                raise RuntimeError(f"SurrealDB Error: {item.get('information') or item.get('result')} | SQL: {sql[:120]}")
-    return data
+    async with httpx.AsyncClient() as client:
+        response = await client.post(SURREAL_URL, content=full_sql, headers=headers, auth=SURREAL_AUTH, timeout=30.0)
+        response.raise_for_status()
+        data = response.json()
+        if isinstance(data, list):
+            for item in data:
+                if isinstance(item, dict) and item.get("status") == "ERR":
+                    raise RuntimeError(f"SurrealDB Error: {item.get('information') or item.get('result')} | SQL: {sql[:120]}")
+        return data
 
 
 def _extract_result(data: List[Dict], index: int = 1) -> List[Dict]:
@@ -77,7 +78,7 @@ class ConservativeMaintainer:
     async def perform_maintenance(self) -> Dict[str, Any]:
         """Perform conservative maintenance operations"""
         # First, flush any pending updates
-        self.flush_pending()
+        await self.flush_pending()
         
         # Then perform cleanup operations
         result = {
@@ -105,7 +106,7 @@ class ConservativeMaintainer:
         
         return result
     
-    def queue_patch_update(self, entity_id: str, updates: Dict[str, Any]):
+    async def queue_patch_update(self, entity_id: str, updates: Dict[str, Any]):
         """Queue a patch update to be applied later"""
         if entity_id not in self.pending_updates:
             self.pending_updates[entity_id] = {}
@@ -113,9 +114,9 @@ class ConservativeMaintainer:
         
         # Schedule flush if debounce period has passed
         if time.time() - self.last_flush_time > self.debounce_seconds:
-            self.flush_pending()
+            await self.flush_pending()
     
-    def flush_pending(self):
+    async def flush_pending(self):
         """Apply all pending updates"""
         if not self.pending_updates:
             return
@@ -126,13 +127,13 @@ class ConservativeMaintainer:
                 set_clauses = []
                 for key, value in updates.items():
                     if isinstance(value, str):
-                        escaped_value = value.replace("'", "''")
+                        escaped_value = value.replace("'", "\\'")
                         set_clauses.append(f"{key} = '{escaped_value}'")
                     else:
                         set_clauses.append(f"{key} = {json.dumps(value)}")
                 
                 update_sql = f"UPDATE {entity_id} SET {', '.join(set_clauses)};"
-                _query_surreal(update_sql)
+                await _query_surreal(update_sql)
             except Exception as e:
                 print(f"Error applying pending update to {entity_id}: {e}")
         
@@ -150,7 +151,7 @@ class ConservativeMaintainer:
               AND valid_until < time::now()
             LIMIT 50;
             """
-            result = _query_surreal(sql)
+            result = await _query_surreal(sql)
             stale_facts = _extract_result(result)
             
             # Actually remove the stale facts (physical deletion)
@@ -160,7 +161,7 @@ class ConservativeMaintainer:
                 if fact_id:
                     try:
                         delete_sql = f"DELETE {fact_id};"
-                        _query_surreal(delete_sql)
+                        await _query_surreal(delete_sql)
                         removed_count += 1
                     except Exception as e:
                         print(f"Could not delete stale fact {fact_id}: {e}")
@@ -179,7 +180,7 @@ class ConservativeMaintainer:
             ORDER BY timestamp DESC 
             LIMIT 100;
             """
-            result = _query_surreal(sql)
+            result = await _query_surreal(sql)
             events = _extract_result(result)
             
             # Group similar events and consolidate them
@@ -196,29 +197,31 @@ class ConservativeMaintainer:
     async def _get_memory_stats(self) -> Dict[str, Any]:
         """Get statistics about the memory system"""
         try:
-            stats = {}
+            # Get event count
+            result = await _query_surreal("SELECT count() AS count FROM event GROUP ALL;")
+            extracted = _extract_result(result)
+            event_count = extracted[0].get("count", 0) if extracted else 0
             
-            # Count events
-            event_count_sql = "SELECT count() AS event_count FROM event;"
-            event_result = _extract_result(_query_surreal(event_count_sql), 1)
-            stats["event_count"] = event_result[0]["event_count"] if event_result else 0
+            # Get entity count
+            result = await _query_surreal("SELECT count() AS count FROM entity GROUP ALL;")
+            extracted = _extract_result(result)
+            entity_count = extracted[0].get("count", 0) if extracted else 0
             
-            # Count entities
-            entity_count_sql = "SELECT count() AS entity_count FROM entity;"
-            entity_result = _extract_result(_query_surreal(entity_count_sql), 1)
-            stats["entity_count"] = entity_result[0]["entity_count"] if entity_result else 0
+            # Get fact count
+            result = await _query_surreal("SELECT count() AS count FROM fact WHERE valid_until = NONE GROUP ALL;")
+            extracted = _extract_result(result)
+            fact_count = extracted[0].get("count", 0) if extracted else 0
             
-            # Count facts
-            fact_count_sql = "SELECT count() AS fact_count FROM fact WHERE valid_until = NONE;"
-            fact_result = _extract_result(_query_surreal(fact_count_sql), 1)
-            stats["fact_count"] = fact_result[0]["fact_count"] if fact_result else 0
-            
-            return stats
+            return {
+                "event_count": event_count,
+                "entity_count": entity_count,
+                "fact_count": fact_count
+            }
         except Exception as e:
             print(f"Error getting memory stats: {e}")
             return {}
     
-    def get_stale_facts(self, max_age_seconds: int = 86400) -> List[Dict[str, Any]]:
+    async def get_stale_facts(self, max_age_seconds: int = 86400) -> List[Dict[str, Any]]:
         """Get facts that haven't been accessed in a while"""
         try:
             cutoff_time = datetime.now() - timedelta(seconds=max_age_seconds)
@@ -228,7 +231,7 @@ class ConservativeMaintainer:
                OR last_accessed = NONE
             LIMIT 20;
             """
-            result = _query_surreal(sql)
+            result = await _query_surreal(sql)
             return _extract_result(result)
         except Exception as e:
             print(f"Error getting stale facts: {e}")

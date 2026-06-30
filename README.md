@@ -6,16 +6,15 @@
 
 ## Overview
 
-Strata is a sophisticated agent memory system that intelligently classifies, routes, plans, and executes queries across multiple storage and retrieval strategies. It consists of **Rust** (core services) and **Python** (control plane & extraction) components working together.
+Strata is a sophisticated agent memory system that intelligently classifies, routes, plans, and executes queries across multiple storage and retrieval strategies. It consists of **Python** (MCP control plane) and **Rust** (core services) components working together.
 
 ### Architecture
 
 ```
-                  ┌──────────────┐
-                  │  MCP Server  │  (Python, :8082)
-                  │  (Control    │
-                  │   Plane)     │
-                  └──────┬───────┘
+                  ┌──────────────────┐
+                  │  MCP Server      │  (Python, stdio/HTTP)
+                  │  (Control Plane) │
+                  └──────┬───────────┘
                          │
          ┌───────────────┼───────────────┐
          ▼               ▼               ▼
@@ -47,7 +46,7 @@ Strata is a sophisticated agent memory system that intelligently classifies, rou
 
 | Component | Path | Description |
 |-----------|------|-------------|
-| **MCP Server** | `src/mcp/server.py` | Control plane (Anthropic MCP protocol) |
+| **MCP Server** | `src/mcp/server.py` | Control plane (Anthropic MCP protocol) — stdio mode |
 | **Extraction** | `src/extraction/` | Entropy-gated entity extraction |
 | **Router** | `src/router/` | Policy engine & cost tracking |
 | **Planner** | `src/planner/` | Execution engine |
@@ -59,9 +58,9 @@ Strata is a sophisticated agent memory system that intelligently classifies, rou
 
 - **Query Classification** — 5 types: Temporal, Factual, Multi-Hop, Conversational, Update
 - **Adaptive Retrieval** — Strategy selection per query type (event log, KG, hybrid BM25+vector+temporal)
-- **Entropy Gating** — Decides extraction to KG based on text entropy + embedding novelty
+- **Entropy Gating** — LightMem-style composite score: Shannon character entropy + embedding novelty. Raw Event Log is always append-only; the gate decides only whether to extract into the Knowledge Graph.
 - **Logical Invalidation** — `valid_until` timestamps instead of hard deletes
-- **Cross-Language Consistency** — Identical classification & routing in Rust and Python
+- **Cross-Language Consistency** — Identical classification & routing logic in Rust and Python
 - **Cost Awareness** — Tracks & budgets resource consumption per strategy
 
 ---
@@ -108,20 +107,110 @@ cd src/mcp && python server.py
 
 ---
 
+## Performance & Benchmarks
+
+Strata verfügt über ein integriertes Benchmark-System zur Messung der Tool-Latenz. Ergebnisse werden automatisch in `benchmarks/benchmark_results.md` protokolliert.
+
+### Tool Performance (Stand: Juni 2026)
+
+| Tool | Durchschnitt (ms) | P95 (ms) | Optimierung |
+|------|-------------------|----------|-------------|
+| `memory_stats` | ~775 ms | ~820 ms | Multi-Statement Batching |
+| `memory_query` | ~350 ms | ~400 ms | Hybrid Retrieval |
+| `memory_store` | ~800 ms | ~850 ms | CUDA-beschleunigt |
+| `explain_routing` | < 1 ms | < 1 ms | Pure Logic |
+
+Das `memory_stats` Tool wurde durch **SQL-Batching** um ca. **85% optimiert** (von ursprünglich >5s).
+
+### Benchmark ausführen
+
+```bash
+python benchmarks/mcp_performance.py
+```
+
+---
+
 ## Testing
 
 ```bash
-# All tests
+# Alle Tests (inkl. Router & Benchmark)
 python tests/run_all_tests.py
-
-# Python only
-python -m pytest tests/python_unit_tests.py tests/python_router_tests.py tests/edge_case_tests.py tests/surreal_integration_tests.py -v
-
-# Rust only
-cargo test --workspace
+python scripts/test_router_comprehensive.py
+python benchmarks/mcp_performance.py
 ```
 
-Current status: **74 tests passing** (67 Python + 7 Rust across 5 test files)
+Current status: **Verified Robust**
+- **82+ passing tests** (inkl. neuer Router- & Logic-Validierung)
+- **Zero-Error Policy:** Alle MCP-Tools laufen stabil unter Last.
+
+---
+
+## Entropy Gating — How It Works
+
+The gate prevents the Knowledge Graph from being flooded with low-value entries.
+
+**Formula (LightMem-style):**
+
+```
+composite = alpha * normalized_text_entropy + beta * embedding_novelty
+```
+
+- **Text entropy** = Shannon entropy on character level (alphanumeric + whitespace), normalized to `[0, 1]` using a max of ~4.5 bits.
+- **Embedding novelty** = `1 − avg cosine similarity` to the top-5 most similar previously stored embeddings (in-memory index for the current session).
+- **Weights** (default): `alpha = 0.35`, `beta = 0.65`.
+- **Threshold** (default): `0.55`.
+
+**Decision:** `extract` if `composite >= threshold`, otherwise `ignore`.
+
+**Length guardrails:** texts shorter than `min_length = 10` or longer than `max_length = 1000` characters are always skipped.
+
+**Storage contract:** Every input is still written to the immutable Raw Event Log. The gate only controls whether the content is additionally extracted into the temporal Knowledge Graph.
+
+**Logging:** Each decision is recorded in the `gate_log` table for later calibration/evaluation.
+
+**Calibration note:** `alpha`, `beta`, and `threshold` are currently **initial defaults**. Use the logged `gate_log` entries to tune them against real traffic and find the sweet spot for your workload.
+
+**MCP path status:** The current MCP memory tools (`memory_store`, query endpoints) write to the raw event log but do **not** invoke the entropy gate. To populate `gate_log`, call `EntropyGate.ingest()` from your ingestion pipeline or add a wrapper around the memory write path.
+
+---
+
+## Resilience & Error Handling
+
+**Implemented in `src/mcp/server.py`:**
+
+- **Retry:** up to **3 attempts** by default; heavy queries (`RELATE`/`DEFINE`/`CREATE`) use **2 attempts**.
+- **Jittered backoff:** full jitter (`uniform(0, min(8s, 0.5 * 2^level))`) to avoid thundering herd.
+- **Circuit breaker:** opens after **5 failures**; half-open probe after **10s** quiet period.
+- **Thread safety:** circuit state protected by a lock; successful calls reset failure count and backoff level.
+- **Timeouts:** `timeout=30` seconds per HTTP call to SurrealDB.
+- **Fail-closed contract:** writes are still attempted against SurrealDB. If all retries fail, a `RuntimeError` is raised with a clear message. No local/fallback cache is used.
+
+**Not (yet) implemented:** true background reconnect thread, adaptive budget enforcement beyond the simple heavy-query heuristic.
+
+---
+
+## Cost Model
+
+Budgets are now **measured and enforced** per execution.
+
+| Budget | Hard limit | Strategy examples | Enforcement |
+|--------|------------|-------------------|-------------|
+| `low` | <= 10 DB calls / 1k estimated tokens | KG-first | result truncation / `OverBudget` exception support |
+| `medium` | <= 25 DB calls / 3k estimated tokens | Hybrid BM25+vector+temporal | result truncation |
+| `high` | <= 50 DB calls / 8k estimated tokens | Graph expansion + invalidation | best-effort truncation |
+
+- Token counting uses `tiktoken` (`gpt-3.5-turbo` encoding) where available; otherwise falls back to `chars/4`.
+- `BudgetTracker` records `db_calls` and `estimated_tokens` and exposes `OverBudget` for aborts/throttling.
+- MCP path marks budget usage finished on completion to avoid leaking trackers.
+
+---
+
+## Schema Evolution / Migration
+
+- Schema files live in `docs/*.surql`.
+- `docs/schema.surql` uses `DEFINE TABLE IF NOT EXISTS`, `DEFINE INDEX IF NOT EXISTS`, and `DEFINE FIELD IF NOT EXISTS` — so repeated loads are idempotent.
+- **There is no automatic data migration** for breaking schema changes (e.g. renaming fields or changing types). In that case, export (`surreal export` or custom scripts), transform, and re-import into a new namespace/DB.
+- Non-breaking additive changes: just add new fields/tables and deploy.
 
 ---
 

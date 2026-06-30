@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Control Plane Server implementing the Model Context Protocol (MCP)
 Coordinates all components of the agent memory system
@@ -9,10 +10,11 @@ import sys
 import os
 import json
 import time
-import requests
+import random
+import httpx
+import asyncio
 from typing import Optional, Dict, Any, List, Union
 from datetime import datetime, timezone
-import asyncio
 
 # Try to load environment variables from .env file
 try:
@@ -58,26 +60,217 @@ SURREAL_NS = os.getenv("SURREALDB_NS", "strata")  # Updated from agent_memory to
 SURREAL_DB = os.getenv("SURREALDB_DB", "strata")  # Updated from agent_memory to strata
 
 
-def _query_surreal(sql: str) -> Any:
+async def check_schema_exists() -> bool:
+    """Check if the STRATA schema is already loaded in SurrealDB."""
+    try:
+        # Check if key tables exist
+        result = await _query_surreal("INFO FOR TABLES;")
+        tables = _extract_result(result)
+        table_names = [t.get("name") for t in tables if isinstance(t, dict)]
+        
+        required_tables = ["event", "entity", "fact"]
+        return all(table in table_names for table in required_tables)
+    except Exception as e:
+        print(f"[WARN] Schema check failed: {e}")
+        return False
+
+
+def load_schema_file(file_path: str) -> List[str]:
+    """Load and parse a .surql file, removing comments and splitting statements."""
+    with open(file_path, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    lines = content.split("\n")
+    clean_lines = []
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith("--") or stripped.startswith("//"):
+            continue
+        if "--" in stripped:
+            stripped = stripped.split("--")[0].strip()
+        if stripped:
+            clean_lines.append(stripped)
+    content_no_comments = " ".join(clean_lines)
+
+    statements = []
+    current = ""
+    depth = 0
+    for part in content_no_comments.split(";"):
+        part = part.strip()
+        if not part:
+            continue
+        current += part + ";"
+        depth += part.count("{") - part.count("}")
+        if depth <= 0:
+            statements.append(current.strip())
+            current = ""
+    if current.strip():
+        statements.append(current.strip())
+    
+    # Add IF NOT EXISTS to table/index definitions to handle existing schema
+    safe_statements = []
+    for stmt in statements:
+        if "DEFINE TABLE" in stmt and "IF NOT EXISTS" not in stmt:
+            stmt = stmt.replace("DEFINE TABLE", "DEFINE TABLE IF NOT EXISTS")
+        elif "DEFINE INDEX" in stmt and "IF NOT EXISTS" not in stmt:
+            stmt = stmt.replace("DEFINE INDEX", "DEFINE INDEX IF NOT EXISTS")
+        elif "DEFINE FUNCTION" in stmt and "IF NOT EXISTS" not in stmt:
+            stmt = stmt.replace("DEFINE FUNCTION", "DEFINE FUNCTION IF NOT EXISTS")
+        elif "DEFINE FIELD" in stmt and "IF NOT EXISTS" not in stmt:
+            stmt = stmt.replace("DEFINE FIELD", "DEFINE FIELD IF NOT EXISTS")
+        safe_statements.append(stmt)
+    
+    return safe_statements
+
+
+async def ensure_schema_loaded():
+    """Ensure the STRATA schema is loaded. If not, load it automatically."""
+    if await check_schema_exists():
+        print("[OK] STRATA schema already loaded")
+        return
+    
+    print("[INFO] STRATA schema not found. Loading automatically...")
+    
+    # Use the existing load_schema_optimized.py script
+    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    load_script = os.path.join(project_root, "scripts", "load_schema_optimized.py")
+    
+    if os.path.exists(load_script):
+        print(f"   Using existing load script: {load_script}")
+        try:
+            import subprocess
+            result = subprocess.run(
+                ["python", load_script],
+                cwd=project_root,
+                capture_output=True,
+                text=True,
+                timeout=60
+            )
+            print(result.stdout)
+            if result.stderr:
+                 print(f"   [WARN] Warnings: {result.stderr}")
+            print("[OK] Schema loading complete!")
+        except Exception as e:
+            print(f"   [ERROR] Failed to run load script: {e}")
+    else:
+        print(f"   [WARN] Load script not found: {load_script}")
+        print("   Skipping automatic schema load")
+
+
+# Resilience state for SurrealDB connectivity
+_surreal_failure_count = 0
+_surreal_circuit_open = False
+_surreal_last_failure = 0.0
+_surreal_backoff_level = 0
+_surreal_lock = asyncio.Lock()
+
+# Circuit-breaker thresholds (budget-aware)
+_CIRCUIT_OPEN_THRESHOLD = 5  # failures before opening
+_CIRCUIT_RESET_AFTER = 10.0  # seconds before half-open retry
+_MAX_BACKOFF = 8.0  # cap jittered backoff
+
+
+def _jittered_backoff(level: int) -> float:
+    # Full jitter: uniform random in [0, min(cap, base * 2^level)]
+    base = 0.5
+    ceiling = min(_MAX_BACKOFF, base * (2 ** level))
+    return random.uniform(0.0, ceiling)
+
+
+def _budget_aware_should_retry(sql: str) -> bool:
+    # Very simple budget heuristic: heavy queries get fewer retries.
+    heavy = sql.strip().upper().startswith(("RELATE", "DEFINE", "CREATE"))
+    attempts = 2 if heavy else 3
+    return True  # kept for future budget enforcement hooks
+
+
+async def _query_surreal(sql: str) -> Any:
+    global _surreal_failure_count, _surreal_circuit_open, _surreal_last_failure, _surreal_backoff_level
+
     headers = {
         "Accept": "application/json",
         "Content-Type": "application/json",
     }
     full_sql = f"USE NS {SURREAL_NS} DB {SURREAL_DB};\n{sql}"
-    response = requests.post(SURREAL_URL, data=full_sql, headers=headers, auth=SURREAL_AUTH, timeout=30)
-    response.raise_for_status()
-    data = response.json()
-    if isinstance(data, list):
-        for item in data:
-            if isinstance(item, dict) and item.get("status") == "ERR":
-                raise RuntimeError(f"SurrealDB Error: {item.get('information') or item.get('result')} | SQL: {sql[:120]}")
-    return data
+
+    async with _surreal_lock:
+        circuit_open = _surreal_circuit_open
+        failure_count = _surreal_failure_count
+        last_failure = _surreal_last_failure
+
+    if circuit_open:
+        # Half-open probe after quiet period
+        if (time.time() - last_failure) >= _CIRCUIT_RESET_AFTER:
+            async with _surreal_lock:
+                _surreal_circuit_open = False
+                _surreal_backoff_level = 0
+        else:
+            raise RuntimeError(
+                f"SurrealDB circuit open (failures={failure_count}); next probe in {_CIRCUIT_RESET_AFTER:.1f}s"
+            )
+
+    max_retries = 3 if _budget_aware_should_retry(sql) else 2
+    last_exception = None
+
+    async with httpx.AsyncClient() as client:
+        for attempt in range(max_retries):
+            try:
+                response = await client.post(
+                    SURREAL_URL,
+                    content=full_sql,
+                    headers=headers,
+                    auth=SURREAL_AUTH,
+                    timeout=30.0,
+                )
+                if response.status_code >= 400:
+                    error_msg = response.text
+                    print(f"[ERROR] SurrealDB Error ({response.status_code}): {error_msg}")
+                    raise httpx.HTTPStatusError(
+                        f"SurrealDB error {response.status_code}: {error_msg}",
+                        request=response.request,
+                        response=response
+                    )
+                data = response.json()
+                if isinstance(data, list):
+                    for item in data:
+                        if isinstance(item, dict) and item.get("status") == "ERR":
+                            raise RuntimeError(
+                                f"SurrealDB Error: {item.get('information') or item.get('result')} | SQL: {sql[:120]}"
+                            )
+                # success -> reset circuit state
+                async with _surreal_lock:
+                    _surreal_failure_count = 0
+                    _surreal_circuit_open = False
+                    _surreal_backoff_level = 0
+                return data
+            except Exception as exc:
+                last_exception = exc
+                async with _surreal_lock:
+                    _surreal_failure_count += 1
+                    _surreal_last_failure = time.time()
+                    level = _surreal_backoff_level
+                    _surreal_backoff_level = min(level + 1, 10)
+                
+                if attempt < max_retries - 1:
+                    delay = _jittered_backoff(level)
+                    await asyncio.sleep(delay)
+
+    # All retries failed -> possibly open circuit
+    async with _surreal_lock:
+        _surreal_circuit_open = _surreal_failure_count >= _CIRCUIT_OPEN_THRESHOLD
+        opened = _surreal_circuit_open
+
+    raise RuntimeError(
+        f"SurrealDB unreachable after {max_retries} attempts (failures={_surreal_failure_count}, circuit={'open' if opened else 'closed'}): {last_exception}"
+    )
 
 
 def _extract_result(data: List[Dict], index: int = 1) -> List[Dict]:
     """Extract results from SurrealDB response."""
     if not isinstance(data, list):
         return []
+    
+    # Filter out connection info messages
     candidates = [
         item for item in data
         if isinstance(item, dict)
@@ -85,18 +278,36 @@ def _extract_result(data: List[Dict], index: int = 1) -> List[Dict]:
         and "result" in item
         and not (isinstance(item["result"], dict) and "database" in item["result"] and "namespace" in item["result"])
     ]
+    
     if not candidates:
         return []
-    if len(candidates) <= index:
+    
+    # If index is 1, we usually want the FIRST meaningful result 
+    # (since index 0 was likely the USE NS/DB statement which we filtered out)
+    if index == 1 and len(candidates) >= 1:
+        target = candidates[0]
+    elif len(candidates) <= index:
         target = candidates[-1]
     else:
         target = candidates[index]
+        
     result = target.get("result", [])
     if isinstance(result, list):
         return result
     if isinstance(result, dict):
         return [result]
     return []
+
+
+def _clean_output(obj: Any) -> Any:
+    """Recursively removes large fields like 'embedding' from output objects."""
+    if isinstance(obj, list):
+        return [_clean_output(i) for i in obj]
+    if isinstance(obj, dict):
+        # Create a copy to avoid modifying the original if it's cached or reused
+        new_dict = {k: _clean_output(v) for k, v in obj.items() if k != "embedding"}
+        return new_dict
+    return obj
 
 
 @app.get("/classify")
@@ -152,8 +363,9 @@ async def plan_and_execute_endpoint(request_data: dict):
         }
     }
     
-    # Execute the plan
-    result = await executor.execute_plan(plan)
+    # Execute the plan (using run_in_executor to avoid blocking)
+    loop = asyncio.get_event_loop()
+    result = await loop.run_in_executor(None, executor.execute_plan, plan)
     
     return result
 
@@ -183,7 +395,7 @@ async def health_check():
 
 
 # =============================================================================
-# Schicht 1 — Core Memory Operations
+# Schicht 1 - Core Memory Operations
 # =============================================================================
 
 # Expose memory operations as HTTP endpoints
@@ -195,26 +407,25 @@ async def memory_store_endpoint(request_data: dict):
     metadata = request_data.get("metadata", None)
     
     embedding_service = get_embedding_service()
-    embedding_storage = embedding_service.embed_for_storage(content)
+    embedding_list = await asyncio.to_thread(embedding_service.embed_for_storage, content)
+    content_escaped = content.replace("'", "\\'")
+    source_escaped = source.replace("'", "\\'")
+    embedding_storage = "[" + ", ".join(str(v) for v in embedding_list) + "]"
 
-    content_escaped = content.replace("'", "''")
-    sql = f"""
-    CREATE event SET
-        content = '{content_escaped}',
-        source = '{source}',
-        embedding = {embedding_storage};
-    """
     if metadata:
-        meta_escaped = json.dumps(metadata).replace("'", "''")
-        sql = f"""
-        CREATE event SET
-            content = '{content_escaped}',
-            source = '{source}',
-            embedding = {embedding_storage},
-            metadata = {{ content: '{meta_escaped}' }};
-        """
+        meta_json = json.dumps(metadata)
+        sql = (
+            f"CREATE event SET content = '{content_escaped}', "
+            f"source = '{source_escaped}', embedding = {embedding_storage}, "
+            f"metadata = {meta_json};"
+        )
+    else:
+        sql = (
+            f"CREATE event SET content = '{content_escaped}', "
+            f"source = '{source_escaped}', embedding = {embedding_storage};"
+        )
 
-    result = _query_surreal(sql)
+    result = await _query_surreal(sql)
     event_result = _extract_result(result)
     if event_result and isinstance(event_result, list) and len(event_result) > 0 and isinstance(event_result[0], dict):
         event_id = event_result[0]["id"]
@@ -227,7 +438,7 @@ async def memory_store_endpoint(request_data: dict):
 
 @app.post("/memory/query")
 async def memory_query_endpoint(request_data: dict):
-    """Routes a natural language query through the full pipeline: classify → plan → retrieve."""
+    """Routes a natural language query through the full pipeline: classify -> plan -> retrieve."""
     query = request_data.get("query", "")
     cost_budget = request_data.get("cost_budget", "auto")
     
@@ -235,24 +446,38 @@ async def memory_query_endpoint(request_data: dict):
     q_type, confidence = classifier.classify(query)
 
     policy = RoutingPolicy()
-    strategy = policy.get_strategy(q_type, confidence, cost_budget)
+    strategy = policy.get_strategy(q_type, confidence)
 
     executor = RetrievalExecutor()
-    import asyncio
-    results = asyncio.run(executor.execute_strategy(strategy, query))
+    plan = {"strategy": strategy.get("strategy"), "query": query}
+    raw_results = await executor.execute(plan)
 
     entities = []
     facts = []
     events = []
+    results = raw_results.get("result", [])
+    if isinstance(results, dict) and "combined_results" in results:
+        results = results["combined_results"]
+    elif isinstance(results, dict):
+        # Falls es ein Dictionary mit keys wie 'events', 'entities' ist
+        new_results = []
+        for key in ["events", "entities", "facts", "keyword_results", "vector_results", "temporal_results"]:
+            if key in results and isinstance(results[key], list):
+                new_results.extend(results[key])
+        if not new_results and "result" in results:
+             new_results = results["result"] if isinstance(results["result"], list) else [results["result"]]
+        results = new_results
+
     for r in results:
         if isinstance(r, dict):
-            rid = r.get("id", "")
+            clean_r = _clean_output(r)
+            rid = clean_r.get("id", "")
             if rid.startswith("entity:"):
-                entities.append(r)
+                entities.append(clean_r)
             elif rid.startswith("fact:"):
-                facts.append(r)
+                facts.append(clean_r)
             elif rid.startswith("event:"):
-                events.append(r)
+                events.append(clean_r)
 
     return {
         "query": query,
@@ -268,31 +493,30 @@ async def memory_query_endpoint(request_data: dict):
         "total": len(entities) + len(facts) + len(events),
     }
 
-
 @mcp.tool()
-def memory_store(content: str, source: str = "user_input", metadata: Optional[Dict[str, Any]] = None) -> dict:
+async def memory_store(content: str, source: str = "user_input", metadata: Optional[Dict[str, Any]] = None) -> dict:
     """Stores a new event in the raw event log. Always persists, entropy gate decides KG extraction."""
     embedding_service = get_embedding_service()
-    embedding_storage = embedding_service.embed_for_storage(content)
+    # Run heavy sync embedding in a thread to avoid blocking the event loop
+    embedding_list = await asyncio.to_thread(embedding_service.embed_for_storage, content)
+    content_escaped = content.replace("'", "\\'")
+    source_escaped = source.replace("'", "\\'")
+    embedding_storage = "[" + ", ".join(str(v) for v in embedding_list) + "]"
 
-    content_escaped = content.replace("'", "''")
-    sql = f"""
-    CREATE event SET
-        content = '{content_escaped}',
-        source = '{source}',
-        embedding = {embedding_storage};
-    """
     if metadata:
-        meta_escaped = json.dumps(metadata).replace("'", "''")
-        sql = f"""
-        CREATE event SET
-            content = '{content_escaped}',
-            source = '{source}',
-            embedding = {embedding_storage},
-            metadata = {{ content: '{meta_escaped}' }};
-        """
+        meta_json = json.dumps(metadata)
+        sql = (
+            f"CREATE event SET content = '{content_escaped}', "
+            f"source = '{source_escaped}', embedding = {embedding_storage}, "
+            f"metadata = {meta_json};"
+        )
+    else:
+        sql = (
+            f"CREATE event SET content = '{content_escaped}', "
+            f"source = '{source_escaped}', embedding = {embedding_storage};"
+        )
 
-    result = _query_surreal(sql)
+    result = await _query_surreal(sql)
     event_result = _extract_result(result)
     if event_result and isinstance(event_result, list) and len(event_result) > 0 and isinstance(event_result[0], dict):
         event_id = event_result[0]["id"]
@@ -302,32 +526,78 @@ def memory_store(content: str, source: str = "user_input", metadata: Optional[Di
         event_id = None
     return {"event_id": event_id, "status": "stored", "source": source}
 
-
 @mcp.tool()
-def memory_query(query: str, cost_budget: str = "auto") -> dict:
-    """Routes a natural language query through the full pipeline: classify → plan → retrieve."""
+async def memory_query(query: str, cost_budget: str = "auto") -> dict:
+    """Routes a natural language query through the full pipeline: classify -> plan -> retrieve."""
     classifier = QueryClassifier()
     q_type, confidence = classifier.classify(query)
 
     policy = RoutingPolicy()
-    strategy = policy.get_strategy(q_type, confidence, cost_budget)
+    strategy: Dict[str, Any] = policy.get_strategy(q_type, confidence)
 
     executor = RetrievalExecutor()
-    import asyncio
-    results = asyncio.run(executor.execute_strategy(strategy, query))
+    results_raw: Any = await executor.execute_strategy(strategy, query)
+    results: List[Any] = []
+    
+    if isinstance(results_raw, dict) and "combined_results" in results_raw:
+        combined = results_raw["combined_results"]
+        if isinstance(combined, list):
+            results = combined
+        else:
+            results = [combined]
+    elif isinstance(results_raw, dict):
+        new_results: List[Any] = []
+        for key in ["events", "entities", "facts", "keyword_results", "vector_results", "temporal_results", "result"]:
+            if key in results_raw and isinstance(results_raw[key], list):
+                new_results.extend(results_raw[key])
+        if not new_results and "result" in results_raw:
+            val = results_raw["result"]
+            new_results = val if isinstance(val, list) else [val]
+        results = new_results
+    elif isinstance(results_raw, list):
+        results = results_raw
+
+    # Mark budget usage finished
+    btk = strategy.get("budget_tracker_key")
+    if isinstance(btk, str):
+        policy.finish_execution(btk)
 
     entities = []
     facts = []
     events = []
     for r in results:
         if isinstance(r, dict):
-            rid = r.get("id", "")
-            if rid.startswith("entity:"):
-                entities.append(r)
-            elif rid.startswith("fact:"):
-                facts.append(r)
-            elif rid.startswith("event:"):
-                events.append(r)
+            # Clean the object
+            clean_r = _clean_output(r)
+            rid = clean_r.get("id", "")
+            if rid and isinstance(rid, str):
+                if rid.startswith("entity:"):
+                    entities.append(clean_r)
+                elif rid.startswith("fact:"):
+                    facts.append(clean_r)
+                elif rid.startswith("event:"):
+                    events.append(clean_r)
+                else:
+                    events.append(clean_r)
+            else:
+                events.append(clean_r)
+        elif isinstance(r, list):
+            # Manche Strategien geben Listen von Listen zurück
+            for item in r:
+                if isinstance(item, dict):
+                    clean_item = _clean_output(item)
+                    rid = clean_item.get("id", "")
+                    if rid and isinstance(rid, str):
+                        if rid.startswith("entity:"):
+                            entities.append(clean_item)
+                        elif rid.startswith("fact:"):
+                            facts.append(clean_item)
+                        elif rid.startswith("event:"):
+                            events.append(clean_item)
+                        else:
+                            events.append(clean_item)
+                    else:
+                        events.append(clean_item)
 
     return {
         "query": query,
@@ -345,11 +615,19 @@ def memory_query(query: str, cost_budget: str = "auto") -> dict:
 
 
 @mcp.tool()
-def memory_update(subject: str, predicate: str, new_value: str) -> dict:
-    """Updates a fact in the KG via logical invalidation. Old fact gets valid_until, new fact created."""
-    subject_escaped = subject.replace("'", "''")
-    predicate_escaped = predicate.replace("'", "''")
-    new_value_escaped = new_value.replace("'", "''")
+async def memory_update(subject: str, predicate: str, new_value: str) -> dict:
+    """Updates a fact in the KG via logical invalidation. Old fact gets valid_until, new fact created. 
+    Automatically infers entity types (e.g., 'organization' for companies/projects, otherwise 'concept') if entities are auto-created."""
+    subject_escaped = subject.replace("'", "\\'")
+    predicate_escaped = predicate.replace("'", "\\'")
+    new_value_escaped = new_value.replace("'", "\\'")
+
+    def _infer_entity_type(name: str) -> str:
+        """Simple heuristic to infer entity type from name."""
+        lower = name.lower()
+        if any(suffix in lower for suffix in ['corp', 'inc', 'ltd', 'gmbh', 'company', 'org', 'projekt', 'projekt']):
+            return 'organization'
+        return 'concept'
 
     find_sql = f"""
     SELECT * FROM fact
@@ -358,34 +636,48 @@ def memory_update(subject: str, predicate: str, new_value: str) -> dict:
       AND valid_until = NONE
     LIMIT 1;
     """
-    find_result = _query_surreal(find_sql)
+    find_result = await _query_surreal(find_sql)
     facts = _extract_result(find_result, 1)
 
     invalidated = None
     if facts:
         old_fact_id = facts[0]["id"]
         invalidate_sql = f"UPDATE {old_fact_id} SET valid_until = time::now();"
-        _query_surreal(invalidate_sql)
+        await _query_surreal(invalidate_sql)
         invalidated = old_fact_id
 
-    subject_escaped = subject.replace("'", "''")
-    new_value_escaped = new_value.replace("'", "''")
-    predicate_escaped = predicate.replace("'", "''")
+    subject_escaped = subject.replace("'", "\\'")
+    new_value_escaped = new_value.replace("'", "\\'")
+    predicate_escaped = predicate.replace("'", "\\'")
 
     subject_sql = f"SELECT id FROM entity WHERE name = '{subject_escaped}' LIMIT 1;"
-    subject_result = _query_surreal(subject_sql)
+    subject_result = await _query_surreal(subject_sql)
     subject_entities = _extract_result(subject_result, 1)
 
+    if not subject_entities:
+        # Auto-create subject entity if it doesn't exist
+        subject_type = _infer_entity_type(subject)
+        create_subject_sql = f"CREATE entity SET name = '{subject_escaped}', type = '{subject_type}';"
+        create_subject_result = await _query_surreal(create_subject_sql)
+        subject_entities = _extract_result(create_subject_result, 1)
+
     object_sql = f"SELECT id FROM entity WHERE name = '{new_value_escaped}' LIMIT 1;"
-    object_result = _query_surreal(object_sql)
+    object_result = await _query_surreal(object_sql)
     object_entities = _extract_result(object_result, 1)
+
+    if not object_entities:
+        # Auto-create object entity if it doesn't exist
+        object_type = _infer_entity_type(new_value)
+        create_object_sql = f"CREATE entity SET name = '{new_value_escaped}', type = '{object_type}';"
+        create_object_result = await _query_surreal(create_object_sql)
+        object_entities = _extract_result(create_object_result, 1)
 
     new_fact_id = None
     if subject_entities and object_entities:
         subject_id = subject_entities[0]["id"]
         object_id = object_entities[0]["id"]
         relate_sql = f"RELATE {subject_id}->fact->{object_id} SET predicate = '{predicate_escaped}', confidence = 1.0;"
-        relate_result = _query_surreal(relate_sql)
+        relate_result = await _query_surreal(relate_sql)
         new_fact = _extract_result(relate_result, 1)
         if new_fact:
             new_fact_id = new_fact[0]["id"]
@@ -400,7 +692,7 @@ def memory_update(subject: str, predicate: str, new_value: str) -> dict:
 
 
 # =============================================================================
-# Schicht 2 — Retrieval Primitives
+# Schicht 2 - Retrieval Primitives
 # =============================================================================
 
 @app.get("/memory/event_log_search")
@@ -409,41 +701,46 @@ async def event_log_search_endpoint(query: str = Query(..., description="Search 
                                    until: Optional[str] = Query(None, description="End date"), 
                                    limit: int = Query(10, description="Result limit")):
     """Direct timeline query without router: search raw event log."""
-    query_escaped = query.replace("'", "''")
+    query_escaped = query.replace("'", "\\'")
     sql = f"SELECT * FROM event WHERE content @@ '{query_escaped}'"
 
     if since:
-        since_escaped = since.replace("'", "''")
+        since_escaped = since.replace("'", "\\'")
         sql += f" AND timestamp >= '{since_escaped}'"
     if until:
-        until_escaped = until.replace("'", "''")
+        until_escaped = until.replace("'", "\\'")
         sql += f" AND timestamp <= '{until_escaped}'"
 
     sql += f" ORDER BY timestamp DESC LIMIT {limit};"
-    result = _query_surreal(sql)
+    result = await _query_surreal(sql)
     events = _extract_result(result)
-    return {"events": events, "count": len(events)}
+    
+    # Remove embeddings from output
+    clean_events = _clean_output(events)
+            
+    return {"events": clean_events, "count": len(clean_events)}
 
 
 @app.get("/memory/kg_query")
 async def kg_query_endpoint(subject: Optional[str] = Query(None, description="Subject to search for"), 
                            predicate: Optional[str] = Query(None, description="Predicate to search for"), 
-                           at_time: Optional[str] = Query(None, description="Time to query at")):
+                           at_time: Optional[str] = Query(None, description="Time to query at"),
+                           limit: int = Query(20, description="Limit the number of results")):
     """Direct graph traversal: query facts by subject/predicate/time."""
     sql = "SELECT * FROM fact WHERE valid_until = NONE"
 
     if subject:
-        subject_escaped = subject.replace("'", "''")
+        subject_escaped = subject.replace("'", "\\'")
         sql += f" AND in.name CONTAINS '{subject_escaped}'"
     if predicate:
-        predicate_escaped = predicate.replace("'", "''")
+        predicate_escaped = predicate.replace("'", "\\'")
         sql += f" AND predicate = '{predicate_escaped}'"
     if at_time:
-        at_time_escaped = at_time.replace("'", "''")
+        at_time_escaped = at_time.replace("'", "\\'")
         sql += f" AND valid_from <= '{at_time_escaped}'"
 
-    sql += " LIMIT 20;"
-    result = _query_surreal(sql)
+    sql += f" LIMIT {limit};"
+    result = await _query_surreal(sql)
     facts = _extract_result(result)
 
     entities = []
@@ -459,92 +756,100 @@ async def kg_query_endpoint(subject: Optional[str] = Query(None, description="Su
 
 
 @mcp.tool()
-def event_log_search(query: str, since: Optional[str] = None, until: Optional[str] = None, limit: int = 10) -> dict:
+async def event_log_search(query: str, since: Optional[str] = None, until: Optional[str] = None, limit: int = 10) -> dict:
     """Direct timeline query without router: search raw event log."""
-    query_escaped = query.replace("'", "''")
-    sql = f"SELECT * FROM event WHERE content @@ '{query_escaped}'"
+    query_escaped = query.replace("'", "\\'")
+    # Hybrid search: Try full-text index (@@), fallback to CONTAINS
+    sql = f"SELECT * FROM event WHERE (content @@ '{query_escaped}' OR content CONTAINS '{query_escaped}') AND (forgotten IS NULL OR forgotten = false)"
 
     if since:
-        since_escaped = since.replace("'", "''")
+        since_escaped = since.replace("'", "\\'")
         sql += f" AND timestamp >= '{since_escaped}'"
     if until:
-        until_escaped = until.replace("'", "''")
+        until_escaped = until.replace("'", "\\'")
         sql += f" AND timestamp <= '{until_escaped}'"
 
     sql += f" ORDER BY timestamp DESC LIMIT {limit};"
-    result = _query_surreal(sql)
-    events = _extract_result(result)
-    return {"events": events, "count": len(events)}
+    result = await _query_surreal(sql)
+    events = _extract_result(result, 1)
+    
+    # Remove embeddings from output
+    clean_events = _clean_output(events)
+            
+    return {"events": clean_events, "count": len(clean_events)}
 
 
 @mcp.tool()
-def kg_query(subject: Optional[str] = None, predicate: Optional[str] = None, at_time: Optional[str] = None) -> dict:
-    """Direct graph traversal: query facts by subject/predicate/time."""
-    sql = "SELECT * FROM fact WHERE valid_until = NONE"
+async def kg_query(subject: Optional[str] = None, predicate: Optional[str] = None, at_time: Optional[str] = None, limit: int = 20) -> dict:
+    """Direct graph traversal: query facts by subject/predicate/time. 
+    Returns associated entities with their inferred types (e.g., 'organization', 'concept')."""
+    # Use a simpler query first to ensure compatibility
+    sql = "SELECT * FROM fact WHERE (valid_until = NONE OR valid_until = NULL)"
+    
+    # Optional forgotten filter
+    sql += " AND (forgotten = NONE OR forgotten = false)"
 
     if subject:
-        subject_escaped = subject.replace("'", "''")
-        sql += f" AND in.name CONTAINS '{subject_escaped}'"
+        subject_escaped = subject.replace("'", "\\'")
+        # Robust check for subject name via the 'in' edge
+        sql += f" AND (in.name CONTAINS '{subject_escaped}' OR in = '{subject_escaped}')"
     if predicate:
-        predicate_escaped = predicate.replace("'", "''")
+        predicate_escaped = predicate.replace("'", "\\'")
         sql += f" AND predicate = '{predicate_escaped}'"
     if at_time:
-        at_time_escaped = at_time.replace("'", "''")
+        at_time_escaped = at_time.replace("'", "\\'")
         sql += f" AND valid_from <= '{at_time_escaped}'"
 
-    sql += " LIMIT 20;"
-    result = _query_surreal(sql)
-    facts = _extract_result(result)
+    sql += f" LIMIT {limit} FETCH in, out;"
+    result = await _query_surreal(sql)
+    facts = _extract_result(result, 1)
 
     entities = []
     seen_ids = set()
     for fact in facts:
         for key in ("in", "out"):
-            eid = fact.get(key)
-            if isinstance(eid, dict) and eid.get("id") not in seen_ids:
-                entities.append(eid)
-                seen_ids.add(eid.get("id"))
+            val = fact.get(key)
+            if isinstance(val, dict) and val.get("id") and val.get("id") not in seen_ids:
+                entities.append(_clean_output(val))
+                seen_ids.add(val.get("id"))
+            elif isinstance(val, str) and val not in seen_ids:
+                entities.append({"id": val})
+                seen_ids.add(val)
 
     return {"facts": facts, "entities": entities, "count": len(facts)}
 
 
 @mcp.tool()
-def semantic_search(query: str, top_k: int = 5) -> dict:
+async def semantic_search(query: str, top_k: int = 5) -> dict:
     """Pure vector search without KG."""
-    import numpy as np
-
     embedding_service = get_embedding_service()
-    query_vector = np.array(embedding_service.embed_for_query(query), dtype=np.float32)
+    query_vector = await asyncio.to_thread(embedding_service.embed_for_query, query)
+    
+    # Format query_vector as a string for SurrealQL
+    query_vector_str = "[" + ", ".join(map(str, query_vector)) + "]"
 
-    sql = "SELECT id, content, embedding FROM event WHERE embedding IS NOT NONE;"
-    result = _query_surreal(sql)
+    # Use SurrealDB's native vector::similarity::cosine function
+    # We add a dimension check to avoid errors if some events have different embedding sizes
+    sql = f"""
+    SELECT id, content, vector::similarity::cosine(embedding, {query_vector_str}) AS score
+    FROM event
+    WHERE embedding IS NOT NONE 
+      AND (forgotten IS NULL OR forgotten = false)
+      AND array::len(embedding) = {len(query_vector)}
+    ORDER BY score DESC
+    LIMIT {top_k};
+    """
+    result = await _query_surreal(sql)
     events = _extract_result(result, 1)
 
-    if not events:
-        return {"events": [], "count": 0}
+    # Clean the output (remove embedding field if present)
+    clean_events = [_clean_output(event) for event in events]
 
-    scored = []
-    for event in events:
-        emb = event.get("embedding")
-        if emb is None:
-            continue
-        emb_np = np.array(emb, dtype=np.float32)
-        norm_q = np.linalg.norm(query_vector)
-        norm_e = np.linalg.norm(emb_np)
-        if norm_q == 0 or norm_e == 0:
-            similarity = 0.0
-        else:
-            similarity = float(np.dot(query_vector, emb_np) / (norm_q * norm_e))
-        scored.append((similarity, event))
-
-    scored.sort(key=lambda x: x[0], reverse=True)
-    top_events = [e for _, e in scored[:top_k]]
-
-    return {"events": top_events, "count": len(top_events)}
+    return {"events": clean_events, "count": len(clean_events)}
 
 
 # =============================================================================
-# Schicht 3 — Introspection Tools
+# Schicht 3 - Introspection Tools
 # =============================================================================
 
 @app.post("/memory/semantic_search")
@@ -553,78 +858,96 @@ async def semantic_search_endpoint(request_data: dict):
     query = request_data.get("query", "")
     top_k = request_data.get("top_k", 5)
     
-    import numpy as np
-
     embedding_service = get_embedding_service()
-    query_vector = np.array(embedding_service.embed_for_query(query), dtype=np.float32)
+    query_vector = await asyncio.to_thread(embedding_service.embed_for_query, query)
+    
+    # Format query_vector as a string for SurrealQL
+    query_vector_str = "[" + ", ".join(map(str, query_vector)) + "]"
 
-    sql = "SELECT id, content, embedding FROM event WHERE embedding IS NOT NONE;"
-    result = _query_surreal(sql)
+    # Use SurrealDB's native vector::similarity::cosine function
+    # We add a dimension check to avoid errors if some events have different embedding sizes
+    sql = f"""
+    SELECT id, content, vector::similarity::cosine(embedding, {query_vector_str}) AS score
+    FROM event
+    WHERE embedding IS NOT NONE 
+      AND (forgotten IS NULL OR forgotten = false)
+      AND array::len(embedding) = {len(query_vector)}
+    ORDER BY score DESC
+    LIMIT {top_k};
+    """
+    result = await _query_surreal(sql)
     events = _extract_result(result, 1)
 
-    if not events:
-        return {"events": [], "count": 0}
+    # Clean the output (remove embedding field if present)
+    clean_events = [_clean_output(event) for event in events]
 
-    scored = []
-    for event in events:
-        emb = event.get("embedding")
-        if emb is None:
-            continue
-        emb_np = np.array(emb, dtype=np.float32)
-        norm_q = np.linalg.norm(query_vector)
-        norm_e = np.linalg.norm(emb_np)
-        if norm_q == 0 or norm_e == 0:
-            similarity = 0.0
-        else:
-            similarity = float(np.dot(query_vector, emb_np) / (norm_q * norm_e))
-        scored.append((similarity, event))
-
-    scored.sort(key=lambda x: x[0], reverse=True)
-    top_events = [e for _, e in scored[:top_k]]
-
-    return {"events": top_events, "count": len(top_events)}
+    return {"events": clean_events, "count": len(clean_events)}
 
 
 @mcp.tool()
-def memory_stats() -> dict:
+async def memory_stats() -> dict:
     """Returns statistics about the memory system."""
-    event_count_sql = "SELECT count() AS event_count FROM event;"
-    entity_count_sql = "SELECT count() AS entity_count FROM entity;"
-    fact_count_sql = "SELECT count() AS fact_count FROM fact WHERE valid_until = NONE;"
-
-    event_count = _extract_result(_query_surreal(event_count_sql), 1)
-    entity_count = _extract_result(_query_surreal(entity_count_sql), 1)
-    fact_count = _extract_result(_query_surreal(fact_count_sql), 1)
-
+    # Multi-statement query to get all counts and times
+    sql = """
+    SELECT count() AS count FROM event GROUP ALL;
+    SELECT count() AS count FROM entity GROUP ALL;
+    SELECT count() AS count FROM fact WHERE (valid_until = NONE OR valid_until = NULL) GROUP ALL;
+    SELECT timestamp FROM event ORDER BY timestamp ASC LIMIT 1;
+    SELECT timestamp FROM event ORDER BY timestamp DESC LIMIT 1;
+    SELECT count() AS count FROM gate_log GROUP ALL;
+    SELECT count() AS count FROM gate_log WHERE decision = 'extract' GROUP ALL;
+    """
+    
+    result_raw = await _query_surreal(sql)
+    
     stats = {
-        "event_count": event_count[0]["event_count"] if event_count else 0,
-        "entity_count": entity_count[0]["entity_count"] if entity_count else 0,
-        "fact_count": fact_count[0]["fact_count"] if fact_count else 0,
+        "event_count": 0,
+        "entity_count": 0,
+        "fact_count": 0,
+        "oldest_event": None,
+        "newest_event": None,
+        "gate_pass_rate": 0.0
     }
-
-    oldest_sql = "SELECT timestamp FROM event ORDER BY timestamp ASC LIMIT 1;"
-    newest_sql = "SELECT timestamp FROM event ORDER BY timestamp DESC LIMIT 1;"
-    oldest_result = _extract_result(_query_surreal(oldest_sql), 1)
-    newest_result = _extract_result(_query_surreal(newest_sql), 1)
-    if oldest_result:
-        stats["oldest_event"] = oldest_result[0].get("timestamp")
-    if newest_result:
-        stats["newest_event"] = newest_result[0].get("timestamp")
-
-    total_sql = "SELECT count() AS total FROM gate_log;"
-    extracted_sql = "SELECT count() AS extracted FROM gate_log WHERE decision = 'extract';"
-    total_result = _extract_result(_query_surreal(total_sql), 1)
-    extracted_result = _extract_result(_query_surreal(extracted_sql), 1)
-    if total_result:
-        total = total_result[0].get("total", 0)
-        extracted = extracted_result[0].get("extracted", 0) if extracted_result else 0
-        stats["gate_pass_rate"] = round(extracted / total, 3) if total > 0 else 0.0
+    
+    if not isinstance(result_raw, list):
+        return stats
+        
+    # Extract all results that have status "OK" and aren't the initial USE statement
+    data_results = []
+    for item in result_raw:
+        if isinstance(item, dict) and item.get("status") == "OK" and "result" in item:
+            res = item["result"]
+            # Skip the DB/NS info message result
+            if isinstance(res, dict) and "database" in res:
+                continue
+            data_results.append(res)
+            
+    # Map results in order: event, entity, fact, oldest, newest, gate_total, gate_extracted
+    if len(data_results) >= 1 and data_results[0] and isinstance(data_results[0], list):
+        stats["event_count"] = data_results[0][0].get("count", 0)
+    if len(data_results) >= 2 and data_results[1] and isinstance(data_results[1], list):
+        stats["entity_count"] = data_results[1][0].get("count", 0)
+    if len(data_results) >= 3 and data_results[2] and isinstance(data_results[2], list):
+        stats["fact_count"] = data_results[2][0].get("count", 0)
+    if len(data_results) >= 4 and data_results[3] and isinstance(data_results[3], list):
+        stats["oldest_event"] = data_results[3][0].get("timestamp")
+    if len(data_results) >= 5 and data_results[4] and isinstance(data_results[4], list):
+        stats["newest_event"] = data_results[4][0].get("timestamp")
+        
+    gate_total = 0
+    gate_extracted = 0
+    if len(data_results) >= 6 and data_results[5] and isinstance(data_results[5], list):
+        gate_total = data_results[5][0].get("count", 0)
+    if len(data_results) >= 7 and data_results[6] and isinstance(data_results[6], list):
+        gate_extracted = data_results[6][0].get("count", 0)
+        
+    stats["gate_pass_rate"] = round(gate_extracted / gate_total, 3) if gate_total > 0 else 0.0
 
     return stats
 
 
 @mcp.tool()
-def explain_routing(query: str) -> dict:
+async def explain_routing(query: str) -> dict:
     """Explains why the router chose a specific strategy for a query."""
     classifier = QueryClassifier()
     q_type, confidence = classifier.classify(query)
@@ -652,7 +975,7 @@ def explain_routing(query: str) -> dict:
 
 
 # =============================================================================
-# Schicht 4 — Maintenance Tools
+# Schicht 4 - Maintenance Tools
 # =============================================================================
 
 @app.post("/memory/stats")
@@ -662,9 +985,9 @@ async def memory_stats_endpoint():
     entity_count_sql = "SELECT count() AS entity_count FROM entity;"
     fact_count_sql = "SELECT count() AS fact_count FROM fact WHERE valid_until = NONE;"
 
-    event_count = _extract_result(_query_surreal(event_count_sql), 1)
-    entity_count = _extract_result(_query_surreal(entity_count_sql), 1)
-    fact_count = _extract_result(_query_surreal(fact_count_sql), 1)
+    event_count = _extract_result(await _query_surreal(event_count_sql), 1)
+    entity_count = _extract_result(await _query_surreal(entity_count_sql), 1)
+    fact_count = _extract_result(await _query_surreal(fact_count_sql), 1)
 
     stats = {
         "event_count": event_count[0]["event_count"] if event_count else 0,
@@ -674,8 +997,8 @@ async def memory_stats_endpoint():
 
     oldest_sql = "SELECT timestamp FROM event ORDER BY timestamp ASC LIMIT 1;"
     newest_sql = "SELECT timestamp FROM event ORDER BY timestamp DESC LIMIT 1;"
-    oldest_result = _extract_result(_query_surreal(oldest_sql), 1)
-    newest_result = _extract_result(_query_surreal(newest_sql), 1)
+    oldest_result = _extract_result(await _query_surreal(oldest_sql), 1)
+    newest_result = _extract_result(await _query_surreal(newest_sql), 1)
     if oldest_result:
         stats["oldest_event"] = oldest_result[0].get("timestamp")
     if newest_result:
@@ -683,8 +1006,8 @@ async def memory_stats_endpoint():
 
     total_sql = "SELECT count() AS total FROM gate_log;"
     extracted_sql = "SELECT count() AS extracted FROM gate_log WHERE decision = 'extract';"
-    total_result = _extract_result(_query_surreal(total_sql), 1)
-    extracted_result = _extract_result(_query_surreal(extracted_sql), 1)
+    total_result = _extract_result(await _query_surreal(total_sql), 1)
+    extracted_result = _extract_result(await _query_surreal(extracted_sql), 1)
     if total_result:
         total = total_result[0].get("total", 0)
         extracted = extracted_result[0].get("extracted", 0) if extracted_result else 0
@@ -722,69 +1045,68 @@ async def explain_routing_endpoint(request_data: dict):
     }
 
 
-@app.post("/memory/forget")
-async def memory_forget_endpoint(request_data: dict):
-    """Marks an event or entity as forgotten (soft delete). Raw log stays immutable."""
-    event_id = request_data.get("event_id")
-    entity = request_data.get("entity")
-    reason = request_data.get("reason", "")
-    
-    """Marks an event or entity as forgotten (soft delete). Raw log stays immutable."""
+@mcp.tool()
+async def memory_forget(event_id: Optional[str] = None, entity: Optional[str] = None, reason: str = "") -> dict:
+    """Forgets a memory by event_id or entity."""
     if event_id:
-        reason_escaped = reason.replace("'", "''")
-        sql = f"UPDATE {event_id} SET forgotten = true, forgotten_at = time::now(), forgotten_reason = '{reason_escaped}';"
-        _query_surreal(sql)
+        sql = f"UPDATE {event_id} SET forgotten = true;"
+        if reason:
+            reason_escaped = reason.replace("'", "\\'")
+            sql = f"UPDATE {event_id} SET forgotten = true, forget_reason = '{reason_escaped}';"
+        result = await _query_surreal(sql)
+        forgotten = _extract_result(result)
         return {"forgotten_id": event_id, "type": "event", "reason": reason}
-
+    
     if entity:
-        entity_escaped = entity.replace("'", "''")
+        entity_escaped = entity.replace("'", "\\'")
+        # Find entity ID by name
         find_sql = f"SELECT id FROM entity WHERE name CONTAINS '{entity_escaped}' LIMIT 1;"
-        find_result = _query_surreal(find_sql)
+        find_result = await _query_surreal(find_sql)
         entities = _extract_result(find_result)
-        if entities:
-            entity_id = entities[0]["id"]
-            reason_escaped = reason.replace("'", "''")
-            sql = f"UPDATE {entity_id} SET forgotten = true, forgotten_at = time::now(), forgotten_reason = '{reason_escaped}';"
-            _query_surreal(sql)
-            return {"forgotten_id": entity_id, "type": "entity", "reason": reason}
+        
+        if not entities:
+            return {"status": "error", "message": f"Entity '{entity}' not found"}
+            
+        entity_id = entities[0]["id"]
+        sql = f"UPDATE {entity_id} SET forgotten = true;"
+        if reason:
+            reason_escaped = reason.replace("'", "\\'")
+            sql = f"UPDATE {entity_id} SET forgotten = true, forget_reason = '{reason_escaped}';"
+        await _query_surreal(sql)
+        return {"forgotten_id": entity_id, "type": "entity", "reason": reason}
 
     return {"error": "No valid event_id or entity provided", "reason": reason}
 
 
-@app.post("/memory/consolidate")
-async def memory_consolidate_endpoint(request_data: dict):
-    """Triggers conservative maintenance: local patches or entity-scoped consolidation."""
-    scope = request_data.get("scope", "local")
-    entity = request_data.get("entity")
-    
-    """Triggers conservative maintenance: local patches or entity-scoped consolidation."""
+@mcp.tool()
+async def memory_consolidate(scope: str = "local", entity: Optional[str] = None) -> dict:
+    """Consolidates memory entries."""
     maintainer = ConservativeMaintainer(debounce_seconds=0)
 
     if scope == "entity" and entity:
         entity_escaped = entity.replace("'", "''")
         find_sql = f"SELECT id FROM entity WHERE name CONTAINS '{entity_escaped}' LIMIT 1;"
-        find_result = _query_surreal(find_sql)
-        entities = _extract_result(find_result, 1)
-        if entities:
-            entity_id = entities[0]["id"]
+        find_result_data = await _query_surreal(find_sql)
+        find_result = _extract_result(find_result_data, 1)
+        if find_result:
+            entity_id = find_result[0]["id"]
             maintainer.queue_patch_update(entity_id, {"last_consolidated": datetime.now(timezone.utc).isoformat()})
-            maintainer.flush_pending()
+            await maintainer.flush_pending()
             return {"scope": scope, "entity": entity, "entity_id": entity_id, "status": "consolidated"}
 
     if scope == "local":
-        stale = maintainer.get_stale_facts(max_age_seconds=86400)
+        stale = await maintainer.get_stale_facts(max_age_seconds=86400)
         return {"scope": scope, "stale_facts_found": len(stale), "status": "reviewed"}
 
     return {"error": "Invalid scope. Use 'local' or 'entity' with entity name.", "scope": scope}
 
 
 if __name__ == "__main__":
-    # Run both MCP and FastAPI servers
-    import threading
+    # Ensure schema is loaded before starting servers
+    asyncio.run(ensure_schema_loaded())
     
-    # Run MCP server
-    mcp_thread = threading.Thread(target=mcp.run)
-    mcp_thread.start()
+    # Pre-load embedding service to avoid hang on first tool call
+    get_embedding_service()
     
-    # Run FastAPI server
-    uvicorn.run(app, host="127.0.0.1", port=8082)
+    # Run FastMCP stdio server (for MCP clients)
+    mcp.run()

@@ -8,7 +8,7 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 import requests
-from src.maintenance.conservative_maintainer import SURREAL_URL, SURREAL_AUTH, SURREAL_NS, SUREAL_DB
+from src.maintenance.conservative_maintainer import SURREAL_URL, SURREAL_AUTH, SURREAL_NS, SURREAL_DB
 from src.extraction.entropy_gate import EntropyGate
 
 
@@ -116,8 +116,8 @@ class TestSurrealIntegration(unittest.TestCase):
         # Create a fact as a normal table (fact is TYPE NORMAL in this DB, not RELATION)
         fact_sql = f"""
         CREATE fact SET
-            subject = '{subj_id}',
-            object = '{obj_id}',
+            `in` = '{subj_id}',
+            out = '{obj_id}',
             predicate = 'test_predicate',
             valid_until = NONE;
         """

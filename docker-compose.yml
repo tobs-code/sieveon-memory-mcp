@@ -6,12 +6,14 @@ services:
     container_name: strata-surrealdb
     ports:
       - "8000:8000"
-    command: start --user ${SURREALDB_USER:-root} --pass ${SURREALDB_PASS:-root} --log info
+    user: root
+    environment:
+      SURREAL_PATH: mem:///data/surrealdb?versioned=true&aol=sync&snapshot=60s&sync=5s
+    command: start --log info --user ${SURREALDB_USER:-root} --pass ${SURREALDB_PASS:-root}
     restart: unless-stopped
     volumes:
       - surrealdb-data:/data
-      - ./schema.surql:/schema.surql:ro
-      - ./helper_functions.surql:/helper_functions.surql:ro
+      - ./docs/schema.surql:/schema.surql:ro
 
 volumes:
   surrealdb-data:

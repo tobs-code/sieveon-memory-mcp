@@ -85,7 +85,9 @@ def get_embedding_service() -> BaseEmbeddingService:
         # Try to load model name from environment variables
         env_model_name = os.getenv("EMBEDDING_MODEL_NAME")
         model_name_to_use = env_model_name if env_model_name else "nomic-ai/nomic-embed-text-v1.5"  # Default model name
+        print(f"[INFO] Initializing Embedding Service with model: {model_name_to_use}...")
         _embedding_service = SentenceTransformerEmbeddingService(model_name_to_use)
+        print("[OK] Embedding Service initialized")
     return _embedding_service
 
 # Kleiner Test

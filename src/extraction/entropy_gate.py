@@ -28,7 +28,7 @@ class EntropyGateConfig:
         self,
         alpha: float = 0.35,       # Gewicht Text-Entropy
         beta: float = 0.65,        # Gewicht Embedding-Novelty
-        threshold: float = 0.55,
+        threshold: float = 0.55,   # Initialer Default; TODO per gate_log kalibrieren
         min_length: int = 10,      # Unter X Zeichen immer skippen
         max_length: int = 1000     # Über X Zeichen immer skippen
     ):
@@ -39,62 +39,16 @@ class EntropyGateConfig:
         self.max_length = max_length
 
 
-class VectorDB:
-    """Simple in-memory vector database for calculating embedding novelty"""
-    def __init__(self):
-        self.vectors = []
-        self.metadata = []
-    
-    def add_vector(self, vector: List[float], metadata: Dict = None):
-        """Add a vector and its metadata to the database"""
-        self.vectors.append(np.array(vector, dtype=np.float32))
-        self.metadata.append(metadata or {})
-    
-    def add(self, vector: List[float], metadata: Dict = None):
-        """Alias for add_vector to match expected interface"""
-        self.add_vector(vector, metadata)
-    
-    def search(self, query_vector: List[float], top_k: int = 5) -> List[Dict]:
-        """Search for top_k most similar vectors using cosine similarity"""
-        if not self.vectors:
-            return []
-        
-        query_np = np.array(query_vector, dtype=np.float32)
-        similarities = []
-        
-        for i, vec in enumerate(self.vectors):
-            # Calculate cosine similarity
-            dot_product = np.dot(query_np, vec)
-            norm_product = np.linalg.norm(query_np) * np.linalg.norm(vec)
-            if norm_product == 0:
-                similarity = 0.0
-            else:
-                similarity = dot_product / norm_product
-            similarities.append((similarity, i))
-        
-        # Sort by similarity (descending)
-        similarities.sort(reverse=True)
-        
-        results = []
-        for sim, idx in similarities[:top_k]:
-            results.append({
-                "metadata": self.metadata[idx],
-                "similarity": float(sim)
-            })
-        return results
-
-
 class EntropyGate:
     def __init__(self, embedding_service: Optional[BaseEmbeddingService] = None, config: Optional[EntropyGateConfig] = None):
         self.config = config or EntropyGateConfig()
-        self.min_length = self.config.min_length  # Fixed: use self.config instead of config
-        self.max_length = self.config.max_length  # Fixed: use self.config instead of config
+        self.min_length = self.config.min_length  
+        self.max_length = self.config.max_length  
         self.surreal_url = os.getenv("SURREALDB_URL", "http://127.0.0.1:8000/sql")
         self.auth = (os.getenv("SURREALDB_USER", "root"), os.getenv("SURREALDB_PASS", "root"))
-        self.surreal_ns = os.getenv("SURREALDB_NS", "strata")  # Updated from agent_memory to strata
-        self.surreal_db = os.getenv("SURREALDB_DB", "strata")  # Updated from agent_memory to strata
+        self.surreal_ns = os.getenv("SURREALDB_NS", "strata")  
+        self.surreal_db = os.getenv("SURREALDB_DB", "strata")  
         self.embedding_service = embedding_service or get_embedding_service()
-        self.vector_db = VectorDB()  # Initialize the vector database
 
     def _query_surreal(self, sql: str) -> List[Dict]:
         headers = {
@@ -142,27 +96,45 @@ class EntropyGate:
 
     def calculate_novelty(self, text: str) -> float:
         """
-        Novelty basierend auf Embedding-Ähnlichkeit mit bisherigen Inhalten
-        Gibt Wert zwischen 0 (keine novelty) und 1 (maximale novelty)
+        Novelty basierend auf Embedding-Ähnlichkeit mit bisherigen Inhalten in SurrealDB.
+        Gibt Wert zwischen 0 (keine novelty) und 1 (maximale novelty).
+        Nutzt SurrealDB's native Vektor-Funktionen.
         """
         if not text.strip():
             return 0.0
             
         # Generate embedding for the text
         embedding = self.embedding_service.embed_for_storage(text)
+        emb_str = "[" + ", ".join(map(str, embedding)) + "]"
         
-        # Search for similar vectors in our DB
-        results = self.vector_db.search(embedding, top_k=5)
+        # Search for top-k similar vectors in SurrealDB
+        # We use cosine similarity and calculate 1.0 - avg_similarity for novelty
+        sql = f"""
+        SELECT vector::similarity::cosine(embedding, {emb_str}) AS similarity
+        FROM event
+        WHERE embedding IS NOT NONE 
+          AND array::len(embedding) = {len(embedding)}
+          AND (forgotten IS NULL OR forgotten = false)
+        ORDER BY similarity DESC
+        LIMIT 5;
+        """
         
-        if not results:
+        results = self._query_surreal(sql)
+        
+        # Extract the results (the _query_surreal here returns [ {status: OK, result: [...]}, ... ])
+        actual_results = []
+        if results and len(results) > 1: # Index 0 is USE, Index 1 is the query
+            actual_results = results[1].get("result", [])
+        
+        if not actual_results:
             # No similar content found - maximum novelty
             return 1.0
         
         # Calculate average similarity (lower = more novel)
-        avg_similarity = sum(r["similarity"] for r in results) / len(results)
+        avg_similarity = sum(float(r["similarity"]) for r in actual_results) / len(actual_results)
         
         # Return inverse (novelty = 1 - similarity)
-        return 1.0 - avg_similarity
+        return 1.0 - max(0.0, min(1.0, avg_similarity))
 
     def should_extract(self, text: str) -> Dict[str, any]:
         """
@@ -196,11 +168,6 @@ class EntropyGate:
         # Make decision
         decision = "extract" if composite_score >= self.config.threshold else "ignore"
         
-        # Add the current text's embedding to the vector DB for future novelty calculations
-        if decision == "extract":
-            embedding = self.embedding_service.embed_for_storage(text)
-            self.vector_db.add(embedding, {"text": text, "timestamp": time.time()})
-        
         # Log decision to database
         self._log_decision(text, normalized_entropy, novelty, composite_score, decision)
         
@@ -219,7 +186,7 @@ class EntropyGate:
     def _log_decision(self, text: str, entropy: float, novelty: float, composite_score: float, decision: str):
         """Log the entropy gate decision to database"""
         try:
-            text_escaped = text.replace("'", "''")
+            text_escaped = text.replace("'", "\\'")
             sql = f"""
             USE NS {self.surreal_ns} DB {self.surreal_db};
             CREATE gate_log SET 
@@ -245,7 +212,7 @@ class EntropyGate:
         
         # 1. IMMER in Raw Event Log speichern (ohne Gate!)
         embedding = self.embedding_service.embed_for_storage(text)
-        text_escaped = text.replace("'", "''")
+        text_escaped = text.replace("'", "\\'")
         sql = f"""
         USE NS {self.surreal_ns} DB {self.surreal_db};
         CREATE event SET 

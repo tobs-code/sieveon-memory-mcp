@@ -19,9 +19,12 @@ class QueryClassifier:
         ]
         self.factual_patterns = [
             # Deutsch
-            r"\bwer\b", r"\bwas\b", r"\bwelche\b", r"\bwo\b", r"\bhat\b", r"\bhaben\b",
+            r"\bwer\b", r"\bwas\b", r"\bwelche\b", r"\bwo\b", r"\bhat\b", r"\bhaben\b", r"\bist\b",
+            r"\bworan\b", r"\bwomit\b", r"\bwodurch\b", r"\bwerdegang\b", r"\bfakten\b", r"\binfos\b",
+            r"\bnenne\b", r"\bliste\b", r"\bzeig\b", r"\bfinde\b",
             # Englisch
-            r"\bwho\b", r"\bwhat\b", r"\bwhich\b", r"\bwhere\b", r"\bhas\b", r"\bhave\b"
+            r"\bwho\b", r"\bwhat\b", r"\bwhich\b", r"\bwhere\b", r"\bhas\b", r"\bhave\b", r"\bis\b",
+            r"\blist\b", r"\bshow\b", r"\bfind\b", r"\btell\b"
         ]
         self.multi_hop_patterns = [
             # Deutsch

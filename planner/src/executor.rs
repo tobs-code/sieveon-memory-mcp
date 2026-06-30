@@ -130,10 +130,14 @@ impl Executor {
 
     async fn select_from_event_log(&self, query: &str) -> serde_json::Value {
         let escaped_query = query.replace("'", "''");
-        let surql = format!(
-            "SELECT * FROM event WHERE content @@ '{}' ORDER BY timestamp DESC LIMIT 10",
-            escaped_query
-        );
+        let surql = if escaped_query.trim().is_empty() {
+            "SELECT * FROM event WHERE (forgotten IS NULL OR forgotten = false) ORDER BY timestamp DESC LIMIT 10".to_string()
+        } else {
+            format!(
+                "SELECT * FROM event WHERE (content @@ '{}' OR content CONTAINS '{}') AND (forgotten IS NULL OR forgotten = false) ORDER BY timestamp DESC LIMIT 10",
+                escaped_query, escaped_query
+            )
+        };
 
         match self.db.query(&surql).await {
             Ok(response) => {
@@ -160,10 +164,14 @@ impl Executor {
 
     async fn select_from_knowledge_graph(&self, query: &str) -> serde_json::Value {
         let escaped_query = query.replace("'", "''");
-        let surql = format!(
-            "SELECT * FROM entity WHERE name @@ '{}' LIMIT 10",
-            escaped_query
-        );
+        let surql = if escaped_query.trim().is_empty() {
+            "SELECT * FROM entity WHERE (forgotten IS NULL OR forgotten = false) LIMIT 10".to_string()
+        } else {
+            format!(
+                "SELECT * FROM entity WHERE (name @@ '{0}' OR name CONTAINS '{0}' OR '{0}' CONTAINS name) AND (forgotten IS NULL OR forgotten = false) LIMIT 10",
+                escaped_query
+            )
+        };
 
         match self.db.query(&surql).await {
             Ok(response) => {
@@ -281,10 +289,14 @@ impl Executor {
     async fn check_validity(&self, query: &str) -> serde_json::Value {
         let escaped_query = query.replace("'", "''");
         // Check for validity of facts (valid_until field or similar)
-        let surql = format!(
-            "SELECT * FROM entity WHERE name @@ '{}' AND (valid_until IS NULL OR valid_until > time::now()) LIMIT 10",
-            escaped_query
-        );
+        let surql = if escaped_query.trim().is_empty() {
+             "SELECT * FROM entity WHERE (valid_until IS NULL OR valid_until > time::now()) AND (forgotten IS NULL OR forgotten = false) LIMIT 10".to_string()
+        } else {
+             format!(
+                "SELECT * FROM entity WHERE (name @@ '{0}' OR name CONTAINS '{0}') AND (valid_until IS NULL OR valid_until > time::now()) AND (forgotten IS NULL OR forgotten = false) LIMIT 10",
+                escaped_query
+            )
+        };
 
         match self.db.query(&surql).await {
             Ok(response) => {
@@ -331,10 +343,14 @@ impl Executor {
     async fn execute_bm25_search(&self, query: &str) -> serde_json::Value {
         let escaped_query = query.replace("'", "''");
         // Use SurrealDB's full-text search with scoring
-        let surql = format!(
-            "SELECT *, search::score(1.0) AS relevance_score FROM event WHERE content @@ '{}' ORDER BY relevance_score DESC LIMIT 10",
-            escaped_query
-        );
+        let surql = if escaped_query.trim().is_empty() {
+             "SELECT *, search::score(1.0) AS relevance_score FROM event WHERE (forgotten IS NULL OR forgotten = false) ORDER BY timestamp DESC LIMIT 10".to_string()
+        } else {
+             format!(
+                "SELECT *, search::score(1.0) AS relevance_score FROM event WHERE content @@ '{}' AND (forgotten IS NULL OR forgotten = false) ORDER BY relevance_score DESC LIMIT 10",
+                escaped_query
+            )
+        };
 
         match self.db.query(&surql).await {
             Ok(response) => {
@@ -360,12 +376,15 @@ impl Executor {
 
     async fn execute_vector_search(&self, query: &str) -> serde_json::Value {
         let escaped_query = query.replace("'", "''");
-        // In a real implementation, this would use SurrealDB's vector search functions
-        // For now, we'll use the basic full-text search as a placeholder
-        let surql = format!(
-            "SELECT * FROM event WHERE content @@ '{}' ORDER BY timestamp DESC LIMIT 10",
-            escaped_query
-        );
+        // Use basic full-text search as fallback since native vector search requires embeddings from Python
+        let surql = if escaped_query.trim().is_empty() {
+             "SELECT * FROM event WHERE (forgotten IS NULL OR forgotten = false) ORDER BY timestamp DESC LIMIT 10".to_string()
+        } else {
+             format!(
+                "SELECT * FROM event WHERE (content @@ '{0}' OR content CONTAINS '{0}') AND (forgotten IS NULL OR forgotten = false) ORDER BY timestamp DESC LIMIT 10",
+                escaped_query
+            )
+        };
 
         match self.db.query(&surql).await {
             Ok(response) => {
@@ -392,10 +411,14 @@ impl Executor {
     async fn execute_temporal_search(&self, query: &str) -> serde_json::Value {
         let escaped_query = query.replace("'", "''");
         // Search with temporal relevance
-        let surql = format!(
-            "SELECT *, time::now() - timestamp AS time_diff FROM event WHERE content @@ '{}' ORDER BY timestamp DESC LIMIT 10",
-            escaped_query
-        );
+        let surql = if escaped_query.trim().is_empty() {
+             "SELECT *, time::now() - timestamp AS time_diff FROM event WHERE (forgotten IS NULL OR forgotten = false) ORDER BY timestamp DESC LIMIT 10".to_string()
+        } else {
+             format!(
+                "SELECT *, time::now() - timestamp AS time_diff FROM event WHERE (content @@ '{0}' OR content CONTAINS '{0}') AND (forgotten IS NULL OR forgotten = false) ORDER BY timestamp DESC LIMIT 10",
+                escaped_query
+            )
+        };
 
         match self.db.query(&surql).await {
             Ok(response) => {
@@ -461,7 +484,7 @@ impl Executor {
         if let Some(vec_array) = vector_results.as_array() {
             for (i, result) in vec_array.iter().enumerate() {
                 let event_id = result.get("id").map(|id| id.to_string()).unwrap_or_else(|| format!("vec_{}", i));
-                let mut scores = combined_scores.entry(event_id.clone()).or_insert_with(|| {
+                let scores = combined_scores.entry(event_id.clone()).or_insert_with(|| {
                     std::collections::HashMap::new()
                 });
                 *scores.entry("vector_score").or_insert(0.0) = result.get("similarity_score").and_then(|v| v.as_f64()).unwrap_or(0.0);
@@ -475,7 +498,7 @@ impl Executor {
         if let Some(temp_array) = temporal_results.as_array() {
             for (i, result) in temp_array.iter().enumerate() {
                 let event_id = result.get("id").map(|id| id.to_string()).unwrap_or_else(|| format!("temp_{}", i));
-                let mut scores = combined_scores.entry(event_id.clone()).or_insert_with(|| {
+                let scores = combined_scores.entry(event_id.clone()).or_insert_with(|| {
                     std::collections::HashMap::new()
                 });
                 *scores.entry("temporal_score").or_insert(0.0) = result.get("temporal_score").and_then(|v| v.as_f64()).unwrap_or(0.0);
