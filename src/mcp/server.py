@@ -63,13 +63,28 @@ SURREAL_DB = os.getenv("SURREALDB_DB", "strata")  # Updated from agent_memory to
 async def check_schema_exists() -> bool:
     """Check if the STRATA schema is already loaded in SurrealDB."""
     try:
-        # Check if key tables exist
-        result = await _query_surreal("INFO FOR TABLES;")
-        tables = _extract_result(result)
-        table_names = [t.get("name") for t in tables if isinstance(t, dict)]
+        # Check if key tables exist - INFO FOR DB is more standard in SurrealDB 2.x+
+        result = await _query_surreal("INFO FOR DB;")
+        # Extract the result from the second item (index 1) since index 0 is the USE statement
+        db_info = _extract_result(result, 1)
+        
+        if not db_info or not isinstance(db_info, list) or len(db_info) == 0:
+            return False
+            
+        # INFO FOR DB returns a dictionary where keys are things like 'tables', 'functions', etc.
+        # But _extract_result might have already wrapped it in a list.
+        info_dict = db_info[0] if isinstance(db_info, list) else db_info
+        
+        if not isinstance(info_dict, dict) or "tables" not in info_dict:
+            return False
+            
+        table_names = list(info_dict["tables"].keys())
         
         required_tables = ["event", "entity", "fact"]
-        return all(table in table_names for table in required_tables)
+        exists = all(table in table_names for table in required_tables)
+        if exists:
+            print(f"[DEBUG] Tables found: {table_names}")
+        return exists
     except Exception as e:
         print(f"[WARN] Schema check failed: {e}")
         return False
@@ -139,14 +154,18 @@ async def ensure_schema_loaded():
         print(f"   Using existing load script: {load_script}")
         try:
             import subprocess
+            # Fix: Added encoding and errors to avoid UnicodeDecodeError on Windows
             result = subprocess.run(
                 ["python", load_script],
                 cwd=project_root,
                 capture_output=True,
                 text=True,
+                encoding="utf-8",
+                errors="replace",
                 timeout=60
             )
-            print(result.stdout)
+            if result.stdout:
+                print(result.stdout)
             if result.stderr:
                  print(f"   [WARN] Warnings: {result.stderr}")
             print("[OK] Schema loading complete!")
@@ -187,7 +206,7 @@ async def _background_reconnect_task():
             
             if should_probe:
                 # Lightweight probe: INFO FOR DB
-                headers = {"Accept": "application/json", "Content-Type": "application/json"}
+                headers = {"Accept": "application/json", "Content-Type": "text/plain"}
                 full_sql = f"USE NS {SURREAL_NS} DB {SURREAL_DB};\nINFO FOR DB;"
                 
                 async with httpx.AsyncClient() as client:
@@ -258,7 +277,7 @@ async def _query_surreal(sql: str) -> Any:
 
     headers = {
         "Accept": "application/json",
-        "Content-Type": "application/json",
+        "Content-Type": "text/plain",
     }
     full_sql = f"USE NS {SURREAL_NS} DB {SURREAL_DB};\n{sql}"
 

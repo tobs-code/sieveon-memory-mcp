@@ -5,7 +5,8 @@ def run_sql_batch(statements):
     url = "http://127.0.0.1:8000/sql"
     auth = ("root", "root")
     sql = "USE NS strata DB strata;\n" + ";\n".join(statements) + ";"
-    response = requests.post(url, data=sql, auth=auth, timeout=60)
+    headers = {"Accept": "application/json", "Content-Type": "text/plain"}
+    response = requests.post(url, data=sql, headers=headers, auth=auth, timeout=60)
     data = response.json()
     errors = []
     if isinstance(data, list):
