@@ -5,7 +5,7 @@
 ![SurrealDB](https://img.shields.io/badge/SurrealDB-3.1.5-8B5CF6)
 ![License](https://img.shields.io/badge/license-Apache%202.0-green)
 ![arXiv](https://img.shields.io/badge/arXiv-2606.24775-b31b1b)
-![Early-stage / Alpha](https://img.shields.io/badge/Early-stage / Alpha-brightgreen)
+![Early-stage / Alpha](https://img.shields.io/badge/Early-stage-Alpha-brightgreen)
 
 > A workload-adaptive agent memory system combining event logs, knowledge graphs, and vector embeddings. Evidence-based architecture derived from [Zhou et al. arXiv:2606.24775](https://arxiv.org/abs/2606.24775).
 
