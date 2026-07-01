@@ -73,8 +73,8 @@ class TestRoutingPolicy(unittest.TestCase):
     def test_factual_policy(self):
         """Test routing policy for factual queries"""
         strategy = self.policy.get_strategy("factual", 0.8)
-        self.assertEqual(strategy["strategy"], "knowledge_graph_first")
-        self.assertEqual(strategy["cost_budget"], "low")
+        self.assertEqual(strategy["strategy"], "hybrid_bm25_vector_temporal")
+        self.assertEqual(strategy["cost_budget"], "medium")
 
     def test_multi_hop_policy(self):
         """Test routing policy for multi-hop queries"""

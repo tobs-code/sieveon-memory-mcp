@@ -21,6 +21,7 @@ import sys
 import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 from src.extraction.embedding_service import get_embedding_service, BaseEmbeddingService
+from src.extraction.entity_utils import infer_entity_type, extract_noun_phrases, is_content_phrase
 
 
 def escape_surrealql(value: str) -> str:
@@ -223,47 +224,109 @@ class EntropyGate:
     def _extract_candidate_entities(self, text: str) -> List[str]:
         """
         Extrahiert Kandidaten-Entities aus dem Text.
-        Sucht nach großgeschriebenen Wörtern/Phrasen (einfache NER-Heuristik).
+        Nutzt Noun-Phrase-Extraktion (erkennt auch Kleinschreibung, nicht-englische Namen).
+        Fallback auf grossgeschriebene Wörter und CamelCase.
         """
-        import re
-        # Finde großgeschriebene Wörter (potentielle Eigennamen)
+        import re as _re
         candidates = set()
-        
-        # Pattern: Aufeinanderfolgende großgeschriebene Wörter (z.B. "SurrealDB", "Entropy Gate")
-        for match in re.finditer(r'\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\b', text):
-            candidate = match.group(1).strip()
-            if len(candidate) >= 3:  # Mindestens 3 Zeichen
-                candidates.add(candidate)
-        
-        # Pattern: CamelCase-Wörter (z.B. "EntropyGate", "FastMCP")
-        for match in re.finditer(r'\b([A-Z][a-z]+[A-Z][a-zA-Z]*)\b', text):
+
+        # 1. Noun-Phrase-Extraktion (erkennt auch deutsche Substantive)
+        noun_phrases = extract_noun_phrases(text)
+        for phrase in noun_phrases:
+            candidates.add(phrase)
+
+        # 2. Explizit nach deutschsprachigen Entities suchen
+        #    Deutsche Nomen werden großgeschrieben, aber nicht unbedingt
+        gmc_patterns = [
+            _re.compile(r'\b(?:Der|Die|Das|Ein|Eine)\s+([A-ZÄÖÜ][a-zäöüß]+(?:\s+[A-ZÄÖÜ][a-zäöüß]+)*)\b'),
+            _re.compile(r'\b[A-ZÄÖÜ][a-zäöüß]+(?:maschine|system|werk|zeug|stoff|kraft|daten|prozess|steuerung|anlage|gerät)\b'),
+            _re.compile(r'\b(?:[A-Z][a-z]+-)+[A-Z][a-z]+\b'),
+        ]
+        for pattern in gmc_patterns:
+            for match in pattern.finditer(text):
+                candidate = match.group(1) if match.lastindex else match.group(0)
+                candidate = candidate.strip()
+                if len(candidate) >= 3:
+                    candidates.add(candidate)
+
+        # 3. Mehrteilige Konzepte ohne Grossbuchstaben (z.B. "quantum computing", "social contract")
+        concept_patterns = [
+            _re.compile(r'\b[a-zäöüß]{3,}(?:\s+[a-zäöüß]{3,}){1,2}\b'),
+        ]
+        for pattern in concept_patterns:
+            for match in pattern.finditer(text):
+                candidate = match.group(0).strip()
+                words = candidate.split()
+                if len(words) >= 2 and len(candidate) >= 5:
+                    if is_content_phrase(words):
+                        candidates.add(candidate)
+
+        # 4. CamelCase-Wörter (z.B. "EntropyGate", "FastMCP")
+        for match in _re.finditer(r'\b([A-Z][a-z]+[A-Z][a-zA-Z]*)\b', text):
             candidate = match.group(1).strip()
             if len(candidate) >= 3:
                 candidates.add(candidate)
-        
-        # Pattern: Abkürzungen (z.B. "ATP", "CRISPR", "DNA")
-        for match in re.finditer(r'\b([A-Z]{2,})\b', text):
+
+        # 5. Abkürzungen (z.B. "ATP", "CRISPR", "DNA")
+        for match in _re.finditer(r'\b([A-Z]{2,})\b', text):
             candidate = match.group(1).strip()
             if len(candidate) >= 2:
                 candidates.add(candidate)
-        
+
         return list(candidates)
 
-    def _infer_entity_type(self, name: str) -> str:
-        """Bestimmt den Entity-Typ basierend auf dem Namen."""
-        lower = name.lower()
-        if any(suffix in lower for suffix in ['corp', 'inc', 'ltd', 'gmbh', 'company', 'org', 'ag']):
-            return 'organization'
-        if any(suffix in lower for suffix in ['gate', 'system', 'framework', 'engine', 'server']):
-            return 'technology'
-        if any(suffix in lower for suffix in ['theorie', 'effekt', 'mechanik', 'technologie']):
-            return 'concept'
-        return 'concept'
+    def _compute_relation_confidence(self, text: str, entity_a: str, entity_b: str) -> tuple[str, float]:
+        """Berechne dynamische Konfidenz und Relationstyp zwischen zwei Entities basierend auf Embedding."""
+        emb_service = self.embedding_service
+        try:
+            emb_a = emb_service.embed_for_storage(entity_a)
+            emb_b = emb_service.embed_for_storage(entity_b)
+            dot = sum(a * b for a, b in zip(emb_a, emb_b))
+            norm = (sum(a * a for a in emb_a) ** 0.5) * (sum(b * b for b in emb_b) ** 0.5)
+            similarity = dot / norm if norm > 0 else 0.0
+            confidence = max(0.0, min(1.0, similarity))
+            label = self._infer_relation_type(text, entity_a, entity_b, confidence)
+            return label, confidence
+        except Exception:
+            return "co_occurs_with", 0.5
+
+    def _infer_relation_type(self, text: str, entity_a: str, entity_b: str, confidence: float) -> str:
+        """Bestimme den Beziehungstyp zwischen zwei Entities."""
+        lower_text = text.lower()
+        a_lower = entity_a.lower()
+        b_lower = entity_b.lower()
+
+        works_verbs = ['works at', 'works for', 'employed by', 'arbeitet bei', 'arbeitet für',
+                       'angestellt bei', 'joined', 'led by', 'geführt von']
+        for verb in works_verbs:
+            if verb in lower_text:
+                if a_lower in lower_text.split(verb)[0] if verb in lower_text else False:
+                    return "works_at"
+
+        located_verbs = ['located in', 'based in', 'situated in', 'befindet sich in', 'hat seinen sitz in']
+        for verb in located_verbs:
+            if verb in lower_text:
+                return "located_in"
+
+        created_verbs = ['created', 'developed', 'built', 'founded', 'gründete', 'entwickelte',
+                         'erfand', 'implementierte']
+        for verb in created_verbs:
+            if verb in lower_text:
+                return "created"
+
+        if confidence > 0.85:
+            return "strongly_related"
+        elif confidence > 0.7:
+            return "related_to"
+        elif confidence > 0.5:
+            return "co_occurs_with"
+        else:
+            return "weakly_related"
 
     def _ensure_entity(self, name: str) -> Optional[str]:
         """Legt eine Entity an, falls sie noch nicht existiert. Gibt die ID zurück."""
         name_escaped = self._escape_surrealql(name)
-        entity_type = self._infer_entity_type(name)
+        entity_type = infer_entity_type(name, self.embedding_service)
         
         # Prüfen ob Entity bereits existiert
         check_sql = f"SELECT id FROM entity WHERE name = '{name_escaped}' LIMIT 1;"
@@ -288,53 +351,57 @@ class EntropyGate:
 
     def _extract_to_kg(self, text: str, event_id: str, debug: bool = False):
         """
-        Extrahiert Entities und Facts aus dem Text in den Knowledge Graph.
+        Extrahiert Entities und semantische Beziehungen in den Knowledge Graph.
+        Nutzt Embedding-Similarity für dynamische Konfidenz statt fixer Co-Occurrence.
         """
         candidates = self._extract_candidate_entities(text)
         if not candidates:
             if debug:
                 print(f"  [KG] No candidate entities found in text")
             return {"entities_created": 0, "facts_created": 0}
-        
+
         if debug:
             print(f"  [KG] Found candidate entities: {candidates}")
-        
+
         entities_created = 0
         facts_created = 0
         entity_ids = []
-        
-        # Entities anlegen
+        entity_names = []
+
         for name in candidates:
             eid = self._ensure_entity(name)
             if eid:
                 entity_ids.append(eid)
+                entity_names.append(name)
                 entities_created += 1
                 if debug:
                     print(f"  [KG] Entity: {name} -> {eid}")
-        
-        # Facts zwischen Entities und Event anlegen (co-occurrence)
+
         if len(entity_ids) >= 2:
             for i in range(len(entity_ids)):
                 for j in range(i + 1, len(entity_ids)):
                     try:
-                        relate_sql = f"""
-                        RELATE {entity_ids[i]}->fact->{entity_ids[j]} 
-                        SET predicate = 'co_occurs_with',
-                            source_event = {event_id},
-                            confidence = 0.5;
-                        """
-                        relate_result = self._query_surreal(relate_sql)
-                        if relate_result and len(relate_result) > 1 and relate_result[1].get("status") == "OK":
-                            facts_created += 1
+                        predicate, confidence = self._compute_relation_confidence(
+                            text, entity_names[i], entity_names[j]
+                        )
+                        if confidence >= 0.3:
+                            relate_sql = f"""
+                            RELATE {entity_ids[i]}->fact->{entity_ids[j]} 
+                            SET predicate = '{predicate}',
+                                source_event = {event_id},
+                                confidence = {confidence:.4f};
+                            """
+                            relate_result = self._query_surreal(relate_sql)
+                            if relate_result and len(relate_result) > 1 and relate_result[1].get("status") == "OK":
+                                facts_created += 1
+                                if debug:
+                                    print(f"  [KG] Fact: {entity_names[i]} -[{predicate} ({confidence:.2f})]-> {entity_names[j]}")
                     except Exception as e:
                         if debug:
                             print(f"  [KG] Error creating fact: {e}")
-        
-        # Fact: Event -> mentioned_in -> Entity (für jede Entity)
+
         for eid in entity_ids:
             try:
-                # Verwende das Event als Subject und Entity als Object
-                # SurrealDB: event->fact->entity mit predicate 'mentions'
                 relate_sql = f"""
                 RELATE {event_id}->fact->{eid} 
                 SET predicate = 'mentions',
@@ -346,7 +413,7 @@ class EntropyGate:
             except Exception as e:
                 if debug:
                     print(f"  [KG] Error creating mention fact: {e}")
-        
+
         return {"entities_created": entities_created, "facts_created": facts_created}
 
     def ingest(self, text: str, source: str = "unknown", debug: bool = False) -> Optional[str]:

@@ -39,9 +39,14 @@ from mcp.server.fastmcp import (
 from src.extraction.classifier import QueryClassifier
 from src.extraction.embedding_service import get_embedding_service
 from src.extraction.entropy_gate import escape_surrealql
+from src.extraction.entity_utils import infer_entity_type
 from src.maintenance.conservative_maintainer import ConservativeMaintainer
 from src.planner.executor import PlanExecutor, RetrievalExecutor
 from src.router.policy import RoutingPolicy
+from src.router.cost_awareness import CostTracker
+
+# Shared CostTracker – wird von RoutingPolicy automatisch gefüttert
+cost_tracker = CostTracker()
 
 # Initialize FastMCP (Model Context Protocol) and FastAPI apps
 mcp = FastMCP("strata")  # Model Context Protocol implementation
@@ -473,6 +478,25 @@ def _extract_result_batch(data: List[Dict]) -> List[Any]:
     ]
 
 
+def _validate_limit(value: int, name: str = "limit", max_val: int = 1_000_000) -> int:
+    """Validate that a limit/value is non-negative and within bounds. Raises ValueError if not."""
+    if not isinstance(value, int) or isinstance(value, bool):
+        raise ValueError(f"{name} must be an integer")
+    if value < 0:
+        raise ValueError(f"{name} must be non-negative (got {value})")
+    if value > max_val:
+        raise ValueError(f"{name} exceeds maximum of {max_val} (got {value})")
+    return value
+
+
+def _validate_event_id(event_id: str) -> str:
+    """Validate that an event_id has the correct format (event:xxx or entity:xxx)."""
+    import re
+    if not re.match(r'^(event|entity):[a-z0-9]+$', event_id):
+        raise ValueError(f"Invalid ID format: '{event_id}'. Expected format: 'event:<id>' or 'entity:<id>'")
+    return event_id
+
+
 def _clean_output(obj: Any) -> Any:
     """Recursively removes large fields like 'embedding' from output objects."""
     if isinstance(obj, list):
@@ -560,301 +584,53 @@ async def health_check():
     }
 
 
+MAX_CONTENT_LENGTH = 100_000
+
+
 # =============================================================================
-# Schicht 1 - Core Memory Operations
+# Gemeinsame Logik (einmal definiert, von HTTP + MCP genutzt)
 # =============================================================================
 
 
-# Expose memory operations as HTTP endpoints
-@app.post("/memory/store")
-async def memory_store_endpoint(request_data: dict):
-    """Stores a new event in the raw event log. Always persists, entropy gate decides KG extraction."""
-    content = request_data.get("content", "")
-    source = request_data.get("source", "user_input")
-    metadata = request_data.get("metadata", None)
-
+async def _store_content(content: str, source: str = "user_input", debug: bool = False) -> dict:
+    """Einzige Store-Implementierung: validiert → EntropyGate → Event + ggf. KG."""
     if not content or not content.strip():
-        return {
-            "event_id": None,
-            "status": "error",
-            "source": source,
-            "message": "content must not be empty or whitespace-only",
-        }
+        return {"event_id": None, "status": "error", "source": source,
+                "message": "content must not be empty or whitespace-only"}
     if '\x00' in content:
-        return {
-            "event_id": None,
-            "status": "error",
-            "source": source,
-            "message": "content contains null bytes, rejecting",
-        }
+        return {"event_id": None, "status": "error", "source": source,
+                "message": "content contains null bytes, rejecting"}
     if len(content) > MAX_CONTENT_LENGTH:
-        return {
-            "event_id": None,
-            "status": "error",
-            "source": source,
-            "message": f"content exceeds maximum length of {MAX_CONTENT_LENGTH} characters (got {len(content)})",
-        }
+        return {"event_id": None, "status": "error", "source": source,
+                "message": f"content exceeds maximum length of {MAX_CONTENT_LENGTH} (got {len(content)})"}
 
-    import hashlib
-    content_hash = hashlib.sha256(content.encode("utf-8")).hexdigest()
-    source_escaped_dedup = escape_surrealql(source)
+    from src.extraction.entropy_gate import EntropyGate
+    gate = EntropyGate()
+    event_id = await asyncio.to_thread(gate.ingest, content, source, debug)
 
-    dedup_sql = f"""
-    SELECT id FROM event 
-    WHERE content_hash = '{content_hash}'
-      AND source = '{source_escaped_dedup}'
-      AND (forgotten IS NONE OR forgotten = false)
-    LIMIT 1;
-    """
-    dedup_result = await _query_surreal(dedup_sql)
-    dedup_parsed = _extract_result(dedup_result)
-    if dedup_parsed and isinstance(dedup_parsed, list) and len(dedup_parsed) > 0:
-        existing_id = dedup_parsed[0].get("id") if isinstance(dedup_parsed[0], dict) else None
-        if existing_id:
-            return {"event_id": existing_id, "status": "dedup", "source": source}
-
-    embedding_service = get_embedding_service()
-    embedding_list = await asyncio.to_thread(
-        embedding_service.embed_for_storage, content
-    )
-    content_escaped = escape_surrealql(content)
-    source_escaped = escape_surrealql(source)
-    embedding_storage = "[" + ", ".join(str(v) for v in embedding_list) + "]"
-
-    if metadata:
-        meta_json = json.dumps(metadata)
-        sql = (
-            f"CREATE event SET content = '{content_escaped}', "
-            f"content_hash = '{content_hash}', "
-            f"source = '{source_escaped}', embedding = {embedding_storage}, "
-            f"metadata = {meta_json};"
-        )
-    else:
-        sql = (
-            f"CREATE event SET content = '{content_escaped}', "
-            f"content_hash = '{content_hash}', "
-            f"source = '{source_escaped}', embedding = {embedding_storage};"
-        )
-
-    result = await _query_surreal(sql)
-    event_result = _extract_result(result)
-    if (
-        event_result
-        and isinstance(event_result, list)
-        and len(event_result) > 0
-        and isinstance(event_result[0], dict)
-    ):
-        event_id = event_result[0]["id"]
-    elif event_result and isinstance(event_result, dict):
-        event_id = event_result.get("id")
-    else:
-        event_id = None
     if event_id is None:
-        return {"event_id": None, "status": "error", "source": source, "message": "storage failed"}
-    return {"event_id": event_id, "status": "stored", "source": source}
+        return {"event_id": None, "status": "error", "source": source,
+                "message": "storage failed – event could not be persisted"}
+    return {"event_id": event_id, "status": "stored", "source": source, "gate": "active"}
 
 
-@app.post("/memory/query")
-async def memory_query_endpoint(request_data: dict):
-    """Routes a natural language query through the full pipeline: classify -> plan -> retrieve."""
-    query = request_data.get("query", "")
-    cost_budget = request_data.get("cost_budget", "auto")
-
+async def _execute_query(query: str, cost_budget: str = "auto") -> dict:
+    """Einzige Query-Implementierung: classify → route → execute → parse → track."""
     classifier = QueryClassifier()
     q_type, confidence = classifier.classify(query)
 
-    policy = RoutingPolicy()
+    policy = RoutingPolicy(cost_tracker=cost_tracker)
     strategy = policy.get_strategy(q_type, confidence)
 
     executor = RetrievalExecutor()
-    plan = {"strategy": strategy.get("strategy"), "query": query}
-    raw_results = await executor.execute(plan)
+    results_raw = await executor.execute_strategy(strategy, query)
+    results = _flatten_query_results(results_raw)
 
-    entities = []
-    facts = []
-    events = []
-    results = raw_results.get("result", [])
-    if isinstance(results, dict) and "combined_results" in results:
-        results = results["combined_results"]
-    elif isinstance(results, dict):
-        # Falls es ein Dictionary mit keys wie 'events', 'entities' ist
-        new_results = []
-        for key in [
-            "events",
-            "entities",
-            "facts",
-            "keyword_results",
-            "vector_results",
-            "temporal_results",
-        ]:
-            if key in results and isinstance(results[key], list):
-                new_results.extend(results[key])
-        if not new_results and "result" in results:
-            new_results = (
-                results["result"]
-                if isinstance(results["result"], list)
-                else [results["result"]]
-            )
-        results = new_results
-
-    for r in results:
-        if isinstance(r, dict):
-            clean_r = _clean_output(r)
-            rid = clean_r.get("id", "")
-            if rid.startswith("entity:"):
-                entities.append(clean_r)
-            elif rid.startswith("fact:"):
-                facts.append(clean_r)
-            elif rid.startswith("event:"):
-                events.append(clean_r)
-
-    return {
-        "query": query,
-        "classified_as": q_type,
-        "confidence": confidence,
-        "strategy": strategy["strategy"],
-        "cost_budget": strategy["cost_budget"],
-        "results": {
-            "entities": entities,
-            "facts": facts,
-            "events": events,
-        },
-        "total": len(entities) + len(facts) + len(events),
-    }
-
-
-MAX_CONTENT_LENGTH = 100_000
-
-@mcp.tool()
-async def memory_store(
-    content: str, source: str = "user_input", metadata: Optional[Dict[str, Any]] = None
-) -> dict:
-    """Stores a new event in the raw event log. Runs through entropy gate which logs decisions to gate_log for later calibration."""
-    if not content or not content.strip():
-        return {
-            "event_id": None,
-            "status": "error",
-            "source": source,
-            "message": "content must not be empty or whitespace-only",
-        }
-    if '\x00' in content:
-        return {
-            "event_id": None,
-            "status": "error",
-            "source": source,
-            "message": "content contains null bytes, rejecting",
-        }
-    if len(content) > MAX_CONTENT_LENGTH:
-        return {
-            "event_id": None,
-            "status": "error",
-            "source": source,
-            "message": f"content exceeds maximum length of {MAX_CONTENT_LENGTH} characters (got {len(content)})",
-        }
-
-    from src.extraction.entropy_gate import EntropyGate
-
-    gate = EntropyGate()
-
-    # ingest() schreibt ins Event-Log, evaluiert Entropy, loggt in gate_log
-    event_id = await asyncio.to_thread(gate.ingest, content, source, True)
-
-    if event_id is None:
-        return {
-            "event_id": None,
-            "status": "error",
-            "source": source,
-            "message": "storage failed - event could not be persisted",
-        }
-
-    return {
-        "event_id": event_id,
-        "status": "stored",
-        "source": source,
-        "gate": "active",
-    }
-
-
-@mcp.tool()
-async def memory_query(query: str, cost_budget: str = "auto") -> dict:
-    """Routes a natural language query through the full pipeline: classify -> plan -> retrieve."""
-    classifier = QueryClassifier()
-    q_type, confidence = classifier.classify(query)
-
-    policy = RoutingPolicy()
-    strategy: Dict[str, Any] = policy.get_strategy(q_type, confidence)
-
-    executor = RetrievalExecutor()
-    results_raw: Any = await executor.execute_strategy(strategy, query)
-    results: List[Any] = []
-
-    if isinstance(results_raw, dict) and "combined_results" in results_raw:
-        combined = results_raw["combined_results"]
-        if isinstance(combined, list):
-            results = combined
-        else:
-            results = [combined]
-    elif isinstance(results_raw, dict):
-        new_results: List[Any] = []
-        for key in [
-            "events",
-            "entities",
-            "facts",
-            "keyword_results",
-            "vector_results",
-            "temporal_results",
-            "result",
-        ]:
-            if key in results_raw and isinstance(results_raw[key], list):
-                new_results.extend(results_raw[key])
-        if not new_results and "result" in results_raw:
-            val = results_raw["result"]
-            new_results = val if isinstance(val, list) else [val]
-        results = new_results
-    elif isinstance(results_raw, list):
-        results = results_raw
-
-    # Mark budget usage finished
     btk = strategy.get("budget_tracker_key")
     if isinstance(btk, str):
         policy.finish_execution(btk)
 
-    entities = []
-    facts = []
-    events = []
-    for r in results:
-        if isinstance(r, dict):
-            # Clean the object
-            clean_r = _clean_output(r)
-            rid = clean_r.get("id", "")
-            if rid and isinstance(rid, str):
-                if rid.startswith("entity:"):
-                    entities.append(clean_r)
-                elif rid.startswith("fact:"):
-                    facts.append(clean_r)
-                elif rid.startswith("event:"):
-                    events.append(clean_r)
-                else:
-                    events.append(clean_r)
-            else:
-                events.append(clean_r)
-        elif isinstance(r, list):
-            # Manche Strategien geben Listen von Listen zurück
-            for item in r:
-                if isinstance(item, dict):
-                    clean_item = _clean_output(item)
-                    rid = clean_item.get("id", "")
-                    if rid and isinstance(rid, str):
-                        if rid.startswith("entity:"):
-                            entities.append(clean_item)
-                        elif rid.startswith("fact:"):
-                            facts.append(clean_item)
-                        elif rid.startswith("event:"):
-                            events.append(clean_item)
-                        else:
-                            events.append(clean_item)
-                    else:
-                        events.append(clean_item)
+    entities, facts, events = _categorize_results(results)
 
     return {
         "query": query,
@@ -862,13 +638,105 @@ async def memory_query(query: str, cost_budget: str = "auto") -> dict:
         "confidence": confidence,
         "strategy": strategy["strategy"],
         "cost_budget": strategy["cost_budget"],
-        "results": {
-            "entities": entities,
-            "facts": facts,
-            "events": events,
-        },
+        "results": {"entities": entities, "facts": facts, "events": events},
         "total": len(entities) + len(facts) + len(events),
+        "budget_tracker_key": btk,
     }
+
+
+def _flatten_query_results(results_raw: Any) -> List[Any]:
+    """Flatten the various result shapes from different strategies into one list."""
+    if isinstance(results_raw, dict) and "combined_results" in results_raw:
+        combined = results_raw["combined_results"]
+        return combined if isinstance(combined, list) else [combined]
+
+    if isinstance(results_raw, dict):
+        flat = []
+        for key in ("events", "entities", "facts", "keyword_results", "vector_results", "temporal_results", "result"):
+            val = results_raw.get(key)
+            if isinstance(val, list):
+                flat.extend(val)
+        if not flat and "result" in results_raw:
+            val = results_raw["result"]
+            flat = val if isinstance(val, list) else [val]
+        return flat
+
+    if isinstance(results_raw, list):
+        return results_raw
+    return []
+
+
+def _categorize_results(results: List[Any]) -> tuple:
+    """Sort results into entities, facts, events buckets."""
+    entities, facts, events = [], [], []
+    for r in results:
+        if isinstance(r, dict):
+            clean = _clean_output(r)
+            rid = clean.get("id", "")
+            if isinstance(rid, str):
+                if rid.startswith("entity:"):
+                    entities.append(clean)
+                elif rid.startswith("fact:"):
+                    facts.append(clean)
+                elif rid.startswith("event:"):
+                    events.append(clean)
+                else:
+                    events.append(clean)
+            else:
+                events.append(clean)
+        elif isinstance(r, list):
+            for item in r:
+                if isinstance(item, dict):
+                    clean = _clean_output(item)
+                    rid = clean.get("id", "")
+                    if isinstance(rid, str) and rid.startswith("entity:"):
+                        entities.append(clean)
+                    elif isinstance(rid, str) and rid.startswith("fact:"):
+                        facts.append(clean)
+                    else:
+                        events.append(clean)
+    return entities, facts, events
+
+
+# =============================================================================
+# Schicht 1 – HTTP-Endpoints (thin wrapper um gemeinsame Logik)
+# =============================================================================
+
+
+@app.post("/memory/store")
+async def memory_store_endpoint(request_data: dict):
+    """Stores a new event in the raw event log. Runs through entropy gate."""
+    return await _store_content(
+        request_data.get("content", ""),
+        request_data.get("source", "user_input"),
+    )
+
+
+@app.post("/memory/query")
+async def memory_query_endpoint(request_data: dict):
+    """Routes a natural language query through the full pipeline: classify → plan → retrieve."""
+    return await _execute_query(
+        request_data.get("query", ""),
+        request_data.get("cost_budget", "auto"),
+    )
+
+
+# =============================================================================
+# Schicht 1 – MCP-Tools (thin wrapper um gemeinsame Logik)
+# =============================================================================
+
+
+@mcp.tool()
+async def memory_store(content: str, source: str = "user_input",
+                       metadata: Optional[Dict[str, Any]] = None) -> dict:
+    """Stores a new event in the raw event log. Runs through entropy gate."""
+    return await _store_content(content, source, debug=True)
+
+
+@mcp.tool()
+async def memory_query(query: str, cost_budget: str = "auto") -> dict:
+    """Routes a natural language query through the full pipeline: classify → plan → retrieve."""
+    return await _execute_query(query, cost_budget)
 
 
 @mcp.tool()
@@ -880,25 +748,6 @@ async def memory_update(subject: str, predicate: str, new_value: str) -> dict:
     subject_escaped = escape_surrealql(subject)
     predicate_escaped = escape_surrealql(predicate)
     new_value_escaped = escape_surrealql(new_value)
-
-    def _infer_entity_type(name: str) -> str:
-        """Simple heuristic to infer entity type from name."""
-        lower = name.lower()
-        if any(
-            suffix in lower
-            for suffix in [
-                "corp",
-                "inc",
-                "ltd",
-                "gmbh",
-                "company",
-                "org",
-                "projekt",
-                "projekt",
-            ]
-        ):
-            return "organization"
-        return "concept"
 
     find_sql = f"""
     SELECT * FROM fact
@@ -1201,7 +1050,10 @@ async def kg_query(
 ) -> dict:
     """Direct graph traversal: query facts by subject/predicate/time.
     Returns associated entities with their inferred types (e.g., 'organization', 'concept')."""
-    # Use a simpler query first to ensure compatibility
+    try:
+        limit = _validate_limit(limit, "limit")
+    except ValueError as e:
+        return {"error": str(e), "facts": [], "entities": [], "count": 0}
     sql = "SELECT * FROM fact WHERE (valid_until = NONE OR valid_until = NULL)"
 
     # Optional forgotten filter

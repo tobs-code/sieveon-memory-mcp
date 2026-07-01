@@ -27,10 +27,10 @@ class TestRoutingPolicy(unittest.TestCase):
         self.assertEqual(strategy["confidence"], 0.8)
 
     def test_factual_query_routing(self):
-        """Test that factual queries are routed using STRATA's knowledge graph strategy"""
+        """Test that factual queries are routed using STRATA's full hybrid strategy"""
         strategy = self.policy.get_strategy("factual", 0.8)
-        self.assertEqual(strategy["strategy"], "knowledge_graph_first")
-        self.assertEqual(strategy["cost_budget"], "low")
+        self.assertEqual(strategy["strategy"], "hybrid_bm25_vector_temporal")
+        self.assertEqual(strategy["cost_budget"], "medium")
 
     def test_multi_hop_query_routing(self):
         """Test that multi-hop queries are routed using STRATA's graph expansion strategy"""
@@ -60,18 +60,14 @@ class TestRoutingPolicy(unittest.TestCase):
     def test_high_confidence_strict(self):
         """Test that high confidence queries use strict policy"""
         strategy = self.policy.get_strategy("factual", 0.8)  # Above min_confidence
-        self.assertEqual(strategy["strategy"], "knowledge_graph_first")
+        self.assertEqual(strategy["strategy"], "hybrid_bm25_vector_temporal")
         self.assertEqual(strategy["policy_applied"], "strict")
 
     def test_unknown_query_type_fallback(self):
         """Test that unknown query types use their own strategy but default config"""
         strategy = self.policy.get_strategy("unknown_type", 0.8)
-        # The query_type in the returned strategy should match the input query_type
         self.assertEqual(strategy["query_type"], "unknown_type")
-        # The strategy should fall back to factual's default strategy since unknown_type isn't configured
-        # Actually, looking at the policy implementation, it gets the default config which maps to factual
-        # Let's check the actual implementation in policy.py
-        self.assertEqual(strategy["strategy"], "knowledge_graph_first")  # Default fallback strategy
+        self.assertEqual(strategy["strategy"], "hybrid_bm25_vector_temporal")
 
     def test_custom_config(self):
         """Test routing policy with custom configuration"""
@@ -243,8 +239,8 @@ class TestRouterIntegration(unittest.TestCase):
     def test_full_router_pipeline(self):
         """Test STRATA's full pipeline from classification to routing decision"""
         test_queries = [
-            ("Wann habe ich Alice getroffen?", "hybrid_bm25_vector_temporal"),  # Updated expectation
-            ("Who is the CEO?", "knowledge_graph_first"),
+            ("Wann habe ich Alice getroffen?", "hybrid_bm25_vector_temporal"),
+            ("Who is the CEO?", "hybrid_bm25_vector_temporal"),
             ("Why did sales decrease?", "hybrid_with_graph_expansion"),
             ("Do you remember our last meeting?", "composite_kg_vector"),
             ("Update my contact info", "knowledge_graph_with_invalidation"),
