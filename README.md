@@ -7,7 +7,7 @@
 ![arXiv](https://img.shields.io/badge/arXiv-2606.24775-b31b1b)
 ![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen)
 
-> A workload-adaptive agent memory system combining event logs, knowledge graphs, and vector embeddings. Evidence-based architecture derived from [Zhou et al. arXiv:2606.24775](https://arxiv.org/abs/2606.24775).
+> A workload-adaptive agent memory system combining event logs, knowledge graphs, and vector embeddings. Architecture inspired by [Zhou et al. arXiv:2606.24775](https://arxiv.org/abs/2606.24775).
 
 ---
 
