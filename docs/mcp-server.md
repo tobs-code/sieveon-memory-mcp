@@ -247,7 +247,7 @@ Für STRATAs, die mehr Kontrolle über den Retrieval-Prozess brauchen und den Ro
 
 #### `event_log_search`
 
-Direkte Volltextsuche im Event Log ohne Router.
+Hybride Suche im Event Log (BM25 + Vector + RRF-Fusion) ohne Router.
 
 | Parameter | Typ | Pflicht | Beschreibung |
 |-----------|-----|---------|-------------|
@@ -265,10 +265,21 @@ Direkte Volltextsuche im Event Log ohne Router.
       "id": "event:abc",
       "content": "Alice arbeitet bei Acme Corp…",
       "timestamp": "2026-06-29T15:00:00Z",
-      "source": "user_input"
+      "source": "user_input",
+      "search_type": "lexical",
+      "metadata": null
+    },
+    {
+      "id": "event:def",
+      "content": "Bob arbeitet bei Beta Inc…",
+      "timestamp": "2026-06-28T12:00:00Z",
+      "source": "user_input",
+      "search_type": "vector",
+      "vec_score": 0.72,
+      "metadata": null
     }
   ],
-  "count": 1
+  "count": 2
 }
 ```
 

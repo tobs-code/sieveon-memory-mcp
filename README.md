@@ -6,7 +6,7 @@
 
 ## Overview
 
-Strata is a sophisticated agent memory system that intelligently classifies, routes, plans, and executes queries across multiple storage and retrieval strategies. It consists of **Python** (MCP control plane) and **Rust** (core services) components working together.
+Strata is a agent memory system that intelligently classifies, routes, plans, and executes queries across multiple storage and retrieval strategies. It consists of **Python** (MCP control plane) and **Rust** (core services) components working together.
 
 ### Architecture
 
@@ -110,14 +110,17 @@ cd src/mcp && python server.py
 
 Strata has an integrated benchmark system to measure tool latency. Results are automatically logged to `benchmarks/benchmark_results.md`.
 
-### Tool Performance (as of June 2026)
+### Tool Performance (as of July 2026)
 
 | Tool | Average (ms) | P95 (ms) | Optimization |
 |------|--------------|----------|--------------|
-| `memory_stats` | 5135.50 |  5262.68 | Multi-Statement Batching |
-| `memory_query` | 415.76 | 455.63 | Hybrid Retrieval |
-| `memory_store` | 224.70 |  253.05 | Embeddings CUDA-accelerated |
-| `explain_routing` | < 1 ms | < 1 ms | Pure Logic |
+| `memory_stats` | 91.14 | 101.47 | Multi-Statement Batching + Shared HTTP Client |
+| `memory_store` | 227.87 | 251.02 | Embeddings CUDA-accelerated |
+| `memory_query` | 401.48 | 431.50 | Hybrid Retrieval |
+| `semantic_search` | 73.22 | 76.46 | Shared HTTP Client + Embedding Cache |
+| `event_log_search` | 95.75 | 107.44 | Hybrid FTX+Vector (RRF) + Shared HTTP Client |
+| `kg_query` | 49.01 | 57.19 | Shared HTTP Client |
+| `explain_routing` | 0.19 | 0.23 | Pure Logic |
 
 ### Run Benchmarks
 
