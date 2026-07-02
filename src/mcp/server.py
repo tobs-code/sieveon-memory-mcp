@@ -13,6 +13,7 @@ This is the main entry point that ties together all modular components:
 import asyncio
 import os
 import threading
+from typing import NoReturn
 
 # Import all components to register them
 from .core import (
@@ -47,9 +48,8 @@ from .tools import (
     memory_consolidate
 )
 
-from .endpoints import (
-    # All HTTP endpoints are registered when importing this module
-)
+# Import endpoints module to register HTTP endpoints (without importing specific functions)
+from .endpoints import *  # This ensures all endpoints are registered
 
 # Import embedding service to initialize it
 from src.extraction.embedding_service import get_embedding_service
@@ -76,27 +76,23 @@ if __name__ == "__main__":
     http_thread.start()
 
     # Run FastMCP stdio server (for MCP clients) in main thread
-    mcp.run()
+    try:
+        mcp.run()
+    except KeyboardInterrupt:
+        print("[INFO] Shutting down server...")
+        # Add any cleanup code here if needed
 
 # Export the main components for easy access
 __all__ = [
-    'app',
-    'mcp',
-    'ensure_schema_loaded',
-    'cost_tracker',
-    '_query_surreal',
-    '_extract_result',
-    '_clean_output',
-    '_store_content',
-    '_execute_query',
-    'memory_store',
-    'memory_query',
-    'memory_update',
-    'memory_stats',
-    'event_log_search',
-    'kg_query',
-    'semantic_search',
-    'explain_routing',
-    'memory_forget',
-    'memory_consolidate'
+    # Core components
+    'app', 'mcp', 'ensure_schema_loaded', 'cost_tracker',
+    
+    # Query and data processing functions
+    '_query_surreal', '_extract_result', '_clean_output',
+    '_store_content', '_execute_query',
+    
+    # Tools
+    'memory_store', 'memory_query', 'memory_update', 'memory_stats',
+    'event_log_search', 'kg_query', 'semantic_search', 'explain_routing',
+    'memory_forget', 'memory_consolidate'
 ]
