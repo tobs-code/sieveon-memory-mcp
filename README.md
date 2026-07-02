@@ -1,7 +1,6 @@
 # Strata
 
 ![Python](https://img.shields.io/badge/python-3.11%2B-blue)
-![Rust](https://img.shields.io/badge/rust-1.75%2B-orange)
 ![SurrealDB](https://img.shields.io/badge/SurrealDB-3.1.5-8B5CF6)
 ![License](https://img.shields.io/badge/license-Apache%202.0-green)
 ![arXiv](https://img.shields.io/badge/arXiv-2606.24775-b31b1b)
@@ -13,7 +12,7 @@
 
 ## Overview
 
-Strata is a agent memory system that intelligently classifies, routes, plans, and executes queries across multiple storage and retrieval strategies. It consists of standalone **Python** (MCP Server) and **Rust** (core services) components working together.
+Strata is an agent memory system that intelligently classifies, routes, plans, and executes queries across multiple storage and retrieval strategies. It consists of a **Python-based Control Plane** (MCP Server) that interfaces with SurrealDB for storage and retrieval operations.
 
 ### Architecture
 
@@ -22,31 +21,16 @@ Strata is a agent memory system that intelligently classifies, routes, plans, an
                   │  MCP Server      │  (Python, stdio/HTTP)
                   └──────┬───────────┘
                          │
-         ┌───────────────┼───────────────┐
-         ▼               ▼               ▼
-   ┌──────────┐   ┌──────────┐   ┌──────────────┐
-   │  Router  │   │ Planner  │   │ Maintenance  │  (Rust)
-   │  (:8080) │   │ (:8081)  │   │              │
-   └────┬─────┘   └────┬─────┘   └──────────────┘
-        │              │
-        └──────────────┘
-               │
-               ▼
-        ┌──────────────┐
-        │  SurrealDB   │
-        │  (NS:strata  │
-        │   DB:strata) │
-        └──────────────┘
+                  ┌──────────────────┐
+                  │  MCP Server      │  (Python, stdio/HTTP)
+                  └──────────────────┘
+                         │
+                         ▼
+        ┌─────────────────────────────┐
+        │     SurrealDB Storage       │
+        │  (NS:strata DB:strata)      │
+        └─────────────────────────────┘
 ```
-
-### Rust Components
-
-| Component | Port | Description |
-|-----------|------|-------------|
-| **Router** | 8080 | Pattern-based query classification & policy-driven routing |
-| **Planner** | 8081 | Plan building & execution with multiple retrieval strategies |
-| **Maintenance** | — | Conservative maintenance (lazy flushing, logical invalidation) |
-| **Common** | — | Shared data structures & utilities |
 
 ### Python Components
 
@@ -100,16 +84,7 @@ python tests/run_all_tests.py
 ### Start Services
 
 ```bash
-# Terminal 1 — Router (Rust)
-cd router && cargo run
-
-# Terminal 2 — Planner (Rust)
-cd planner && cargo run
-
-# Terminal 3 — Maintenance (Rust)
-cd maintenance && cargo run
-
-# Terminal 4 — MCP Server (Python)
+# Terminal 1 — MCP Server (Python)
 cd src/mcp && python server.py
 ```
 
@@ -142,9 +117,8 @@ python benchmarks/mcp_performance.py
 ## Testing
 
 ```bash
-# All tests (including Router & Benchmark)
+# All tests 
 python tests/run_all_tests.py
-python scripts/test_router_comprehensive.py
 python benchmarks/mcp_performance.py
 ```
 
