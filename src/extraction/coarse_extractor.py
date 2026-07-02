@@ -4,7 +4,7 @@ Schema-free extraction with regex-based entity recognition
 Avoids overly aggressive parsing in favor of conservative extraction
 """
 import re
-from typing import Dict, List, Tuple, Optional
+from typing import Any, Dict, List, Tuple, Optional
 import json
 
 
@@ -76,7 +76,7 @@ class ExtractionPipeline:
     def __init__(self):
         self.extractor = CoarseExtractor()
         
-    def process(self, text: str, apply_entropy_filter: bool = True) -> Dict[str, any]:
+    def process(self, text: str, apply_entropy_filter: bool = True) -> Dict[str, Any]:
         """
         Process text through the extraction pipeline
         Optionally applies entropy filtering to decide if extraction is worthwhile

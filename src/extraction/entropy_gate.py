@@ -5,6 +5,7 @@ Nur vor KG-Write, Raw Event Log bekommt immer alles!
 """
 import hashlib
 import math
+import re
 import time
 from typing import Optional, Dict, List
 import requests
@@ -43,13 +44,15 @@ class EntropyGateConfig:
         beta: float = 0.65,        # Gewicht Embedding-Novelty
         threshold: float = 0.55,   # Initialer Default; TODO per gate_log kalibrieren
         min_length: int = 10,      # Unter X Zeichen immer skippen
-        max_length: int = 1000     # Über X Zeichen immer skippen
+        max_length: int = 1000,    # Über X Zeichen immer skippen
+        max_entities_for_cooccurrence: int = 6  # Obergrenze gegen kombinatorische Explosion
     ):
         self.alpha = alpha
         self.beta = beta
         self.threshold = threshold
         self.min_length = min_length
         self.max_length = max_length
+        self.max_entities_for_cooccurrence = max_entities_for_cooccurrence
 
 
 class EntropyGate:
@@ -383,6 +386,20 @@ class EntropyGate:
             pass
         return None
 
+    def _select_salient_entities(self, text: str, entity_names: list[str], max_entities: int) -> list[str]:
+        """Select the most salient entities when count exceeds max_entities_for_cooccurrence.
+        Scores by: frequency in text (weight 2) + specificity/multi-word bonus (weight 1)."""
+        if len(entity_names) <= max_entities:
+            return entity_names
+        text_lower = text.lower()
+        scored = []
+        for name in entity_names:
+            freq = text_lower.count(name.lower())
+            specificity = len(name.split())
+            scored.append((freq * 2 + specificity, name))
+        scored.sort(key=lambda x: x[0], reverse=True)
+        return [name for _, name in scored[:max_entities]]
+
     def _extract_to_kg(self, text: str, event_id: str, debug: bool = False):
         """
         Extract entities and semantic relationships to the Knowledge Graph.
@@ -476,46 +493,83 @@ class EntropyGate:
             pass
 
         # Fall back to co-occurrence method for any remaining entity pairs
+        # Uses sentence-level proximity (nicht global O(n²)) + hard cap + Distanz-Confidence
         if len(entity_ids) >= 2:
-            for i in range(len(entity_ids)):
-                for j in range(i + 1, len(entity_ids)):
-                    # Check if this pair already has a fact from SVO extraction
-                    has_svo_fact = False
-                    try:
-                        from src.extraction.entity_utils import extract_triples
-                        svo_triples = extract_triples(text)
-                        for triple in svo_triples:
-                            subject = triple["subject"]
-                            obj = triple["object"]
-                            
-                            if (entity_names[i].lower() == subject.lower() and entity_names[j].lower() == obj.lower()) or \
-                               (entity_names[j].lower() == subject.lower() and entity_names[i].lower() == obj.lower()):
-                                has_svo_fact = True
-                                break
-                    except ImportError:
-                        # If spaCy not available, process all pairs
-                        pass
-                    
-                    if not has_svo_fact:
+            # Hard cap: max_entities_for_cooccurrence wählen
+            if len(entity_names) > self.config.max_entities_for_cooccurrence:
+                selected = self._select_salient_entities(text, entity_names, self.config.max_entities_for_cooccurrence)
+                name_to_idx = {name: idx for idx, name in enumerate(entity_names)}
+                selected_indices = [name_to_idx[name] for name in selected]
+                subset_ids = [entity_ids[i] for i in selected_indices]
+                subset_names = [entity_names[i] for i in selected_indices]
+            else:
+                subset_ids = list(entity_ids)
+                subset_names = list(entity_names)
+
+            # Satzweise Paarbildung statt globaler Kombinatorik
+            sentences = re.split(r'(?<=[.!?])\s+', text)
+            paired = set()
+
+            for sentence in sentences:
+                sentence_lower = sentence.lower()
+                indices_in_sentence = [
+                    i for i, name in enumerate(subset_names)
+                    if name.lower() in sentence_lower
+                ]
+                if len(indices_in_sentence) < 2:
+                    continue
+
+                for idx_a in indices_in_sentence:
+                    for idx_b in indices_in_sentence:
+                        if idx_a >= idx_b:
+                            continue
+                        pair_key = (idx_a, idx_b)
+                        if pair_key in paired:
+                            continue
+                        paired.add(pair_key)
+
+                        # Prüfen ob dieses Paar bereits SVO-Fact hat
+                        has_svo_fact = False
                         try:
-                            predicate, confidence = self._compute_relation_confidence(
-                                text, entity_names[i], entity_names[j]
-                            )
-                            if confidence >= 0.3:
-                                relate_sql = f"""
-                                RELATE {entity_ids[i]}->fact->{entity_ids[j]} 
-                                SET predicate = '{predicate}',
-                                    source_event = {event_id},
-                                    confidence = {confidence:.4f};
-                                """
-                                relate_result = self._query_surreal(relate_sql)
-                                if relate_result and len(relate_result) > 1 and relate_result[1].get("status") == "OK":
-                                    facts_created += 1
-                                    if debug:
-                                        print(f"  [KG] Co-occurrence Fact: {entity_names[i]} -[{predicate} ({confidence:.2f})]-> {entity_names[j]}")
-                        except Exception as e:
-                            if debug:
-                                print(f"  [KG] Error creating co-occurrence fact: {e}")
+                            from src.extraction.entity_utils import extract_triples
+                            svo_triples = extract_triples(text)
+                            for triple in svo_triples:
+                                subj = triple["subject"]
+                                obj = triple["object"]
+                                if (subset_names[idx_a].lower() == subj.lower() and subset_names[idx_b].lower() == obj.lower()) or \
+                                   (subset_names[idx_b].lower() == subj.lower() and subset_names[idx_a].lower() == obj.lower()):
+                                    has_svo_fact = True
+                                    break
+                        except ImportError:
+                            pass
+
+                        if not has_svo_fact:
+                            try:
+                                predicate, base_conf = self._compute_relation_confidence(
+                                    text, subset_names[idx_a], subset_names[idx_b]
+                                )
+
+                                # Confidence via Embedding-Similarity + textualer Distanz
+                                pos_a = sentence_lower.index(subset_names[idx_a].lower())
+                                pos_b = sentence_lower.index(subset_names[idx_b].lower())
+                                proximity = 1.0 - min(abs(pos_a - pos_b) / max(len(sentence), 1), 1.0)
+                                confidence = max(0.1, min(1.0, base_conf * 0.6 + proximity * 0.4))
+
+                                if confidence >= 0.3:
+                                    relate_sql = f"""
+                                    RELATE {subset_ids[idx_a]}->fact->{subset_ids[idx_b]} 
+                                    SET predicate = '{predicate}',
+                                        source_event = {event_id},
+                                        confidence = {confidence:.4f};
+                                    """
+                                    relate_result = self._query_surreal(relate_sql)
+                                    if relate_result and len(relate_result) > 1 and relate_result[1].get("status") == "OK":
+                                        facts_created += 1
+                                        if debug:
+                                            print(f"  [KG] Co-occurrence Fact: {subset_names[idx_a]} -[{predicate} ({confidence:.2f})]-> {subset_names[idx_b]}")
+                            except Exception as e:
+                                if debug:
+                                    print(f"  [KG] Error creating co-occurrence fact: {e}")
 
         for eid in entity_ids:
             try:
