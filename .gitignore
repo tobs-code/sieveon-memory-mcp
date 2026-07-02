@@ -28,3 +28,9 @@ Thumbs.db
 
 # Project specific
 *.log
+
+# Ignored Rust components (on hold)
+/common/
+/maintenance/
+/planner/
+/router/
