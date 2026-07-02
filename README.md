@@ -7,13 +7,13 @@
 ![arXiv](https://img.shields.io/badge/arXiv-2606.24775-b31b1b)
 ![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen)
 
-> A workload-adaptive agent memory system combining event logs, knowledge graphs, and vector embeddings. Architecture inspired by [Zhou et al. arXiv:2606.24775](https://arxiv.org/abs/2606.24775).
+> A workload-adaptive agent memory system combining event logs, knowledge graphs, and vector embeddings. Evidence-based architecture inspired by from [Zhou et al. arXiv:2606.24775](https://arxiv.org/abs/2606.24775).
 
 ---
 
 ## Overview
 
-Strata is a agent memory system that intelligently classifies, routes, plans, and executes queries across multiple storage and retrieval strategies. It consists of standalone**Python** (MCP Server) and **Rust** (core services) components working together.
+Strata is a agent memory system that intelligently classifies, routes, plans, and executes queries across multiple storage and retrieval strategies. It consists of standalone **Python** (MCP Server) and **Rust** (core services) components working together.
 
 ### Architecture
 
@@ -53,7 +53,7 @@ Strata is a agent memory system that intelligently classifies, routes, plans, an
 | Component | Path | Description |
 |-----------|------|-------------|
 | **MCP Server** | `src/mcp/server.py` | Control plane (Anthropic MCP protocol) — stdio mode |
-| **Extraction** | `src/extraction/` | Entropy-gated entity extraction |
+| **Extraction** | `src/extraction/` | Entropy-gated entity extraction with Groq API (llama-3.1-8b-instant) or spaCy fallback. Pipe-separated LLM prompt, type preservation |
 | **Router** | `src/router/` | Policy engine & cost tracking |
 | **Planner** | `src/planner/` | Execution engine |
 | **Maintenance** | `src/maintenance/` | Conservative maintainer |
@@ -65,6 +65,7 @@ Strata is a agent memory system that intelligently classifies, routes, plans, an
 - **Query Classification** — 5 types: Temporal, Factual, Multi-Hop, Conversational, Update
 - **Adaptive Retrieval** — Strategy selection per query type (event log, KG, hybrid BM25+vector+temporal)
 - **Entropy Gating** — LightMem-style composite score: Shannon character entropy + embedding novelty. Raw Event Log is always append-only; the gate decides only whether to extract into the Knowledge Graph.
+- **Entity Extraction** — Groq API (`llama-3.1-8b-instant`) with spaCy fallback. Pipe-separated LLM prompt, type preservation (LLM classification preferred over heuristic).
 - **Logical Invalidation** — `valid_until` timestamps instead of hard deletes
 - **Cross-Language Consistency** — Identical classification & routing logic in Rust and Python
 - **Cost Awareness** — Tracks & budgets resource consumption per strategy
@@ -76,7 +77,7 @@ Strata is a agent memory system that intelligently classifies, routes, plans, an
 ### Prerequisites
 
 - Rust 1.75+
-- Python 3.8+
+- Python 3.11+
 - SurrealDB running on `http://127.0.0.1:8000`
 
 ### Setup

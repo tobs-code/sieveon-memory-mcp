@@ -7,7 +7,7 @@ import hashlib
 import math
 import re
 import time
-from typing import Optional, Dict, List
+from typing import Any, Optional, Dict, List
 import requests
 import numpy as np
 import json
@@ -87,6 +87,29 @@ class EntropyGate:
     def _escape_surrealql(self, value: str) -> str:
         return escape_surrealql(value)
 
+    @staticmethod
+    def _extract_result(data: List[Dict], index: int = 1) -> List[Dict]:
+        """Safely extract the result list from a SurrealDB multi-statement response."""
+        if not isinstance(data, list) or len(data) <= index:
+            return []
+        item = data[index]
+        if not isinstance(item, dict):
+            return []
+        result = item.get("result", [])
+        if isinstance(result, list):
+            return result
+        if isinstance(result, dict):
+            return [result]
+        return []
+
+    @staticmethod
+    def _extract_ok(data: List[Dict], index: int = 1) -> bool:
+        """Safely check if a SurrealDB statement returned status OK."""
+        if not isinstance(data, list) or len(data) <= index:
+            return False
+        item = data[index]
+        return isinstance(item, dict) and item.get("status") == "OK"
+
     def _hash_content(self, text: str) -> str:
         return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
@@ -141,10 +164,7 @@ class EntropyGate:
         
         results = self._query_surreal(sql)
         
-        # Extract the results (the _query_surreal here returns [ {status: OK, result: [...]}, ... ])
-        actual_results = []
-        if results and len(results) > 1: # Index 0 is USE, Index 1 is the query
-            actual_results = results[1].get("result", [])
+        actual_results = self._extract_result(results)
         
         if not actual_results:
             # No similar content found - maximum novelty
@@ -156,7 +176,7 @@ class EntropyGate:
         # Return inverse (novelty = 1 - similarity)
         return 1.0 - max(0.0, min(1.0, avg_similarity))
 
-    def should_extract(self, text: str) -> Dict[str, any]:
+    def should_extract(self, text: str) -> Dict[str, Any]:
         """
         Entscheidet basierend auf Composite-Score ob Text in KG extrahiert werden soll
         """
@@ -217,7 +237,7 @@ class EntropyGate:
                 decision = '{decision_escaped}';
             """
             result = self._query_surreal(sql)
-            if not result or len(result) < 2 or result[1].get("status") != "OK":
+            if not self._extract_ok(result):
                 import sys
                 sys.stderr.write(f"[Gate] _log_decision failed: {result}\n")
         except Exception as e:
@@ -231,13 +251,13 @@ class EntropyGate:
         """
         import re as _re
         
-        # Try spaCy-based extraction first
+        # Try Groq/spaCy-based extraction first
         try:
-            from src.extraction.entity_utils import extract_entities_with_spacy
-            spacy_entities = extract_entities_with_spacy(text)
-            candidates = {entity["name"] for entity in spacy_entities}
+            from src.extraction.entity_utils import extract_entities
+            entities = extract_entities(text)
+            candidates = {entity["name"] for entity in entities}
         except ImportError:
-            # If spaCy is not available, fall back to original regex approach
+            # If neither is available, fall back to original regex approach
             candidates = set()
 
         # If spaCy is not available or returns no entities, use original approach as fallback
@@ -319,18 +339,17 @@ class EntropyGate:
         else:
             return "weakly_related"
 
-    def _ensure_entity(self, name: str) -> Optional[str]:
+    def _ensure_entity(self, name: str, preferred_type: Optional[str] = None) -> Optional[str]:
         """Create an entity if it does not exist. Returns the entity ID."""
         name_escaped = self._escape_surrealql(name)
-        entity_type = infer_entity_type(name, self.embedding_service)
+        entity_type = preferred_type or infer_entity_type(name, self.embedding_service)
         
         # 1. Exact name match (fastest path)
         check_sql = f"SELECT id FROM entity WHERE name = '{name_escaped}' LIMIT 1;"
         check_result = self._query_surreal(check_sql)
-        if check_result and len(check_result) > 1:
-            existing = check_result[1].get("result", [])
-            if existing and len(existing) > 0:
-                return existing[0].get("id")
+        existing = self._extract_result(check_result)
+        if existing and len(existing) > 0:
+            return existing[0].get("id")
         
         # 2. Embedding similarity (via SurrealDB Vector Index)
         similar = self._find_similar_entity(name, threshold=0.85)
@@ -356,10 +375,9 @@ class EntropyGate:
             """
         
         result = self._query_surreal(create_sql)
-        if result and len(result) > 1:
-            entity_result = result[1].get("result", [])
-            if entity_result and len(entity_result) > 0:
-                return entity_result[0].get("id")
+        entity_result = self._extract_result(result)
+        if entity_result and len(entity_result) > 0:
+            return entity_result[0].get("id")
         return None
     
     def _find_similar_entity(self, name: str, threshold: float = 0.85) -> Optional[str]:
@@ -377,10 +395,9 @@ class EntropyGate:
             LIMIT 1;
             """
             result = self._query_surreal(sql)
-            if result and len(result) > 1:
-                entities = result[1].get("result", [])
-                if entities and len(entities) > 0:
-                    return entities[0].get("id")
+            entities = self._extract_result(result)
+            if entities and len(entities) > 0:
+                return entities[0].get("id")
         except Exception as e:
             # If embedding fails, skip similarity search
             pass
@@ -400,16 +417,116 @@ class EntropyGate:
         scored.sort(key=lambda x: x[0], reverse=True)
         return [name for _, name in scored[:max_entities]]
 
+    def _dedup_candidates(self, candidates: List[str]) -> List[str]:
+        """Remove candidates whose name is a substring of a longer candidate name."""
+        result = []
+        for c in candidates:
+            cl = c.lower().strip()
+            is_substr = False
+            for other in candidates:
+                if c is other:
+                    continue
+                ol = other.lower().strip()
+                if cl != ol and len(cl) < len(ol) and cl in ol:
+                    is_substr = True
+                    break
+            if not is_substr:
+                result.append(c)
+        return result
+
+    _NOISE_WORDS = {
+        'access', 'assistance', 'author', 'bureaucracy', 'changes', 'deadlines',
+        'effort', 'efforts', 'factors', 'first', 'gap', 'governance', 'injection',
+        'june', 'may', 'march', 'april', 'performance', 'planning', 'poisoning',
+        'progress', 'security', 'solutions', 'testing', 'vectors',
+        'pricing', 'focus', 'nano', 'cli', 'os', 'flash', 'code',
+        'agents', 'agent', 'models', 'model', 'framework', 'platform',
+        'service', 'services', 'system', 'systems', 'data', 'time', 'way',
+        'part', 'parts', 'result', 'results', 'value', 'values', 'level',
+        'levels', 'rate', 'rates', 'cost', 'costs', 'price', 'prices',
+        'market', 'provider', 'providers', 'standard', 'network',
+        'application', 'applications', 'user', 'users', 'tool', 'tools',
+        'process', 'team', 'teams', 'work', 'support', 'report', 'reports',
+        'risk', 'risks', 'threat', 'threats', 'skill', 'skills', 'task',
+        'tasks', 'project', 'projects', 'security', 'governance',
+        'guardrails', 'compliance', 'bottleneck', 'hindrance',
+        'four', 'they', 'codebases', 'coding', 'environments', 'orchestrator',
+        'validation', 'tests', 'test',
+    }
+
+    def _filter_noisy_candidates(self, candidates: List[str]) -> List[str]:
+        """Filter out noisy/unwanted entity candidates before KG insertion."""
+        result = []
+        for c in candidates:
+            clean = c.strip(" \t\n\r.,;:!?()[]{}""'")
+            if len(clean) < 3:
+                continue
+
+            # Pure numbers
+            if re.match(r'^\d+(?:\.\d+)?%?$', clean):
+                continue
+
+            # Currency amounts
+            if re.match(r'^[\$€£¥]\s*\d+[\.\d,]*\s*[A-Za-z/]*', clean):
+                continue
+
+            # Measurements (digits + unit)
+            if re.match(r'^[\d,.]+\s*(?:miles?|km|kg|gb|mb|tb|ghz|mhz|years?|days?|hours?|b|m)\b', clean.lower()):
+                continue
+
+            # Numeric prefixes (e.g. "3 Nano", "309B", "30B", "40 cities")
+            if re.match(r'^[\d,.%]+\s+', clean):
+                continue
+
+            # Digits-only or mostly numeric
+            digit_count = sum(1 for ch in clean if ch.isdigit())
+            if digit_count > 0 and digit_count / max(len(clean), 1) > 0.4:
+                continue
+
+            # Parenthesis fragments
+            if clean.startswith('('):
+                continue
+
+            # Single generic words
+            words = clean.split()
+            if len(words) == 1 and clean.lower().strip(".,;:!?()[]{}""'") in self._NOISE_WORDS:
+                continue
+
+            # Sentence fragments: multi-word starting with determiner/number/possessive, no proper nouns
+            if len(words) >= 2:
+                first = words[0].lower().strip(".,;:!?()[]{}""'")
+                if first in ('the', 'a', 'an', 'this', 'that', 'these', 'those', 'any', 'no', 'its',
+                             'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'):
+                    remaining = words[1:]
+                    if not any(w[0].isupper() for w in remaining if w):
+                        continue
+
+            # Reject if entity ends with a measurement word (e.g. "78.0 percent", "2 cents", "3 dollars")
+            if len(words) >= 2:
+                last_word = words[-1].lower().strip('.,;:!?()[]{}""\'')
+                if last_word in ('percent', 'dollars', 'cents', 'euros', 'pounds', 'billion',
+                                 'million', 'miles', 'years', 'days', 'hours', 'tokens', 'parameters'):
+                    continue
+
+            # 4+ word phrases with no proper nouns at all
+            if len(words) >= 4:
+                if not any(w[0].isupper() for w in words if w):
+                    continue
+
+            result.append(c)
+        return result
+
     def _extract_to_kg(self, text: str, event_id: str, debug: bool = False):
         """
         Extract entities and semantic relationships to the Knowledge Graph.
         Uses SVO extraction as primary method, with co-occurrence as fallback.
         """
         # First, try SVO extraction if spaCy is available
+        entity_type_map = {}
         try:
-            from src.extraction.entity_utils import extract_triples, extract_entities_with_spacy
+            from src.extraction.entity_utils import extract_triples, extract_entities
             svo_triples = extract_triples(text)
-            spacy_entities = extract_entities_with_spacy(text)
+            entities = extract_entities(text)
             
             # Extract entities from SVO triples if any
             svo_entities = set()
@@ -417,13 +534,17 @@ class EntropyGate:
                 svo_entities.add(triple["subject"])
                 svo_entities.add(triple["object"])
             
-            # Combine entities from SVO and spaCy NER
+            # Combine entities from SVO and spaCy NER, preserving types
             all_candidates = set()
-            for entity in spacy_entities:
-                all_candidates.add(entity["name"])
+            for entity in entities:
+                name = entity["name"]
+                all_candidates.add(name)
+                if name not in entity_type_map:
+                    entity_type_map[name] = entity["type"]
             all_candidates.update(svo_entities)
             
-            candidates = list(all_candidates)
+            candidates = self._dedup_candidates(list(all_candidates))
+            candidates = self._filter_noisy_candidates(candidates)
         except ImportError:
             # Fall back to original method if spaCy is not available
             candidates = self._extract_candidate_entities(text)
@@ -442,13 +563,18 @@ class EntropyGate:
         entity_names = []
 
         for name in candidates:
-            eid = self._ensure_entity(name)
+            # Safety: skip if name doesn't appear in source text (hallucination guard)
+            if name.lower() not in text.lower():
+                if debug:
+                    print(f"  [KG] Skipping hallucinated entity: {name}")
+                continue
+            eid = self._ensure_entity(name, entity_type_map.get(name))
             if eid:
                 entity_ids.append(eid)
                 entity_names.append(name)
                 entities_created += 1
                 if debug:
-                    print(f"  [KG] Entity: {name} -> {eid}")
+                    print(f"  [KG] Entity: {name} ({entity_type_map.get(name, '?')}) -> {eid}")
 
         # Process SVO triples if spaCy is available
         try:
@@ -481,7 +607,7 @@ class EntropyGate:
                             confidence = {confidence:.4f};
                         """
                         relate_result = self._query_surreal(relate_sql)
-                        if relate_result and len(relate_result) > 1 and relate_result[1].get("status") == "OK":
+                        if self._extract_ok(relate_result):
                             facts_created += 1
                             if debug:
                                 print(f"  [KG] SVO Fact: {subject} -[{predicate} ({confidence:.2f})]-> {obj}")
@@ -563,7 +689,7 @@ class EntropyGate:
                                         confidence = {confidence:.4f};
                                     """
                                     relate_result = self._query_surreal(relate_sql)
-                                    if relate_result and len(relate_result) > 1 and relate_result[1].get("status") == "OK":
+                                    if self._extract_ok(relate_result):
                                         facts_created += 1
                                         if debug:
                                             print(f"  [KG] Co-occurrence Fact: {subset_names[idx_a]} -[{predicate} ({confidence:.2f})]-> {subset_names[idx_b]}")
@@ -579,7 +705,7 @@ class EntropyGate:
                     confidence = 0.8;
                 """
                 relate_result = self._query_surreal(relate_sql)
-                if relate_result and len(relate_result) > 1 and relate_result[1].get("status") == "OK":
+                if self._extract_ok(relate_result):
                     facts_created += 1
             except Exception as e:
                 if debug:
@@ -616,16 +742,15 @@ class EntropyGate:
         LIMIT 1;
         """
         dedup_result = self._query_surreal(dedup_sql)
-        if dedup_result and len(dedup_result) > 1:
-            existing = dedup_result[1].get("result", [])
-            if existing and len(existing) > 0:
-                event_id = existing[0].get("id")
-                if debug:
-                    print(f"  [Dedup] Found existing event {event_id} for identical content and source")
-                gate_result = self.should_extract(text)
-                if gate_result["decision"] == "extract" and event_id:
-                    kg_result = self._extract_to_kg(text, event_id, debug)
-                return event_id
+        existing = self._extract_result(dedup_result)
+        if existing and len(existing) > 0:
+            event_id = existing[0].get("id")
+            if debug:
+                print(f"  [Dedup] Found existing event {event_id} for identical content and source")
+            gate_result = self.should_extract(text)
+            if gate_result["decision"] == "extract" and event_id:
+                kg_result = self._extract_to_kg(text, event_id, debug)
+            return event_id
 
         # 1. IMMER in Raw Event Log speichern (ohne Gate!)
         embedding = self.embedding_service.embed_for_storage(text)
@@ -643,10 +768,10 @@ class EntropyGate:
         result = None
         try:
             result = self._query_surreal(sql)
-            if result and len(result) > 1:
-                event_result = result[1].get("result", [])
-                if event_result and isinstance(event_result, list) and len(event_result) > 0:
-                    event_id = event_result[0].get("id")
+            event_result = self._extract_result(result)
+            if event_result and len(event_result) > 0:
+                first = event_result[0]
+                event_id = first.get("id") if isinstance(first, dict) else None
         except Exception as e:
             import sys
             sys.stderr.write(f"[EntropyGate] Error saving to event log: {e}\n")

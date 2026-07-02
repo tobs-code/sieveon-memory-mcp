@@ -705,7 +705,7 @@ def _categorize_results(results: List[Any]) -> tuple:
 
 @app.post("/memory/store")
 async def memory_store_endpoint(request_data: dict):
-    """Stores a new event in the raw event log. Runs through entropy gate."""
+    """Stores a new event in the raw event log. Runs through entropy gate. NOTE: Only English content should be stored — German or other languages produce noisy entity extraction."""
     return await _store_content(
         request_data.get("content", ""),
         request_data.get("source", "user_input"),
@@ -729,7 +729,7 @@ async def memory_query_endpoint(request_data: dict):
 @mcp.tool()
 async def memory_store(content: str, source: str = "user_input",
                        metadata: Optional[Dict[str, Any]] = None) -> dict:
-    """Stores a new event in the raw event log. Runs through entropy gate."""
+    """Stores a new event in the raw event log. Runs through entropy gate. NOTE: Only English content should be stored — German or other languages produce noisy entity extraction."""
     return await _store_content(content, source, debug=True)
 
 
@@ -919,43 +919,7 @@ async def kg_query_endpoint(
     limit: int = Query(20, description="Limit the number of results"),
 ):
     """Direct graph traversal: query facts by subject/predicate/time."""
-    sql = "SELECT * FROM fact WHERE (valid_until = NONE OR valid_until = NULL) AND (forgotten = NONE OR forgotten = false)"
-
-    if subject:
-        subject_escaped = escape_surrealql(subject)
-        sql += (
-            f" AND (in.name CONTAINS '{subject_escaped}' OR in = '{subject_escaped}')"
-        )
-    if predicate:
-        predicate_escaped = escape_surrealql(predicate)
-        sql += f" AND predicate = '{predicate_escaped}'"
-    if at_time:
-        at_time_escaped = escape_surrealql(at_time)
-        sql += f" AND valid_from <= '{at_time_escaped}'"
-
-    sql += f" LIMIT {limit} FETCH in, out;"
-    result = await _query_surreal(sql)
-    facts = _extract_result(result, 1)
-
-    entities = []
-    seen_ids = set()
-    for fact in facts:
-        for key in ("in", "out"):
-            val = fact.get(key)
-            if (
-                isinstance(val, dict)
-                and val.get("id")
-                and val.get("id") not in seen_ids
-            ):
-                entities.append(_clean_output(val))
-                seen_ids.add(val.get("id"))
-            elif isinstance(val, str) and val not in seen_ids:
-                entities.append({"id": val})
-                seen_ids.add(val)
-
-    clean_facts = [_clean_output(fact) for fact in facts]
-
-    return {"facts": clean_facts, "entities": entities, "count": len(clean_facts)}
+    return await _execute_kg_query(subject, predicate, at_time, limit)
 
 
 @mcp.tool()
@@ -1041,33 +1005,52 @@ async def event_log_search(
     return {"events": events, "count": len(events)}
 
 
-@mcp.tool()
-async def kg_query(
+async def _execute_kg_query(
     subject: Optional[str] = None,
     predicate: Optional[str] = None,
     at_time: Optional[str] = None,
     limit: int = 20,
 ) -> dict:
-    """Direct graph traversal: query facts by subject/predicate/time.
-    Returns associated entities with their inferred types (e.g., 'organization', 'concept')."""
+    """Execute KG query with two-step resolution: entity name → ID → facts.
+    Resolves subject names via BM25 + CONTAINS, then queries facts with IN [...]."""
     try:
         limit = _validate_limit(limit, "limit")
     except ValueError as e:
         return {"error": str(e), "facts": [], "entities": [], "count": 0}
-    sql = "SELECT * FROM fact WHERE (valid_until = NONE OR valid_until = NULL)"
 
-    # Optional forgotten filter
-    sql += " AND (forgotten = NONE OR forgotten = false)"
+    resolved_entity_ids = set()
 
+    # Step 1: Resolve subject name to entity IDs via entity table
     if subject:
         subject_escaped = escape_surrealql(subject)
-        # Robust check for subject name via the 'in' edge
-        sql += (
-            f" AND (in.name CONTAINS '{subject_escaped}' OR in = '{subject_escaped}')"
+        entity_sql = (
+            f"SELECT id FROM entity "
+            f"WHERE (name @@ '{subject_escaped}' "
+            f"  OR name CONTAINS '{subject_escaped}' "
+            f"  OR '{subject_escaped}' CONTAINS name) "
+            f"AND (forgotten IS NONE OR forgotten = false) "
+            f"LIMIT 20;"
         )
+        entity_result = await _query_surreal(entity_sql)
+        entity_rows = _extract_result(entity_result, 1)
+        for row in entity_rows:
+            if isinstance(row, dict) and row.get("id"):
+                resolved_entity_ids.add(row["id"])
+
+        if not resolved_entity_ids:
+            return {"facts": [], "entities": [], "count": 0, "note": "no matching entities found"}
+
+    # Step 2: Query facts using resolved entity IDs
+    sql = "SELECT * FROM fact WHERE (valid_until IS NONE OR valid_until > time::now())"
+
+    if resolved_entity_ids:
+        ids_str = ", ".join(resolved_entity_ids)
+        sql += f" AND (in IN [{ids_str}] OR out IN [{ids_str}])"
+
     if predicate:
         predicate_escaped = escape_surrealql(predicate)
         sql += f" AND predicate = '{predicate_escaped}'"
+
     if at_time:
         at_time_escaped = escape_surrealql(at_time)
         sql += f" AND valid_from <= '{at_time_escaped}'"
@@ -1081,21 +1064,27 @@ async def kg_query(
     for fact in facts:
         for key in ("in", "out"):
             val = fact.get(key)
-            if (
-                isinstance(val, dict)
-                and val.get("id")
-                and val.get("id") not in seen_ids
-            ):
+            if isinstance(val, dict) and val.get("id") and val.get("id") not in seen_ids:
                 entities.append(_clean_output(val))
                 seen_ids.add(val.get("id"))
             elif isinstance(val, str) and val not in seen_ids:
                 entities.append({"id": val})
                 seen_ids.add(val)
 
-    # Clean facts to remove embeddings
     clean_facts = [_clean_output(fact) for fact in facts]
-
     return {"facts": clean_facts, "entities": entities, "count": len(clean_facts)}
+
+
+@mcp.tool()
+async def kg_query(
+    subject: Optional[str] = None,
+    predicate: Optional[str] = None,
+    at_time: Optional[str] = None,
+    limit: int = 20,
+) -> dict:
+    """Direct graph traversal: query facts by subject/predicate/time.
+    Returns associated entities with their inferred types (e.g., 'organization', 'concept')."""
+    return await _execute_kg_query(subject, predicate, at_time, limit)
 
 
 @mcp.tool()

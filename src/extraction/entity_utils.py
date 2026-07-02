@@ -1,7 +1,9 @@
 """Shared entity utilities for STRATA - single source of truth."""
 from typing import Optional
-import re
+import json
 import os
+import re
+import requests
 import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
@@ -194,6 +196,104 @@ def extract_entities_with_spacy(text: str) -> list[dict]:
         return regex_entities
 
 
+_GROQ_API_KEY = None
+
+def _get_groq_key() -> str | None:
+    global _GROQ_API_KEY
+    if _GROQ_API_KEY is None:
+        _GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+    return _GROQ_API_KEY if _GROQ_API_KEY else None
+
+_GROQ_SYSTEM_PROMPT = (
+    "Extract named entities. Return: name | type | confidence\n\n"
+    "Types: person, organization, location, technology, concept, event\n\n"
+    "RULES:\n"
+    "- Extract specific named entities only (companies, products, people, places, benchmarks, laws/acts, dates)\n"
+    "- DO NOT extract: generic job roles (developer, author, engineer, orchestrator), common nouns, measurements, prices, standalone years, single generic words\n"
+    "- Conf 0.9+ for clear names, 0.7-0.8 for borderline"
+)
+
+_GROQ_FEW_SHOT_EXAMPLES = """\
+Text: Google released Gemini 2.0 and Microsoft launched Copilot.
+Output:
+Google | organization | 0.99
+Gemini 2.0 | technology | 0.95
+Microsoft | organization | 0.99
+Copilot | technology | 0.90
+
+Text: Anthropic's Claude 3.5 Sonnet scored 88% on SWE-bench.
+Output:
+Anthropic | organization | 0.99
+Claude 3.5 Sonnet | technology | 0.99
+SWE-bench | technology | 0.95"""
+
+
+def extract_entities_with_groq(text: str) -> list[dict]:
+    key = _get_groq_key()
+    if not key:
+        return []
+    payload = {
+        "model": "llama-3.1-8b-instant",
+        "messages": [
+            {"role": "system", "content": _GROQ_SYSTEM_PROMPT},
+            {"role": "user", "content": f"Examples:\n{_GROQ_FEW_SHOT_EXAMPLES}\n\nText: {text}\nOutput:"},
+        ],
+        "temperature": 0.0,
+        "max_tokens": 512,
+    }
+    try:
+        resp = requests.post(
+            "https://api.groq.com/openai/v1/chat/completions",
+            json=payload,
+            headers={"Authorization": f"Bearer {key}"},
+            timeout=30,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+        content = data["choices"][0]["message"]["content"]
+    except Exception:
+        return []
+
+    entities = []
+    seen = set()
+    for line in content.split("\n"):
+        line = line.strip()
+        if "|" not in line:
+            continue
+        parts = [p.strip() for p in line.split("|")]
+        if len(parts) < 2 or len(parts[0]) < 2:
+            continue
+        name = parts[0]
+        etype = parts[1].lower()
+        if etype not in {"person", "organization", "location", "technology", "concept", "event"}:
+            etype = "concept"
+        conf = 0.7
+        if len(parts) >= 3:
+            try:
+                conf = min(1.0, max(0.0, float(parts[2])))
+            except ValueError:
+                pass
+        key = f"{name.lower()}|{etype}"
+        if key in seen:
+            continue
+        seen.add(key)
+        entities.append({"name": name, "type": etype, "label": "GROQ", "confidence": conf})
+    return entities
+
+
+def extract_entities(text: str) -> list[dict]:
+    method = os.getenv("EXTRACTION_METHOD", "auto")
+    if method == "groq":
+        entities = extract_entities_with_groq(text)
+        if entities:
+            return entities
+    if method in ("groq", "auto"):
+        entities = extract_entities_with_groq(text)
+        if entities:
+            return entities
+    return extract_entities_with_spacy(text)
+
+
 def map_spacy_label_to_strata(spacy_label: str) -> str:
     """Map spaCy labels to STRATA entity types."""
     label_mapping = {
@@ -219,7 +319,7 @@ def infer_entity_type(name: str, embedding_service: Optional[BaseEmbeddingServic
 
     if any(suffix in lower for suffix in ['corp', 'inc', 'ltd', 'ltd', 'company', 'org', 'ag', 'llc', 'corp.', 'inc.', 'ltd.', '& co', 'e.l.l.c.']):
         return 'organization'
-    if any(suffix in lower for suffix in ['gate', 'system', 'framework', 'engine', 'server', 'protocol', 'database', 'platform', 'service', 'tool', 'api', 'sdk', 'runtime', 'client', 'agent', 'model']):
+    if any(suffix in lower for suffix in ['gate', 'system', 'framework', 'engine', 'server', 'protocol', 'database', 'platform', 'service', 'tool', 'api', 'sdk', 'runtime', 'client', 'agent', 'model', 'code', 'cli', 'studio', 'os', 'suite', 'app', 'bot', 'flash', 'nano', 'codex', 'inference', 'benchmark', 'infer', 'train', 'dataset', 'embedding', 'vector', 'reasoning', 'token', 'layer', 'params', 'neural', 'transformer', 'attention', 'encoder', 'decoder', 'quantum', 'blockchain']):
         return 'technology'
     if any(suffix in lower for suffix in ['theory', 'effect', 'mechanics', 'technology', 'principle', 'rule', 'law', 'theorem', 'axiom', 'paradigm', 'method', 'algorithm', 'concept']):
         return 'concept'

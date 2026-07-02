@@ -78,10 +78,20 @@ if __name__ == "__main__":
     # Quick check
     check, errors = run_sql_batch(["SELECT count() FROM event", "SELECT count() FROM entity"])
     print(f"\n🔍 Quick check:")
-    try:
-        event_count = check[0]['result'][0]['count'] if check and check[0] and check[0].get('result') else 0
-        entity_count = check[1]['result'][0]['count'] if check and len(check) > 1 and check[1] and check[1].get('result') else 0
+    if errors:
+        print(f"   ⚠️ Errors: {errors}")
+    else:
+        event_count = entity_count = "?"
+        for item in (check or []):
+            if isinstance(item, dict) and item.get("status") == "OK":
+                res = item.get("result")
+                if isinstance(res, list) and len(res) > 0 and isinstance(res[0], dict):
+                    if "database" in res[0]:
+                        continue
+                    elif res[0].get("count") is not None:
+                        if event_count == "?":
+                            event_count = res[0]["count"]
+                        else:
+                            entity_count = res[0]["count"]
         print(f"   Events: {event_count}")
         print(f"   Entities: {entity_count}")
-    except Exception as e:
-        print(f"   ⚠️ Could not retrieve counts: {e}")

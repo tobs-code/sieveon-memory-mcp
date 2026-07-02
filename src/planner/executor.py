@@ -548,10 +548,27 @@ class PlanExecutor:
             auth=self.auth,
             timeout=30
         )
-        
-        result = response.json()
-        if isinstance(result, list) and len(result) > 1 and 'result' in result[1]:
-            return result[1]
-        elif isinstance(result, list) and len(result) > 0 and 'result' in result[0]:
-            return result[0]
-        return {'result': result if isinstance(result, list) else [result]}
+        response.raise_for_status()
+
+        data = response.json()
+        if isinstance(data, list):
+            for item in data:
+                if isinstance(item, dict) and item.get("status") == "ERR":
+                    raise RuntimeError(
+                        f"SurrealDB Error: {item.get('information') or item.get('result')} | SQL: {sql[:120]}"
+                    )
+            candidates = [
+                item
+                for item in data
+                if isinstance(item, dict)
+                and item.get("status") == "OK"
+                and "result" in item
+                and not (
+                    isinstance(item["result"], dict)
+                    and "database" in item["result"]
+                    and "namespace" in item["result"]
+                )
+            ]
+            if candidates:
+                return candidates[0]
+        return {'result': data if isinstance(data, list) else [data]}
