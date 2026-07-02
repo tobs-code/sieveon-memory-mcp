@@ -852,6 +852,38 @@ async def memory_update(subject: str, predicate: str, new_value: str) -> dict:
     }
 
 
+
+# Add HTTP endpoints for the MCP tools that were missing them
+@app.post("/memory/update")
+async def memory_update_endpoint(request_data: dict):
+    """HTTP endpoint for memory_update MCP tool."""
+    subject = request_data.get("subject", "")
+    predicate = request_data.get("predicate", "")
+    new_value = request_data.get("new_value", "")
+    
+    return await memory_update(subject, predicate, new_value)
+
+
+@app.post("/memory/forget")
+async def memory_forget_endpoint(request_data: dict):
+    """HTTP endpoint for memory_forget MCP tool."""
+    event_id = request_data.get("event_id")
+    entity = request_data.get("entity")
+    reason = request_data.get("reason", "")
+    
+    return await memory_forget(event_id=event_id, entity=entity, reason=reason)
+
+
+@app.post("/memory/consolidate")
+async def memory_consolidate_endpoint(request_data: dict):
+    """HTTP endpoint for memory_consolidate MCP tool."""
+    scope = request_data.get("scope", "local")
+    entity = request_data.get("entity")
+    delete_stale = request_data.get("delete_stale", False)
+    
+    return await memory_consolidate(scope=scope, entity=entity, delete_stale=delete_stale)
+
+
 # =============================================================================
 # Schicht 2 - Retrieval Primitives
 # =============================================================================
