@@ -1,4 +1,4 @@
-# MCP Server — STRATA Memory Stack
+# MCP Server — Sieveon Memory Stack
 
 The MCP Server exposes the entire STRATA Memory Stack as a standardized tool interface via the [Model Context Protocol (MCP)](https://modelcontextprotocol.io). Any MCP-compatible client (e.g. Claude Desktop, Cursor, VS Code with MCP extension) can call all 13 memory tools directly — without hosting the stack itself.
 

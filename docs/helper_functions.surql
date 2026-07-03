@@ -2,7 +2,7 @@
 -- SurrealDB Helper Functions
 -- ========================================
 
-USE NS strata DB strata;
+USE NS sieveon DB sieveon;
 
 -- 1. fn::active_fact($subject, $predicate)
 -- Holt alle aktiven Facts für ein Subjekt und Prädikat

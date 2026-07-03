@@ -8,7 +8,7 @@ AUTH = ("root", "root")
 
 
 def run_sql_batch(statements, label=""):
-    sql = "USE NS strata DB strata;\n" + ";\n".join(statements) + ";"
+    sql = "USE NS sieveon DB sieveon;\n" + ";\n".join(statements) + ";"
     headers = {"Accept": "application/json", "Content-Type": "text/plain"}
     response = requests.post(URL, data=sql, headers=headers, auth=AUTH, timeout=60)
     data = response.json()

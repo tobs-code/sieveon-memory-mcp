@@ -3,7 +3,7 @@ version: '3.8'
 services:
   surrealdb:
     image: surrealdb/surrealdb:latest
-    container_name: strata-surrealdb
+    container_name: sieveon-surrealdb
     ports:
       - "8000:8000"
     user: root

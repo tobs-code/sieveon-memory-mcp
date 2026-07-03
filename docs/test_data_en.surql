@@ -2,7 +2,7 @@
 -- Testdaten für das Agent-Native Memory System
 -- ========================================
 
-USE NS strata DB strata;
+USE NS sieveon DB sieveon;
 
 -- 1. Events hinzufügen (Append-Only)
 CREATE event SET

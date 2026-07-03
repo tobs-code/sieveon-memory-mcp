@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Core infrastructure for the STRATA Memory Control Plane
+Core infrastructure for the Sieveon Memory Control Plane
 Handles connection management, resilience patterns, and basic utilities
 """
 
@@ -30,10 +30,10 @@ from src.router.cost_awareness import CostTracker
 cost_tracker = CostTracker()
 
 # Initialize FastMCP (Model Context Protocol) and FastAPI apps
-mcp = FastMCP("strata")  # Model Context Protocol implementation
+mcp = FastMCP("sieveon")  # Model Context Protocol implementation
 
 # FastAPI app
-app = FastAPI(title="Strata Control Plane Server (MCP Implementation)", version="0.1.0")
+app = FastAPI(title="Sieveon Control Plane Server (MCP Implementation)", version="0.1.0")
 
 # Add CORS middleware
 app.add_middleware(
@@ -49,8 +49,8 @@ SURREAL_AUTH = (
     os.getenv("SURREALDB_USER", "root"),
     os.getenv("SURREALDB_PASS", "root"),
 )
-SURREAL_NS = os.getenv("SURREALDB_NS", "strata")  # Updated from agent_memory to strata
-SURREAL_DB = os.getenv("SURREALDB_DB", "strata")  # Updated from agent_memory to strata
+SURREAL_NS = os.getenv("SURREALDB_NS", "sieveon")
+SURREAL_DB = os.getenv("SURREALDB_DB", "sieveon")
 
 # Maximum content length constant
 MAX_CONTENT_LENGTH = 100_000
@@ -403,7 +403,7 @@ async def _background_reconnect_task():
 
 
 async def check_schema_exists() -> bool:
-    """Check if the STRATA schema is already loaded in SurrealDB."""
+    """Check if the Sieveon schema is already loaded in SurrealDB."""
     try:
         # Check if key tables exist - INFO FOR DB is more standard in SurrealDB 2.x+
         result = await _query_surreal("INFO FOR DB;")
@@ -481,9 +481,9 @@ def load_schema_file(file_path: str) -> List[str]:
 
 
 async def ensure_schema_loaded():
-    """Ensure the STRATA schema is loaded. If not, load it automatically."""
+    """Ensure the Sieveon schema is loaded. If not, load it automatically."""
     if not await check_schema_exists():
-        print("[INFO] STRATA schema not found. Loading automatically...")
+        print("[INFO] Sieveon schema not found. Loading automatically...")
 
         project_root = os.path.dirname(
             os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -515,7 +515,7 @@ async def ensure_schema_loaded():
             print(f"   [WARN] Load script not found: {load_script}")
             print("   Skipping automatic schema load")
     else:
-        print("[OK] STRATA schema already loaded")
+        print("[OK] Sieveon schema already loaded")
 
     # Ensure entity table has all required fields (in case schema was loaded without them)
     try:

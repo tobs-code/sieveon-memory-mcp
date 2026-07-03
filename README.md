@@ -1,4 +1,4 @@
-# Strata
+# Sieveon
 
 ![Python](https://img.shields.io/badge/python-3.11%2B-blue)
 ![SurrealDB](https://img.shields.io/badge/SurrealDB-3.1.5-8B5CF6)
@@ -12,7 +12,7 @@
 
 ## Overview
 
-Strata is an agent memory system that intelligently classifies, routes, plans, and executes queries across multiple storage and retrieval strategies. It consists of a **Python-based Control Plane** (MCP Server) that interfaces with SurrealDB for storage and retrieval operations.
+Sieveon is an agent memory system that intelligently classifies, routes, plans, and executes queries across multiple storage and retrieval strategies. It consists of a **Python-based Control Plane** (MCP Server) that interfaces with SurrealDB for storage and retrieval operations.
 
 ### Architecture
 
@@ -24,7 +24,7 @@ Strata is an agent memory system that intelligently classifies, routes, plans, a
                          ▼
         ┌─────────────────────────────┐
         │     SurrealDB Storage       │
-        │  (NS:strata DB:strata)      │
+        │  (NS:sieveon DB:sieveon)    │
         └─────────────────────────────┘
 ```
 
@@ -89,7 +89,7 @@ cd src/mcp && python server.py
 
 ## Performance & Benchmarks
 
-Strata has an integrated benchmark system to measure tool latency. Results are automatically logged to `benchmarks/benchmark_results.md`.
+Sieveon has an integrated benchmark system to measure tool latency. Results are automatically logged to `benchmarks/benchmark_results.md`.
 
 ### Tool Performance (as of July 2026, warm SurrealDB, CPU-only embeddings)
 

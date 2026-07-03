@@ -9,7 +9,7 @@
 -- Source of Truth für Neuanlagen ("baseline") und Dokumentation.
 -- ========================================
 
-USE NS strata DB strata;
+USE NS sieveon DB sieveon;
 
 -- ========================================
 -- ① Immutable Raw Event Log
