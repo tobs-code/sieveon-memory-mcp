@@ -25,6 +25,9 @@ from src.extraction.embedding_service import get_embedding_service, BaseEmbeddin
 from src.extraction.entity_utils import infer_entity_type, extract_noun_phrases, is_content_phrase
 
 
+import sys as _sys
+
+
 def escape_surrealql(value: str) -> str:
     """Escape a string for safe use in a SurrealQL string literal."""
     import re
@@ -35,6 +38,11 @@ def escape_surrealql(value: str) -> str:
     value = value.replace('\t', '\\t')
     value = re.sub(r'[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]', '', value)
     return value
+
+
+def _debug_print(*args, **kwargs):
+    """Print to stderr to avoid breaking MCP JSON-RPC on stdout."""
+    print(*args, file=_sys.stderr, **kwargs)
 
 
 class EntropyGateConfig:
