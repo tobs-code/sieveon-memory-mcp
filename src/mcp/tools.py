@@ -270,48 +270,40 @@ async def kg_query(
     at_time: Optional[str] = None,
 ) -> dict:
     """Direct graph traversal: query facts by subject/predicate/time.
-    Returns associated entities with their inferred types (e.g., 'organization', 'concept')."""
-
-    subject_clause = ""
-    predicate_clause = ""
-    time_clause = ""
+    Returns associated entities with their inferred types (e.g., 'organization', 'concept').
+    Searches both directions — 'subject' matches entity name in subject or object position."""
+    extra_clauses = ""
 
     if subject:
         subject_escaped = escape_surrealql(subject)
-        subject_clause = f"WHERE in.name = '{subject_escaped}'"
+        extra_clauses = f"WHERE (in.name = '{subject_escaped}' OR out.name = '{subject_escaped}')"
     if predicate:
         predicate_escaped = escape_surrealql(predicate)
-        if subject_clause:
-            subject_clause += f" AND predicate = '{predicate_escaped}'"
+        if extra_clauses:
+            extra_clauses += f" AND predicate = '{predicate_escaped}'"
         else:
-            subject_clause = f"WHERE predicate = '{predicate_escaped}'"
+            extra_clauses = f"WHERE predicate = '{predicate_escaped}'"
     if at_time:
         time_escaped = escape_surrealql(at_time)
-        if subject_clause:
-            subject_clause += (
-                f" AND (valid_from <= '{time_escaped}' OR valid_from = NONE)"
-            )
-            subject_clause += (
-                f" AND (valid_until >= '{time_escaped}' OR valid_until = NONE)"
-            )
+        time_condition = (
+            f"(valid_from <= '{time_escaped}' OR valid_from = NONE)"
+            f" AND (valid_until >= '{time_escaped}' OR valid_until = NONE)"
+        )
+        if extra_clauses:
+            extra_clauses += f" AND {time_condition}"
         else:
-            subject_clause = (
-                f"WHERE (valid_from <= '{time_escaped}' OR valid_from = NONE)"
-            )
-            subject_clause += (
-                f" AND (valid_until >= '{time_escaped}' OR valid_until = NONE)"
-            )
+            extra_clauses = f"WHERE {time_condition}"
 
     # Only show active facts (not invalidated)
     valid_filter = "WHERE (valid_until IS NONE OR valid_until > time::now())"
-    if subject_clause:
+    if extra_clauses:
         # Replace initial WHERE with AND since we already have valid_filter
-        subject_clause = subject_clause.replace("WHERE", "AND", 1) if "WHERE" in subject_clause else subject_clause
+        extra_clauses = extra_clauses.replace("WHERE", "AND", 1) if "WHERE" in extra_clauses else extra_clauses
 
     sql = f"""
     SELECT id, in, out, predicate, confidence, valid_from, valid_until
     FROM fact
-    {valid_filter} {subject_clause}
+    {valid_filter} {extra_clauses}
     ORDER BY confidence DESC
     LIMIT 100;
     """
