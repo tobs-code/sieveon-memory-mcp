@@ -34,8 +34,8 @@ async def memory_query(query: str, cost_budget: str = "auto") -> dict:
 
 @mcp.tool()
 async def memory_update(subject: str, predicate: str, new_value: str) -> dict:
-    """Updates a fact in the KG via logical invalidation. Old fact gets valid_until, new fact created.
-    If the target entity does not exist yet, it will be created automatically."""
+    """Updates a fact in the KG via logical invalidation (valid_until). If no active fact exists,
+    creates a new fact (upsert). Entities are created automatically if they don't exist."""
     subject_id = await _get_or_create_entity(subject)
     if not subject_id:
         return {
@@ -69,24 +69,6 @@ async def memory_update(subject: str, predicate: str, new_value: str) -> dict:
         invalidate_sql = f"UPDATE {old_fact_id} SET valid_until = time::now();"
         await _query_surreal(invalidate_sql)
         invalidated = old_fact_id
-    else:
-        related_sql = f"""
-        SELECT predicate, out.name AS value, out.type AS value_type FROM fact
-        WHERE in.name = '{subject_escaped}'
-          AND valid_until = NONE;
-        """
-        related_result = await _query_surreal(related_sql)
-        related_facts = _extract_result(related_result, 1)
-        return {
-            "status": "error",
-            "message": f"No active fact found for subject='{subject}', predicate='{predicate}'",
-            "existing_facts_for_subject": [
-                {"predicate": f["predicate"], "value": f.get("value")}
-                for f in related_facts
-            ]
-            if related_facts
-            else [],
-        }
 
     relate_sql = f"RELATE {subject_id}->fact->{object_id} SET predicate = '{predicate_escaped}', confidence = 1.0;"
     relate_result = await _query_surreal(relate_sql)
