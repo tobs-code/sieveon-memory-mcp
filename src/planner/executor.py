@@ -230,7 +230,10 @@ class RetrievalExecutor:
         """Search knowledge graph by subject name."""
         subject_escaped = escape_surrealql(subject)
         sql = f"""
-        SELECT id, in, out, predicate, confidence, valid_from, valid_until
+        SELECT id,
+               in.name AS in_name, in.type AS in_type, in.id AS in_id,
+               out.name AS out_name, out.type AS out_type, out.id AS out_id,
+               predicate, confidence, valid_from, valid_until
         FROM fact
         WHERE in.name = '{subject_escaped}'
         ORDER BY confidence DESC
@@ -243,7 +246,10 @@ class RetrievalExecutor:
         """Search knowledge graph by matching predicate or entity names."""
         text_escaped = escape_surrealql(text)
         sql = f"""
-        SELECT id, in, out, predicate, confidence, valid_from, valid_until
+        SELECT id,
+               in.name AS in_name, in.type AS in_type, in.id AS in_id,
+               out.name AS out_name, out.type AS out_type, out.id AS out_id,
+               predicate, confidence, valid_from, valid_until
         FROM fact
         WHERE predicate CONTAINS '{text_escaped}'
            OR in.name CONTAINS '{text_escaped}'

@@ -328,6 +328,7 @@ async def kg_query(
     MIN_CONFIDENCE = 0.5
 
     enhanced_facts = []
+    in_name_map = {}
     for fact in facts:
         pred = fact.get("predicate", "")
         conf = fact.get("confidence", 0) or 0
@@ -343,9 +344,10 @@ async def kg_query(
         out_name = fact.pop("out_name", None)
         out_type = fact.pop("out_type", None)
 
-        # Ontologie-Validierung: Prädikat muss zu Entity-Typen passen
-        if not _is_fact_plausible(pred, in_type or "", out_type or ""):
-            continue
+        # Build name lookup for entity ID resolution
+        for eid, ename, etype in [(in_id, in_name, in_type), (out_id, out_name, out_type)]:
+            if eid and ename and eid not in in_name_map:
+                in_name_map[eid] = (ename, etype or "")
 
         fact["in"] = {
             "id": in_id,

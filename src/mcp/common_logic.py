@@ -230,8 +230,20 @@ def _categorize_results(results: List[Any]) -> Tuple[List[Dict], List[Dict], Lis
             name_to_entity[eid] = ename
 
     for f in facts:
-        for key in ('in', 'out'):
+        # Normalize executor format (in_name/in_id) to in/out dicts
+        for key, name_key, type_key, id_key in [
+            ('in', 'in_name', 'in_type', 'in_id'),
+            ('out', 'out_name', 'out_type', 'out_id'),
+        ]:
             val = f.get(key)
+            if not isinstance(val, (dict, str)):
+                name_val = f.pop(name_key, None) if name_key in f else None
+                type_val = f.pop(type_key, None) if type_key in f else None
+                id_val = f.pop(id_key, None) if id_key in f else None
+                if id_val:
+                    f[key] = {"id": id_val, "name": name_val, "type": type_val}
+                    val = f[key]
+
             if isinstance(val, dict):
                 val_id = val.get("id")
                 if val_id and val_id not in name_to_entity:
@@ -239,12 +251,19 @@ def _categorize_results(results: List[Any]) -> Tuple[List[Dict], List[Dict], Lis
                         if e.get("id") == val_id:
                             name_to_entity[val_id] = e.get("name", val_id)
                             break
+
+        for key in ('in', 'out'):
+            val = f.get(key)
             if isinstance(val, str):
                 f[key] = {"id": val, "name": name_to_entity.get(val, val), "type": ""}
             elif isinstance(val, dict):
+                val_id = val.get("id", "")
+                val_name = val.get("name")
+                if not val_name and val_id in name_to_entity:
+                    val_name = name_to_entity[val_id]
                 f[key] = {
-                    "id": val.get("id", val.get(key, "")),
-                    "name": val.get("name", val.get("id", "")),
+                    "id": val_id,
+                    "name": val_name if val_name else val_id,
                     "type": val.get("type", ""),
                 }
 
