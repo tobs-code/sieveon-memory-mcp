@@ -482,40 +482,73 @@ def load_schema_file(file_path: str) -> List[str]:
 
 async def ensure_schema_loaded():
     """Ensure the STRATA schema is loaded. If not, load it automatically."""
-    if await check_schema_exists():
-        print("[OK] STRATA schema already loaded")
-        return
+    if not await check_schema_exists():
+        print("[INFO] STRATA schema not found. Loading automatically...")
 
-    print("[INFO] STRATA schema not found. Loading automatically...")
+        project_root = os.path.dirname(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        )
+        load_script = os.path.join(project_root, "scripts", "load_schema_optimized.py")
 
-    # Use the existing load_schema_optimized.py script
-    project_root = os.path.dirname(
-        os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    )
-    load_script = os.path.join(project_root, "scripts", "load_schema_optimized.py")
+        if os.path.exists(load_script):
+            print(f"   Using existing load script: {load_script}")
+            try:
+                import subprocess
 
-    if os.path.exists(load_script):
-        print(f"   Using existing load script: {load_script}")
-        try:
-            import subprocess
-
-            # Fix: Added encoding and errors to avoid UnicodeDecodeError on Windows
-            result = subprocess.run(
-                ["python", load_script],
-                cwd=project_root,
-                capture_output=True,
-                text=True,
-                encoding="utf-8",
-                errors="replace",
-                timeout=60,
-            )
-            if result.stdout:
-                print(result.stdout)
-            if result.stderr:
-                print(f"   [WARN] Warnings: {result.stderr}")
-            print("[OK] Schema loading complete!")
-        except Exception as e:
-            print(f"   [ERROR] Failed to run load script: {e}")
+                result = subprocess.run(
+                    ["python", load_script],
+                    cwd=project_root,
+                    capture_output=True,
+                    text=True,
+                    encoding="utf-8",
+                    errors="replace",
+                    timeout=60,
+                )
+                if result.stdout:
+                    print(result.stdout)
+                if result.stderr:
+                    print(f"   [WARN] Warnings: {result.stderr}")
+                print("[OK] Schema loading complete!")
+            except Exception as e:
+                print(f"   [ERROR] Failed to run load script: {e}")
+        else:
+            print(f"   [WARN] Load script not found: {load_script}")
+            print("   Skipping automatic schema load")
     else:
-        print(f"   [WARN] Load script not found: {load_script}")
-        print("   Skipping automatic schema load")
+        print("[OK] STRATA schema already loaded")
+
+    # Ensure entity table has all required fields (in case schema was loaded without them)
+    try:
+        required_fields = [
+            "DEFINE FIELD OVERWRITE name ON entity TYPE string;",
+            "DEFINE FIELD OVERWRITE type ON entity TYPE string;",
+            "DEFINE FIELD OVERWRITE embedding ON entity TYPE option<array>;",
+            "DEFINE FIELD OVERWRITE metadata ON entity TYPE option<object>;",
+            "DEFINE FIELD OVERWRITE forgotten ON entity TYPE bool DEFAULT false;",
+            "DEFINE FIELD OVERWRITE forget_reason ON entity TYPE option<string>;",
+            "DEFINE FIELD OVERWRITE created_at ON entity TYPE option<datetime> DEFAULT time::now();",
+            "DEFINE FIELD OVERWRITE updated_at ON entity TYPE option<datetime> DEFAULT time::now();",
+        ]
+        for field_def in required_fields:
+            await _query_surreal(field_def)
+    except Exception as e:
+        print(f"   [WARN] Entity field sync failed (non-fatal): {e}")
+
+    # Backfill missing timestamps on existing entities
+    try:
+        await _query_surreal(
+            "UPDATE entity SET created_at = time::now() WHERE created_at IS NONE;"
+        )
+        await _query_surreal(
+            "UPDATE entity SET updated_at = time::now() WHERE updated_at IS NONE;"
+        )
+        backfilled = _extract_result(
+            await _query_surreal(
+                "SELECT count() AS c FROM (SELECT * FROM entity WHERE created_at = time::now()) GROUP ALL;"
+            ), 1
+        )
+        count = backfilled[0].get("c", 0) if backfilled else 0
+        if count > 0:
+            print(f"[OK] Backfilled timestamps for {count} entities")
+    except Exception as e:
+        print(f"   [WARN] Timestamp backfill failed (non-fatal): {e}")

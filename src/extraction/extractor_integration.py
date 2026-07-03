@@ -148,7 +148,8 @@ class ExtractorIntegration:
                 else:
                     create_sql = (
                         f"CREATE entity SET name = '{name_escaped}', "
-                        f"type = '{mapped_type}';"
+                        f"type = '{mapped_type}', "
+                        f"created_at = time::now(), updated_at = time::now();"
                     )
                     create_result = await _query_surreal(create_sql)
                     created = _extract_surreal_result(create_result)

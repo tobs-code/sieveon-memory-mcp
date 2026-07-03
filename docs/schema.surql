@@ -41,8 +41,8 @@ DEFINE FIELD embedding ON entity TYPE option<array>; -- For vector similarity se
 DEFINE FIELD metadata ON entity TYPE option<object>;
 DEFINE FIELD forgotten ON entity TYPE bool DEFAULT false;
 DEFINE FIELD forget_reason ON entity TYPE option<string>;
-DEFINE FIELD created_at ON entity TYPE datetime DEFAULT time::now();
-DEFINE FIELD updated_at ON entity TYPE datetime DEFAULT time::now();
+DEFINE FIELD created_at ON entity TYPE option<datetime> DEFAULT time::now();
+DEFINE FIELD updated_at ON entity TYPE option<datetime> DEFAULT time::now();
 
 -- Fakten als Kanten mit Gültigkeitszeitraum
 -- Pattern: (subject)-[edge:predicate {valid_from, valid_until}]->(object)

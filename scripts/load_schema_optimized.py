@@ -1,3 +1,4 @@
+import os
 import sys
 
 import requests
@@ -83,8 +84,8 @@ def ensure_entity_schema():
             "DEFINE FIELD OVERWRITE metadata ON entity TYPE option<object>",
             "DEFINE FIELD OVERWRITE forgotten ON entity TYPE bool DEFAULT false",
             "DEFINE FIELD OVERWRITE forget_reason ON entity TYPE option<string>",
-            "DEFINE FIELD OVERWRITE created_at ON entity TYPE datetime DEFAULT time::now()",
-            "DEFINE FIELD OVERWRITE updated_at ON entity TYPE datetime DEFAULT time::now()",
+            "DEFINE FIELD OVERWRITE created_at ON entity TYPE option<datetime> DEFAULT time::now()",
+            "DEFINE FIELD OVERWRITE updated_at ON entity TYPE option<datetime> DEFAULT time::now()",
         ]
         _, ferrors = run_sql_batch(fields_sql, "entity-fields")
         for err in ferrors:
@@ -107,11 +108,14 @@ def ensure_entity_schema():
 if __name__ == "__main__":
     print("=== Loading schema optimized...")
 
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(script_dir)
+
     all_statements = []
     for f in [
-        "docs/schema.surql",
-        "docs/helper_functions.surql",
-        "docs/test_data_en.surql",
+        os.path.join(project_root, "docs", "schema.surql"),
+        os.path.join(project_root, "docs", "helper_functions.surql"),
+        os.path.join(project_root, "docs", "test_data_en.surql"),
     ]:
         stmts = load_file(f)
         print(f"   {f}: {len(stmts)} statements")

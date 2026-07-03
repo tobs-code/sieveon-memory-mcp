@@ -294,7 +294,7 @@ async def _get_or_create_entity(name: str) -> Optional[str]:
         return entities[0]["id"]
 
     entity_type = infer_entity_type(name)
-    create_sql = f"CREATE entity SET name = '{name_escaped}', type = '{entity_type}';"
+    create_sql = f"CREATE entity SET name = '{name_escaped}', type = '{entity_type}', created_at = time::now(), updated_at = time::now();"
     create_result = await _query_surreal(create_sql)
     created = _extract_result(create_result, 1)
     if created:

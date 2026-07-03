@@ -439,6 +439,8 @@ class EntropyGate:
             CREATE entity SET 
                 name = '{name_escaped}',
                 type = '{entity_type}',
+                created_at = time::now(),
+                updated_at = time::now(),
                 embedding = {embedding_str};
             """
         except Exception:
@@ -454,7 +456,9 @@ class EntropyGate:
         fallback_sql = f"""
         CREATE entity SET 
             name = '{name_escaped}',
-            type = '{entity_type}';
+            type = '{entity_type}',
+            created_at = time::now(),
+            updated_at = time::now();
         """
         result = self._query_surreal(fallback_sql)
         entity_result = self._extract_result(result)
