@@ -38,3 +38,7 @@ Thumbs.db
 # Root Rust files (on hold)
 Cargo.toml
 Cargo.lock
+# Test dateien (nicht zu commiten)
+test_mcp_tools.py
+test_update_endpoint.py
+comprehensive_test.py

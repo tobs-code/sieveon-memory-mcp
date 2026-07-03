@@ -42,6 +42,7 @@ from .tools import (
     semantic_search,
     explain_routing,
     memory_forget,
+    memory_unforget,
     memory_consolidate
 )
 

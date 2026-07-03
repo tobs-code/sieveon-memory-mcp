@@ -23,7 +23,7 @@ async def memory_store(
     content: str, source: str = "user_input", metadata: Optional[Dict[str, Any]] = None
 ) -> dict:
     """Stores a new event in the raw event log. Runs through entropy gate. NOTE: Only English content should be stored — German or other languages produce noisy entity extraction."""
-    return await _store_content(content, source, debug=True)
+    return await _store_content(content, source, debug=True, metadata=metadata)
 
 
 @mcp.tool()
@@ -166,8 +166,11 @@ async def event_log_search(
     limit: int = 10,
     since: Optional[str] = None,
     until: Optional[str] = None,
+    include_forgotten: bool = False,
 ) -> dict:
-    """Direct timeline query without router: hybrid search (BM25 + vector + RRF fusion)."""
+    """Direct timeline query without router: hybrid search (BM25 + vector + RRF fusion).
+    When include_forgotten=True, forgotten events are included and marked as such.
+    """
     query_escaped = escape_surrealql(query)
     time_filter = ""
     if since:
@@ -175,12 +178,15 @@ async def event_log_search(
     if until:
         time_filter += f" AND timestamp <= '{escape_surrealql(until)}'"
 
-    forgotten_filter = "(forgotten IS NONE OR forgotten = false)"
+    if include_forgotten:
+        forgotten_filter = "1=1"
+    else:
+        forgotten_filter = "(forgotten IS NONE OR forgotten = false)"
 
     if not query.strip():
         # If no query, just return recent events
         sql = f"""
-        SELECT id, content, timestamp, source, metadata
+        SELECT id, content, timestamp, source, metadata, forgotten, forgotten_reason
         FROM event
         WHERE {forgotten_filter}
         {time_filter}
@@ -195,7 +201,7 @@ async def event_log_search(
 
     # 1) Lexical search via FTX index
     ftx_sql = f"""
-    SELECT id, content, timestamp, source, metadata, 'lexical' AS search_type
+    SELECT id, content, timestamp, source, metadata, forgotten, forgotten_reason, 'lexical' AS search_type
     FROM event
     WHERE content @@ '{query_escaped}'
       AND {forgotten_filter}
@@ -212,7 +218,7 @@ async def event_log_search(
         query_vector_str = "[" + ", ".join(map(str, query_vector)) + "]"
 
         vec_sql = f"""
-        SELECT id, content, timestamp, source, metadata,
+        SELECT id, content, timestamp, source, metadata, forgotten, forgotten_reason,
                vector::similarity::cosine(embedding, {query_vector_str}) AS vec_score,
                'vector' AS search_type
         FROM event
@@ -701,6 +707,22 @@ async def memory_forget(
         "count": len(forgotten_items),
         "reason": reason,
     }
+
+
+@mcp.tool()
+async def memory_unforget(
+    event_id: str,
+) -> dict:
+    """Restores a previously forgotten event. Resets forgotten=false."""
+    try:
+        update_sql = f"UPDATE {event_id} SET forgotten = NONE, forgotten_reason = NONE;"
+        result = await _query_surreal(update_sql)
+        return {"status": "restored", "event_id": event_id}
+    except Exception as e:
+        return {
+            "status": "error",
+            "message": f"Failed to restore event {event_id}: {str(e)}",
+        }
 
 
 @mcp.tool()

@@ -102,6 +102,7 @@ async def memory_store_endpoint(request_data: dict):
     return await _store_content(
         request_data.get("content", ""),
         request_data.get("source", "user_input"),
+        metadata=request_data.get("metadata"),
     )
 
 

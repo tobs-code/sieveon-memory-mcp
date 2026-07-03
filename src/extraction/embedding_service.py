@@ -48,8 +48,8 @@ class SentenceTransformerEmbeddingService(BaseEmbeddingService):
             raise ImportError("Bitte installiere die Abhängigkeiten: pip install sentence-transformers transformers torch")
         
         # Initialisiere Modell und Tokenizer
-        self.model = SentenceTransformer(model_name)
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+        self.model = SentenceTransformer(model_name, trust_remote_code=True)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
         self.dimension = self.model.get_sentence_embedding_dimension()
     
     def embed_for_storage(self, text: str) -> List[float]:

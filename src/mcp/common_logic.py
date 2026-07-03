@@ -28,7 +28,7 @@ from .core import (
 MAX_CONTENT_LENGTH = 100_000
 
 
-async def _store_content(content: str, source: str = "user_input", debug: bool = False) -> dict:
+async def _store_content(content: str, source: str = "user_input", debug: bool = False, metadata: Optional[Dict[str, Any]] = None) -> dict:
     """Einzige Store-Implementierung: validiert → EntropyGate → Event + ggf. KG."""
     if not content or not content.strip():
         return {"event_id": None, "status": "error", "source": source,
@@ -44,7 +44,7 @@ async def _store_content(content: str, source: str = "user_input", debug: bool =
     gate = EntropyGate()
     # Quick gate check for the response (ingest() calls should_extract internally too)
     gate_result = gate.should_extract(content)
-    event_id = await asyncio.to_thread(gate.ingest, content, source, debug=False)
+    event_id = await asyncio.to_thread(gate.ingest, content, source, debug=False, metadata=metadata)
 
     if event_id is None:
         return {"event_id": None, "status": "error", "source": source,
@@ -112,6 +112,8 @@ async def _execute_query(query: str, cost_budget: str = "auto") -> dict:
 
     entities, facts, events = _categorize_results(results)
 
+    summary = _synthesize_answer(query, entities, facts, events)
+
     return {
         "query": query,
         "classified_as": q_type.value if hasattr(q_type, 'value') else str(q_type),
@@ -120,7 +122,8 @@ async def _execute_query(query: str, cost_budget: str = "auto") -> dict:
         "cost_budget": strategy_dict["cost_budget"],
         "results": {"entities": entities, "facts": facts, "events": events},
         "total": len(entities) + len(facts) + len(events),
-        "budget_tracker_key": None,  # Simplified for now
+        "summary": summary,
+        "budget_tracker_key": None,
     }
 
 
@@ -147,7 +150,7 @@ def _flatten_query_results(results_raw: Any) -> List[Any]:
 
 
 def _categorize_results(results: List[Any]) -> Tuple[List[Dict], List[Dict], List[Dict]]:
-    """Sort results into entities, facts, events buckets."""
+    """Sort results into entities, facts, events buckets and enrich fact names."""
     entities, facts, events = [], [], []
     for r in results:
         if isinstance(r, dict):
@@ -175,7 +178,88 @@ def _categorize_results(results: List[Any]) -> Tuple[List[Dict], List[Dict], Lis
                         facts.append(clean)
                     else:
                         events.append(clean)
+
+    name_to_entity = {}
+    for e in entities:
+        eid = e.get("id")
+        ename = e.get("name")
+        if eid and ename:
+            name_to_entity[eid] = ename
+
+    for f in facts:
+        for key in ('in', 'out'):
+            val = f.get(key)
+            if isinstance(val, str) and val in name_to_entity:
+                f[key] = {"id": val, "name": name_to_entity[val], "type": ""}
+
     return entities, facts, events
+
+
+def _synthesize_answer(query: str, entities: List[Dict], facts: List[Dict], events: List[Dict]) -> Dict[str, Any]:
+    """Synthesize a structured answer from entities, facts, and events."""
+    answer_parts = []
+    key_facts = []
+    key_entities = []
+    event_snippets = []
+
+    for f in facts[:5]:
+        in_data = f.get("in")
+        out_data = f.get("out")
+        subj = ""
+        obj = ""
+        if isinstance(in_data, dict):
+            subj = in_data.get("name", in_data.get("id", ""))
+        elif isinstance(in_data, str):
+            subj = in_data
+        if isinstance(out_data, dict):
+            obj = out_data.get("name", out_data.get("id", ""))
+        elif isinstance(out_data, str):
+            obj = out_data
+        pred = f.get("predicate", "")
+        if subj and obj and pred and pred not in ("mentions", "weakly_related"):
+            key_facts.append(f"{subj} {pred} {obj}")
+
+    for e in entities[:5]:
+        name = e.get("name", "")
+        etype = e.get("type", "")
+        if name:
+            key_entities.append(f"{name} ({etype})" if etype else name)
+
+    import re
+    query_lower = query.lower()
+    for ev in events[:5]:
+        content = ev.get("content", "")
+        if content:
+            score = 0
+            for word in re.findall(r'\b\w+\b', query_lower):
+                if word.lower() in content.lower():
+                    score += 1
+            if score > 0:
+                event_snippets.append({
+                    "content": content[:200],
+                    "relevance_hits": score,
+                    "source": ev.get("source", ""),
+                    "timestamp": ev.get("timestamp", ""),
+                })
+
+    event_snippets.sort(key=lambda x: x["relevance_hits"], reverse=True)
+
+    if key_facts:
+        answer_parts.append({"type": "facts_found", "detail": key_facts})
+    if key_entities:
+        answer_parts.append({"type": "entities_found", "detail": key_entities})
+    if event_snippets:
+        answer_parts.append({"type": "relevant_events", "detail": event_snippets[:3]})
+
+    has_content = bool(key_facts or key_entities or event_snippets)
+
+    return {
+        "found": has_content,
+        "parts": answer_parts,
+        "total_facts": len(facts),
+        "total_entities": len(entities),
+        "total_events": len(events),
+    }
 
 
 async def _get_or_create_entity(name: str) -> Optional[str]:

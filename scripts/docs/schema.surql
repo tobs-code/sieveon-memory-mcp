@@ -15,7 +15,7 @@ DEFINE TABLE event SCHEMALESS;
 DEFINE FIELD timestamp ON event TYPE datetime DEFAULT time::now();
 DEFINE FIELD source ON event TYPE string;  -- z.B. "user_input", "system_event", "api_response"
 DEFINE FIELD content ON event TYPE string; -- Der rohe Inhalt
-DEFINE FIELD embedding ON event TYPE option<vector(f32, 384)>;
+DEFINE FIELD embedding ON event TYPE option<vector(f32, 768)>;
 DEFINE FIELD metadata ON event TYPE option<object>;
 DEFINE FIELD forgotten ON event TYPE bool DEFAULT false;
 DEFINE FIELD forget_reason ON event TYPE option<string>;
@@ -26,7 +26,7 @@ DEFINE INDEX event_source ON event COLUMNS source;
 DEFINE ANALYZER event_analyzer TOKENIZERS class FILTERS lowercase, ascii, snowball(english);
 DEFINE INDEX event_content_ft ON event FIELDS content FULLTEXT ANALYZER event_analyzer BM25 HIGHLIGHTS;
 -- Vector Index für SurrealDB 3 (HNSW statt MTREE, da MTREE in v3 entfernt)
-DEFINE INDEX event_embedding_vec ON event FIELDS embedding HNSW DIMENSION 384 DIST COSINE;
+DEFINE INDEX event_embedding_vec ON event FIELDS embedding HNSW DIMENSION 768 DIST COSINE;
 
 -- ========================================
 -- ② Knowledge Graph mit Temporal Validity
@@ -60,7 +60,7 @@ DEFINE FIELD metadata ON fact TYPE option<object>;
 DEFINE INDEX entity_name ON entity COLUMNS name;
 DEFINE INDEX entity_type ON entity COLUMNS type;
 -- Vector Index für Entity-Deduplizierung (Phase 3)
-DEFINE INDEX entity_embedding_vec ON entity FIELDS embedding HNSW DIMENSION 384 DIST COSINE;
+DEFINE INDEX entity_embedding_vec ON entity FIELDS embedding HNSW DIMENSION 768 DIST COSINE;
 DEFINE INDEX fact_valid ON fact COLUMNS valid_from, valid_until;
 DEFINE INDEX fact_subject ON fact COLUMNS in;
 DEFINE INDEX fact_object ON fact COLUMNS out;

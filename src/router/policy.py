@@ -128,10 +128,10 @@ class RoutingPolicy:
                 'max_latency_threshold': 1.0  # seconds
             },
             QueryType.FACTUAL: {
-                'strategy': 'knowledge_graph_first',
-                'budget': BudgetLevel.MEDIUM,
-                'min_confidence': 0.7,
-                'max_latency_threshold': 0.8
+                'strategy': 'semantic_hybrid',
+                'budget': BudgetLevel.HIGH,
+                'min_confidence': 0.4,
+                'max_latency_threshold': 1.5
             },
             QueryType.MULTI_HOP: {
                 'strategy': 'hybrid_with_graph_expansion',
@@ -207,10 +207,10 @@ class RoutingPolicy:
         """Check if a strategy is appropriate for a specific query type."""
         # Define strategy-query type compatibility
         compatible_strategies = {
-            QueryType.TEMPORAL: ['event_log_first', 'hybrid_bm25_vector_temporal'],
-            QueryType.FACTUAL: ['knowledge_graph_first', 'hybrid_with_graph_expansion'],
-            QueryType.MULTI_HOP: ['hybrid_with_graph_expansion', 'knowledge_graph_with_invalidation'],
-            QueryType.CONVERSATIONAL: ['hybrid_bm25_vector_temporal', 'composite_kg_vector'],
+            QueryType.TEMPORAL: ['event_log_first', 'hybrid_bm25_vector_temporal', 'semantic_hybrid'],
+            QueryType.FACTUAL: ['semantic_hybrid', 'knowledge_graph_first', 'hybrid_with_graph_expansion'],
+            QueryType.MULTI_HOP: ['semantic_hybrid', 'hybrid_with_graph_expansion', 'knowledge_graph_with_invalidation'],
+            QueryType.CONVERSATIONAL: ['semantic_hybrid', 'hybrid_bm25_vector_temporal', 'composite_kg_vector'],
             QueryType.UPDATE: ['knowledge_graph_with_invalidation', 'knowledge_graph_first']
         }
         

@@ -778,7 +778,41 @@ class EntropyGate:
 
         return {"entities_created": entities_created, "facts_created": facts_created}
     
-    def ingest(self, text: str, source: str = "unknown", debug: bool = False) -> Optional[str]:
+    def _dict_to_surrealdb_object(self, d: dict) -> str:
+        """Convert a Python dict to a SurrealDB object literal."""
+        items = []
+        for k, v in d.items():
+            key = k
+            if v is None:
+                val = "NULL"
+            elif isinstance(v, bool):
+                val = "true" if v else "false"
+            elif isinstance(v, (int, float)):
+                val = str(v)
+            elif isinstance(v, str):
+                val = "'" + v.replace("\\", "\\\\").replace("'", "\\'") + "'"
+            elif isinstance(v, dict):
+                val = self._dict_to_surrealdb_object(v)
+            elif isinstance(v, list):
+                list_items = []
+                for item in v:
+                    if isinstance(item, dict):
+                        list_items.append(self._dict_to_surrealdb_object(item))
+                    elif isinstance(item, str):
+                        list_items.append("'" + item.replace("\\", "\\\\").replace("'", "\\'") + "'")
+                    elif isinstance(item, bool):
+                        list_items.append("true" if item else "false")
+                    elif item is None:
+                        list_items.append("NULL")
+                    else:
+                        list_items.append(str(item))
+                val = "[" + ", ".join(list_items) + "]"
+            else:
+                val = "'" + str(v).replace("\\", "\\\\").replace("'", "\\'") + "'"
+            items.append(f"{key}: {val}")
+        return "{" + ", ".join(items) + "}"
+
+    def ingest(self, text: str, source: str = "unknown", debug: bool = False, metadata: Optional[Dict[str, Any]] = None) -> Optional[str]:
         """
         Hauptfunktion: Ingest eines Textes in das Memory System
         1. IMMER in Raw Event Log speichern
@@ -822,12 +856,15 @@ class EntropyGate:
         embedding_str = "[" + ",".join(str(v) for v in embedding) + "]"
         text_escaped = self._escape_surrealql(text)
         source_escaped = self._escape_surrealql(source)
+        metadata_str = ""
+        if metadata:
+            metadata_str = f",\n            metadata = {self._dict_to_surrealdb_object(metadata)}"
         sql = f"""
         CREATE event SET 
             content = '{text_escaped}',
             content_hash = '{content_hash}',
             source = '{source_escaped}',
-            embedding = {embedding_str};
+            embedding = {embedding_str}{metadata_str};
         """
         event_id = None
         result = None

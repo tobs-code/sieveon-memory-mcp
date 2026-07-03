@@ -1,6 +1,6 @@
-import requests
 import sys
 
+import requests
 
 URL = "http://127.0.0.1:8000/sql"
 AUTH = ("root", "root")
@@ -69,8 +69,10 @@ def ensure_entity_schema():
     test_name = "__schema_test_delme__"
     # Test with embedding too, because _ensure_entity embeds every entity
     # Use 384 dims to match HNSW index (vector dimension must match)
-    real_emb = "[" + ",".join("0.1" for _ in range(384)) + "]"
-    result, errors = run_single(f"CREATE entity SET name = '{test_name}', type = 'organization', embedding = {real_emb};")
+    real_emb = "[" + ",".join("0.1" for _ in range(768)) + "]"
+    result, errors = run_single(
+        f"CREATE entity SET name = '{test_name}', type = 'organization', embedding = {real_emb};"
+    )
 
     if errors:
         print(f"\n⚠️  Entity table schema incomplete — re-applying DEFINE FIELDs...")
@@ -90,7 +92,9 @@ def ensure_entity_schema():
                 print(f"   ⚠️  {err}")
 
         # Retry
-        result, errors = run_single(f"CREATE entity SET name = '{test_name}', type = 'organization', embedding = {real_emb};")
+        result, errors = run_single(
+            f"CREATE entity SET name = '{test_name}', type = 'organization', embedding = {real_emb};"
+        )
         if errors:
             print(f"   ❌ Entity schema still broken: {errors}")
             sys.exit(1)
@@ -104,14 +108,18 @@ if __name__ == "__main__":
     print("=== Loading schema optimized...")
 
     all_statements = []
-    for f in ["docs/schema.surql", "docs/helper_functions.surql", "docs/test_data.surql"]:
+    for f in [
+        "docs/schema.surql",
+        "docs/helper_functions.surql",
+        "docs/test_data_en.surql",
+    ]:
         stmts = load_file(f)
         print(f"   {f}: {len(stmts)} statements")
         all_statements.extend(stmts)
 
     batch_size = 5
     for i in range(0, len(all_statements), batch_size):
-        batch = all_statements[i:i + batch_size]
+        batch = all_statements[i : i + batch_size]
         batch_num = i // batch_size + 1
         print(f"   Executing batch {batch_num}...", end=" ", flush=True)
         try:
@@ -128,13 +136,15 @@ if __name__ == "__main__":
 
     ensure_entity_schema()
 
-    check, errors = run_sql_batch(["SELECT count() FROM event", "SELECT count() FROM entity"])
+    check, errors = run_sql_batch(
+        ["SELECT count() FROM event", "SELECT count() FROM entity"]
+    )
     print(f"\n🔍 Quick check:")
     if errors:
         print(f"   ⚠️  Errors: {errors}")
     else:
         event_count = entity_count = "?"
-        for item in (check or []):
+        for item in check or []:
             if isinstance(item, dict) and item.get("status") == "OK":
                 res = item.get("result")
                 if isinstance(res, list) and len(res) > 0 and isinstance(res[0], dict):
