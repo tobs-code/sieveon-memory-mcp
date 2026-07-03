@@ -371,48 +371,186 @@ async def kg_query(
 
 @mcp.tool()
 async def semantic_search(query: str, top_k: int = 5) -> dict:
-    """Pure vector search without KG. Filters out highly repetitive/noise content."""
+    """Hybrid search: Vector (semantic) + FTX (lexical) with RRF fusion.
+    Deduplicates by content_hash, enriches with KG facts, filters repetitive noise.
+    Returns normalized scores (0-1)."""
     if not query.strip():
         return {"events": [], "count": 0, "message": "Query cannot be empty"}
 
-    from src.extraction.embedding_service import get_embedding_service
-
-    embedding_service = get_embedding_service()
+    query_escaped = escape_surrealql(query)
     query_vector = await _embed_query(query)
-
     query_vector_str = "[" + ", ".join(map(str, query_vector)) + "]"
 
-    # Fetch extra candidates to allow post-filtering
-    fetch_k = min(top_k * 4, 100)
-    sql = f"""
-    SELECT id, content, vector::similarity::cosine(embedding, {query_vector_str}) AS score
+    fetch_k = min(top_k * 6, 150)
+    forgotten_filter = "(forgotten IS NONE OR forgotten = false)"
+
+    # 1) Vector search (semantic)
+    vec_sql = f"""
+    SELECT id, content, timestamp, source, metadata, content_hash,
+           vector::similarity::cosine(embedding, {query_vector_str}) AS vec_score
     FROM event
     WHERE embedding IS NOT NONE
-      AND (forgotten IS NONE OR forgotten = false)
+      AND {forgotten_filter}
       AND array::len(embedding) = {len(query_vector)}
-    ORDER BY score DESC
+    ORDER BY vec_score DESC
     LIMIT {fetch_k};
     """
-    result = await _query_surreal(sql)
-    raw_events = _extract_result(result, 1)
+    vec_task = asyncio.create_task(_query_surreal(vec_sql))
 
-    # Post-filter: penalize highly repetitive content by re-weighting its score
+    # 2) FTX search (lexical) — only if query has meaningful content
+    ftx_task = None
+    if query.strip():
+        ftx_sql = f"""
+        SELECT id, content, timestamp, source, metadata, content_hash
+        FROM event
+        WHERE content @@ '{query_escaped}'
+          AND {forgotten_filter}
+        LIMIT {fetch_k};
+        """
+        ftx_task = asyncio.create_task(_query_surreal(ftx_sql))
+
+    vec_result = await vec_task
+    vec_events = _extract_result(vec_result, 1) or []
+
+    ftx_events = []
+    if ftx_task:
+        try:
+            ftx_result = await ftx_task
+            ftx_events = _extract_result(ftx_result, 1) or []
+        except Exception:
+            pass
+
+    # 3) RRF fusion: combine vector + ftx results
+    k = 60
+    fused = {}  # content_hash -> {event, rrf_score, vec_score}
+    seen_ids = set()
+
+    for rank, ev in enumerate(vec_events):
+        eid = ev.get("id")
+        ch = ev.get("content_hash") or eid
+        if ch in fused or eid in seen_ids:
+            continue
+        seen_ids.add(eid)
+        vec_score = ev.get("vec_score")
+        if not isinstance(vec_score, (int, float)):
+            vec_score = 0.0
+        fused[ch] = {
+            "event": ev,
+            "rrf": 1.0 / (k + rank),
+            "vec_score": vec_score,
+        }
+
+    for rank, ev in enumerate(ftx_events):
+        eid = ev.get("id")
+        ch = ev.get("content_hash") or eid
+        if eid in seen_ids:
+            # Already in fused — boost its RRF score
+            if ch in fused:
+                fused[ch]["rrf"] += 1.0 / (k + rank)
+            continue
+        seen_ids.add(eid)
+        if ch in fused:
+            fused[ch]["rrf"] += 1.0 / (k + rank)
+        else:
+            fused[ch] = {
+                "event": ev,
+                "rrf": 1.0 / (k + rank),
+                "vec_score": 0.0,
+            }
+
+    # 4) Post-filter: penalise repetitive content, collect event IDs for KG lookup
+    event_ids_for_kg = []
     scored = []
-    for ev in raw_events:
+    for ch, entry in fused.items():
+        ev = entry["event"]
         content = ev.get("content", "")
-        score = ev.get("score", 0)
-        if not isinstance(score, (int, float)):
-            score = 0.0
+        rrf = entry["rrf"]
+        vec_score = entry["vec_score"]
+
         if _is_highly_repetitive(content):
-            # Heavily penalise but don't remove entirely — allows real matches to dominate
-            score = score * 0.02
-        scored.append((score, ev))
+            rrf = rrf * 0.02
 
-    # Re-sort and take top_k
+        scored.append((rrf, vec_score, ev))
+        eid = ev.get("id")
+        if eid and eid.startswith("event:"):
+            event_ids_for_kg.append(eid)
+
+    # 5) Fetch KG facts for the top candidate events
+    # Extract entity names from event contents for KG matching
+    kg_facts_map = {}
+    if event_ids_for_kg:
+        # Collect unique entity names mentioned in the top events
+        entity_names = set()
+        for _, _, ev in scored[:top_k]:
+            content = ev.get("content", "")
+            # Simple heuristic: extract capitalized words as potential entities
+            import re
+            for match in re.finditer(r'\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\b', content):
+                name = match.group(1).strip()
+                if len(name) >= 2:
+                    entity_names.add(name)
+        
+        if entity_names:
+            # Build OR conditions for entity name matching
+            name_conditions = " OR ".join(
+                f"in.name = '{escape_surrealql(name)}' OR out.name = '{escape_surrealql(name)}'"
+                for name in list(entity_names)[:10]
+            )
+            kg_sql = f"""
+            SELECT id, predicate, in.name AS subject, out.name AS object, confidence
+            FROM fact
+            WHERE ({name_conditions})
+              AND (valid_until IS NONE OR valid_until > time::now())
+            ORDER BY confidence DESC
+            LIMIT 30;
+            """
+            try:
+                kg_result = await _query_surreal(kg_sql)
+                kg_facts_raw = _extract_result(kg_result, 1) or []
+                if kg_facts_raw:
+                    kg_facts_map["_all"] = [_clean_output(f) for f in kg_facts_raw]
+            except Exception:
+                pass
+
+    # 6) Sort by RRF, normalize scores to 0-1, build final output
     scored.sort(key=lambda x: x[0], reverse=True)
-    events = [_clean_output(ev) for _, ev in scored[:top_k]]
+    top_results = scored[:top_k]
 
-    return {"events": events, "count": len(events)}
+    # Find min/max RRF for normalization
+    if top_results:
+        min_rrf = min(rrf for rrf, _, _ in top_results)
+        max_rrf = max(rrf for rrf, _, _ in top_results)
+        range_rrf = max_rrf - min_rrf if max_rrf > min_rrf else 1.0
+    else:
+        min_rrf = max_rrf = range_rrf = 1.0
+
+    events = []
+    for rrf, vec_score, ev in top_results:
+        normalized_score = (rrf - min_rrf) / range_rrf if range_rrf > 0 else 0.0
+        event_out = {
+            "id": ev.get("id"),
+            "content": ev.get("content"),
+            "timestamp": ev.get("timestamp"),
+            "source": ev.get("source"),
+            "metadata": ev.get("metadata"),
+            "score": round(normalized_score, 4),
+            "vec_score": round(vec_score, 4) if vec_score > 0 else None,
+        }
+        events.append(event_out)
+
+    result = {
+        "events": events,
+        "count": len(events),
+        "query": query,
+    }
+
+    # Attach KG facts if found
+    all_facts = kg_facts_map.get("_all")
+    if all_facts:
+        result["kg_facts"] = all_facts
+        result["kg_fact_count"] = len(all_facts)
+
+    return result
 
 
 def _character_diversity(text: str) -> float:
