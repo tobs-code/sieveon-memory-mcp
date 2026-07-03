@@ -4,6 +4,7 @@ MCP Tools implementation
 """
 
 import asyncio
+import hashlib
 import os
 import sys
 from datetime import datetime, timezone
@@ -22,7 +23,11 @@ from .core import _clean_output, _embed_query, _extract_result, _query_surreal, 
 async def memory_store(
     content: str, source: str = "user_input", metadata: Optional[Dict[str, Any]] = None
 ) -> dict:
-    """Stores a new event in the raw event log. Runs through entropy gate. NOTE: Only English content should be stored — German or other languages produce noisy entity extraction."""
+    """Stores a new event in the raw event log. Runs through entropy gate.
+
+    ⚠️ LANGUAGE: The embedding model only supports English. Non-English content (e.g. German) produces noisy/broken entity extraction and poor search results.
+    → ALWAYS translate non-English content to English BEFORE storing.
+    """
     return await _store_content(content, source, debug=True, metadata=metadata)
 
 
@@ -637,10 +642,25 @@ async def memory_forget(
     forgotten_items = []
 
     if event_id:
-        # Mark event as forgotten
+        # Prüfen ob das Event existiert
+        try:
+            check_sql = f"SELECT id FROM {event_id};"
+            check_result = await _query_surreal(check_sql)
+            check_items = _extract_result(check_result, 1)
+            if not check_items:
+                return {
+                    "status": "error",
+                    "message": f"Event {event_id} not found – nothing to forget",
+                }
+        except Exception as e:
+            return {
+                "status": "error",
+                "message": f"Failed to verify event {event_id}: {str(e)}",
+            }
+
         try:
             update_sql = f"UPDATE {event_id} SET forgotten = true, forgotten_reason = '{escape_surrealql(reason)}';"
-            result = await _query_surreal(update_sql)
+            await _query_surreal(update_sql)
             forgotten_items.append(
                 {"id": event_id, "type": "event", "status": "forgotten"}
             )
@@ -710,8 +730,17 @@ async def memory_unforget(
 ) -> dict:
     """Restores a previously forgotten event. Resets forgotten=false."""
     try:
+        check_sql = f"SELECT id FROM {event_id};"
+        check_result = await _query_surreal(check_sql)
+        check_items = _extract_result(check_result, 1)
+        if not check_items:
+            return {
+                "status": "error",
+                "message": f"Event {event_id} not found – nothing to restore",
+            }
+
         update_sql = f"UPDATE {event_id} SET forgotten = NONE, forgotten_reason = NONE;"
-        result = await _query_surreal(update_sql)
+        await _query_surreal(update_sql)
         return {"status": "restored", "event_id": event_id}
     except Exception as e:
         return {
@@ -726,8 +755,12 @@ async def memory_consolidate(
 ) -> dict:
     """Consolidates memory entries. When delete_stale=True, physically removes stale facts from the database."""
 
-    # Find stale facts (facts with valid_until set in the past)
-    time_filter = "valid_until < time::now()" if delete_stale else "valid_until != NONE"
+    # Find stale facts: nur facts mit valid_until in der Vergangenheit
+    # Explizit valid_until != NONE ausschließen, damit aktive Facts nicht gelöscht werden
+    if delete_stale:
+        time_clause = "valid_until != NONE AND valid_until < time::now()"
+    else:
+        time_clause = "valid_until != NONE"
 
     if entity:
         entity_escaped = escape_surrealql(entity)
@@ -735,13 +768,13 @@ async def memory_consolidate(
         SELECT id, predicate, in.name AS subject, out.name AS object, valid_from, valid_until
         FROM fact
         WHERE (in.name = '{entity_escaped}' OR out.name = '{entity_escaped}')
-          AND {time_filter};
+          AND {time_clause};
         """
     else:
         find_stale_sql = f"""
         SELECT id, predicate, in.name AS subject, out.name AS object, valid_from, valid_until
         FROM fact
-        WHERE {time_filter};
+        WHERE {time_clause};
         """
 
     result = await _query_surreal(find_stale_sql)
@@ -749,7 +782,6 @@ async def memory_consolidate(
 
     deleted_count = 0
     if delete_stale and stale_facts:
-        # Delete the stale facts
         for fact in stale_facts:
             fact_id = fact.get("id")
             try:
@@ -762,11 +794,28 @@ async def memory_consolidate(
                     "message": f"Failed to delete fact {fact_id}: {str(e)}",
                 }
 
+    # Operation ins Event-Log schreiben
+    entity_info = f" for entity '{entity}'" if entity else ""
+    log_content = f"Consolidation run{entity_info}: {len(stale_facts)} stale facts found, {deleted_count} deleted."
+    try:
+        log_escaped = escape_surrealql(log_content)
+        log_sql = f"""
+        CREATE event SET
+            content = '{log_escaped}',
+            content_hash = '{escape_surrealql(hashlib.md5(log_content.encode()).hexdigest())}',
+            source = 'system_maintenance',
+            metadata = {{"action": "consolidate", "scope": "{escape_surrealql(scope)}", "stale_facts": {len(stale_facts)}, "deleted": {deleted_count}}};
+        """
+        await _query_surreal(log_sql)
+    except Exception as e:
+        # Log-Fehler sollen den Hauptvorgang nicht blockieren
+        print(f"[WARN] Failed to write consolidation event log: {e}")
+
     return {
         "scope": scope,
         "stale_facts_found": len(stale_facts),
         "deleted_count": deleted_count,
-        "stale_facts_sample": stale_facts[:10],  # Return first 10 as sample
+        "stale_facts_sample": stale_facts[:10],
         "status": "success",
     }
 
