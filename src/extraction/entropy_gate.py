@@ -286,13 +286,18 @@ class EntropyGate:
         try:
             content_hash = self._hash_content(text)
             decision_escaped = self._escape_surrealql(decision)
+            threshold = self._get_adaptive_threshold()
+            reason = f"Composite score {composite_score:.3f} {'meets' if decision == 'extract' else 'does not meet'} threshold {threshold:.3f}"
+            reason_escaped = self._escape_surrealql(reason)
             sql = f"""
             CREATE gate_log SET 
                 content_hash = '{content_hash}',
                 text_score = {entropy},
                 novelty = {novelty},
                 gate_score = {composite_score},
-                decision = '{decision_escaped}';
+                decision = '{decision_escaped}',
+                reason = '{reason_escaped}',
+                threshold = {threshold};
             """
             result = self._query_surreal(sql)
             if not self._extract_ok(result):

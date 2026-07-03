@@ -129,6 +129,18 @@ async def memory_stats(random_string: str = "") -> dict:
 
     gate_pass_rate = extract_count / total_decisions if total_decisions > 0 else 0.0
 
+    # Get recent gate decisions with reasons
+    recent_gate_sql = """
+    SELECT content_hash, decision, reason, gate_score, threshold, ts
+    FROM gate_log
+    ORDER BY ts DESC
+    LIMIT 10;
+    """
+    recent_gate_result = await _query_surreal(recent_gate_sql)
+    recent_gate_logs = _extract_result(recent_gate_result, 1)
+    for g in recent_gate_logs:
+        g.pop("content_hash", None)
+
     return {
         "event_count": event_count,
         "entity_count": entity_count,
@@ -139,6 +151,7 @@ async def memory_stats(random_string: str = "") -> dict:
         "total_gate_decisions": total_decisions,
         "extract_decisions": extract_count,
         "ignore_decisions": total_decisions - extract_count,
+        "recent_gate_decisions": recent_gate_logs,
     }
 
 
