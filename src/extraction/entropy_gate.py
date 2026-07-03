@@ -483,19 +483,18 @@ class EntropyGate:
         return [name for _, name in scored[:max_entities]]
 
     def _dedup_candidates(self, candidates: List[str]) -> List[str]:
-        """Remove candidates whose name is a substring of a longer candidate name."""
+        """Deduplicate: keep the shortest canonical name, remove longer descriptive phrases."""
         result = []
-        for c in candidates:
+        sorted_c = sorted(candidates, key=lambda x: len(x))
+        for c in sorted_c:
             cl = c.lower().strip()
-            is_substr = False
-            for other in candidates:
-                if c is other:
-                    continue
+            is_superstr = False
+            for other in result:
                 ol = other.lower().strip()
-                if cl != ol and len(cl) < len(ol) and cl in ol:
-                    is_substr = True
+                if cl != ol and len(cl) > len(ol) and ol in cl:
+                    is_superstr = True
                     break
-            if not is_substr:
+            if not is_superstr:
                 result.append(c)
         return result
 
@@ -576,6 +575,16 @@ class EntropyGate:
             # 4+ word phrases with no proper nouns at all
             if len(words) >= 4:
                 if not any(w[0].isupper() for w in words if w):
+                    continue
+
+            # Overlong candidates (>6 words) with lowercase verbs/internal stops → sentence fragment
+            if len(words) > 6:
+                continue
+
+            # 5-6 word phrases starting with capitalized word but containing a lowercase verb → sentence fragment
+            if len(words) >= 5 and words[0][0].isupper():
+                lowercase_words = [w for w in words[1:] if w and w[0].islower()]
+                if len(lowercase_words) >= 2:
                     continue
 
             result.append(c)

@@ -169,15 +169,24 @@ def extract_entities_with_spacy(text: str) -> list[dict]:
         # Also get noun chunks as additional candidates
         for chunk in doc.noun_chunks:
             # Skip if already captured as entity
-            if not any(chunk.text.lower() == ent["name"].lower() for ent in entities):
-                # Infer type based on capitalization and context
-                entity_type = infer_entity_type(chunk.text)
-                entities.append({
-                    "name": chunk.text,
-                    "type": entity_type,
-                    "label": "NOUN_CHUNK",
-                    "confidence": 0.7  # Medium confidence for noun chunks
-                })
+            if any(chunk.text.lower() == ent["name"].lower() for ent in entities):
+                continue
+
+            words = chunk.text.split()
+            # Skip sentence-length noun chunks (likely fragments, not entities)
+            if len(words) > 5:
+                continue
+            # Skip chunks with a determiner in non-first position (sentence fragment)
+            if len(words) >= 3 and any(w.lower() in ('the', 'a', 'an', 'this', 'that') for w in words[1:]):
+                continue
+
+            entity_type = infer_entity_type(chunk.text)
+            entities.append({
+                "name": chunk.text,
+                "type": entity_type,
+                "label": "NOUN_CHUNK",
+                "confidence": 0.7  # Medium confidence for noun chunks
+            })
         
         return entities
     else:
