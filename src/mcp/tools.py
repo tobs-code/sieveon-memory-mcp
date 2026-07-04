@@ -1157,3 +1157,144 @@ async def list_events(
     total = counts[0].get("count", 0) if counts else 0
 
     return {"events": events, "count": len(events), "total": total}
+
+
+@mcp.tool()
+async def graph_traverse(
+    start_entity: str,
+    max_depth: int = 2,
+    direction: str = "both",
+    predicate: Optional[str] = None,
+    min_confidence: float = 0.0,
+) -> dict:
+    """Multi-hop graph traversal: find paths by walking the knowledge graph.
+    Starts from 'start_entity' and follows relationships up to 'max_depth' hops.
+    Uses BFS with cycle detection. Returns all unique paths discovered.
+
+    - 'direction': 'outbound' (entity → related), 'inbound' (entity ← related), or 'both'
+    - 'predicate': optional filter to follow only specific relationship types
+    - 'min_confidence': minimum confidence threshold (0.0 to 1.0)"""
+    from collections import deque
+
+    max_depth = max(1, min(max_depth, 5))
+
+    entity_sql = f"""
+    SELECT id, name, type FROM entity
+    WHERE (forgotten IS NONE OR forgotten = false)
+    AND name = '{escape_surrealql(start_entity)}'
+    LIMIT 1;
+    """
+    entity_result = await _query_surreal(entity_sql)
+    entities = _extract_result(entity_result, 1)
+
+    if not entities:
+        return {
+            "status": "error",
+            "error": f"Entity '{start_entity}' not found in knowledge graph",
+            "paths": [],
+            "path_count": 0,
+        }
+
+    start = entities[0]
+    visited: set = {start["id"]}
+    all_nodes: Dict[str, dict] = {}
+    all_edges: List[dict] = []
+    all_paths: List[list] = []
+    seen_edge_keys: set = set()
+
+    queue: deque = deque()
+    queue.append((start["id"], start["name"], 0, []))
+
+    while queue:
+        eid, ename, depth, path = queue.popleft()
+
+        if depth >= max_depth:
+            continue
+
+        clauses = []
+        if direction in ("outbound", "both"):
+            clauses.append(f"in.name = '{escape_surrealql(ename)}'")
+        if direction in ("inbound", "both"):
+            clauses.append(f"out.name = '{escape_surrealql(ename)}'")
+        if not clauses:
+            break
+
+        pred_clause = ""
+        if predicate:
+            pred_clause = f"AND predicate = '{escape_surrealql(predicate)}'"
+
+        hop_sql = f"""
+        SELECT in.id AS in_id, in.name AS in_name, in.type AS in_type,
+               out.id AS out_id, out.name AS out_name, out.type AS out_type,
+               predicate, confidence
+        FROM fact
+        WHERE (valid_until IS NONE OR valid_until > time::now())
+        AND ({' OR '.join(clauses)})
+        {pred_clause}
+        AND (confidence IS NONE OR confidence >= {min_confidence})
+        ORDER BY confidence DESC;
+        """
+
+        result = await _query_surreal(hop_sql)
+        facts = _extract_result(result, 1)
+
+        for f in facts:
+            pred = f.get("predicate", "")
+            if pred in ("weakly_related", "mentions"):
+                continue
+
+            is_outbound = (f.get("in_id") == eid)
+            neighbor_id = f.get("out_id") if is_outbound else f.get("in_id")
+            neighbor_name = f.get("out_name") if is_outbound else f.get("in_name")
+            neighbor_type = f.get("out_type") if is_outbound else f.get("in_type")
+
+            if not neighbor_id or not neighbor_name:
+                continue
+
+            if neighbor_id not in all_nodes:
+                all_nodes[neighbor_id] = {
+                    "id": neighbor_id, "name": neighbor_name, "type": neighbor_type or "",
+                }
+
+            edge_key = (eid, pred, neighbor_id)
+            if edge_key not in seen_edge_keys:
+                seen_edge_keys.add(edge_key)
+                all_edges.append({
+                    "from_id": eid, "from_name": ename,
+                    "to_id": neighbor_id, "to_name": neighbor_name,
+                    "predicate": pred, "confidence": f.get("confidence", 1.0),
+                    "depth": depth + 1,
+                })
+
+            segment = {
+                "from": ename, "predicate": pred,
+                "to": neighbor_name, "confidence": f.get("confidence", 1.0),
+            }
+            new_path = path + [segment]
+            all_paths.append(new_path)
+
+            if neighbor_id not in visited and (depth + 1) < max_depth:
+                visited.add(neighbor_id)
+                queue.append((neighbor_id, neighbor_name, depth + 1, new_path))
+
+    seen = set()
+    unique_paths = []
+    for p in all_paths:
+        key = " -> ".join(f"{s['from']}|{s['predicate']}|{s['to']}" for s in p)
+        if key not in seen:
+            seen.add(key)
+            unique_paths.append(p)
+
+    return {
+        "status": "ok",
+        "start_entity": {"id": start["id"], "name": start["name"], "type": start.get("type", "")},
+        "max_depth": max_depth,
+        "direction": direction,
+        "predicate_filter": predicate,
+        "nodes": list(all_nodes.values()),
+        "node_count": len(all_nodes),
+        "edges": all_edges,
+        "edge_count": len(all_edges),
+        "path_count": len(unique_paths),
+        "paths": unique_paths,
+    }

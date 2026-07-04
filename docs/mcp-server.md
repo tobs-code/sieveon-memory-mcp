@@ -143,7 +143,7 @@ In `.cursor/mcp.json` or via the VS Code MCP extension:
 }
 ```
 
-## The 15 Tools (4 Layers) + MCP Resources
+## The 16 Tools (4 Layers) + MCP Resources
 
 ### Layer 1 — Core Memory Operations
 
@@ -360,6 +360,60 @@ Direct graph traversal query on the temporal Knowledge Graph.
     "offset": 0
   }
 }
+```
+
+---
+
+#### `graph_traverse`
+
+Multi-hop graph traversal: walks the knowledge graph starting from an entity,
+following relationships up to `max_depth` hops. Uses BFS with cycle detection.
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `start_entity` | `string` | yes | — | Entity name to start traversal from |
+| `max_depth` | `int` | no | `2` | Max hops (1–5, clamped automatically) |
+| `direction` | `string` | no | `"both"` | `"outbound"`, `"inbound"`, or `"both"` |
+| `predicate` | `string` | no | `null` | Filter to a specific relationship type |
+| `min_confidence` | `float` | no | `0.0` | Minimum confidence threshold (0.0–1.0) |
+
+**Returns:**
+
+```json
+{
+  "status": "ok",
+  "start_entity": {"id": "entity:sieveon", "name": "Sieveon", "type": "technology"},
+  "max_depth": 2,
+  "direction": "both",
+  "predicate_filter": null,
+  "nodes": [
+    {"id": "entity:postgres", "name": "PostgreSQL", "type": "technology"}
+  ],
+  "node_count": 5,
+  "edges": [
+    {
+      "from_id": "entity:sieveon", "from_name": "Sieveon",
+      "to_id": "entity:postgres", "to_name": "PostgreSQL",
+      "predicate": "has_database", "confidence": 1.0, "depth": 1
+    }
+  ],
+  "edge_count": 7,
+  "path_count": 7,
+  "paths": [
+    [
+      {"from": "Sieveon", "predicate": "has_database", "to": "PostgreSQL", "confidence": 1.0}
+    ],
+    [
+      {"from": "Sieveon", "predicate": "co_occurs_with", "to": "MCP", "confidence": 0.63},
+      {"from": "MCP", "predicate": "created", "to": "Python", "confidence": 0.68}
+    ]
+  ]
+}
+```
+
+On error (entity not found):
+```json
+{"status": "error", "error": "Entity 'X' not found in knowledge graph", "paths": [], "path_count": 0}
 ```
 
 ---
@@ -674,6 +728,7 @@ read_resource("sieveon://entity/entity:alice")
 | `memory_update` | Core | `subject`, `predicate`, `new_value` | `invalidated_fact`, `new_fact` |
 | `event_log_search` | Primitives | `query`, `since?`, `until?`, `limit?`, `offset?`, `include_forgotten?` | `events[]`, `count` |
 | `kg_query` | Primitives | `subject?`, `object?`, `predicate?`, `at_time?`, `limit?`, `offset?` | `facts[]`, `count`, `query_params` |
+| `graph_traverse` | Primitives | `start_entity`, `max_depth?`, `direction?`, `predicate?`, `min_confidence?` | `paths[]`, `nodes[]`, `edges[]`, `node_count`, `edge_count`, `path_count` |
 | `list_entities` | Primitives | `limit?`, `offset?`, `type?`, `name_contains?`, `sort_by?`, `sort_order?` | `entities[]`, `count`, `total` |
 | `list_events` | Primitives | `limit?`, `offset?`, `since?`, `until?`, `source?`, `include_forgotten?` | `events[]`, `count`, `total` |
 | `semantic_search` | Primitives | `query`, `top_k?` | `events[]`, `count` |

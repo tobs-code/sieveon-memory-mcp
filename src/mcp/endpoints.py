@@ -270,6 +270,19 @@ async def list_events_endpoint(
     return await list_events(limit, offset, since, until, source, include_forgotten)
 
 
+@app.get("/graph/traverse")
+async def graph_traverse_endpoint(
+    start_entity: str = Query(..., description="Entity name to start from"),
+    max_depth: int = Query(2, description="Max traversal depth (1-5)"),
+    direction: str = Query("both", description="outbound, inbound, or both"),
+    predicate: Optional[str] = Query(None, description="Filter by predicate type"),
+    min_confidence: float = Query(0.0, description="Minimum confidence threshold"),
+):
+    """Multi-hop graph traversal: find paths by walking the knowledge graph."""
+    from .tools import graph_traverse
+    return await graph_traverse(start_entity, max_depth, direction, predicate, min_confidence)
+
+
 @app.post("/memory/merge_entities")
 async def memory_merge_entities_endpoint(request_data: dict):
     """Merges all facts from source_entity into target_entity, then forgets the source."""
