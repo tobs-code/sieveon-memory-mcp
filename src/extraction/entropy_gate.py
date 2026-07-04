@@ -78,6 +78,7 @@ class EntropyGateConfig:
         min_length: int = 10,  # Unter X Zeichen immer skippen
         min_diversity: float = 0.15,  # Anteil unique chars; repetitive Texte darunter skippen
         max_length: int = 1000,  # Über X Zeichen immer skippen
+        min_novelty: float = 0.08,  # Mindest-Novelty (1 - avg_sim); darunter = near-dup → skip
         max_entities_for_cooccurrence: int = 6,  # Obergrenze gegen kombinatorische Explosion
     ):
         self.alpha = alpha
@@ -88,6 +89,7 @@ class EntropyGateConfig:
         self.min_length = min_length
         self.max_length = max_length
         self.min_diversity = min_diversity
+        self.min_novelty = min_novelty
         self.max_entities_for_cooccurrence = max_entities_for_cooccurrence
 
 
@@ -349,6 +351,24 @@ class EntropyGate:
         # Calculate individual scores
         text_entropy = self.calculate_char_entropy(text)
         novelty = self.calculate_novelty(text, content_hash=content_hash)
+
+        # Near-duplicate guard: skip if embedding is too similar to existing content
+        if novelty < self.config.min_novelty:
+            result = {
+                "decision": "skip",
+                "reason": "near_duplicate",
+                "novelty": novelty,
+                "min_novelty": self.config.min_novelty,
+            }
+            self._log_decision(
+                text,
+                0.0,
+                novelty,
+                0.0,
+                result["decision"],
+                reason_override=result["reason"],
+            )
+            return result
 
         # Normalize entropy to 0-1 range (assuming max entropy of ~4.5)
         normalized_entropy = min(text_entropy / 4.5, 1.0)
