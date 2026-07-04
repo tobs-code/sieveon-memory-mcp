@@ -8,6 +8,7 @@ and applies any pending ones in order.
 
 import asyncio
 import hashlib
+import inspect
 import logging
 from typing import Any, Callable, Coroutine, Dict, List, Optional
 
@@ -35,7 +36,11 @@ class Migration:
         h = hashlib.sha256()
         h.update(str(self.version).encode())
         h.update(self.description.encode())
-        h.update(self.apply_fn.__code__.co_code)
+        try:
+            source = inspect.getsource(self.apply_fn)
+            h.update(source.encode())
+        except (OSError, TypeError):
+            h.update(str(id(self.apply_fn)).encode())
         return h.hexdigest()[:16]
 
 

@@ -71,10 +71,8 @@ class CoarseExtractor:
                     "had",
                     "works",
                     "worked",
-                    "works",
                     "lives",
                     "lived",
-                    "met",
                     "met",
                 ]
             ]

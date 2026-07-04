@@ -16,7 +16,7 @@ from datetime import datetime
 from typing import Any, Dict, List
 
 import numpy as np
-import requests
+import httpx
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -65,11 +65,12 @@ class SieveonEvalHarness:
             "Content-Type": "application/json",
         }
         full_sql = f"USE NS {self.ns} DB {self.db};\n{sql}"
-        response = requests.post(
-            self.surreal_url, data=full_sql, headers=headers, auth=self.auth, timeout=30
-        )
-        response.raise_for_status()
-        data = response.json()
+        with httpx.Client(timeout=30) as client:
+            response = client.post(
+                self.surreal_url, content=full_sql, headers=headers, auth=self.auth
+            )
+            response.raise_for_status()
+            data = response.json()
         if isinstance(data, list):
             for item in data:
                 if isinstance(item, dict) and item.get("status") == "ERR":

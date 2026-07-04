@@ -871,7 +871,7 @@ def extract_triples_with_spacy(text: str) -> list[dict]:
                     "confidence": confidence,
                 }
             )
-        except:
+        except Exception:
             triples.append(
                 {
                     "subject": subj,

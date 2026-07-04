@@ -4,7 +4,7 @@ Klassifiziert Queries in die Typen: temporal, factual, multi-hop, conversational
 """
 
 import re
-from typing import Dict, Tuple
+from typing import Dict, Optional, Tuple
 
 
 class QueryClassifier:
@@ -130,10 +130,12 @@ class QueryClassifier:
             r"\boverwrite\b",
         ]
 
-    def classify(self, query: str) -> Tuple[str, float]:
+    def classify(self, query: Optional[str]) -> Tuple[str, float]:
         """
         Klassifiziert eine Query und gibt (type, confidence) zurück.
         """
+        if not query or not query.strip():
+            return "factual", 0.5
         query_lower = query.lower()
         scores: Dict[str, int] = {
             "temporal": 0,

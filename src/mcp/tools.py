@@ -13,7 +13,7 @@ from typing import Any, Dict, List, Optional
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from mcp.server.fastmcp import FastMCP
-from src.extraction.entropy_gate import escape_surrealql
+from src.extraction.entropy_gate import character_diversity, escape_surrealql
 
 from .common_logic import _execute_query, _get_or_create_entity, _store_content
 from .core import _clean_output, _embed_query, _extract_result, _query_surreal, mcp
@@ -593,20 +593,12 @@ def _is_fact_plausible(predicate: str, in_type: str, out_type: str) -> bool:
     return validate_predicate(in_type, predicate, out_type)
 
 
-def _character_diversity(text: str) -> float:
-    """Anteil unique chars: len(set(text)) / len(text). < 0.15 = repetitive noise."""
-    if not text:
-        return 0.0
-    unique = len(set(text.lower()))
-    return unique / len(text)
-
-
 def _is_highly_repetitive(text: str) -> bool:
     """Erkennt repetitive/noise content wie 'test test test test test' or 'ab ab ab ab ab'.
     Prüft character_diversity (< 0.20) und zusätzlich die Wort-Wiederholungsrate."""
     if not text or len(text) < 5:
         return False
-    div = _character_diversity(text)
+    div = character_diversity(text)
     # Character-Diversity: "test test test test test" -> 4/24 = 0.167 < 0.20 ✓
     if div < 0.20:
         return True
@@ -707,28 +699,27 @@ async def memory_forget(
     if entity:
         entity_escaped = escape_surrealql(entity)
 
-        # 1. Mark the entity itself as forgotten FIRST – if this fails, no facts are touched
+        # Find entity first (read-only, no side effects)
         try:
             entity_find_sql = (
                 f"SELECT id FROM entity WHERE name = '{entity_escaped}' LIMIT 1;"
             )
             entity_result = await _query_surreal(entity_find_sql)
             entities = _extract_result(entity_result, 1)
-
-            if entities:
-                entity_id = entities[0].get("id")
-                entity_update_sql = f"UPDATE {entity_id} SET forgotten = true, forget_reason = '{escape_surrealql(reason)}';"
-                await _query_surreal(entity_update_sql)
-                forgotten_items.append(
-                    {"id": entity_id, "type": "entity", "status": "forgotten"}
-                )
+            entity_id = entities[0].get("id") if entities else None
         except Exception as e:
             return {
                 "status": "error",
-                "message": f"Failed to forget entity {entity}: {str(e)}",
+                "message": f"Failed to find entity {entity}: {str(e)}",
             }
 
-        # 2. Now invalidate all facts related to this entity
+        if not entity_id:
+            return {
+                "status": "error",
+                "message": f"Entity '{entity}' not found – nothing to forget",
+            }
+
+        # 1. First invalidate all facts related to this entity
         find_facts_sql = f"""
         SELECT id FROM fact
         WHERE in.name = '{entity_escaped}' OR out.name = '{entity_escaped}';
@@ -749,6 +740,19 @@ async def memory_forget(
                     "status": "error",
                     "message": f"Failed to invalidate fact {fact_id}: {str(e)}",
                 }
+
+        # 2. Then mark the entity itself as forgotten
+        try:
+            entity_update_sql = f"UPDATE {entity_id} SET forgotten = true, forget_reason = '{escape_surrealql(reason)}';"
+            await _query_surreal(entity_update_sql)
+            forgotten_items.append(
+                {"id": entity_id, "type": "entity", "status": "forgotten"}
+            )
+        except Exception as e:
+            return {
+                "status": "error",
+                "message": f"Failed to forget entity {entity}: {str(e)}",
+            }
 
     return {
         "forgotten_items": forgotten_items,

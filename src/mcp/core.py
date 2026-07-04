@@ -25,7 +25,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from mcp.server.fastmcp import FastMCP
 from src.router.cost_awareness import CostTracker
-from src.router.policy import BudgetTracker
+from src.router.budget import BudgetTracker
 
 # Shared CostTracker – wird von RoutingPolicy automatisch gefüttert
 cost_tracker = CostTracker()
@@ -484,22 +484,22 @@ async def ensure_schema_loaded():
         if os.path.exists(load_script):
             print(f"   Using existing load script: {load_script}")
             try:
-                import subprocess
-
-                result = subprocess.run(
-                    ["python", load_script],
+                proc = await asyncio.create_subprocess_exec(
+                    sys.executable, load_script,
                     cwd=project_root,
-                    capture_output=True,
-                    text=True,
-                    encoding="utf-8",
-                    errors="replace",
-                    timeout=60,
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE,
                 )
-                if result.stdout:
-                    print(result.stdout)
-                if result.stderr:
-                    print(f"   [WARN] Warnings: {result.stderr}")
+                stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=60)
+                if stdout:
+                    print(stdout.decode("utf-8", errors="replace"))
+                if stderr:
+                    print(f"   [WARN] Warnings: {stderr.decode('utf-8', errors='replace')}")
                 print("[OK] Schema loading complete!")
+            except asyncio.TimeoutError:
+                print(f"   [ERROR] Schema loading timed out after 60s")
+                if proc:
+                    proc.kill()
             except Exception as e:
                 print(f"   [ERROR] Failed to run load script: {e}")
         else:

@@ -10,6 +10,12 @@ import time
 from datetime import datetime, timedelta
 import logging
 from .cost_awareness import cost_tracker
+from .budget import BudgetLevel, BudgetTracker
+
+
+class OverBudget(Exception):
+    """Raised when a request exceeds its allocated budget."""
+    pass
 
 
 class QueryType(Enum):
@@ -18,92 +24,6 @@ class QueryType(Enum):
     MULTI_HOP = "multi_hop"
     CONVERSATIONAL = "conversational"
     UPDATE = "update"
-
-
-class BudgetLevel(Enum):
-    LOW = "low"
-    MEDIUM = "medium"
-    HIGH = "high"
-
-
-class OverBudget(Exception):
-    """Raised when a request exceeds its allocated budget."""
-    pass
-
-
-class BudgetTracker:
-    """
-    Tracks resource consumption for individual requests.
-    Uses a global health factor to adaptively scale limits based on system health.
-    """
-    # Class-level health factor to ensure all trackers react to system health simultaneously
-    _health_factor = 1.0  # 1.0 = healthy, 0.1 = very unhealthy
-    _health_lock = threading.Lock()
-    
-    def __init__(self):
-        self.db_calls = 0
-        self.estimated_tokens = 0
-        self.start_time = time.time()
-        
-        # Default limits per budget level
-        self.limits = {
-            BudgetLevel.LOW: {
-                'db_calls': 10,
-                'tokens': 1000
-            },
-            BudgetLevel.MEDIUM: {
-                'db_calls': 25,
-                'tokens': 3000
-            },
-            BudgetLevel.HIGH: {
-                'db_calls': 50,
-                'tokens': 8000
-            }
-        }
-
-    @classmethod
-    def update_system_health(cls, factor: float):
-        """Update the global health factor."""
-        with cls._health_lock:
-            cls._health_factor = max(0.1, min(1.0, factor))
-
-    @classmethod
-    def get_system_health(cls) -> float:
-        """Get the current system health factor."""
-        with cls._health_lock:
-            return cls._health_factor
-
-    def track_db_call(self):
-        """Increment database call counter."""
-        self.db_calls += 1
-
-    def track_tokens(self, count: int):
-        """Increment token counter."""
-        self.estimated_tokens += count
-
-    def is_over_budget(self, budget_level: BudgetLevel) -> bool:
-        """Check if current usage exceeds budget."""
-        limits = self.limits[budget_level]
-        health_factor = self.get_system_health()
-        
-        # Scale limits based on system health
-        max_db = int(limits['db_calls'] * health_factor)
-        max_tokens = int(limits['tokens'] * health_factor)
-        
-        return (self.db_calls > max_db or self.estimated_tokens > max_tokens)
-
-    def get_remaining_budget(self, budget_level: BudgetLevel) -> Dict[str, int]:
-        """Get remaining budget."""
-        limits = self.limits[budget_level]
-        health_factor = self.get_system_health()
-        
-        max_db = int(limits['db_calls'] * health_factor)
-        max_tokens = int(limits['tokens'] * health_factor)
-        
-        return {
-            'remaining_db_calls': max(0, max_db - self.db_calls),
-            'remaining_tokens': max(0, max_tokens - self.estimated_tokens)
-        }
 
 
 class RoutingPolicy:

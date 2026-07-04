@@ -15,8 +15,9 @@ from src.extraction.embedding_service import get_embedding_service
 from src.extraction.entropy_gate import escape_surrealql
 from src.extraction.entity_utils import infer_entity_type
 from src.maintenance.conservative_maintainer import ConservativeMaintainer
-from src.planner.executor import PlanExecutor, RetrievalExecutor, BudgetTracker
-from src.router.policy import RoutingPolicy, QueryType, BudgetLevel
+from src.planner.executor import PlanExecutor, RetrievalExecutor
+from src.router.budget import BudgetLevel, BudgetTracker
+from src.router.policy import RoutingPolicy, QueryType
 from .core import (
     _query_surreal,
     _extract_result,
@@ -26,6 +27,16 @@ from .core import (
 )
 
 MAX_CONTENT_LENGTH = 100_000
+
+_entropy_gate_instance = None
+
+
+def _get_entropy_gate():
+    global _entropy_gate_instance
+    if _entropy_gate_instance is None:
+        from src.extraction.entropy_gate import EntropyGate
+        _entropy_gate_instance = EntropyGate()
+    return _entropy_gate_instance
 
 
 async def _store_content(content: str, source: str = "user_input", debug: bool = False, metadata: Optional[Dict[str, Any]] = None) -> dict:
@@ -40,8 +51,7 @@ async def _store_content(content: str, source: str = "user_input", debug: bool =
         return {"event_id": None, "status": "error", "source": source,
                 "message": f"content exceeds maximum length of {MAX_CONTENT_LENGTH} (got {len(content)})"}
 
-    from src.extraction.entropy_gate import EntropyGate
-    gate = EntropyGate()
+    gate = _get_entropy_gate()
     gate_result = await asyncio.to_thread(gate.should_extract, content)
     event_id = await asyncio.to_thread(gate.ingest, content, source, debug=False, metadata=metadata)
 
@@ -56,6 +66,17 @@ async def _store_content(content: str, source: str = "user_input", debug: bool =
         gate_info["reason"] = gate_result.get("reason", "unknown")
         gate_info["composite_score"] = gate_result.get("composite_score")
         gate_info["threshold"] = gate_result.get("threshold")
+
+    # KG-Extraktion wenn das Gate zustimmt
+    if gate_result.get("decision") == "extract" and event_id:
+        try:
+            kg_result = await asyncio.to_thread(gate._extract_to_kg, content, event_id, debug)
+            gate_info["kg"] = {"entities_created": kg_result.get("entities_created", 0),
+                                "facts_created": kg_result.get("facts_created", 0)}
+        except Exception as e:
+            if debug:
+                print(f"  [KG] Extraction error: {e}")
+            gate_info["kg"] = {"error": str(e)}
 
     return {"event_id": event_id, "status": "stored", "source": source,
             "gate": gate_info}

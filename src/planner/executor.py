@@ -17,7 +17,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 from ..extraction.entropy_gate import escape_surrealql
 from ..mcp.core import _clean_output, _extract_result, _query_surreal
 from ..router.cost_awareness import cost_tracker
-from ..router.policy import BudgetLevel, QueryType
+from ..router.budget import BudgetLevel, BudgetTracker
+from ..router.policy import QueryType
 
 
 class RetrievalStrategy(Enum):
@@ -31,42 +32,6 @@ class RetrievalStrategy(Enum):
     HYBRID_BM25_VECTOR_TEMPORAL = "hybrid_bm25_vector_temporal"
     HYBRID_FALLBACK = "hybrid_fallback"
     SEMANTIC_HYBRID = "semantic_hybrid"
-
-
-class BudgetTracker:
-    """Tracks resource consumption for a single execution"""
-
-    def __init__(self, budget_level: BudgetLevel):
-        self.db_calls = 0
-        self.estimated_tokens = 0
-        self.budget_level = budget_level
-
-        # Budget limits per level
-        self.limits = {
-            BudgetLevel.LOW: {"db_calls": 10, "tokens": 1000},
-            BudgetLevel.MEDIUM: {"db_calls": 25, "tokens": 3000},
-            BudgetLevel.HIGH: {"db_calls": 50, "tokens": 8000},
-        }
-
-    def increment_db_calls(self, count: int = 1):
-        self.db_calls += count
-
-    def increment_tokens(self, count: int):
-        self.estimated_tokens += count
-
-    def is_over_budget(self) -> bool:
-        limits = self.limits[self.budget_level]
-        return (
-            self.db_calls > limits["db_calls"]
-            or self.estimated_tokens > limits["tokens"]
-        )
-
-    def get_remaining_budget(self) -> Dict[str, int]:
-        limits = self.limits[self.budget_level]
-        return {
-            "remaining_db_calls": max(0, limits["db_calls"] - self.db_calls),
-            "remaining_tokens": max(0, limits["tokens"] - self.estimated_tokens),
-        }
 
 
 class RetrievalExecutor:

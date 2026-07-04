@@ -10,20 +10,17 @@ import math
 import os
 import re
 import time
+import sys
 from typing import Any, Dict, List, Optional
 
+import httpx
 import numpy as np
-import requests
 from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
 
-# Import our embedding service
-import sys
-
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
-import sys as _sys
 
 from src.extraction.embedding_service import BaseEmbeddingService, get_embedding_service
 from src.extraction.entity_utils import (
@@ -31,6 +28,16 @@ from src.extraction.entity_utils import (
     infer_entity_type,
     is_content_phrase,
 )
+
+
+_shared_http_client = None
+
+
+def _get_http_client() -> httpx.Client:
+    global _shared_http_client
+    if _shared_http_client is None:
+        _shared_http_client = httpx.Client(timeout=httpx.Timeout(30.0))
+    return _shared_http_client
 
 
 def escape_surrealql(value: str) -> str:
@@ -49,7 +56,15 @@ def escape_surrealql(value: str) -> str:
 
 def _debug_print(*args, **kwargs):
     """Print to stderr to avoid breaking MCP JSON-RPC on stdout."""
-    print(*args, file=_sys.stderr, **kwargs)
+    print(*args, file=sys.stderr, **kwargs)
+
+
+def character_diversity(text: str) -> float:
+    """Unique chars ratio: len(set(text)) / len(text). < 0.15 = repetitive noise."""
+    if not text:
+        return 0.0
+    unique = len(set(text.lower()))
+    return unique / len(text)
 
 
 class EntropyGateConfig:
@@ -100,14 +115,14 @@ class EntropyGate:
             "Content-Type": "text/plain; charset=utf-8",
         }
         full_sql = f"USE NS {self.surreal_ns} DB {self.surreal_db};\n{sql}"
-        response = requests.post(
-            self.surreal_url,
-            data=full_sql.encode("utf-8"),
-            headers=headers,
-            auth=self.auth,
-            timeout=30,
-        )
+        client = _get_http_client()
         try:
+            response = client.post(
+                self.surreal_url,
+                content=full_sql.encode("utf-8"),
+                headers=headers,
+                auth=self.auth,
+            )
             data = response.json()
             if isinstance(data, list):
                 return data
@@ -115,7 +130,6 @@ class EntropyGate:
                 return [data]
         except Exception as e:
             print(f"SurrealDB query failed: {e}")
-            print(f"Response: {response.text}")
             return []
 
     def _escape_surrealql(self, value: str) -> str:
@@ -241,11 +255,7 @@ class EntropyGate:
 
     @staticmethod
     def _character_diversity(text: str) -> float:
-        """Anteil unique chars: len(set(text)) / len(text). < 0.30 = repetitive."""
-        if not text:
-            return 0.0
-        unique = len(set(text.lower()))
-        return unique / len(text)
+        return character_diversity(text)
 
     @staticmethod
     def _word_diversity(text: str) -> float:

@@ -24,6 +24,15 @@ SURREAL_AUTH = (
 SURREAL_NS = os.getenv("SURREALDB_NS", "sieveon")
 SURREAL_DB = os.getenv("SURREALDB_DB", "sieveon")
 
+_shared_async_client = None
+
+
+async def _get_async_client() -> httpx.AsyncClient:
+    global _shared_async_client
+    if _shared_async_client is None:
+        _shared_async_client = httpx.AsyncClient(timeout=httpx.Timeout(30.0))
+    return _shared_async_client
+
 
 async def _query_surreal(sql: str) -> Any:
     headers = {
@@ -31,13 +40,13 @@ async def _query_surreal(sql: str) -> Any:
         "Content-Type": "application/json",
     }
     full_sql = f"USE NS {SURREAL_NS} DB {SURREAL_DB};\n{sql}"
-    async with httpx.AsyncClient() as client:
+    client = await _get_async_client()
+    try:
         response = await client.post(
             SURREAL_URL,
             content=full_sql,
             headers=headers,
             auth=SURREAL_AUTH,
-            timeout=30.0,
         )
         response.raise_for_status()
         data = response.json()
@@ -48,6 +57,10 @@ async def _query_surreal(sql: str) -> Any:
                         f"SurrealDB Error: {item.get('information') or item.get('result')} | SQL: {sql[:120]}"
                     )
         return data
+    except httpx.TimeoutException:
+        raise RuntimeError(f"SurrealDB timeout: {sql[:120]}")
+    except httpx.HTTPStatusError as e:
+        raise RuntimeError(f"SurrealDB HTTP {e.response.status_code}: {sql[:120]}")
 
 
 def _extract_surreal_result(data: Any) -> list:

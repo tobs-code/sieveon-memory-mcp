@@ -98,7 +98,7 @@ class CostTracker:
         - Average cost (lower is better)
         - Recency of usage (more recent is better)
         
-        Lower score means more effective strategy.
+        Higher score means more effective strategy.
         """
         with self._metrics_lock:
             metrics = self._metrics[strategy]
@@ -114,17 +114,15 @@ class CostTracker:
             else:
                 cost_efficiency = 0.5  # Default if no data
             
-            # Consider recency (strategies used more recently might be preferred)
-            recency_factor = 1.0
+            # Recency bonus: recently used strategies get a small boost
+            recency_bonus = 1.0
             if metrics['last_used']:
                 time_since = datetime.now() - metrics['last_used']
-                # Reduce score for strategies not used in last hour
-                if time_since > timedelta(hours=1):
-                    recency_factor = 0.8
+                if time_since < timedelta(hours=1):
+                    recency_bonus = 1.05  # 5% boost for recent strategies
             
-            # Combined score (lower is better)
-            effectiveness = (1.0 - success_rate) * 0.4 + cost_efficiency * 0.6
-            return effectiveness * recency_factor
+            # Higher score = better (0.0 to 1.0)
+            return (success_rate * 0.6 + cost_efficiency * 0.4) * recency_bonus
 
     def get_all_strategies_ranked(self) -> List[Tuple[str, float]]:
         """
@@ -136,8 +134,8 @@ class CostTracker:
                 score = self.get_effectiveness_score(strategy)
                 strategies.append((strategy, score))
             
-            # Sort by effectiveness score (lowest first - most effective first)
-            return sorted(strategies, key=lambda x: x[1])
+            # Sort by effectiveness score descending (highest first = most effective)
+            return sorted(strategies, key=lambda x: x[1], reverse=True)
 
     def get_all_costs(self) -> Dict[str, Dict]:
         """Returns all cost metrics."""
