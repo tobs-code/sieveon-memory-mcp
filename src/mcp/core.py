@@ -33,6 +33,73 @@ cost_tracker = CostTracker()
 # Initialize FastMCP (Model Context Protocol) and FastAPI apps
 mcp = FastMCP("sieveon")  # Model Context Protocol implementation
 
+
+# ── MCP Resources ──────────────────────────────────────────────────────
+@mcp.resource("sieveon://stats", description="Memory system statistics")
+async def get_stats_resource() -> str:
+    """Aggregate statistics about the memory system."""
+    stats = {}
+    try:
+        result = await _query_surreal("SELECT count() FROM event WHERE (forgotten IS NONE OR forgotten = false) GROUP ALL;")
+        counts = _extract_result(result, 1)
+        stats["event_count"] = counts[0].get("count", 0) if counts else 0
+
+        result = await _query_surreal("SELECT count() FROM entity WHERE (forgotten IS NONE OR forgotten = false) GROUP ALL;")
+        counts = _extract_result(result, 1)
+        stats["entity_count"] = counts[0].get("count", 0) if counts else 0
+
+        result = await _query_surreal("SELECT count() FROM fact WHERE (valid_until IS NONE OR valid_until = NONE) AND (forgotten = false OR forgotten IS NONE) GROUP ALL;")
+        counts = _extract_result(result, 1)
+        stats["fact_count"] = counts[0].get("count", 0) if counts else 0
+
+        result = await _query_surreal("SELECT timestamp FROM event WHERE (forgotten IS NONE OR forgotten = false) ORDER BY timestamp ASC LIMIT 1;")
+        events = _extract_result(result, 1)
+        stats["oldest_event"] = events[0].get("timestamp") if events else None
+
+        result = await _query_surreal("SELECT timestamp FROM event WHERE (forgotten IS NONE OR forgotten = false) ORDER BY timestamp DESC LIMIT 1;")
+        events = _extract_result(result, 1)
+        stats["newest_event"] = events[0].get("timestamp") if events else None
+    except Exception as e:
+        return json.dumps({"error": str(e)}, indent=2)
+    return json.dumps(stats, indent=2, default=str)
+
+
+@mcp.resource("sieveon://entity/{entity_id}", description="Entity details with active facts")
+async def get_entity_resource(entity_id: str) -> str:
+    """Get detailed information about a specific entity, including its active KG facts."""
+    try:
+        result = await _query_surreal(f"SELECT * FROM {entity_id};")
+        data = _extract_result(result, 1)
+        if not data:
+            return json.dumps({"error": f"Entity {entity_id} not found"}, indent=2)
+        entity = _clean_output(data[0])
+
+        facts_result = await _query_surreal(
+            f"SELECT id, predicate, in.name AS subject, out.name AS object, confidence, valid_from, valid_until "
+            f"FROM fact WHERE (in = {entity_id} OR out = {entity_id}) "
+            f"AND (valid_until IS NONE OR valid_until > time::now()) "
+            f"ORDER BY confidence DESC LIMIT 50;"
+        )
+        facts = _extract_result(facts_result, 1) or []
+        entity["facts"] = _clean_output(facts)
+        return json.dumps(entity, indent=2, default=str)
+    except Exception as e:
+        return json.dumps({"error": f"Failed to read entity {entity_id}: {str(e)}"}, indent=2)
+
+
+@mcp.resource("sieveon://event/{event_id}", description="Event details")
+async def get_event_resource(event_id: str) -> str:
+    """Get details about a specific event."""
+    try:
+        sql = f"SELECT id, content, timestamp, source, metadata, forgotten, forgotten_reason FROM {event_id};"
+        result = await _query_surreal(sql)
+        data = _extract_result(result, 1)
+        if not data:
+            return json.dumps({"error": f"Event {event_id} not found"}, indent=2)
+        return json.dumps(_clean_output(data[0]), indent=2, default=str)
+    except Exception as e:
+        return json.dumps({"error": f"Failed to read event {event_id}: {str(e)}"}, indent=2)
+
 # FastAPI app
 app = FastAPI(title="Sieveon Control Plane Server (MCP Implementation)", version="0.1.0")
 

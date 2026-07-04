@@ -158,7 +158,13 @@ async def _execute_query(query: str, cost_budget: str = "auto", limit: int = 10)
         "cost_budget": strategy_dict["cost_budget"],
         "results": {"entities": entities, "facts": facts, "events": events},
         "total": len(entities) + len(facts) + len(events),
-        "summary": summary,
+        "summary": {
+            "found": summary["found"],
+            "answer": summary["answer"],
+            "total_facts": summary["total_facts"],
+            "total_entities": summary["total_entities"],
+            "total_events": summary["total_events"],
+        },
         "budget_tracker_key": None,
     }
 

@@ -1,6 +1,6 @@
 # MCP Server — Sieveon Memory Stack
 
-The MCP Server exposes the entire Sieveon Memory Stack as a standardized tool interface via the [Model Context Protocol (MCP)](https://modelcontextprotocol.io). Any MCP-compatible client (e.g. Claude Desktop, Cursor, VS Code with MCP extension) can call all 15 memory tools directly — without hosting the stack itself.
+The MCP Server exposes the entire Sieveon Memory Stack via the [Model Context Protocol (MCP)](https://modelcontextprotocol.io) — 15 memory tools and 3 MCP resources. Any MCP-compatible client (e.g. Claude Desktop, Cursor, VS Code with MCP extension) can call them directly, without hosting the stack itself.
 
 ## Architecture Overview
 
@@ -10,9 +10,14 @@ The MCP Server exposes the entire Sieveon Memory Stack as a standardized tool in
 │                     ↔  stdio / SSE / HTTP                    │
 ├─────────────────────────────────────────────────────────────┤
 │                    MCP Server (FastMCP)                       │
-│  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌────────┐│
-│  │   Core      │ │ Primitives  │ │Introspection│ │Maint.  ││
-│  │  (4 Tools)  │ │  (5 Tools)  │ │  (2 Tools)  │ │(3 Tools││
+│  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌──────────┐│
+│  │   Core      │ │ Primitives  │ │Introspection│ │  Maint.  ││
+│  │  (4 Tools)  │ │  (5 Tools)  │ │  (2 Tools)  │ │(4 Tools) ││
+│  │             │ │             │ │             │ │          ││
+│  │  Resources  │ │  Resources  │ │  Resources  │ │          ││
+│  │ (3: entity, │ │ (entity/{id}│ │  (stats)    │ │          ││
+│  │  event,     │ │  event/{id} │ │             │ │          ││
+│  │  stats)     │ │  stats)     │ │             │ │          ││
 │  └──────┬──────┘ └──────┬──────┘ └──────┬──────┘ └───┬────┘│
 │         │               │               │            │      │
 │         ▼               ▼               ▼            ▼      │
@@ -138,7 +143,7 @@ In `.cursor/mcp.json` or via the VS Code MCP extension:
 }
 ```
 
-## The 14 Tools (4 Layers)
+## The 15 Tools (4 Layers) + MCP Resources
 
 ### Layer 1 — Core Memory Operations
 
@@ -226,7 +231,14 @@ The high-level entry point. Classifies the query, selects a retrieval strategy, 
     "facts": [{"id": "fact:xyz", "predicate": "works_at", …}],
     "events": []
   },
-  "total": 2
+  "total": 2,
+  "summary": {
+    "found": true,
+    "answer": "Alice works_at Acme Corp. Related entities: Alice (person). Best match: \"Alice works at Acme Corp…\" (source: user_input, hits: 2)",
+    "total_facts": 1,
+    "total_entities": 1,
+    "total_events": 0
+  }
 }
 ```
 
@@ -626,6 +638,32 @@ Dry-run preview:
 
 ---
 
+## MCP Resources
+
+In addition to tools, the server exposes **3 MCP resources** for reading entity and event details directly via `read_mcp_resource`.
+
+### Static Resource
+
+| URI | Description | Return |
+|-----|-------------|--------|
+| `sieveon://stats` | Memory system statistics | JSON: event/entity/fact counts, timestamps |
+
+### Resource Templates
+
+| URI Template | Description | Return |
+|--------------|-------------|--------|
+| `sieveon://entity/{entity_id}` | Entity details with active KG facts | JSON: full entity record + `facts[]` |
+| `sieveon://event/{event_id}` | Single event details | JSON: event record |
+
+**Usage example (via MCP protocol):**
+```
+read_resource("sieveon://entity/entity:alice")
+→ { "id": "entity:alice", "name": "Alice", "type": "person",
+    "facts": [ { "predicate": "works_at", "object": "Acme Corp", … } ] }
+```
+
+---
+
 ## Tool Reference (compact)
 
 | Tool | Layer | Input | Output |
@@ -771,7 +809,7 @@ The HNSW index `event_embedding_vec` is defined on the `embedding` field with `D
 
 | File | Purpose |
 |------|---------|
-| `src/mcp/server.py` | MCP server implementation (14 tools) |
+| `src/mcp/server.py` | MCP server implementation (15 tools, 3 resources) |
 | `docs/schema.surql` | SurrealDB schema (Event Log, KG, indexes) |
 | `docs/helper_functions.surql` | DB-side functions |
 | `docs/test_data.surql` | Sample test data |
