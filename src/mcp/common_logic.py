@@ -52,8 +52,7 @@ async def _store_content(content: str, source: str = "user_input", debug: bool =
                 "message": f"content exceeds maximum length of {MAX_CONTENT_LENGTH} (got {len(content)})"}
 
     gate = _get_entropy_gate()
-    gate_result = await asyncio.to_thread(gate.should_extract, content)
-    event_id, kg_result = await asyncio.to_thread(gate.ingest, content, source, debug=False, metadata=metadata)
+    event_id, kg_result, gate_result = await asyncio.to_thread(gate.ingest, content, source, debug=False, metadata=metadata)
 
     if event_id is None:
         return {"event_id": None, "status": "error", "source": source,

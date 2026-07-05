@@ -1176,7 +1176,7 @@ class EntropyGate:
         source: str = "unknown",
         debug: bool = False,
         metadata: Optional[Dict[str, Any]] = None,
-    ) -> tuple[Optional[str], Optional[Dict[str, Any]]]:
+    ) -> tuple[Optional[str], Optional[Dict[str, Any]], Optional[Dict[str, Any]]]:
         """
         Hauptfunktion: Ingest eines Textes in das Memory System
         1. IMMER in Raw Event Log speichern
@@ -1186,13 +1186,13 @@ class EntropyGate:
 
         if not text or not text.strip():
             sys.stderr.write(f"[EntropyGate] Error: Empty or whitespace-only content rejected (source={source})\n")
-            return None, None
+            return None, None, None
         if len(text) > 100_000:
             sys.stderr.write(f"[EntropyGate] Error: Content exceeds maximum storage length ({len(text)} > 100000) (source={source})\n")
-            return None, None
+            return None, None, None
         if "\x00" in text:
             sys.stderr.write(f"[EntropyGate] Error: Content contains null bytes, rejecting (source={source})\n")
-            return None, None
+            return None, None, None
 
         # 0. Dedup: Prüfen ob exakt gleicher Content mit gleicher Source bereits existiert
         content_hash = self._hash_content(text)
@@ -1216,7 +1216,7 @@ class EntropyGate:
             gate_result = self.should_extract(text, exclude_id=event_id)
             if gate_result["decision"] == "extract" and event_id:
                 kg_result = self._extract_to_kg(text, event_id, debug)
-            return event_id, kg_result
+            return event_id, kg_result, gate_result
 
         # 1. IMMER in Raw Event Log speichern (ohne Gate!)
         embedding = self.embedding_service.embed_for_storage(text)
@@ -1271,4 +1271,4 @@ class EntropyGate:
             if debug:
                 print(f"  [KG] Extraction complete: {kg_result}")
 
-        return event_id, kg_result
+        return event_id, kg_result, gate_result
