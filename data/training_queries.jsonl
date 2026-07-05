@@ -1,0 +1,500 @@
+{"text": "Was macht Diana bei CloudPeak Systems?", "type": "factual", "source": "synthetic"}
+{"text": "Find the cause of security audit at CloudPeak Systems", "type": "multi-hop", "source": "synthetic"}
+{"text": "Following up on our conversation about the partnership", "type": "conversational", "source": "synthetic"}
+{"text": "Weshalb wurde the migration createt?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Worüber haben wir bezüglich Project Phoenix gesprochen?", "type": "conversational", "source": "synthetic"}
+{"text": "Was ist NexGen AI?", "type": "factual", "source": "synthetic"}
+{"text": "Why did Lena updated?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Since when is Iris at Pyramid AG?", "type": "temporal", "source": "synthetic"}
+{"text": "In welchem Zusammenhang stehen TechNova und the Q4 rollout?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Show me the timestamp for the deadline", "type": "temporal", "source": "synthetic"}
+{"text": "Ändere den Status von Project Phoenix auf on hold", "type": "update", "source": "synthetic"}
+{"text": "Warum hat Lena erstellt?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Hatten wir nicht über BuildRight GmbH gesprochen?", "type": "conversational", "source": "synthetic"}
+{"text": "What about the strategy?", "type": "conversational", "source": "synthetic"}
+{"text": "Modify Diana's company to DataFlow Inc", "type": "update", "source": "synthetic"}
+{"text": "What updated letzten Monat?", "type": "temporal", "source": "synthetic"}
+{"text": "Überschreibe das Budget von the migration auf $50k", "type": "update", "source": "synthetic"}
+{"text": "Aktualisiere Maxs Rolle auf VP", "type": "update", "source": "synthetic"}
+{"text": "Wann wurde Acme Corp updatet?", "type": "temporal", "source": "synthetic"}
+{"text": "Show history for the partnership", "type": "temporal", "source": "synthetic"}
+{"text": "Zeitstempel von the deadline", "type": "temporal", "source": "synthetic"}
+{"text": "Change the Q4 rollout's status to active", "type": "update", "source": "synthetic"}
+{"text": "Weshalb wurde the dashboard redesign changet?", "type": "multi-hop", "source": "synthetic"}
+{"text": "What is GreenLeaf Analytics?", "type": "factual", "source": "synthetic"}
+{"text": "Set security audit to 9 days", "type": "update", "source": "synthetic"}
+{"text": "Update NexGen AIs Adresse", "type": "update", "source": "synthetic"}
+{"text": "Who is Frank?", "type": "factual", "source": "synthetic"}
+{"text": "What is the reason for the partnership?", "type": "multi-hop", "source": "synthetic"}
+{"text": "What is the relationship between Tom and Hans?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Why was the dashboard redesign geändert?", "type": "multi-hop", "source": "synthetic"}
+{"text": "What is the status of Project Phoenix?", "type": "factual", "source": "synthetic"}
+{"text": "Until when does Project Atlas run?", "type": "temporal", "source": "synthetic"}
+{"text": "Überschreibe das Budget von the restructuring auf 200k USD", "type": "update", "source": "synthetic"}
+{"text": "Was macht Bob bei Pyramid AG?", "type": "factual", "source": "synthetic"}
+{"text": "Set market expansion to 76 EUR", "type": "update", "source": "synthetic"}
+{"text": "Zeige die Verbindung zwischen Grace und CloudPeak Systems", "type": "multi-hop", "source": "synthetic"}
+{"text": "Where is BuildRight GmbH located?", "type": "factual", "source": "synthetic"}
+{"text": "What time did Hans created?", "type": "temporal", "source": "synthetic"}
+{"text": "Korrigiere Toms Firma zu Strata Labs", "type": "update", "source": "synthetic"}
+{"text": "Find information about the restructuring", "type": "factual", "source": "synthetic"}
+{"text": "Wann hat Sarah update?", "type": "temporal", "source": "synthetic"}
+{"text": "Wie besprochen, was ist mit DataFlow Inc?", "type": "conversational", "source": "synthetic"}
+{"text": "Show me all people at Pyramid AG", "type": "factual", "source": "synthetic"}
+{"text": "List the projects Diana is working on", "type": "factual", "source": "synthetic"}
+{"text": "Update BuildRight GmbH's details", "type": "update", "source": "synthetic"}
+{"text": "Until when does the Q4 rollout run?", "type": "temporal", "source": "synthetic"}
+{"text": "Erkläre die Beziehung zwischen QuantumSoft und Acme Corp", "type": "multi-hop", "source": "synthetic"}
+{"text": "Overwrite the budget for the restructuring to 200k USD", "type": "update", "source": "synthetic"}
+{"text": "Wann wurde the migration geändert?", "type": "temporal", "source": "synthetic"}
+{"text": "What impact does the migration have on Strata Labs?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Where is GreenLeaf Analytics located?", "type": "factual", "source": "synthetic"}
+{"text": "Setze das Datum für the migration auf Friday", "type": "update", "source": "synthetic"}
+{"text": "Until when does the restructuring run?", "type": "temporal", "source": "synthetic"}
+{"text": "How does David relate to Strata Labs?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Was war nochmal mit the dashboard redesign?", "type": "conversational", "source": "synthetic"}
+{"text": "Which projects is Tom involved in?", "type": "factual", "source": "synthetic"}
+{"text": "Wo befindet sich Strata Labs?", "type": "factual", "source": "synthetic"}
+{"text": "Worüber haben wir bezüglich the dashboard redesign gesprochen?", "type": "conversational", "source": "synthetic"}
+{"text": "What is the reason for the merger?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Going back to the migration", "type": "conversational", "source": "synthetic"}
+{"text": "What is the status of the migration?", "type": "factual", "source": "synthetic"}
+{"text": "Seit wann arbeitet Iris bei CloudPeak Systems?", "type": "temporal", "source": "synthetic"}
+{"text": "Wie besprochen, was ist mit DataFlow Inc?", "type": "conversational", "source": "synthetic"}
+{"text": "Who is Tom?", "type": "factual", "source": "synthetic"}
+{"text": "Wie hängen Max und Max zusammen?", "type": "multi-hop", "source": "synthetic"}
+{"text": "How does Grace relate to NexGen AI?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Set the deadline for Project Nova to December 31st", "type": "update", "source": "synthetic"}
+{"text": "Change Diana's task to sign the contract", "type": "update", "source": "synthetic"}
+{"text": "Aktualisiere Graces Rolle auf lead", "type": "update", "source": "synthetic"}
+{"text": "Du hast Bob erwähnt — gibt's was Neues?", "type": "conversational", "source": "synthetic"}
+{"text": "When was the last change to Project Nova?", "type": "temporal", "source": "synthetic"}
+{"text": "Zeitstempel von budget planning", "type": "temporal", "source": "synthetic"}
+{"text": "What does Lena do at GreenLeaf Analytics?", "type": "factual", "source": "synthetic"}
+{"text": "Liste alle Personen bei QuantumSoft", "type": "factual", "source": "synthetic"}
+{"text": "Update NexGen AIs Adresse", "type": "update", "source": "synthetic"}
+{"text": "Explain the connection between Lena and Project Atlas", "type": "multi-hop", "source": "synthetic"}
+{"text": "Tell me why Acme Corp aktualisiert Pyramid AG", "type": "multi-hop", "source": "synthetic"}
+{"text": "Find the cause of the roadmap at CloudPeak Systems", "type": "multi-hop", "source": "synthetic"}
+{"text": "List all changes this morning", "type": "temporal", "source": "synthetic"}
+{"text": "Going back to the Q4 rollout", "type": "conversational", "source": "synthetic"}
+{"text": "When did David modified?", "type": "temporal", "source": "synthetic"}
+{"text": "Update Charlie's role to CTO", "type": "update", "source": "synthetic"}
+{"text": "As we discussed, what about Project Phoenix?", "type": "conversational", "source": "synthetic"}
+{"text": "Zeitstempel von budget planning", "type": "temporal", "source": "synthetic"}
+{"text": "Until when does Project Phoenix run?", "type": "temporal", "source": "synthetic"}
+{"text": "When was the last change to the restructuring?", "type": "temporal", "source": "synthetic"}
+{"text": "Hat Tom an Project Nova gearbeitet?", "type": "factual", "source": "synthetic"}
+{"text": "Show me the timestamp for market expansion", "type": "temporal", "source": "synthetic"}
+{"text": "Zeige die Verbindung zwischen David und TechNova", "type": "multi-hop", "source": "synthetic"}
+{"text": "Give me the timeline for the migration", "type": "temporal", "source": "synthetic"}
+{"text": "As we discussed, what about the Q4 rollout?", "type": "conversational", "source": "synthetic"}
+{"text": "Update DataFlow Inc's details", "type": "update", "source": "synthetic"}
+{"text": "When was the last change to Project Nova?", "type": "temporal", "source": "synthetic"}
+{"text": "Zeige alle Änderungen today", "type": "temporal", "source": "synthetic"}
+{"text": "What is the relationship between Sarah and Max?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Liste alle Personen bei Pyramid AG", "type": "factual", "source": "synthetic"}
+{"text": "Wann hat Iris createt?", "type": "temporal", "source": "synthetic"}
+{"text": "Remember when we discussed compliance?", "type": "conversational", "source": "synthetic"}
+{"text": "Zeige Infos zu Project Phoenix", "type": "factual", "source": "synthetic"}
+{"text": "Was ist Strata Labs?", "type": "factual", "source": "synthetic"}
+{"text": "Wer ist Sarah?", "type": "factual", "source": "synthetic"}
+{"text": "List all changes last year", "type": "temporal", "source": "synthetic"}
+{"text": "Until when does the migration run?", "type": "temporal", "source": "synthetic"}
+{"text": "Going back to Project Atlas", "type": "conversational", "source": "synthetic"}
+{"text": "Bis wann läuft Project Nova?", "type": "temporal", "source": "synthetic"}
+{"text": "Going back to Project Phoenix", "type": "conversational", "source": "synthetic"}
+{"text": "What is the relationship between Lena and Eve?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Which projects is Hans involved in?", "type": "factual", "source": "synthetic"}
+{"text": "Earlier we talked about TechNova, any updates?", "type": "conversational", "source": "synthetic"}
+{"text": "Modify the status of DataFlow Inc to active", "type": "update", "source": "synthetic"}
+{"text": "Set the deadline for the dashboard redesign to Friday", "type": "update", "source": "synthetic"}
+{"text": "Wer ist Alice?", "type": "factual", "source": "synthetic"}
+{"text": "What impact does the Q4 rollout have on DataFlow Inc?", "type": "multi-hop", "source": "synthetic"}
+{"text": "What did we discuss regarding Strata Labs?", "type": "conversational", "source": "synthetic"}
+{"text": "Tell me about GreenLeaf Analytics", "type": "factual", "source": "synthetic"}
+{"text": "Find the cause of compliance at CloudPeak Systems", "type": "multi-hop", "source": "synthetic"}
+{"text": "What time did Sarah created?", "type": "temporal", "source": "synthetic"}
+{"text": "Zeige die Verbindung zwischen Grace und GreenLeaf Analytics", "type": "multi-hop", "source": "synthetic"}
+{"text": "How is NexGen AI connected to QuantumSoft?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Zeige die Verbindung zwischen Bob und GreenLeaf Analytics", "type": "multi-hop", "source": "synthetic"}
+{"text": "What is the reason for the merger?", "type": "multi-hop", "source": "synthetic"}
+{"text": "What happened heute at GreenLeaf Analytics?", "type": "temporal", "source": "synthetic"}
+{"text": "Set the deadline for the restructuring to next Monday", "type": "update", "source": "synthetic"}
+{"text": "Wann wurde the Q4 rollout geändert?", "type": "temporal", "source": "synthetic"}
+{"text": "Erinnerst du dich an the merger?", "type": "conversational", "source": "synthetic"}
+{"text": "Finde Fakten über compliance", "type": "factual", "source": "synthetic"}
+{"text": "Zeige die Verbindung zwischen Grace und NexGen AI", "type": "multi-hop", "source": "synthetic"}
+{"text": "Hatten wir nicht über Acme Corp gesprochen?", "type": "conversational", "source": "synthetic"}
+{"text": "Why was the dashboard redesign erstellt?", "type": "multi-hop", "source": "synthetic"}
+{"text": "What is the relationship between Emma and Sarah?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Give me the timeline for the restructuring", "type": "temporal", "source": "synthetic"}
+{"text": "What is the status of the restructuring?", "type": "factual", "source": "synthetic"}
+{"text": "Weshalb wurde the migration deletet?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Update Diana's role to manager", "type": "update", "source": "synthetic"}
+{"text": "Hatten wir nicht über Strata Labs gesprochen?", "type": "conversational", "source": "synthetic"}
+{"text": "List the projects Grace is working on", "type": "factual", "source": "synthetic"}
+{"text": "Find information about Project Atlas", "type": "factual", "source": "synthetic"}
+{"text": "Modify Bob's company to Pyramid AG", "type": "update", "source": "synthetic"}
+{"text": "Since when is Sarah at GreenLeaf Analytics?", "type": "temporal", "source": "synthetic"}
+{"text": "Worüber haben wir bezüglich the restructuring gesprochen?", "type": "conversational", "source": "synthetic"}
+{"text": "Tell me why DataFlow Inc deleted CloudPeak Systems", "type": "multi-hop", "source": "synthetic"}
+{"text": "What did we discuss regarding Strata Labs?", "type": "conversational", "source": "synthetic"}
+{"text": "In welchem Zusammenhang stehen QuantumSoft und the dashboard redesign?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Zeitstempel von security audit", "type": "temporal", "source": "synthetic"}
+{"text": "Erinnerst du dich an the roadmap?", "type": "conversational", "source": "synthetic"}
+{"text": "Wann wurde QuantumSoft update?", "type": "temporal", "source": "synthetic"}
+{"text": "Überschreibe das Budget von Project Atlas auf 100k EUR", "type": "update", "source": "synthetic"}
+{"text": "Korrigiere Graces Firma zu TechNova", "type": "update", "source": "synthetic"}
+{"text": "Who works at GreenLeaf Analytics?", "type": "factual", "source": "synthetic"}
+{"text": "Was ist DataFlow Inc?", "type": "factual", "source": "synthetic"}
+{"text": "Show details for Project Atlas", "type": "factual", "source": "synthetic"}
+{"text": "Update Iris's role to consultant", "type": "update", "source": "synthetic"}
+{"text": "Why did Grace geändert?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Show me the timestamp for budget planning", "type": "temporal", "source": "synthetic"}
+{"text": "Tell me about NexGen AI", "type": "factual", "source": "synthetic"}
+{"text": "What about security audit?", "type": "conversational", "source": "synthetic"}
+{"text": "Which projects is Bob involved in?", "type": "factual", "source": "synthetic"}
+{"text": "What does Diana do at NexGen AI?", "type": "factual", "source": "synthetic"}
+{"text": "Set compliance to 32 USD", "type": "update", "source": "synthetic"}
+{"text": "What did we discuss regarding TechNova?", "type": "conversational", "source": "synthetic"}
+{"text": "Explain the connection between Grace and the Q4 rollout", "type": "multi-hop", "source": "synthetic"}
+{"text": "Modify the status of Acme Corp to active", "type": "update", "source": "synthetic"}
+{"text": "As we discussed, what about Project Phoenix?", "type": "conversational", "source": "synthetic"}
+{"text": "Zeige alle Änderungen since Monday", "type": "temporal", "source": "synthetic"}
+{"text": "Wie hängen David und Bob zusammen?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Following up on our conversation about pricing", "type": "conversational", "source": "synthetic"}
+{"text": "Wann wurde Strata Labs createt?", "type": "temporal", "source": "synthetic"}
+{"text": "Following up on our conversation about market expansion", "type": "conversational", "source": "synthetic"}
+{"text": "Aktualisiere Toms Rolle auf consultant", "type": "update", "source": "synthetic"}
+{"text": "Modify Max's company to NexGen AI", "type": "update", "source": "synthetic"}
+{"text": "Hatten wir nicht über Strata Labs gesprochen?", "type": "conversational", "source": "synthetic"}
+{"text": "Going back to the migration", "type": "conversational", "source": "synthetic"}
+{"text": "In welchem Zusammenhang stehen DataFlow Inc und Project Atlas?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Wann wurde Project Nova modifiet?", "type": "temporal", "source": "synthetic"}
+{"text": "Why did Emma changed?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Was war nochmal mit the dashboard redesign?", "type": "conversational", "source": "synthetic"}
+{"text": "What is the reason for pricing?", "type": "multi-hop", "source": "synthetic"}
+{"text": "What does Bob do at TechNova?", "type": "factual", "source": "synthetic"}
+{"text": "Setze das Datum für Project Atlas auf end of Q3", "type": "update", "source": "synthetic"}
+{"text": "Zeige Infos zu the dashboard redesign", "type": "factual", "source": "synthetic"}
+{"text": "Was ist this quarter passiert?", "type": "temporal", "source": "synthetic"}
+{"text": "Change the restructuring's status to active", "type": "update", "source": "synthetic"}
+{"text": "Correct the name of Project Atlas", "type": "update", "source": "synthetic"}
+{"text": "Tell me about TechNova", "type": "factual", "source": "synthetic"}
+{"text": "You mentioned Hans — what's new?", "type": "conversational", "source": "synthetic"}
+{"text": "Earlier we talked about Acme Corp, any updates?", "type": "conversational", "source": "synthetic"}
+{"text": "Modify the status of GreenLeaf Analytics to active", "type": "update", "source": "synthetic"}
+{"text": "Finde Fakten über budget planning", "type": "factual", "source": "synthetic"}
+{"text": "Worüber haben wir bezüglich Project Phoenix gesprochen?", "type": "conversational", "source": "synthetic"}
+{"text": "Find events seit Januar", "type": "temporal", "source": "synthetic"}
+{"text": "Weshalb wurde Project Atlas update?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Korrigiere Dianas Firma zu TechNova", "type": "update", "source": "synthetic"}
+{"text": "Zeige die Verbindung zwischen Grace und QuantumSoft", "type": "multi-hop", "source": "synthetic"}
+{"text": "When did Bob aktualisiert?", "type": "temporal", "source": "synthetic"}
+{"text": "Update DataFlow Incs Adresse", "type": "update", "source": "synthetic"}
+{"text": "Weshalb wurde the restructuring geändert?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Modify Iris's company to Strata Labs", "type": "update", "source": "synthetic"}
+{"text": "When was the last change to the dashboard redesign?", "type": "temporal", "source": "synthetic"}
+{"text": "Korrigiere Charlies Firma zu DataFlow Inc", "type": "update", "source": "synthetic"}
+{"text": "Remember when we discussed market expansion?", "type": "conversational", "source": "synthetic"}
+{"text": "Zeitstempel von the deadline", "type": "temporal", "source": "synthetic"}
+{"text": "Was macht Eve bei TechNova?", "type": "factual", "source": "synthetic"}
+{"text": "Worüber haben wir bezüglich the dashboard redesign gesprochen?", "type": "conversational", "source": "synthetic"}
+{"text": "Where is CloudPeak Systems located?", "type": "factual", "source": "synthetic"}
+{"text": "Wann wurde Project Nova gelöscht?", "type": "temporal", "source": "synthetic"}
+{"text": "What geändert gestern?", "type": "temporal", "source": "synthetic"}
+{"text": "Who is Max?", "type": "factual", "source": "synthetic"}
+{"text": "Update NexGen AIs Adresse", "type": "update", "source": "synthetic"}
+{"text": "Earlier we talked about QuantumSoft, any updates?", "type": "conversational", "source": "synthetic"}
+{"text": "Where is TechNova located?", "type": "factual", "source": "synthetic"}
+{"text": "Show history for the roadmap", "type": "temporal", "source": "synthetic"}
+{"text": "Worüber haben wir bezüglich Project Atlas gesprochen?", "type": "conversational", "source": "synthetic"}
+{"text": "Setze das Datum für Project Atlas auf Friday", "type": "update", "source": "synthetic"}
+{"text": "You mentioned Emma — what's new?", "type": "conversational", "source": "synthetic"}
+{"text": "Modify Charlie's company to CloudPeak Systems", "type": "update", "source": "synthetic"}
+{"text": "Was macht Grace bei QuantumSoft?", "type": "factual", "source": "synthetic"}
+{"text": "Did we talk about Project Nova before?", "type": "conversational", "source": "synthetic"}
+{"text": "Set layoffs to 24 days", "type": "update", "source": "synthetic"}
+{"text": "Hat Iris an Project Nova gearbeitet?", "type": "factual", "source": "synthetic"}
+{"text": "Explain the connection between Frank and Project Phoenix", "type": "multi-hop", "source": "synthetic"}
+{"text": "Going back to the migration", "type": "conversational", "source": "synthetic"}
+{"text": "Since when is Max at DataFlow Inc?", "type": "temporal", "source": "synthetic"}
+{"text": "What is the reason for market expansion?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Was war nochmal mit the migration?", "type": "conversational", "source": "synthetic"}
+{"text": "Erinnerst du dich an security audit?", "type": "conversational", "source": "synthetic"}
+{"text": "Since when is Alice at NexGen AI?", "type": "temporal", "source": "synthetic"}
+{"text": "Who works at BuildRight GmbH?", "type": "factual", "source": "synthetic"}
+{"text": "Tell me about Acme Corp", "type": "factual", "source": "synthetic"}
+{"text": "Update BuildRight GmbH's details", "type": "update", "source": "synthetic"}
+{"text": "Set compliance to 53 USD", "type": "update", "source": "synthetic"}
+{"text": "Weißt du noch, was Emma über the acquisition gesagt hat?", "type": "conversational", "source": "synthetic"}
+{"text": "Hat Hans an the restructuring gearbeitet?", "type": "factual", "source": "synthetic"}
+{"text": "Was ist GreenLeaf Analytics?", "type": "factual", "source": "synthetic"}
+{"text": "Was ist TechNova?", "type": "factual", "source": "synthetic"}
+{"text": "Seit wann arbeitet Grace bei Strata Labs?", "type": "temporal", "source": "synthetic"}
+{"text": "What is Pyramid AG?", "type": "factual", "source": "synthetic"}
+{"text": "Tell me why QuantumSoft aktualisiert Pyramid AG", "type": "multi-hop", "source": "synthetic"}
+{"text": "Show history for compliance", "type": "temporal", "source": "synthetic"}
+{"text": "Ändere den Status von the dashboard redesign auf cancelled", "type": "update", "source": "synthetic"}
+{"text": "What is QuantumSoft?", "type": "factual", "source": "synthetic"}
+{"text": "Hat David an the migration gearbeitet?", "type": "factual", "source": "synthetic"}
+{"text": "Erkläre die Beziehung zwischen DataFlow Inc und CloudPeak Systems", "type": "multi-hop", "source": "synthetic"}
+{"text": "When was the last change to the migration?", "type": "temporal", "source": "synthetic"}
+{"text": "What time did Alice aktualisiert?", "type": "temporal", "source": "synthetic"}
+{"text": "Going back to the migration", "type": "conversational", "source": "synthetic"}
+{"text": "Who is Grace?", "type": "factual", "source": "synthetic"}
+{"text": "Can you recall what Bob said about budget planning?", "type": "conversational", "source": "synthetic"}
+{"text": "Which projects is Tom involved in?", "type": "factual", "source": "synthetic"}
+{"text": "Change Tom's task to sign the contract", "type": "update", "source": "synthetic"}
+{"text": "What happened this morning at QuantumSoft?", "type": "temporal", "source": "synthetic"}
+{"text": "Set compliance to 96 EUR", "type": "update", "source": "synthetic"}
+{"text": "Find information about Project Nova", "type": "factual", "source": "synthetic"}
+{"text": "Wie hängen Eve und Hans zusammen?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Who works at TechNova?", "type": "factual", "source": "synthetic"}
+{"text": "Wer ist Sarah?", "type": "factual", "source": "synthetic"}
+{"text": "Since when is Lena at BuildRight GmbH?", "type": "temporal", "source": "synthetic"}
+{"text": "When did Diana updated?", "type": "temporal", "source": "synthetic"}
+{"text": "What about the deadline?", "type": "conversational", "source": "synthetic"}
+{"text": "Zeige Infos zu the dashboard redesign", "type": "factual", "source": "synthetic"}
+{"text": "Set the partnership to 64 days", "type": "update", "source": "synthetic"}
+{"text": "What aktualisiert letzten Monat?", "type": "temporal", "source": "synthetic"}
+{"text": "Du hast Lena erwähnt — gibt's was Neues?", "type": "conversational", "source": "synthetic"}
+{"text": "Did we talk about the Q4 rollout before?", "type": "conversational", "source": "synthetic"}
+{"text": "Wie besprochen, was ist mit QuantumSoft?", "type": "conversational", "source": "synthetic"}
+{"text": "Where is GreenLeaf Analytics located?", "type": "factual", "source": "synthetic"}
+{"text": "Was war nochmal mit the restructuring?", "type": "conversational", "source": "synthetic"}
+{"text": "Find events gestern", "type": "temporal", "source": "synthetic"}
+{"text": "Wo befindet sich Strata Labs?", "type": "factual", "source": "synthetic"}
+{"text": "Was ist last week passiert?", "type": "temporal", "source": "synthetic"}
+{"text": "Überschreibe das Budget von Project Nova auf 200k USD", "type": "update", "source": "synthetic"}
+{"text": "How does Eve relate to Strata Labs?", "type": "multi-hop", "source": "synthetic"}
+{"text": "In welchem Zusammenhang stehen Acme Corp und the Q4 rollout?", "type": "multi-hop", "source": "synthetic"}
+{"text": "As we discussed, what about the Q4 rollout?", "type": "conversational", "source": "synthetic"}
+{"text": "Wann hat Bob gelöscht?", "type": "temporal", "source": "synthetic"}
+{"text": "Give me the timeline for Project Atlas", "type": "temporal", "source": "synthetic"}
+{"text": "Remember when we discussed security audit?", "type": "conversational", "source": "synthetic"}
+{"text": "Korrigiere Davids Firma zu Strata Labs", "type": "update", "source": "synthetic"}
+{"text": "Was ist Pyramid AG?", "type": "factual", "source": "synthetic"}
+{"text": "Weshalb wurde Project Nova create?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Zeige Infos zu the restructuring", "type": "factual", "source": "synthetic"}
+{"text": "What impact does Project Atlas have on NexGen AI?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Can you recall what Max said about the partnership?", "type": "conversational", "source": "synthetic"}
+{"text": "Show history for pricing", "type": "temporal", "source": "synthetic"}
+{"text": "Zeitstempel von layoffs", "type": "temporal", "source": "synthetic"}
+{"text": "Zeige Infos zu the restructuring", "type": "factual", "source": "synthetic"}
+{"text": "Why was Project Atlas erstellt?", "type": "multi-hop", "source": "synthetic"}
+{"text": "What happened last year at GreenLeaf Analytics?", "type": "temporal", "source": "synthetic"}
+{"text": "Bis wann läuft Project Atlas?", "type": "temporal", "source": "synthetic"}
+{"text": "Can you recall what Alice said about the partnership?", "type": "conversational", "source": "synthetic"}
+{"text": "Give me the timeline for Project Nova", "type": "temporal", "source": "synthetic"}
+{"text": "Liste alle Personen bei NexGen AI", "type": "factual", "source": "synthetic"}
+{"text": "Korrigiere Hanss Firma zu TechNova", "type": "update", "source": "synthetic"}
+{"text": "Wie besprochen, was ist mit NexGen AI?", "type": "conversational", "source": "synthetic"}
+{"text": "Change Hans's task to sign the contract", "type": "update", "source": "synthetic"}
+{"text": "Explain the connection between Frank and Project Nova", "type": "multi-hop", "source": "synthetic"}
+{"text": "Show history for the partnership", "type": "temporal", "source": "synthetic"}
+{"text": "Can you recall what Charlie said about budget planning?", "type": "conversational", "source": "synthetic"}
+{"text": "Korrigiere Lenas Firma zu DataFlow Inc", "type": "update", "source": "synthetic"}
+{"text": "Update TechNovas Adresse", "type": "update", "source": "synthetic"}
+{"text": "Wo befindet sich Strata Labs?", "type": "factual", "source": "synthetic"}
+{"text": "Correct the name of Project Phoenix", "type": "update", "source": "synthetic"}
+{"text": "Liste alle Personen bei Acme Corp", "type": "factual", "source": "synthetic"}
+{"text": "Where is QuantumSoft located?", "type": "factual", "source": "synthetic"}
+{"text": "Überschreibe das Budget von Project Nova auf 200k USD", "type": "update", "source": "synthetic"}
+{"text": "Wie besprochen, was ist mit GreenLeaf Analytics?", "type": "conversational", "source": "synthetic"}
+{"text": "Give me the timeline for Project Atlas", "type": "temporal", "source": "synthetic"}
+{"text": "Erkläre die Beziehung zwischen Acme Corp und TechNova", "type": "multi-hop", "source": "synthetic"}
+{"text": "Bis wann läuft Project Atlas?", "type": "temporal", "source": "synthetic"}
+{"text": "What is Pyramid AG?", "type": "factual", "source": "synthetic"}
+{"text": "Tell me why CloudPeak Systems created QuantumSoft", "type": "multi-hop", "source": "synthetic"}
+{"text": "Modify the status of GreenLeaf Analytics to active", "type": "update", "source": "synthetic"}
+{"text": "Show me the timestamp for compliance", "type": "temporal", "source": "synthetic"}
+{"text": "Aktualisiere Graces Rolle auf consultant", "type": "update", "source": "synthetic"}
+{"text": "Tell me why CloudPeak Systems erstellt Pyramid AG", "type": "multi-hop", "source": "synthetic"}
+{"text": "Erinnerst du dich an market expansion?", "type": "conversational", "source": "synthetic"}
+{"text": "Update BuildRight GmbHs Adresse", "type": "update", "source": "synthetic"}
+{"text": "Set the deadline for Project Atlas to Friday", "type": "update", "source": "synthetic"}
+{"text": "Can you recall what Alice said about budget planning?", "type": "conversational", "source": "synthetic"}
+{"text": "What happened letzten Monat at Pyramid AG?", "type": "temporal", "source": "synthetic"}
+{"text": "What time did Max erstellt?", "type": "temporal", "source": "synthetic"}
+{"text": "In welchem Zusammenhang stehen DataFlow Inc und the migration?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Zeige die Verbindung zwischen Max und Acme Corp", "type": "multi-hop", "source": "synthetic"}
+{"text": "What is the status of Project Atlas?", "type": "factual", "source": "synthetic"}
+{"text": "What happened letzte Woche at Strata Labs?", "type": "temporal", "source": "synthetic"}
+{"text": "Modify the status of QuantumSoft to active", "type": "update", "source": "synthetic"}
+{"text": "What impact does Project Nova have on NexGen AI?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Going back to the restructuring", "type": "conversational", "source": "synthetic"}
+{"text": "Tell me why GreenLeaf Analytics aktualisiert BuildRight GmbH", "type": "multi-hop", "source": "synthetic"}
+{"text": "What is the reason for the strategy?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Wann wurde the Q4 rollout deletet?", "type": "temporal", "source": "synthetic"}
+{"text": "Change the restructuring's status to on hold", "type": "update", "source": "synthetic"}
+{"text": "Zeitstempel von the deadline", "type": "temporal", "source": "synthetic"}
+{"text": "Since when is Diana at NexGen AI?", "type": "temporal", "source": "synthetic"}
+{"text": "What is the reason for security audit?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Wie hängen Charlie und Max zusammen?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Tell me why Acme Corp aktualisiert Pyramid AG", "type": "multi-hop", "source": "synthetic"}
+{"text": "Change the migration's status to completed", "type": "update", "source": "synthetic"}
+{"text": "Correct the name of Project Atlas", "type": "update", "source": "synthetic"}
+{"text": "Wie hängen Frank und Iris zusammen?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Find the cause of the acquisition at BuildRight GmbH", "type": "multi-hop", "source": "synthetic"}
+{"text": "Show me all people at Strata Labs", "type": "factual", "source": "synthetic"}
+{"text": "Wie hängen Eve und Diana zusammen?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Why did Frank deleted?", "type": "multi-hop", "source": "synthetic"}
+{"text": "How is Pyramid AG connected to Strata Labs?", "type": "multi-hop", "source": "synthetic"}
+{"text": "What did we discuss regarding TechNova?", "type": "conversational", "source": "synthetic"}
+{"text": "Setze das Datum für the restructuring auf next Monday", "type": "update", "source": "synthetic"}
+{"text": "How is BuildRight GmbH connected to QuantumSoft?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Weißt du noch, was Eve über budget planning gesagt hat?", "type": "conversational", "source": "synthetic"}
+{"text": "Find information about Project Nova", "type": "factual", "source": "synthetic"}
+{"text": "What happened letzten Monat at GreenLeaf Analytics?", "type": "temporal", "source": "synthetic"}
+{"text": "Aktualisiere Iriss Rolle auf CTO", "type": "update", "source": "synthetic"}
+{"text": "Change Alice's task to review the proposal", "type": "update", "source": "synthetic"}
+{"text": "What is the reason for the partnership?", "type": "multi-hop", "source": "synthetic"}
+{"text": "What updated heute?", "type": "temporal", "source": "synthetic"}
+{"text": "Worüber haben wir bezüglich the migration gesprochen?", "type": "conversational", "source": "synthetic"}
+{"text": "Zeige alle Änderungen letzten Monat", "type": "temporal", "source": "synthetic"}
+{"text": "Korrigiere Charlies Firma zu Strata Labs", "type": "update", "source": "synthetic"}
+{"text": "Zeige alle Änderungen last year", "type": "temporal", "source": "synthetic"}
+{"text": "Tell me why Acme Corp modified BuildRight GmbH", "type": "multi-hop", "source": "synthetic"}
+{"text": "Find the cause of pricing at TechNova", "type": "multi-hop", "source": "synthetic"}
+{"text": "Ändere den Status von the migration auf completed", "type": "update", "source": "synthetic"}
+{"text": "Zeitstempel von budget planning", "type": "temporal", "source": "synthetic"}
+{"text": "Was war nochmal mit the dashboard redesign?", "type": "conversational", "source": "synthetic"}
+{"text": "Show me all people at DataFlow Inc", "type": "factual", "source": "synthetic"}
+{"text": "Since when is Hans at NexGen AI?", "type": "temporal", "source": "synthetic"}
+{"text": "Tell me why QuantumSoft erstellt Pyramid AG", "type": "multi-hop", "source": "synthetic"}
+{"text": "Why was the Q4 rollout aktualisiert?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Wer ist Bob?", "type": "factual", "source": "synthetic"}
+{"text": "Give me the timeline for the migration", "type": "temporal", "source": "synthetic"}
+{"text": "Finde Fakten über the acquisition", "type": "factual", "source": "synthetic"}
+{"text": "Überschreibe das Budget von the restructuring auf $50k", "type": "update", "source": "synthetic"}
+{"text": "Which projects is Tom involved in?", "type": "factual", "source": "synthetic"}
+{"text": "Weißt du noch, was Frank über pricing gesagt hat?", "type": "conversational", "source": "synthetic"}
+{"text": "Zeitstempel von the roadmap", "type": "temporal", "source": "synthetic"}
+{"text": "Remember when we discussed the merger?", "type": "conversational", "source": "synthetic"}
+{"text": "You mentioned Sarah — what's new?", "type": "conversational", "source": "synthetic"}
+{"text": "Worüber haben wir bezüglich Project Atlas gesprochen?", "type": "conversational", "source": "synthetic"}
+{"text": "Going back to the migration", "type": "conversational", "source": "synthetic"}
+{"text": "Update CloudPeak Systemss Adresse", "type": "update", "source": "synthetic"}
+{"text": "Was macht Hans bei Acme Corp?", "type": "factual", "source": "synthetic"}
+{"text": "Find information about the dashboard redesign", "type": "factual", "source": "synthetic"}
+{"text": "Show me all people at QuantumSoft", "type": "factual", "source": "synthetic"}
+{"text": "Following up on our conversation about market expansion", "type": "conversational", "source": "synthetic"}
+{"text": "What impact does the restructuring have on CloudPeak Systems?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Going back to the restructuring", "type": "conversational", "source": "synthetic"}
+{"text": "Set the roadmap to 91 EUR", "type": "update", "source": "synthetic"}
+{"text": "Overwrite the budget for Project Phoenix to 100k EUR", "type": "update", "source": "synthetic"}
+{"text": "In welchem Zusammenhang stehen Strata Labs und Project Nova?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Wie hängen Emma und Grace zusammen?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Hatten wir nicht über QuantumSoft gesprochen?", "type": "conversational", "source": "synthetic"}
+{"text": "Liste alle Personen bei QuantumSoft", "type": "factual", "source": "synthetic"}
+{"text": "What does Hans do at GreenLeaf Analytics?", "type": "factual", "source": "synthetic"}
+{"text": "Why did Hans deleted?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Wann wurde Project Nova aktualisiert?", "type": "temporal", "source": "synthetic"}
+{"text": "Weißt du noch, was Max über the deadline gesagt hat?", "type": "conversational", "source": "synthetic"}
+{"text": "What is the relationship between Charlie and Grace?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Tell me about NexGen AI", "type": "factual", "source": "synthetic"}
+{"text": "What impact does the dashboard redesign have on QuantumSoft?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Correct the name of Project Phoenix", "type": "update", "source": "synthetic"}
+{"text": "Setze das Datum für the Q4 rollout auf December 31st", "type": "update", "source": "synthetic"}
+{"text": "Modify Emma's company to QuantumSoft", "type": "update", "source": "synthetic"}
+{"text": "Zeige alle Änderungen this quarter", "type": "temporal", "source": "synthetic"}
+{"text": "When was the last change to the restructuring?", "type": "temporal", "source": "synthetic"}
+{"text": "Find information about the dashboard redesign", "type": "factual", "source": "synthetic"}
+{"text": "Wie hängen Sarah und Charlie zusammen?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Du hast Bob erwähnt — gibt's was Neues?", "type": "conversational", "source": "synthetic"}
+{"text": "Update TechNova's details", "type": "update", "source": "synthetic"}
+{"text": "Liste alle Personen bei BuildRight GmbH", "type": "factual", "source": "synthetic"}
+{"text": "Wann wurde the Q4 rollout aktualisiert?", "type": "temporal", "source": "synthetic"}
+{"text": "Wie besprochen, was ist mit DataFlow Inc?", "type": "conversational", "source": "synthetic"}
+{"text": "What happened letzte Woche at DataFlow Inc?", "type": "temporal", "source": "synthetic"}
+{"text": "Why was Project Phoenix gelöscht?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Weshalb wurde Project Phoenix modifie?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Change the restructuring's status to active", "type": "update", "source": "synthetic"}
+{"text": "Modify Emma's company to Acme Corp", "type": "update", "source": "synthetic"}
+{"text": "Did we talk about the migration before?", "type": "conversational", "source": "synthetic"}
+{"text": "Was macht Alice bei Acme Corp?", "type": "factual", "source": "synthetic"}
+{"text": "Show details for the Q4 rollout", "type": "factual", "source": "synthetic"}
+{"text": "Hatten wir nicht über DataFlow Inc gesprochen?", "type": "conversational", "source": "synthetic"}
+{"text": "Overwrite the budget for Project Nova to 100k EUR", "type": "update", "source": "synthetic"}
+{"text": "Set the deadline for the migration to end of Q3", "type": "update", "source": "synthetic"}
+{"text": "List all changes letzten Monat", "type": "temporal", "source": "synthetic"}
+{"text": "What changed last month?", "type": "temporal", "source": "synthetic"}
+{"text": "Give me the timeline for the restructuring", "type": "temporal", "source": "synthetic"}
+{"text": "Worüber haben wir bezüglich the dashboard redesign gesprochen?", "type": "conversational", "source": "synthetic"}
+{"text": "What about the roadmap?", "type": "conversational", "source": "synthetic"}
+{"text": "Which projects is Emma involved in?", "type": "factual", "source": "synthetic"}
+{"text": "Update DataFlow Inc's details", "type": "update", "source": "synthetic"}
+{"text": "Show details for the migration", "type": "factual", "source": "synthetic"}
+{"text": "Tell me why Pyramid AG updated DataFlow Inc", "type": "multi-hop", "source": "synthetic"}
+{"text": "In welchem Zusammenhang stehen NexGen AI und Project Phoenix?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Show me the timestamp for compliance", "type": "temporal", "source": "synthetic"}
+{"text": "Wo befindet sich Strata Labs?", "type": "factual", "source": "synthetic"}
+{"text": "Find information about Project Atlas", "type": "factual", "source": "synthetic"}
+{"text": "Warum hat Hans geändert?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Modify the status of Pyramid AG to active", "type": "update", "source": "synthetic"}
+{"text": "Bis wann läuft the restructuring?", "type": "temporal", "source": "synthetic"}
+{"text": "Following up on our conversation about compliance", "type": "conversational", "source": "synthetic"}
+{"text": "Did we talk about the restructuring before?", "type": "conversational", "source": "synthetic"}
+{"text": "Can you recall what Alice said about the deadline?", "type": "conversational", "source": "synthetic"}
+{"text": "What is the status of the dashboard redesign?", "type": "factual", "source": "synthetic"}
+{"text": "Who is David?", "type": "factual", "source": "synthetic"}
+{"text": "What impact does Project Atlas have on GreenLeaf Analytics?", "type": "multi-hop", "source": "synthetic"}
+{"text": "What erstellt yesterday?", "type": "temporal", "source": "synthetic"}
+{"text": "Was ist since Monday passiert?", "type": "temporal", "source": "synthetic"}
+{"text": "Zeige Infos zu the dashboard redesign", "type": "factual", "source": "synthetic"}
+{"text": "Where is Strata Labs located?", "type": "factual", "source": "synthetic"}
+{"text": "You mentioned Bob — what's new?", "type": "conversational", "source": "synthetic"}
+{"text": "Tell me why DataFlow Inc deleted Acme Corp", "type": "multi-hop", "source": "synthetic"}
+{"text": "Weißt du noch, was Sarah über the deadline gesagt hat?", "type": "conversational", "source": "synthetic"}
+{"text": "Set security audit to 25 days", "type": "update", "source": "synthetic"}
+{"text": "Update Tom's role to director", "type": "update", "source": "synthetic"}
+{"text": "Update Eve's role to director", "type": "update", "source": "synthetic"}
+{"text": "What about pricing?", "type": "conversational", "source": "synthetic"}
+{"text": "What impact does Project Nova have on CloudPeak Systems?", "type": "multi-hop", "source": "synthetic"}
+{"text": "What about budget planning?", "type": "conversational", "source": "synthetic"}
+{"text": "Hatten wir nicht über TechNova gesprochen?", "type": "conversational", "source": "synthetic"}
+{"text": "Set market expansion to 55 EUR", "type": "update", "source": "synthetic"}
+{"text": "Did we talk about Project Nova before?", "type": "conversational", "source": "synthetic"}
+{"text": "Explain the connection between Emma and the Q4 rollout", "type": "multi-hop", "source": "synthetic"}
+{"text": "Aktualisiere Hanss Rolle auf engineer", "type": "update", "source": "synthetic"}
+{"text": "What does Eve do at Acme Corp?", "type": "factual", "source": "synthetic"}
+{"text": "Weißt du noch, was David über budget planning gesagt hat?", "type": "conversational", "source": "synthetic"}
+{"text": "Warum hat Eve aktualisiert?", "type": "multi-hop", "source": "synthetic"}
+{"text": "What is the relationship between Hans and Alice?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Modify the status of Pyramid AG to active", "type": "update", "source": "synthetic"}
+{"text": "Seit wann arbeitet Max bei Strata Labs?", "type": "temporal", "source": "synthetic"}
+{"text": "Hatten wir nicht über BuildRight GmbH gesprochen?", "type": "conversational", "source": "synthetic"}
+{"text": "How is GreenLeaf Analytics connected to NexGen AI?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Change the dashboard redesign's status to on hold", "type": "update", "source": "synthetic"}
+{"text": "List the projects Eve is working on", "type": "factual", "source": "synthetic"}
+{"text": "Correct the name of the restructuring", "type": "update", "source": "synthetic"}
+{"text": "Show me the timestamp for the deadline", "type": "temporal", "source": "synthetic"}
+{"text": "What does David do at NexGen AI?", "type": "factual", "source": "synthetic"}
+{"text": "Überschreibe das Budget von Project Nova auf 200k USD", "type": "update", "source": "synthetic"}
+{"text": "Where is DataFlow Inc located?", "type": "factual", "source": "synthetic"}
+{"text": "What about the partnership?", "type": "conversational", "source": "synthetic"}
+{"text": "As we discussed, what about the Q4 rollout?", "type": "conversational", "source": "synthetic"}
+{"text": "What is the status of the Q4 rollout?", "type": "factual", "source": "synthetic"}
+{"text": "Change Project Atlas's status to active", "type": "update", "source": "synthetic"}
+{"text": "Erkläre die Beziehung zwischen Pyramid AG und Acme Corp", "type": "multi-hop", "source": "synthetic"}
+{"text": "Earlier we talked about GreenLeaf Analytics, any updates?", "type": "conversational", "source": "synthetic"}
+{"text": "Was war nochmal mit the dashboard redesign?", "type": "conversational", "source": "synthetic"}
+{"text": "Korrigiere Eves Firma zu Strata Labs", "type": "update", "source": "synthetic"}
+{"text": "Explain the connection between Diana and the Q4 rollout", "type": "multi-hop", "source": "synthetic"}
+{"text": "Zeige die Verbindung zwischen Eve und GreenLeaf Analytics", "type": "multi-hop", "source": "synthetic"}
+{"text": "Find information about the restructuring", "type": "factual", "source": "synthetic"}
+{"text": "Why was the migration geändert?", "type": "multi-hop", "source": "synthetic"}
+{"text": "Überschreibe das Budget von the restructuring auf 100k EUR", "type": "update", "source": "synthetic"}
+{"text": "Ändere den Status von the Q4 rollout auf completed", "type": "update", "source": "synthetic"}
+{"text": "Aktualisiere Maxs Rolle auf VP", "type": "update", "source": "synthetic"}
+{"text": "Wie besprochen, was ist mit Strata Labs?", "type": "conversational", "source": "synthetic"}
+{"text": "Remember when we discussed the roadmap?", "type": "conversational", "source": "synthetic"}
+{"text": "Show me the timestamp for the deadline", "type": "temporal", "source": "synthetic"}
+{"text": "Zeige die Verbindung zwischen Max und NexGen AI", "type": "multi-hop", "source": "synthetic"}
+{"text": "Change Emma's task to sign the contract", "type": "update", "source": "synthetic"}
+{"text": "Zeige alle Änderungen seit Januar", "type": "temporal", "source": "synthetic"}
+{"text": "Wie besprochen, was ist mit Pyramid AG?", "type": "conversational", "source": "synthetic"}
+{"text": "Setze das Datum für the Q4 rollout auf end of Q3", "type": "update", "source": "synthetic"}
+{"text": "Remember when we discussed budget planning?", "type": "conversational", "source": "synthetic"}

@@ -42,3 +42,6 @@ Cargo.lock
 test_mcp_tools.py
 test_update_endpoint.py
 comprehensive_test.py
+
+# Generated classifier model (binary, reproducible from training data)
+/data/classifier_model.pkl

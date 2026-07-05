@@ -1,15 +1,32 @@
 """
 Query Classifier (Python Implementation) for sieveon
 Klassifiziert Queries in die Typen: temporal, factual, multi-hop, conversational, update
+
+Hybrid approach:
+  1. ML: sklearn LogisticRegression on nomic-embed-text-v1.5 embeddings (if training data available)
+  2. Regex: rule-based fallback if ML confidence is low or no model trained
 """
 
+import json
+import os
+import pickle
 import re
-from typing import Dict, Optional, Tuple
+from pathlib import Path
+from typing import Dict, List, Optional, Tuple
 
 
-class QueryClassifier:
+_ML_MODEL_PATH = Path(__file__).parents[2] / "data" / "classifier_model.pkl"
+_TRAINING_PATHS = [
+    Path(__file__).parents[2] / "data" / "training_queries.jsonl",
+    Path(__file__).parents[2] / "data" / "manual_labels.jsonl",
+]
+_ML_CONFIDENCE_THRESHOLD = 0.60
+
+
+class _RegexClassifier:
+    """Pure regex-based classifier (used as fallback)."""
+
     def __init__(self):
-        # Regel-basierte Muster für schnelle Klassifikation (DE + EN)
         self.temporal_patterns = [
             # Deutsch
             r"\bwann\b",
@@ -131,9 +148,6 @@ class QueryClassifier:
         ]
 
     def classify(self, query: Optional[str]) -> Tuple[str, float]:
-        """
-        Klassifiziert eine Query und gibt (type, confidence) zurück.
-        """
         if not query or not query.strip():
             return "factual", 0.5
         query_lower = query.lower()
@@ -145,7 +159,6 @@ class QueryClassifier:
             "update": 0,
         }
 
-        # Regel-basierte Score-Berechnung
         for pattern in self.temporal_patterns:
             if re.search(pattern, query_lower):
                 scores["temporal"] += 1
@@ -157,12 +170,11 @@ class QueryClassifier:
                 scores["multi-hop"] += 1
         for pattern in self.conversational_patterns:
             if re.search(pattern, query_lower):
-                scores["conversational"] += 2  # Höheres Gewicht für Conversational!
+                scores["conversational"] += 2
         for pattern in self.update_patterns:
             if re.search(pattern, query_lower):
-                scores["update"] += 2  # Höheres Gewicht für Update!
+                scores["update"] += 2
 
-        # Prioritäts-Liste (wichtigste → unwichtigste)
         priority_order = [
             "update",
             "multi-hop",
@@ -171,8 +183,6 @@ class QueryClassifier:
             "factual",
         ]
 
-        # Bestes Ergebnis ermitteln (mit Priorität als Tiebreaker!)
-        # Zuerst sortieren nach Score descending, dann nach Priorität!
         sorted_types = sorted(
             scores.keys(), key=lambda t: (-scores[t], priority_order.index(t))
         )
@@ -180,19 +190,152 @@ class QueryClassifier:
         best_score = scores[best_type]
 
         if best_score == 0:
-            return "factual", 0.5  # Default, falls keine Muster passen
+            return "factual", 0.5
 
-        # Confidence = Abstand zum Zweitplatzierten (Margin)
         sorted_scores = sorted(scores.values(), reverse=True)
         second_best_score = sorted_scores[1] if len(sorted_scores) > 1 else 0
 
         margin = (best_score - second_best_score) / best_score
-        confidence = 0.5 + (margin * 0.5)  # Skaliert auf 0.5..1.0
+        confidence = 0.5 + (margin * 0.5)
 
         return best_type, round(confidence, 2)
 
 
-# Beispiel-Nutzung
+# ── ML Classifier ─────────────────────────────────────────────────────
+
+class _MLClassifier:
+    """LogisticRegression trained on sentence-transformer embeddings."""
+
+    def __init__(self):
+        self.model = None
+        self.label_encoder = None
+        self._embedding_service = None
+
+    def _get_emb(self) -> "BaseEmbeddingService":
+        if self._embedding_service is None:
+            from src.extraction.embedding_service import get_embedding_service
+            self._embedding_service = get_embedding_service()
+        return self._embedding_service
+
+    def _embed(self, text: str) -> List[float]:
+        return self._get_emb().embed_for_storage(text)
+
+    def _load_training_data(self) -> Tuple[List[str], List[str]]:
+        texts, labels = [], []
+        for p in _TRAINING_PATHS:
+            if p.exists():
+                with open(p, "r", encoding="utf-8") as f:
+                    for line in f:
+                        line = line.strip()
+                        if not line:
+                            continue
+                        try:
+                            ex = json.loads(line)
+                        except json.JSONDecodeError:
+                            continue
+                        t = ex.get("type")
+                        txt = ex.get("text")
+                        if t and txt and t != "skip":
+                            texts.append(txt)
+                            labels.append(t)
+        return texts, labels
+
+    def is_trained(self) -> bool:
+        return self.model is not None
+
+    def train(self, texts: Optional[List[str]] = None, labels: Optional[List[str]] = None):
+        from sklearn.linear_model import LogisticRegression
+        from sklearn.preprocessing import LabelEncoder
+
+        if texts is None or labels is None:
+            texts, labels = self._load_training_data()
+
+        if len(texts) < 10:
+            return
+
+        import numpy as np
+        embeddings = [self._embed(t) for t in texts]
+        X = np.array(embeddings)
+
+        self.label_encoder = LabelEncoder()
+        y = self.label_encoder.fit_transform(labels)
+
+        self.model = LogisticRegression(
+            C=1.0,
+            max_iter=1000,
+            multi_class="ovr",
+            class_weight="balanced",
+            random_state=42,
+        )
+        self.model.fit(X, y)
+
+        try:
+            data_dir = _ML_MODEL_PATH.parent
+            data_dir.mkdir(parents=True, exist_ok=True)
+            with open(_ML_MODEL_PATH, "wb") as f:
+                pickle.dump({"model": self.model, "label_encoder": self.label_encoder}, f)
+        except OSError:
+            pass
+
+    def load(self) -> bool:
+        if not _ML_MODEL_PATH.exists():
+            return False
+        try:
+            with open(_ML_MODEL_PATH, "rb") as f:
+                data = pickle.load(f)
+            self.model = data["model"]
+            self.label_encoder = data["label_encoder"]
+            return True
+        except Exception:
+            return False
+
+    def classify(self, query: str) -> Tuple[Optional[str], float]:
+        if self.model is None:
+            return None, 0.0
+
+        import numpy as np
+        emb = np.array([self._embed(query)])
+        probs = self.model.predict_proba(emb)[0]
+        best_idx = int(probs.argmax())
+        confidence = float(probs[best_idx])
+        label = self.label_encoder.inverse_transform([best_idx])[0]
+        return label, round(confidence, 3)
+
+
+class QueryClassifier:
+    """Hybrid classifier: tries ML first, falls back to regex."""
+
+    def __init__(self):
+        self._ml = _MLClassifier()
+        self._regex = _RegexClassifier()
+        self._ml_loaded = False
+
+    def _ensure_ml(self):
+        if not self._ml_loaded:
+            self._ml_loaded = True
+            if not self._ml.load():
+                texts, labels = self._ml._load_training_data()
+                if texts:
+                    self._ml.train(texts, labels)
+
+    def classify(self, query: Optional[str]) -> Tuple[str, float]:
+        if not query or not query.strip():
+            return "factual", 0.5
+
+        self._ensure_ml()
+
+        if self._ml.is_trained():
+            label, confidence = self._ml.classify(query)
+            if confidence >= _ML_CONFIDENCE_THRESHOLD:
+                return label, confidence
+
+        return self._regex.classify(query)
+
+    def train(self, texts: List[str], labels: List[str]):
+        self._ml.train(texts, labels)
+        self._ml_loaded = True
+
+
 if __name__ == "__main__":
     classifier = QueryClassifier()
 
@@ -204,7 +347,9 @@ if __name__ == "__main__":
         "Aktualisiere meinen Namen auf Max.",
     ]
 
-    print("📊 Query Classification Test:")
+    print("Query Classification Test:")
     for q in test_queries:
         q_type, conf = classifier.classify(q)
-        print(f"  '{q}' → {q_type} (confidence: {conf:.2f})")
+        src = "ml" if classifier._ml.is_trained() and classifier._ml.classify(q)[1] >= _ML_CONFIDENCE_THRESHOLD else "regex"
+        print(f"  '{q}'")
+        print(f"    → {q_type:14s} (confidence: {conf:.2f}) [{src}]")
