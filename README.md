@@ -35,6 +35,7 @@ Sieveon is an agent memory system that intelligently classifies, routes, plans, 
 |-----------|------|-------------|
 | **MCP Server** | `src/mcp/server.py` | Control plane (Anthropic MCP protocol) — stdio mode. 16 tools + 3 MCP resources: `memory_store`, `memory_store_batch`, `memory_query`, `memory_update`, `memory_forget`, `memory_unforget`, `memory_consolidate`, `memory_merge_entities`, `event_log_search`, `kg_query`, `graph_traverse`, `semantic_search`, `list_entities`, `list_events`, `memory_stats`, `explain_routing`; Resources: `sieveon://stats`, `sieveon://entity/{id}`, `sieveon://event/{id}` |
 | **Extraction** | `src/extraction/` | Entropy-gated entity extraction with Groq API (llama-3.1-8b-instant) or spaCy fallback. Pipe-separated LLM prompt, type preservation |
+| **Classifier** | `src/extraction/classifier.py` | Hybrid ML+Regex query classifier: sklearn LogisticRegression on nomic-embed-text embeddings (768d), with regex fallback. Synthetic training data generator at `scripts/generate_synthetic_training_data.py`, manual labeling CLI at `scripts/label_queries.py` |
 | **Migrations** | `src/mcp/migrations.py` | Versioned auto-migration engine for breaking schema changes |
 | **Router** | `src/router/` | Policy engine & cost tracking |
 | **Planner** | `src/planner/` | Execution engine |
@@ -44,7 +45,7 @@ Sieveon is an agent memory system that intelligently classifies, routes, plans, 
 
 ## Key Features
 
-- **Query Classification** — 5 types: Temporal, Factual, Multi-Hop, Conversational, Update
+- **Query Classification** — 5 types: Temporal, Factual, Multi-Hop, Conversational, Update. Hybrid approach: sklearn LogisticRegression on nomic-embed-text-v1.5 embeddings (768d) with regex fallback when ML confidence < 0.6. Trained on synthetic + optional manually labeled data.
 - **Adaptive Retrieval** — Strategy selection per query type (event log, KG, hybrid BM25+vector+temporal)
 - **Entropy Gating** — Composite score: Shannon character entropy + gzip compression ratio (Kolmogorov complexity proxy) + embedding novelty. Raw Event Log is always append-only; the gate decides only whether to extract into the Knowledge Graph.
 - **Entity Extraction** — Groq API (`llama-3.1-8b-instant`) with spaCy fallback. Pipe-separated LLM prompt, type preservation (LLM classification preferred over heuristic).
