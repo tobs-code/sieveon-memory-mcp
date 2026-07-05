@@ -91,16 +91,16 @@ cd src/mcp && python server.py
 
 Sieveon has an integrated benchmark system to measure tool latency. Results are automatically logged to `benchmarks/benchmark_results.md`.
 
-### Tool Performance (as of July 2026, warm SurrealDB, CPU-only embeddings, v3 optimization)
+### Tool Performance (as of July 2026, warm SurrealDB, CPU-only embeddings)
 
 | Tool | Average (ms) | P95 (ms) | Notes |
 |------|-------------:|---------:|-------|
 | `memory_stats` | ~165 | ~182 | COUNT indexes + parallel async queries |
-| `memory_store` | ~228 | ~254 | SentenceTransformers (CPU) + Entropy Gate + Dedup |
+| `memory_store` | ~842 | ~874 | SentenceTransformers (CPU) + Entropy Gate + Dedup |
 | `memory_query` | ~405 | ~435 | Hybrid retrieval (classify → plan → execute) |
 | `semantic_search` | ~155 | ~171 | HNSW vector index + `forgotten=false` |
 | `event_log_search` | ~97 | ~107 | COUNT index + `forgotten=false` |
-| `kg_query` | ~52 | ~59 | Indexed record lookups + `forgotten=false` |
+| `kg_query` | ~405 | ~437 | Indexed record lookups + `forgotten=false` |
 | `explain_routing` | ~0.20 | ~0.23 | Pure in-process logic |
 
 ### Run Benchmarks
