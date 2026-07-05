@@ -62,9 +62,9 @@ async def _store_content(content: str, source: str = "user_input", debug: bool =
         return {"event_id": None, "status": "error", "source": source,
                 "message": "storage failed – event could not be persisted"}
 
-    gate_info = {
-        "decision": gate_result.get("decision", "active"),
-    }
+    gate_info: dict = {"decision": "active"}
+    if isinstance(gate_result, dict):
+        gate_info["decision"] = gate_result.get("decision", "active")
     if gate_result.get("decision") != "extract":
         gate_info["reason"] = gate_result.get("reason", "unknown")
         gate_info["composite_score"] = gate_result.get("composite_score")

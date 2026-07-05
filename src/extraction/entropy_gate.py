@@ -138,14 +138,27 @@ class EntropyGate:
         return escape_surrealql(value)
 
     @staticmethod
-    def _extract_result(data: List[Dict], index: int = 1) -> List[Dict]:
-        """Safely extract the result list from a SurrealDB multi-statement response."""
-        if not isinstance(data, list) or len(data) <= index:
+    def _extract_result(data: Any, index: int = 1) -> List[Dict]:
+        """Safely extract the result list from a SurrealDB multi-statement response.
+        Filters out USE NS/DB connection-info responses and None entries."""
+        if not isinstance(data, list):
             return []
-        item = data[index]
-        if not isinstance(item, dict):
+        candidates = [
+            item
+            for item in data
+            if isinstance(item, dict)
+            and item.get("status") == "OK"
+            and "result" in item
+            and not (
+                isinstance(item.get("result"), dict)
+                and "database" in item["result"]
+                and "namespace" in item["result"]
+            )
+        ]
+        if not candidates:
             return []
-        result = item.get("result", [])
+        target = candidates[0] if index == 1 and len(candidates) >= 1 else candidates[-1]
+        result = target.get("result", [])
         if isinstance(result, list):
             return result
         if isinstance(result, dict):
@@ -1183,6 +1196,25 @@ class EntropyGate:
         2. Entropy Gate entscheiden lassen ob KG-Extraction
         3. Bei 'extract': Entities und Facts in den Knowledge Graph extrahieren
         """
+        try:
+            return self._ingest_impl(text, source, debug, metadata)
+        except Exception as e:
+            sys.stderr.write(f"[EntropyGate] ingest fatal error: {e}\n")
+            return None, None, {"decision": "ignore", "reason": f"ingest_error: {e}"}
+
+    def _ingest_impl(
+        self,
+        text: str,
+        source: str = "unknown",
+        debug: bool = False,
+        metadata: Optional[Dict[str, Any]] = None,
+    ) -> tuple[Optional[str], Optional[Dict[str, Any]], Optional[Dict[str, Any]]]:
+        """
+        Hauptfunktion: Ingest eines Textes in das Memory System
+        1. IMMER in Raw Event Log speichern
+        2. Entropy Gate entscheiden lassen ob KG-Extraction
+        3. Bei 'extract': Entities und Facts in den Knowledge Graph extrahieren
+        """
 
         if not text or not text.strip():
             sys.stderr.write(f"[EntropyGate] Error: Empty or whitespace-only content rejected (source={source})\n")
@@ -1207,14 +1239,16 @@ class EntropyGate:
         dedup_result = self._query_surreal(dedup_sql)
         existing = self._extract_result(dedup_result)
         if existing and len(existing) > 0:
-            event_id = existing[0].get("id")
+            first = existing[0]
+            event_id = first.get("id") if isinstance(first, dict) else None
             if debug:
                 print(
                     f"  [Dedup] Found existing event {event_id} for identical content and source"
                 )
             kg_result = None
-            gate_result = self.should_extract(text, exclude_id=event_id)
-            if gate_result["decision"] == "extract" and event_id:
+            gate_result = self.should_extract(text, exclude_id=event_id) if event_id else {"decision": "skip", "reason": "dedup_no_event_id"}
+            gate_decision = gate_result.get("decision", "ignore") if isinstance(gate_result, dict) else "ignore"
+            if gate_decision == "extract" and event_id:
                 kg_result = self._extract_to_kg(text, event_id, debug)
             return event_id, kg_result, gate_result
 
@@ -1270,7 +1304,8 @@ class EntropyGate:
 
         # 3. Falls extract: starte KG-Extraction
         kg_result = None
-        if gate_result["decision"] == "extract" and event_id:
+        gate_decision = gate_result.get("decision", "ignore") if isinstance(gate_result, dict) else "ignore"
+        if gate_decision == "extract" and event_id:
             try:
                 kg_result = self._extract_to_kg(text, event_id, debug)
             except Exception as e:
