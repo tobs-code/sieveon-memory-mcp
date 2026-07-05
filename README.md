@@ -91,17 +91,29 @@ cd src/mcp && python server.py
 
 Sieveon has an integrated benchmark system to measure tool latency. Results are automatically logged to `benchmarks/benchmark_results.md`.
 
-### Tool Performance (as of July 2026, warm SurrealDB, CPU-only embeddings)
+### Tool Performance (as of July 2026, warm SurrealDB, CPU-only embeddings, v3 optimization)
 
-| Tool | Average (ms) | P95 (ms) | Notes |
-|------|--------------|----------|-------|
-| `memory_stats` | ~790 | ~860 | Multi-statement batch query |
-| `memory_store` | ~228 | ~254 | SentenceTransformers (CPU); first call ~800ms (cold model load) |
-| `memory_query` | ~405 | ~435 | Hybrid retrieval (classify → plan → execute) |
-| `semantic_search` | ~800 | ~875 | Embedding + HNSW vector search |
-| `event_log_search` | ~760 | ~810 | Hybrid FTX+Vector (RRF) |
-| `kg_query` | ~760 | ~800 | SurrealDB graph traversal |
-| `explain_routing` | ~0.20 | ~0.23 | Pure in-process logic |
+| Tool | Average (ms) | P95 (ms) | vs Before | Notes |
+|------|-------------:|---------:|----------:|-------|
+| `memory_stats` | ~165 | ~182 | **−79%** | COUNT indexes + parallel async queries |
+| `memory_store` | ~228 | ~254 | — | SentenceTransformers (CPU) + Entropy Gate + Dedup |
+| `memory_query` | ~405 | ~435 | — | Hybrid retrieval (classify → plan → execute) |
+| `semantic_search` | ~155 | ~171 | **−81%** | HNSW vector index + `forgotten=false` |
+| `event_log_search` | ~97 | ~107 | **−87%** | COUNT index + `forgotten=false` |
+| `kg_query` | ~52 | ~59 | **−93%** | Indexed record lookups + `forgotten=false` |
+| `explain_routing` | ~0.20 | ~0.23 | — | Pure in-process logic |
+
+### v3 Optimizations Applied
+
+| Optimization | Impact |
+|-------------|--------|
+| **COUNT Indexes** on `event`, `entity`, `fact`, `gate_log` | `count()` O(1) statt Full-Table-Scan |
+| **`forgotten=false`** statt `IS NONE OR = false` | ~30% schnellere Scans |
+| **Parallel async queries** in `memory_stats()` | 8 HTTP-Calls statt 8 seriell |
+| **Record-ID Lookups** in `graph_traverse()` | Indexed statt String-Scan |
+| **FTX Index** auf `entity.name` + `fact.predicate` | Volltext-Suche via `@@` |
+| **Index** auf `event.content_hash` | Dedup-Lookup skaliert |
+| **Index** auf `fact.valid_until` | Schnellere Aktiv-Fakten-Filter |
 
 ### Run Benchmarks
 

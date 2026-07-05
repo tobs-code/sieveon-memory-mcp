@@ -166,6 +166,12 @@ def _register_builtin(engine: MigrationEngine):
         apply_fn=_m002_entity_name_unique,
     ))
 
+    engine.register(Migration(
+        version=3,
+        description="Performance indexes: COUNT indexes, FTX on entity/fact, content_hash index, valid_until index, forgotten backfill",
+        apply_fn=_m003_performance_indexes,
+    ))
+
 
 async def _m001_baseline(query):
     sql = r"""
@@ -276,3 +282,32 @@ async def _m002_entity_name_unique(query):
 
     # 3. Create UNIQUE index
     await query("DEFINE INDEX IF NOT EXISTS entity_name ON entity COLUMNS name UNIQUE;")
+
+
+async def _m003_performance_indexes(query):
+    """Add COUNT indexes, FTX indexes, content_hash/valid_until indexes, backfill forgotten=NULL."""
+    statements = [
+        # COUNT indexes → O(1) für GROUP ALL count()
+        "DEFINE INDEX IF NOT EXISTS event_count ON event COUNT;",
+        "DEFINE INDEX IF NOT EXISTS entity_count ON entity COUNT;",
+        "DEFINE INDEX IF NOT EXISTS fact_count ON fact COUNT;",
+        "DEFINE INDEX IF NOT EXISTS gate_log_count ON gate_log COUNT;",
+
+        # Index für dedup-Lookup im Entropy Gate
+        "DEFINE INDEX IF NOT EXISTS event_content_hash_idx ON event COLUMNS content_hash;",
+
+        # Separater Index auf valid_until für aktiv-Fakten-Filter
+        "DEFINE INDEX IF NOT EXISTS fact_valid_until ON fact COLUMNS valid_until;",
+
+        # Analyzer + FTX für entity.name und fact.predicate
+        "DEFINE ANALYZER IF NOT EXISTS entity_analyzer TOKENIZERS class FILTERS lowercase, ascii, snowball(english);",
+        "DEFINE INDEX IF NOT EXISTS entity_name_ft ON entity FIELDS name FULLTEXT ANALYZER entity_analyzer BM25;",
+        "DEFINE INDEX IF NOT EXISTS fact_predicate_ft ON fact FIELDS predicate FULLTEXT ANALYZER entity_analyzer BM25;",
+
+        # Backfill forgotten=NULL → false (Voraussetzung für `NOT forgotten`)
+        "UPDATE event SET forgotten = false WHERE forgotten IS NONE;",
+        "UPDATE entity SET forgotten = false WHERE forgotten IS NONE;",
+        "UPDATE fact SET forgotten = false WHERE forgotten IS NONE;",
+    ]
+    for stmt in statements:
+        await query(stmt)

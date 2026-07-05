@@ -141,56 +141,35 @@ async def memory_update(subject: str, predicate: str, new_value: str) -> dict:
 @mcp.tool()
 async def memory_stats(random_string: str = "") -> dict:
     """Returns statistics about the memory system."""
-    forgotten_filter = "(forgotten = false OR forgotten IS NONE)"
+    f = "forgotten = false"
 
-    # Count events
-    event_count_result = await _query_surreal(f"SELECT count() FROM event WHERE {forgotten_filter} GROUP ALL;")
-    event_counts = _extract_result(event_count_result, 1)
-    event_count = event_counts[0].get("count", 0) if event_counts else 0
+    async def _q(sql):
+        return _extract_result(await _query_surreal(sql), 1) or []
 
-    # Count entities
-    entity_count_result = await _query_surreal(f"SELECT count() FROM entity WHERE {forgotten_filter} GROUP ALL;")
-    entity_counts = _extract_result(entity_count_result, 1)
-    entity_count = entity_counts[0].get("count", 0) if entity_counts else 0
+    event_task = asyncio.create_task(_q(f"SELECT count() FROM event WHERE {f} GROUP ALL;"))
+    entity_task = asyncio.create_task(_q(f"SELECT count() FROM entity WHERE {f} GROUP ALL;"))
+    fact_task = asyncio.create_task(_q("SELECT count() FROM fact WHERE (valid_until IS NONE OR valid_until = NONE) AND forgotten = false GROUP ALL;"))
+    oldest_task = asyncio.create_task(_q(f"SELECT timestamp FROM event WHERE {f} ORDER BY timestamp ASC LIMIT 1;"))
+    newest_task = asyncio.create_task(_q(f"SELECT timestamp FROM event WHERE {f} ORDER BY timestamp DESC LIMIT 1;"))
+    total_gate_task = asyncio.create_task(_q("SELECT count() FROM gate_log GROUP ALL;"))
+    extract_gate_task = asyncio.create_task(_q("SELECT count() FROM gate_log WHERE decision = 'extract' GROUP ALL;"))
+    recent_gate_task = asyncio.create_task(_q("SELECT content_hash, decision, reason, gate_score, threshold, compression_ratio, ts FROM gate_log ORDER BY ts DESC LIMIT 10;"))
 
-    # Count facts
-    fact_count_result = await _query_surreal("SELECT count() FROM fact WHERE (valid_until IS NONE OR valid_until = NONE) AND (forgotten = false OR forgotten IS NONE) GROUP ALL;")
-    fact_counts = _extract_result(fact_count_result, 1)
-    fact_count = fact_counts[0].get("count", 0) if fact_counts else 0
-
-    # Get oldest and newest event timestamps
-    oldest_result = await _query_surreal(f"SELECT timestamp FROM event WHERE {forgotten_filter} ORDER BY timestamp ASC LIMIT 1;")
-    oldest_events = _extract_result(oldest_result, 1)
-    oldest_event = oldest_events[0].get("timestamp") if oldest_events else None
-
-    newest_result = await _query_surreal(f"SELECT timestamp FROM event WHERE {forgotten_filter} ORDER BY timestamp DESC LIMIT 1;")
-    newest_events = _extract_result(newest_result, 1)
-    newest_event = newest_events[0].get("timestamp") if newest_events else None
-
-    # Calculate gate pass rate
-    total_gate_logs_result = await _query_surreal(
-        "SELECT count() FROM gate_log GROUP ALL;"
+    results = await asyncio.gather(
+        event_task, entity_task, fact_task, oldest_task, newest_task,
+        total_gate_task, extract_gate_task, recent_gate_task,
     )
-    total_gate_logs = _extract_result(total_gate_logs_result, 1)
-    total_decisions = total_gate_logs[0].get("count", 0) if total_gate_logs else 0
 
-    extract_decisions_result = await _query_surreal(
-        "SELECT count() FROM gate_log WHERE decision = 'extract' GROUP ALL;"
-    )
-    extract_decisions = _extract_result(extract_decisions_result, 1)
-    extract_count = extract_decisions[0].get("count", 0) if extract_decisions else 0
-
+    event_count = results[0][0].get("count", 0) if results[0] else 0
+    entity_count = results[1][0].get("count", 0) if results[1] else 0
+    fact_count = results[2][0].get("count", 0) if results[2] else 0
+    oldest_event = results[3][0].get("timestamp") if results[3] else None
+    newest_event = results[4][0].get("timestamp") if results[4] else None
+    total_decisions = results[5][0].get("count", 0) if results[5] else 0
+    extract_count = results[6][0].get("count", 0) if results[6] else 0
     gate_pass_rate = extract_count / total_decisions if total_decisions > 0 else 0.0
 
-    # Get recent gate decisions with reasons
-    recent_gate_sql = """
-    SELECT content_hash, decision, reason, gate_score, threshold, compression_ratio, ts
-    FROM gate_log
-    ORDER BY ts DESC
-    LIMIT 10;
-    """
-    recent_gate_result = await _query_surreal(recent_gate_sql)
-    recent_gate_logs = _extract_result(recent_gate_result, 1)
+    recent_gate_logs = results[7]
     for g in recent_gate_logs:
         g.pop("content_hash", None)
 
@@ -230,7 +209,7 @@ async def event_log_search(
     if include_forgotten:
         forgotten_filter = "1=1"
     else:
-        forgotten_filter = "(forgotten IS NONE OR forgotten = false)"
+        forgotten_filter = "forgotten = false"
 
     if not query.strip():
         # If no query, just return recent events with offset
@@ -453,7 +432,7 @@ async def semantic_search(query: str, top_k: int = 5) -> dict:
     query_vector_str = "[" + ", ".join(map(str, query_vector)) + "]"
 
     fetch_k = min(top_k * 6, 150)
-    forgotten_filter = "(forgotten IS NONE OR forgotten = false)"
+    forgotten_filter = "forgotten = false"
 
     # 1) Vector search (semantic)
     vec_sql = f"""
@@ -972,7 +951,7 @@ async def list_entities(
         sort_order = "asc"
     order = f"{sort_by} {sort_order}"
 
-    filters = ["(forgotten IS NONE OR forgotten = false)"]
+    filters = ["forgotten = false"]
     if type:
         type_escaped = escape_surrealql(type)
         filters.append(f"type = '{type_escaped}'")
@@ -1148,7 +1127,7 @@ async def list_events(
     """List events from the raw event log with filtering and pagination."""
     filters = []
     if not include_forgotten:
-        filters.append("(forgotten IS NONE OR forgotten = false)")
+        filters.append("forgotten = false")
     if since:
         filters.append(f"timestamp >= '{escape_surrealql(since)}'")
     if until:
@@ -1199,7 +1178,7 @@ async def graph_traverse(
 
     entity_sql = f"""
     SELECT id, name, type FROM entity
-    WHERE (forgotten IS NONE OR forgotten = false)
+    WHERE forgotten = false
     AND name = '{escape_surrealql(start_entity)}'
     LIMIT 1;
     """
@@ -1232,9 +1211,9 @@ async def graph_traverse(
 
         clauses = []
         if direction in ("outbound", "both"):
-            clauses.append(f"in.name = '{escape_surrealql(ename)}'")
+            clauses.append(f"in = {eid}")
         if direction in ("inbound", "both"):
-            clauses.append(f"out.name = '{escape_surrealql(ename)}'")
+            clauses.append(f"out = {eid}")
         if not clauses:
             break
 

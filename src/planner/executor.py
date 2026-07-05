@@ -147,7 +147,7 @@ class RetrievalExecutor:
     async def _search_events_ftx(self, query: str, limit: int = 10) -> List[Dict]:
         """Lexical search via FTX index."""
         query_escaped = escape_surrealql(query)
-        forgotten_filter = "(forgotten IS NONE OR forgotten = false)"
+        forgotten_filter = "forgotten = false"
         sql = f"""
         SELECT id, content, timestamp, source, metadata
         FROM event
@@ -164,7 +164,7 @@ class RetrievalExecutor:
 
         query_vector = await _embed_query(query)
         query_vector_str = "[" + ", ".join(map(str, query_vector)) + "]"
-        forgotten_filter = "(forgotten IS NONE OR forgotten = false)"
+        forgotten_filter = "forgotten = false"
         sql = f"""
         SELECT id, content, timestamp, source, metadata,
                vector::similarity::cosine(embedding, {query_vector_str}) AS vec_score
@@ -180,7 +180,7 @@ class RetrievalExecutor:
 
     async def _search_events_temporal(self, query: str, limit: int = 10) -> List[Dict]:
         """Temporal search (recent events)."""
-        forgotten_filter = "(forgotten IS NONE OR forgotten = false)"
+        forgotten_filter = "forgotten = false"
         sql = f"""
         SELECT id, content, timestamp, source, metadata
         FROM event
@@ -216,7 +216,7 @@ class RetrievalExecutor:
                out.name AS out_name, out.type AS out_type, out.id AS out_id,
                predicate, confidence, valid_from, valid_until
         FROM fact
-        WHERE predicate CONTAINS '{text_escaped}'
+        WHERE predicate @@ '{text_escaped}'
            OR in.name CONTAINS '{text_escaped}'
            OR out.name CONTAINS '{text_escaped}'
         ORDER BY confidence DESC
@@ -226,12 +226,12 @@ class RetrievalExecutor:
         return _extract_result(result, 1) or []
 
     async def _search_entities_by_name(self, name: str) -> List[Dict]:
-        """Search entities by name (substring match via CONTAINS)."""
+        """Search entities by name (fulltext via FTX index)."""
         name_escaped = escape_surrealql(name)
         sql = f"""
         SELECT id, name, type
         FROM entity
-        WHERE name CONTAINS '{name_escaped}'
+        WHERE name @@ '{name_escaped}'
         LIMIT 20;
         """
         result = await _query_surreal(sql)

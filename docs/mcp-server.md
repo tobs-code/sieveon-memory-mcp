@@ -42,7 +42,7 @@ The MCP Server exposes the entire Sieveon Memory Stack via the [Model Context Pr
 | Python | 3.10+ | Runtime |
 | Docker + Docker Compose | latest | SurrealDB container |
 | SurrealDB | latest | Storage (Event Log, KG, Vector Index) |
-| CUDA-capable GPU | optional | Embedding model (`sentence-transformers/all-MiniLM-L6-v2`) |
+| CUDA-capable GPU | optional | Embedding model (`nomic-ai/nomic-embed-text-v1.5`) |
 
 Python packages (from `requirements.txt`):
 
@@ -792,7 +792,7 @@ File: `src/mcp/server.py`
 
 **SurrealDB Access:** Direct via HTTP SQL endpoint (`http://127.0.0.1:8000/sql`) with Basic Auth (`root`/`root`). Each SQL batch is prefixed with `USE NS Sieveon DB Sieveon;` to prevent statements from targeting an empty namespace.
 
-**Embedding Service:** `SentenceTransformer` with model `sentence-transformers/all-MiniLM-L6-v2` (384 dimensions, CUDA if available). The model is loaded lazily and cached. Query embeddings are LRU-cached with a capacity of 128 entries.
+**Embedding Service:** `SentenceTransformer` with model [`nomic-ai/nomic-embed-text-v1.5`](https://huggingface.co/nomic-ai/nomic-embed-text-v1.5) (768 dimensions, CUDA if available). The model is loaded lazily on first `memory_store` call (~1s cold start on CPU). Query embeddings are LRU-cached with a capacity of 128 entries.
 
 **Connection Reuse:** A module-level `httpx.AsyncClient` is shared across all SurrealDB calls, eliminating TCP handshake overhead on every query. Circuit breaker and retry with jittered backoff protect against transient failures.
 
@@ -874,12 +874,12 @@ docker-compose up -d
 
 ### Embedding model loads extremely slowly
 
-On first start, `sentence-transformers/all-MiniLM-L6-v2` is downloaded from HuggingFace (~90 MB). After that it is cached under `~/.cache/huggingface/hub/`. For offline operation, download beforehand:
+On first start, `nomic-ai/nomic-embed-text-v1.5` is downloaded from HuggingFace (~280 MB). After that it is cached under `~/.cache/huggingface/hub/`. For offline operation, download beforehand:
 
 ```python
 from sentence_transformers import SentenceTransformer
-model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
-model.save("./models/all-MiniLM-L6-v2")
+model = SentenceTransformer("nomic-ai/nomic-embed-text-v1.5")
+model.save("./models/nomic-embed-text-v1.5")
 ```
 
 ### `datetime.utcnow()` Deprecation Warning

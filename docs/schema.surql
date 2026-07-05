@@ -25,6 +25,8 @@ DEFINE FIELD IF NOT EXISTS forget_reason ON event TYPE none | string;
 DEFINE FIELD IF NOT EXISTS content_hash ON event TYPE none | string;
 DEFINE INDEX IF NOT EXISTS event_timestamp ON event COLUMNS timestamp;
 DEFINE INDEX IF NOT EXISTS event_source ON event COLUMNS source;
+DEFINE INDEX IF NOT EXISTS event_content_hash_idx ON event COLUMNS content_hash;
+DEFINE INDEX IF NOT EXISTS event_count ON event COUNT;
 DEFINE ANALYZER IF NOT EXISTS event_analyzer TOKENIZERS class FILTERS lowercase, ascii, snowball(english);
 DEFINE INDEX IF NOT EXISTS event_content_ft ON event FIELDS content FULLTEXT ANALYZER event_analyzer BM25 HIGHLIGHTS;
 DEFINE INDEX IF NOT EXISTS event_embedding_vec ON event FIELDS embedding HNSW DIMENSION 768 DIST COSINE;
@@ -41,8 +43,11 @@ DEFINE FIELD IF NOT EXISTS forgotten ON entity TYPE bool DEFAULT false;
 DEFINE FIELD IF NOT EXISTS forget_reason ON entity TYPE none | string;
 DEFINE FIELD IF NOT EXISTS created_at ON entity TYPE none | datetime DEFAULT time::now();
 DEFINE FIELD IF NOT EXISTS updated_at ON entity TYPE none | datetime DEFAULT time::now();
-DEFINE INDEX IF NOT EXISTS entity_name ON entity COLUMNS name;
+DEFINE INDEX IF NOT EXISTS entity_name ON entity COLUMNS name UNIQUE;
 DEFINE INDEX IF NOT EXISTS entity_type ON entity COLUMNS type;
+DEFINE INDEX IF NOT EXISTS entity_count ON entity COUNT;
+DEFINE ANALYZER IF NOT EXISTS entity_analyzer TOKENIZERS class FILTERS lowercase, ascii, snowball(english);
+DEFINE INDEX IF NOT EXISTS entity_name_ft ON entity FIELDS name FULLTEXT ANALYZER entity_analyzer BM25;
 DEFINE INDEX IF NOT EXISTS entity_embedding_vec ON entity FIELDS embedding HNSW DIMENSION 768 DIST COSINE;
 
 DEFINE TABLE IF NOT EXISTS fact SCHEMALESS;
@@ -52,8 +57,11 @@ DEFINE FIELD IF NOT EXISTS valid_until ON fact TYPE none | datetime;
 DEFINE FIELD IF NOT EXISTS confidence ON fact TYPE none | float DEFAULT 1.0;
 DEFINE FIELD IF NOT EXISTS metadata ON fact TYPE none | object;
 DEFINE INDEX IF NOT EXISTS fact_valid ON fact COLUMNS valid_from, valid_until;
+DEFINE INDEX IF NOT EXISTS fact_valid_until ON fact COLUMNS valid_until;
 DEFINE INDEX IF NOT EXISTS fact_subject ON fact COLUMNS in;
 DEFINE INDEX IF NOT EXISTS fact_object ON fact COLUMNS out;
+DEFINE INDEX IF NOT EXISTS fact_count ON fact COUNT;
+DEFINE INDEX IF NOT EXISTS fact_predicate_ft ON fact FIELDS predicate FULLTEXT ANALYZER entity_analyzer BM25;
 
 -- ========================================
 -- ③ Retrieval Cache
@@ -80,6 +88,7 @@ DEFINE FIELD IF NOT EXISTS compression_ratio ON gate_log TYPE float;
 DEFINE FIELD IF NOT EXISTS ts ON gate_log TYPE datetime DEFAULT time::now();
 DEFINE INDEX IF NOT EXISTS gate_log_ts ON gate_log COLUMNS ts;
 DEFINE INDEX IF NOT EXISTS gate_log_decision ON gate_log COLUMNS decision;
+DEFINE INDEX IF NOT EXISTS gate_log_count ON gate_log COUNT;
 
 -- ========================================
 -- ⑤ Schema Migration Tracking

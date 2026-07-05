@@ -40,25 +40,24 @@ async def get_stats_resource() -> str:
     """Aggregate statistics about the memory system."""
     stats = {}
     try:
-        result = await _query_surreal("SELECT count() FROM event WHERE (forgotten IS NONE OR forgotten = false) GROUP ALL;")
-        counts = _extract_result(result, 1)
-        stats["event_count"] = counts[0].get("count", 0) if counts else 0
+        f = "forgotten = false"
 
-        result = await _query_surreal("SELECT count() FROM entity WHERE (forgotten IS NONE OR forgotten = false) GROUP ALL;")
-        counts = _extract_result(result, 1)
-        stats["entity_count"] = counts[0].get("count", 0) if counts else 0
+        async def _q(sql):
+            return _extract_result(await _query_surreal(sql), 1) or []
 
-        result = await _query_surreal("SELECT count() FROM fact WHERE (valid_until IS NONE OR valid_until = NONE) AND (forgotten = false OR forgotten IS NONE) GROUP ALL;")
-        counts = _extract_result(result, 1)
-        stats["fact_count"] = counts[0].get("count", 0) if counts else 0
+        task1 = asyncio.create_task(_q(f"SELECT count() FROM event WHERE {f} GROUP ALL;"))
+        task2 = asyncio.create_task(_q(f"SELECT count() FROM entity WHERE {f} GROUP ALL;"))
+        task3 = asyncio.create_task(_q("SELECT count() FROM fact WHERE (valid_until IS NONE OR valid_until = NONE) AND forgotten = false GROUP ALL;"))
+        task4 = asyncio.create_task(_q(f"SELECT timestamp FROM event WHERE {f} ORDER BY timestamp ASC LIMIT 1;"))
+        task5 = asyncio.create_task(_q(f"SELECT timestamp FROM event WHERE {f} ORDER BY timestamp DESC LIMIT 1;"))
 
-        result = await _query_surreal("SELECT timestamp FROM event WHERE (forgotten IS NONE OR forgotten = false) ORDER BY timestamp ASC LIMIT 1;")
-        events = _extract_result(result, 1)
-        stats["oldest_event"] = events[0].get("timestamp") if events else None
+        results = await asyncio.gather(task1, task2, task3, task4, task5)
 
-        result = await _query_surreal("SELECT timestamp FROM event WHERE (forgotten IS NONE OR forgotten = false) ORDER BY timestamp DESC LIMIT 1;")
-        events = _extract_result(result, 1)
-        stats["newest_event"] = events[0].get("timestamp") if events else None
+        stats["event_count"] = results[0][0].get("count", 0) if results[0] else 0
+        stats["entity_count"] = results[1][0].get("count", 0) if results[1] else 0
+        stats["fact_count"] = results[2][0].get("count", 0) if results[2] else 0
+        stats["oldest_event"] = results[3][0].get("timestamp") if results[3] else None
+        stats["newest_event"] = results[4][0].get("timestamp") if results[4] else None
     except Exception as e:
         return json.dumps({"error": str(e)}, indent=2)
     return json.dumps(stats, indent=2, default=str)

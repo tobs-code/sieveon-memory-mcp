@@ -258,7 +258,7 @@ class EntropyGate:
         FROM event
         WHERE embedding IS NOT NONE
           AND array::len(embedding) = {len(embedding)}
-          AND (forgotten IS NONE OR forgotten = false){exclude_self}
+          AND forgotten = false{exclude_self}
         ORDER BY similarity DESC
         LIMIT 5;
         """
@@ -282,7 +282,7 @@ class EntropyGate:
     def _count_events(self) -> int:
         """Count total stored events (for adaptive threshold)."""
         try:
-            sql = "SELECT count() AS c FROM event WHERE (forgotten IS NONE OR forgotten = false) LIMIT 1;"
+            sql = "SELECT count() AS c FROM event WHERE forgotten = false LIMIT 1;"
             result = self._query_surreal(sql)
             rows = self._extract_result(result)
             if rows:
@@ -1260,7 +1260,7 @@ class EntropyGate:
         SELECT id FROM event
         WHERE content_hash = '{content_hash}'
           AND source = '{source_escaped_dedup}'
-          AND (forgotten IS NONE OR forgotten = false)
+          AND forgotten = false
         LIMIT 1;
         """
         dedup_result = self._query_surreal(dedup_sql)

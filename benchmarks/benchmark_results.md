@@ -1017,3 +1017,114 @@ explain_routing      |       0.19 |       0.20 |      0
 ```
 
 ---
+
+## Benchmark Run: 2026-07-05 05:12:52
+
+### Summary
+
+| Tool | Avg (ms) | P95 (ms) | Min (ms) | Max (ms) | Errors |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| `memory_stats` | 164.72 | 182.28 | 155.67 | 182.28 | 0 |
+| `memory_store` | 2311.50 | 2394.48 | 2226.41 | 2394.48 | 0 |
+| `memory_query` | 1015.79 | 1052.01 | 999.64 | 1052.01 | 0 |
+| `semantic_search` | 154.94 | 170.90 | 147.58 | 170.90 | 0 |
+| `event_log_search` | 96.65 | 107.44 | 91.75 | 107.44 | 0 |
+| `kg_query` | 51.81 | 58.82 | 48.75 | 58.82 | 0 |
+
+### Full Execution Logs
+
+```text
+STRATA MCP Performance Benchmark - 2026-07-05 05:12:52
+============================================================
+System: Windows 10 (AMD64)
+Python: 3.11.9
+============================================================
+
+--- Benchmarking 'memory_stats' (10 iterations) ---
+[INFO] Starting background SurrealDB reconnect task
+  Avg: 164.72ms
+  P95: 182.28ms
+  Min/Max: 155.67ms / 182.28ms
+  Errors: 0
+
+--- Benchmarking 'memory_store' (10 iterations) ---
+[INFO] Initializing Embedding Service with model: nomic-ai/nomic-embed-text-v1.5...
+[OK] Embedding Service initialized
+Entropy Gate Decision: {'decision': 'extract', 'text_entropy': 3.7411397202207834, 'normalized_entropy': 0.8313643822712852, 'compression_ratio': 1.0, 'novelty': 0.3364373728926706, 'composite_score': 0.6260597820141566, 'threshold': 0.30166666666666664, 'alpha': 0.25, 'beta': 0.5, 'gamma': 0.25, 'near_duplicate_warning': False, 'adaptive_min_novelty': 0.051000000000000004, 'reason': 'Composite score 0.626 meets threshold 0.302'}
+  [KG] Found candidate entities: ['Benchmark test event']
+  [KG] Entity: Benchmark test event (concept) -> entity:yx1v4a6se9ge0lbjbmqm
+  [KG] Extraction complete: {'entities_created': 1, 'facts_created': 1}
+  [Dedup] Found existing event event:59fbsf1tmiicpcit9e4s for identical content and source
+  [KG] Found candidate entities: ['Benchmark test event']
+  [KG] Entity: Benchmark test event (concept) -> entity:yx1v4a6se9ge0lbjbmqm
+  [Dedup] Found existing event event:59fbsf1tmiicpcit9e4s for identical content and source
+  [KG] Found candidate entities: ['Benchmark test event']
+  [KG] Entity: Benchmark test event (concept) -> entity:yx1v4a6se9ge0lbjbmqm
+  [Dedup] Found existing event event:59fbsf1tmiicpcit9e4s for identical content and source
+  [KG] Found candidate entities: ['Benchmark test event']
+  [KG] Entity: Benchmark test event (concept) -> entity:yx1v4a6se9ge0lbjbmqm
+  [Dedup] Found existing event event:59fbsf1tmiicpcit9e4s for identical content and source
+  [KG] Found candidate entities: ['Benchmark test event']
+  [KG] Entity: Benchmark test event (concept) -> entity:yx1v4a6se9ge0lbjbmqm
+  [Dedup] Found existing event event:59fbsf1tmiicpcit9e4s for identical content and source
+  [KG] Found candidate entities: ['Benchmark test event']
+  [KG] Entity: Benchmark test event (concept) -> entity:yx1v4a6se9ge0lbjbmqm
+  [Dedup] Found existing event event:59fbsf1tmiicpcit9e4s for identical content and source
+  [KG] Found candidate entities: ['Benchmark test event']
+  [KG] Entity: Benchmark test event (concept) -> entity:yx1v4a6se9ge0lbjbmqm
+  [Dedup] Found existing event event:59fbsf1tmiicpcit9e4s for identical content and source
+  [KG] Found candidate entities: ['Benchmark test event']
+  [KG] Entity: Benchmark test event (concept) -> entity:yx1v4a6se9ge0lbjbmqm
+  [Dedup] Found existing event event:59fbsf1tmiicpcit9e4s for identical content and source
+  [KG] Found candidate entities: ['Benchmark test event']
+  [KG] Entity: Benchmark test event (concept) -> entity:yx1v4a6se9ge0lbjbmqm
+  [Dedup] Found existing event event:59fbsf1tmiicpcit9e4s for identical content and source
+  [KG] Found candidate entities: ['Benchmark test event']
+  [KG] Entity: Benchmark test event (concept) -> entity:yx1v4a6se9ge0lbjbmqm
+  [Dedup] Found existing event event:59fbsf1tmiicpcit9e4s for identical content and source
+  [KG] Found candidate entities: ['Benchmark test event']
+  [KG] Entity: Benchmark test event (concept) -> entity:yx1v4a6se9ge0lbjbmqm
+  Avg: 2311.50ms
+  P95: 2394.48ms
+  Min/Max: 2226.41ms / 2394.48ms
+  Errors: 0
+
+--- Benchmarking 'memory_query' (10 iterations) ---
+  Avg: 1015.79ms
+  P95: 1052.01ms
+  Min/Max: 999.64ms / 1052.01ms
+  Errors: 0
+
+--- Benchmarking 'semantic_search' (10 iterations) ---
+  Avg: 154.94ms
+  P95: 170.90ms
+  Min/Max: 147.58ms / 170.90ms
+  Errors: 0
+
+--- Benchmarking 'event_log_search' (10 iterations) ---
+  Avg: 96.65ms
+  P95: 107.44ms
+  Min/Max: 91.75ms / 107.44ms
+  Errors: 0
+
+--- Benchmarking 'kg_query' (10 iterations) ---
+  Avg: 51.81ms
+  P95: 58.82ms
+  Min/Max: 48.75ms / 58.82ms
+  Errors: 0
+
+--- Benchmarking 'explain_routing' (10 iterations) ---
+Warmup failed for explain_routing: Unknown tool: explain_routing
+============================================================
+Tool                 |   Avg (ms) |   P95 (ms) | Errors
+------------------------------------------------------------
+memory_stats         |     164.72 |     182.28 |      0
+memory_store         |    2311.50 |    2394.48 |      0
+memory_query         |    1015.79 |    1052.01 |      0
+semantic_search      |     154.94 |     170.90 |      0
+event_log_search     |      96.65 |     107.44 |      0
+kg_query             |      51.81 |      58.82 |      0
+============================================================
+```
+
+---

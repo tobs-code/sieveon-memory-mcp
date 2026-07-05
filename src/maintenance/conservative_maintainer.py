@@ -212,7 +212,7 @@ class ConservativeMaintainer:
             sql = """
             SELECT id, content_hash, timestamp, source
             FROM event
-            WHERE (forgotten IS NONE OR forgotten = false)
+            WHERE forgotten = false
             ORDER BY timestamp DESC
             LIMIT 500;
             """
