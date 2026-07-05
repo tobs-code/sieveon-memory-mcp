@@ -46,7 +46,7 @@ Sieveon is an agent memory system that intelligently classifies, routes, plans, 
 
 - **Query Classification** — 5 types: Temporal, Factual, Multi-Hop, Conversational, Update
 - **Adaptive Retrieval** — Strategy selection per query type (event log, KG, hybrid BM25+vector+temporal)
-- **Entropy Gating** — Composite score: Shannon character entropy + embedding novelty. Raw Event Log is always append-only; the gate decides only whether to extract into the Knowledge Graph.
+- **Entropy Gating** — Composite score: Shannon character entropy + gzip compression ratio (Kolmogorov complexity proxy) + embedding novelty. Raw Event Log is always append-only; the gate decides only whether to extract into the Knowledge Graph.
 - **Entity Extraction** — Groq API (`llama-3.1-8b-instant`) with spaCy fallback. Pipe-separated LLM prompt, type preservation (LLM classification preferred over heuristic).
 - **Logical Invalidation** — `valid_until` timestamps instead of hard deletes. `memory_update` auto-creates target entities if they don't exist yet.
 - **Forgetting & Consolidation** — `memory_forget` soft-deletes events or entities; `memory_consolidate` triggers maintenance runs (with optional physical stale-fact removal).
@@ -128,12 +128,13 @@ The gate prevents the Knowledge Graph from being flooded with low-value entries.
 **Formula:**
 
 ```
-composite = alpha * normalized_text_entropy + beta * embedding_novelty
+composite = alpha * normalized_text_entropy + gamma * compression_ratio + beta * embedding_novelty
 ```
 
 - **Text entropy** = Shannon entropy on character level (alphanumeric + whitespace), normalized to `[0, 1]` using a max of ~4.5 bits.
+- **Compression ratio** = `len(gzip.compress(text)) / len(text)` — a Kolmogorov complexity proxy via gzip. Higher values mean the text is less compressible, indicating higher informational content. Falls back to `0.5` for texts under 20 characters (unstable at very short lengths). This captures semantic density that pure character entropy misses (e.g. `"aaaaaaaaab"` and `"the cat sat"` can have similar Shannon entropy but very different compression ratios).
 - **Embedding novelty** = `1 − avg cosine similarity` to the top-5 most similar previously stored embeddings (queried via SurrealDB native vector search).
-- **Weights** (default): `alpha = 0.35`, `beta = 0.65`.
+- **Weights** (default): `alpha = 0.25` (Shannon), `gamma = 0.25` (compression ratio), `beta = 0.50` (embedding novelty).
 - **Threshold** (adaptive): starts at `0.30` (cold start) and ramps linearly to `0.55` after ~150 events.
 
 **Decision:** `extract` if `composite >= threshold`, otherwise `ignore`.
@@ -146,9 +147,9 @@ composite = alpha * normalized_text_entropy + beta * embedding_novelty
 
 **Storage contract:** Every input is still written to the immutable Raw Event Log. The gate only controls whether the content is additionally extracted into the temporal Knowledge Graph.
 
-**Logging:** Each decision is recorded in the `gate_log` table for later calibration/evaluation.
+**Logging:** Each decision is recorded in the `gate_log` table (including `compression_ratio`) for later calibration/evaluation.
 
-**Calibration note:** `alpha`, `beta`, and `threshold` are currently **initial defaults**. Use the logged `gate_log` entries to tune them against real traffic and find the sweet spot for your workload.
+**Calibration note:** `alpha`, `beta`, `gamma`, and `threshold` are currently **initial defaults**. Use the logged `gate_log` entries to tune them against real traffic and find the sweet spot for your workload.
 
 **MCP path status:** The current MCP memory tools (`memory_store`, query endpoints) write to the raw event log **and invoke the entropy gate**. The `memory_store` tool calls `EntropyGate.ingest()` which logs decisions to `gate_log` for calibration.
 

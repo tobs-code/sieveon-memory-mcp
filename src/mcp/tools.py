@@ -184,7 +184,7 @@ async def memory_stats(random_string: str = "") -> dict:
 
     # Get recent gate decisions with reasons
     recent_gate_sql = """
-    SELECT content_hash, decision, reason, gate_score, threshold, ts
+    SELECT content_hash, decision, reason, gate_score, threshold, compression_ratio, ts
     FROM gate_log
     ORDER BY ts DESC
     LIMIT 10;
@@ -579,7 +579,7 @@ async def semantic_search(query: str, top_k: int = 5) -> dict:
                 kg_result = await _query_surreal(kg_sql)
                 kg_facts_raw = _extract_result(kg_result, 1) or []
                 if kg_facts_raw:
-                    NOISY_PREDICATES = {"weakly_related"}
+                    NOISY_PREDICATES = {"weakly_related", "mentions"}
                     MIN_CONFIDENCE = 0.5
                     filtered = []
                     for f in kg_facts_raw:

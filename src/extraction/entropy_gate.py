@@ -4,6 +4,7 @@ Composite Score aus Text-Entropy und Embedding-Novelty
 Nur vor KG-Write, Raw Event Log bekommt immer alles!
 """
 
+import gzip
 import hashlib
 import json
 import math
@@ -70,19 +71,22 @@ def character_diversity(text: str) -> float:
 class EntropyGateConfig:
     def __init__(
         self,
-        alpha: float = 0.35,  # Gewicht Text-Entropy
-        beta: float = 0.65,  # Gewicht Embedding-Novelty
+        alpha: float = 0.25,  # Gewicht Shannon-Entropy
+        beta: float = 0.50,  # Gewicht Embedding-Novelty
+        gamma: float = 0.25,  # Gewicht Kompressionsrate (Kolmogorov-Approx)
         base_threshold: float = 0.30,  # Minimum threshold (cold start)
         max_threshold: float = 0.55,  # Maximum threshold (mature DB)
         ramp_events: int = 150,  # Events needed to reach max_threshold
         min_length: int = 10,  # Unter X Zeichen immer skippen
         min_diversity: float = 0.15,  # Anteil unique chars; repetitive Texte darunter skippen
         max_length: int = 1000,  # Über X Zeichen immer skippen
-        min_novelty: float = 0.20,  # Mindest-Novelty (1 - avg_sim); darunter = near-dup → skip
+        min_novelty: float = 0.20,  # Mindest-Novelty (1 - avg_sim); darunter = near-dup flag
+        base_min_novelty: float = 0.05,  # Novelty-Schwelle bei kaltem Start
         max_entities_for_cooccurrence: int = 6,  # Obergrenze gegen kombinatorische Explosion
     ):
         self.alpha = alpha
         self.beta = beta
+        self.gamma = gamma
         self.base_threshold = base_threshold
         self.max_threshold = max_threshold
         self.ramp_events = ramp_events
@@ -90,6 +94,7 @@ class EntropyGateConfig:
         self.max_length = max_length
         self.min_diversity = min_diversity
         self.min_novelty = min_novelty
+        self.base_min_novelty = base_min_novelty
         self.max_entities_for_cooccurrence = max_entities_for_cooccurrence
 
 
@@ -203,6 +208,31 @@ class EntropyGate:
             p = count / total
             entropy -= p * math.log2(p)
         return entropy
+
+    def calculate_compression_ratio(self, text: str) -> float:
+        """
+        Kolmogorov-Komplexitäts-Approximation via gzip-Kompressionsrate.
+        Höhere Werte = schlechter komprimierbar = höherer Informationsgehalt.
+        Returns Wert zwischen 0 und 1 (normalisiert auf uncompressed=1.0).
+        Bei Kurztexten < 20 Zeichen instabil → Fallback auf 0.5.
+        """
+        if not text or len(text) < 20:
+            return 0.5
+        data = text.encode("utf-8")
+        compressed = gzip.compress(data, mtime=0)
+        ratio = len(compressed) / len(data)
+        return min(ratio, 1.0)
+
+    def _get_adaptive_min_novelty(self) -> float:
+        """min_novelty steigt linear von base_min_novelty → min_novelty mit der Event-Anzahl."""
+        n = self._count_events()
+        base = self.config.base_min_novelty
+        maximum = self.config.min_novelty
+        ramp = self.config.ramp_events
+        if ramp <= 0:
+            return maximum
+        fraction = min(n / ramp, 1.0)
+        return base + (maximum - base) * fraction
 
     def calculate_novelty(self, text: str, exclude_id: Optional[str] = None) -> float:
         """
@@ -367,32 +397,23 @@ class EntropyGate:
 
         # Calculate individual scores
         text_entropy = self.calculate_char_entropy(text)
+        compression_ratio = self.calculate_compression_ratio(text)
         novelty = self.calculate_novelty(text, exclude_id=exclude_id)
 
-        # Near-duplicate guard: skip if embedding is too similar to existing content
-        if novelty < self.config.min_novelty:
-            result = {
-                "decision": "skip",
-                "reason": "near_duplicate",
-                "novelty": novelty,
-                "min_novelty": self.config.min_novelty,
-            }
-            self._log_decision(
-                text,
-                0.0,
-                novelty,
-                0.0,
-                result["decision"],
-                reason_override=result["reason"],
-            )
-            return result
+        # Near-duplicate guard (soft): falls novelty zu niedrig ist,
+        # wird das trotzdem durch den Composite-Score bewertet (kein Hard-Skip mehr).
+        # Der adaptive min_novelty-Wert dient als Warning-Flag, blockt aber nicht.
+        adaptive_min_novelty = self._get_adaptive_min_novelty()
+        near_duplicate_warning = novelty < adaptive_min_novelty
 
         # Normalize entropy to 0-1 range (assuming max entropy of ~4.5)
         normalized_entropy = min(text_entropy / 4.5, 1.0)
 
-        # Calculate composite score
-        composite_score = (self.config.alpha * normalized_entropy) + (
-            self.config.beta * novelty
+        # Calculate composite score: Shannon + Kompressionsrate + Embedding-Novelty
+        composite_score = (
+            self.config.alpha * normalized_entropy
+            + self.config.gamma * compression_ratio
+            + self.config.beta * novelty
         )
 
         # Adaptive threshold based on DB maturity
@@ -402,17 +423,21 @@ class EntropyGate:
         decision = "extract" if composite_score >= threshold else "ignore"
 
         # Log decision to database
-        self._log_decision(text, normalized_entropy, novelty, composite_score, decision)
+        self._log_decision(text, normalized_entropy, novelty, composite_score, decision, compression_ratio=compression_ratio)
 
         return {
             "decision": decision,
             "text_entropy": text_entropy,
             "normalized_entropy": normalized_entropy,
+            "compression_ratio": compression_ratio,
             "novelty": novelty,
             "composite_score": composite_score,
             "threshold": threshold,
             "alpha": self.config.alpha,
             "beta": self.config.beta,
+            "gamma": self.config.gamma,
+            "near_duplicate_warning": near_duplicate_warning,
+            "adaptive_min_novelty": adaptive_min_novelty,
             "reason": f"Composite score {composite_score:.3f} {'meets' if decision == 'extract' else 'does not meet'} threshold {threshold:.3f}",
         }
 
@@ -424,6 +449,7 @@ class EntropyGate:
         composite_score: float,
         decision: str,
         reason_override: Optional[str] = None,
+        compression_ratio: float = 0.0,
     ):
         """Log the entropy gate decision to database"""
         try:
@@ -440,6 +466,7 @@ class EntropyGate:
                 content_hash = '{content_hash}',
                 text_score = {entropy},
                 novelty = {novelty},
+                compression_ratio = {compression_ratio},
                 gate_score = {composite_score},
                 decision = '{decision_escaped}',
                 reason = '{reason_escaped}',
