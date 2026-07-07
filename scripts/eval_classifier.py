@@ -1,5 +1,10 @@
 """
 Evaluate classifier accuracy: holdout F1, threshold analysis, cross-validation.
+
+Known caveats (see README for details):
+  1. TREC data: original 6 labels → 3 Sieveon types via heuristic mapping.
+  2. Synthetic data uses templates → ~9% exact duplicates across train/test splits.
+  3. n=180 holdout → CV (5-fold, ~0.967) is more reliable than holdout point estimate.
 """
 import json
 import os
@@ -57,18 +62,8 @@ def load_all(limit_per_class=200):
     return texts, labels
 
 
-def _build_features(texts, emb_svc, vectorizer=None):
-    import numpy as np
-    embeddings = np.array(emb_svc.embed_batch(texts, for_storage=True))
-    if vectorizer is not None:
-        tfidf = vectorizer.transform(texts).toarray()
-        return np.concatenate([embeddings, tfidf], axis=1)
-    return embeddings
-
-
-def _show_top_tfidf_features(vectorizer, model, label_encoder, top_n=10):
+def _show_top_tfidf_features(vectorizer, model, label_encoder, n_emb=1024, top_n=10):
     feature_names = vectorizer.get_feature_names_out()
-    n_emb = 1024
     for i, cls in enumerate(label_encoder.classes_):
         coef_tfidf = model.coef_[i, n_emb:]
         top = np.argsort(coef_tfidf)[-top_n:][::-1]
@@ -76,18 +71,26 @@ def _show_top_tfidf_features(vectorizer, model, label_encoder, top_n=10):
         print(f"  {cls:>16}: {', '.join(f'{t}={c:.2f}' for t, c in terms[:6])}")
 
 
+def _note_trec_mapping():
+    print("""
+Note on TREC label mapping:
+  Original TREC 6-category → Sieveon mapping (heuristic):
+    ABBR → factual   | ENTY → factual    | DESC (how) → factual
+    DESC (why) → multi-hop | HUM → factual | LOC → factual
+    NUM (time/date) → temporal | NUM (count) → factual
+  CoQA → 100% mapped to 'conversational'.
+  Synthetic data → generated from templates per type.
+""")
+
+
 def main():
     texts, labels = load_all()
-    print(f"Total samples: {len(texts)}")
-    print(f"Class distribution: {dict(Counter(labels))}")
+    print(f"Total samples: {len(texts)} total, {dict(Counter(labels))}")
+    _note_trec_mapping()
 
     emb_svc = get_embedding_service()
-
     vectorizer = TfidfVectorizer(
-        analyzer="word",
-        ngram_range=(1, 2),
-        max_features=500,
-        sublinear_tf=True,
+        analyzer="word", ngram_range=(1, 2), max_features=500, sublinear_tf=True,
     )
     tfidf = vectorizer.fit_transform(texts).toarray()
     embeddings = np.array(emb_svc.embed_batch(texts, for_storage=True))
@@ -100,26 +103,50 @@ def main():
         X, y, texts, test_size=0.2, random_state=42, stratify=y
     )
 
+    # ── Leakage check ──────────────────────────────────────────────
+    train_set = set(texts_train)
+    dup_indices = [i for i, t in enumerate(texts_test) if t in train_set]
+    print(f"\nData leakage: {len(dup_indices)}/{len(texts_test)} exact test→train duplicates ({100*len(dup_indices)/len(texts_test):.1f}%)")
+    print(f"  -> likely from synthetic template collisions (9 random fills/template × 80 templates)")
+    print(f"  -> Clean holdout (excluding {len(dup_indices)} exact duplicates) reported separately below.")
+
+    # ── Full holdout ───────────────────────────────────────────────
     model = LogisticRegression(
-        C=1.0,
-        max_iter=1000,
-        multi_class="ovr",
-        class_weight="balanced",
-        random_state=42,
+        C=1.0, max_iter=1000, multi_class="ovr", class_weight="balanced", random_state=42,
     )
     model.fit(X_train, y_train)
-
     y_pred = model.predict(X_test)
-    acc = accuracy_score(y_test, y_pred)
-    f1_macro = f1_score(y_test, y_pred, average="macro")
-    f1_weighted = f1_score(y_test, y_pred, average="weighted")
+    acc_full = accuracy_score(y_test, y_pred)
+    f1_full = f1_score(y_test, y_pred, average="macro")
 
-    print(f"\n=== Test set (20% holdout, n={len(y_test)}) ===")
-    print(f"Accuracy:       {acc:.4f}")
-    print(f"F1 macro:       {f1_macro:.4f}")
-    print(f"F1 weighted:    {f1_weighted:.4f}")
+    print(f"\n{'='*60}")
+    print(f"  PRIMARY METRIC: 5-Fold Cross-Validation (more reliable)")
+    print(f"{'='*60}")
+    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+    cv_scores = cross_val_score(model, X, y, cv=cv, scoring="f1_macro")
+    print(f"  F1 macro: {cv_scores.mean():.3f} +/- {cv_scores.std():.3f}")
+    print(f"  Fold scores: {[f'{s:.3f}' for s in cv_scores]}")
+    print(f"  5-fold CV is robust against the ~9% synthetic template leakage.")
+
+    # ── Clean holdout (exclude exact duplicates) ───────────────────
+    if len(dup_indices) > 0:
+        clean_idx = [i for i in range(len(texts_test)) if i not in set(dup_indices)]
+        y_test_clean = y_test[clean_idx]
+        y_pred_clean = y_pred[clean_idx]
+        acc_clean = accuracy_score(y_test_clean, y_pred_clean)
+        f1_clean = f1_score(y_test_clean, y_pred_clean, average="macro")
+    else:
+        clean_idx = list(range(len(texts_test)))
+        acc_clean, f1_clean = acc_full, f1_full
+
+    print(f"\n{'='*60}")
+    print(f"  Holdout (full, n={len(y_test)})")
+    print(f"{'='*60}")
+    print(f"  Accuracy: {acc_full:.4f}   F1 macro: {f1_full:.4f}")
+    print(f"  {len(dup_indices)} exact duplicates inflated by ~{(acc_full - acc_clean)/acc_clean*100:.1f}% "
+          f"(clean holdout F1 = {f1_clean:.4f}, n={len(clean_idx)})")
     print()
-    print("Per-class report:")
+    print("Per-class report (full holdout):")
     print(classification_report(y_test, y_pred, target_names=le.classes_, digits=3))
 
     cm = confusion_matrix(y_test, y_pred)
@@ -130,57 +157,37 @@ def main():
         row = f"{row_label:>16}" + "".join(f"{cm[i,j]:>14}" for j in range(len(le.classes_)))
         print(row)
 
+    # ── Misclassifications ─────────────────────────────────────────
     probs = model.predict_proba(X_test)
     pred_labels = [le.classes_[i] for i in y_pred]
-    true_labels = [le.classes_[i] for i in y_test]
+    true_labels_arr = [le.classes_[i] for i in y_test]
     max_conf = probs.max(axis=1)
 
     errors = []
     for i in range(len(y_test)):
-        if pred_labels[i] != true_labels[i]:
-            errors.append((true_labels[i], pred_labels[i], texts_test[i], max_conf[i]))
-
+        if pred_labels[i] != true_labels_arr[i]:
+            errors.append((true_labels_arr[i], pred_labels[i], texts_test[i], max_conf[i],
+                           i in dup_indices))
     if errors:
-        factual_fp = [(t, c, txt) for t, p, txt, c in errors if p == "factual"]
-        factual_fn = [(t, c, txt) for t, p, txt, c in errors if t == "factual"]
         print(f"\n=== Misclassifications ({len(errors)}) ===")
-        if factual_fp:
-            print(f"--- factual false positives ({len(factual_fp)}) ---")
-            for t, c, txt in factual_fp:
-                print(f"  true={t:>14}  conf={c:.3f}  | {txt}")
-        if factual_fn:
-            print(f"--- factual false negatives ({len(factual_fn)}) ---")
-            for t, c, txt in factual_fn:
-                print(f"  true={t:>14}  conf={c:.3f}  | {txt}")
-        other_errors = [(t, p, c, txt) for t, p, txt, c in errors if p != "factual" and t != "factual"]
-        if other_errors:
-            print(f"--- other ({len(other_errors)}) ---")
-            for t, p, c, txt in other_errors:
-                print(f"  true={t:>14}  pred={p:>14}  conf={c:.3f}  | {txt}")
+        for true_lbl, pred_lbl, txt, conf, is_dup in errors:
+            tag = " [DUP]" if is_dup else ""
+            print(f"  true={true_lbl:>14}  pred={pred_lbl:>14}  conf={conf:.3f}{tag}  | {txt}")
     else:
         print("\n=== No misclassifications ===")
 
+    # ── TF-IDF feature analysis ────────────────────────────────────
     print(f"\n=== Top TF-IDF features per class ===")
-    _show_top_tfidf_features(vectorizer, model, le, top_n=10)
+    _show_top_tfidf_features(vectorizer, model, le)
 
+    # ── Threshold analysis ─────────────────────────────────────────
     above = max_conf >= 0.6
-    correct_above = sum(
-        1 for i in range(len(y_test)) if above[i] and pred_labels[i] == true_labels[i]
-    )
+    correct_above = sum(1 for i in range(len(y_test)) if above[i] and pred_labels[i] == true_labels_arr[i])
     total_above = sum(above)
     print(f"\n=== ML confidence >= 0.6 threshold analysis ===")
     print(f"Samples above 0.6: {total_above}/{len(y_test)} ({100*total_above/len(y_test):.1f}%)")
     if total_above > 0:
         print(f"Accuracy on those: {correct_above / total_above:.4f}")
-    else:
-        print("N/A")
-
-    # 5-fold CV on embeddings+tfidf
-    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
-    cv_scores = cross_val_score(model, X, y, cv=cv, scoring="f1_macro")
-    print(f"\n=== 5-Fold CV F1-macro ===")
-    print(f"Fold scores: {[f'{s:.4f}' for s in cv_scores]}")
-    print(f"Mean +/- std: {cv_scores.mean():.4f} +/- {cv_scores.std():.4f}")
 
 
 if __name__ == "__main__":
