@@ -760,14 +760,15 @@ _GROQ_TRIPLE_PROMPT = """You are a precise relationship extraction system. Extra
 
 OUTPUT FORMAT (one per line): subject | predicate | object | confidence
 
-Valid predicates: works_at, founded, developed, created, uses, built, leads, wrote, published, implemented, designed, manages, joined, acquired, invested_in, met_with, held, located_in, related_to
+Valid predicates: works_at, founded, developed, created, uses, built, leads, wrote, published, implemented, designed, manages, joined, acquired, invested_in, met_with, held, located_in, related_to, discovered, plans_to_open, investigates
 
 RULES:
 1. Subject and object MUST be specific named entities (people, organizations, products, places, events)
 2. Never use generic nouns: paper, study, company, report, system, product, research, analysis
 3. Map the text verb to the closest predicate; if none matches use related_to
 4. Extract every explicit relationship — do not skip any
-5. Output ONLY the pipe-delimited lines — no introductions, no explanations, no markdown"""
+5. Output ONLY the pipe-delimited lines — no introductions, no explanations, no markdown
+6. For passive voice (e.g. "X was created by Y"): output "Y | created | X | 0.99"""
 
 _GROQ_TRIPLE_EXAMPLES = [
     ("Sam Altman founded OpenAI.", "Sam Altman | founded | OpenAI | 0.99"),
@@ -786,6 +787,22 @@ _GROQ_TRIPLE_EXAMPLES = [
     (
         "Apple held WWDC 2026 at Apple Park.",
         "Apple | held | WWDC 2026 | 0.99\nWWDC 2026 | located_in | Apple Park | 0.8",
+    ),
+    (
+        "Marie Curie discovered radium and polonium.",
+        "Marie Curie | discovered | radium | 0.99\nMarie Curie | discovered | polonium | 0.99",
+    ),
+    (
+        "Rust was created by Graydon Hoare at Mozilla Research.",
+        "Graydon Hoare | created | Rust | 0.99\nGraydon Hoare | works_at | Mozilla Research | 0.9",
+    ),
+    (
+        "Acme Corp is planning to open an office in Barcelona next year.",
+        "Acme Corp | plans_to_open | Barcelona | 0.8",
+    ),
+    (
+        "Meta is planning to build a data center in Spain.",
+        "Meta | plans_to_open | Spain | 0.8",
     ),
 ]
 
@@ -929,6 +946,14 @@ _GROQ_GENERIC_OBJECTS = {
     "image",
     "video",
     "audio",
+    "office",
+    "branch",
+    "department",
+    "team",
+    "division",
+    "subsidiary",
+    "headquarters",
+    "solution",
 }
 
 
@@ -950,8 +975,7 @@ def extract_triples_with_groq(text: str) -> list[dict]:
                 "model": "llama-3.1-8b-instant",
                 "messages": messages,
                 "temperature": 0.0,
-                "max_tokens": 512,
-                "stop": ["\n\n"],
+                "max_tokens": 2048,
             },
             headers={"Authorization": f"Bearer {key}"},
             timeout=30,
@@ -973,8 +997,6 @@ def extract_triples_with_groq(text: str) -> list[dict]:
         subj, predicate, obj = parts[0], parts[1].lower(), parts[2]
         if len(subj) < 2 or len(obj) < 2:
             continue
-        if obj.lower() in _GROQ_GENERIC_OBJECTS:
-            continue
         conf = 0.7
         if len(parts) >= 4:
             try:
@@ -993,7 +1015,63 @@ def extract_triples_with_groq(text: str) -> list[dict]:
                 "confidence": conf,
             }
         )
-    return triples
+
+    # Remove generic objects AND chain through intermediaries:
+    # If X -> predicate -> generic_Y AND generic_Y -> located_in -> Z,
+    # rewrite as X -> predicate -> Z (drop generic_Y)
+    # First pass: collect triples involving generic entities
+    generic_entities = {}
+    for t in list(triples):
+        subj_lower = t["subject"].lower()
+        obj_lower = t["object"].lower()
+        if obj_lower in _GROQ_GENERIC_OBJECTS:
+            generic_entities.setdefault(obj_lower, []).append(t)
+            triples.remove(t)
+        elif subj_lower in _GROQ_GENERIC_OBJECTS:
+            generic_entities.setdefault(subj_lower, []).append(t)
+            triples.remove(t)
+
+    # Build outgoing map: generic_name -> [target_entity, ...]
+    generic_outgoing = {}
+    for gen_name, gen_triples in generic_entities.items():
+        for gt in gen_triples:
+            if gt["predicate"] == "located_in" and gt["object"].lower() != gen_name:
+                generic_outgoing.setdefault(gen_name, []).append(gt["object"])
+            elif gt["predicate"] == "located_in" and gt["subject"].lower() != gen_name:
+                generic_outgoing.setdefault(gen_name, []).append(gt["subject"])
+
+    # Rewire: find triples pointing TO a generic, replace target with actual location
+    rewired = []
+    for gen_name, gen_triples in generic_entities.items():
+        targets = generic_outgoing.get(gen_name, [])
+        if not targets:
+            continue
+        for gt in gen_triples:
+            is_incoming = gt["object"].lower() == gen_name
+            if is_incoming:
+                for target_obj in targets:
+                    chain_key = f"{gt['subject'].lower()}|{gt['predicate']}|{target_obj.lower()}"
+                    if chain_key not in seen:
+                        seen.add(chain_key)
+                        rewired.append({
+                            "subject": gt["subject"],
+                            "predicate": gt["predicate"],
+                            "object": target_obj,
+                            "confidence": round(gt["confidence"] * 0.9, 4),
+                        })
+
+    triples.extend(rewired)
+
+    # Final filter: drop any remaining triples with generic entities
+    final = []
+    for t in triples:
+        if t["object"].lower() in _GROQ_GENERIC_OBJECTS:
+            continue
+        if t["subject"].lower() in _GROQ_GENERIC_OBJECTS:
+            continue
+        final.append(t)
+
+    return final
 
 
 def extract_triples(text: str) -> list[dict]:

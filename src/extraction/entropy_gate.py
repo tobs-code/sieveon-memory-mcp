@@ -1043,11 +1043,21 @@ class EntropyGate:
                 subject_idx = None
                 obj_idx = None
 
+                subj_lower = subject.lower()
+                obj_lower = obj.lower()
+
                 for i, name in enumerate(entity_names):
-                    if name.lower() == subject.lower():
+                    name_lower = name.lower()
+                    if name_lower == subj_lower:
                         subject_idx = i
-                    if name.lower() == obj.lower():
+                    elif len(name_lower) > 3 and len(subj_lower) > 3 and (name_lower in subj_lower or subj_lower in name_lower):
+                        if subject_idx is None:
+                            subject_idx = i
+                    if name_lower == obj_lower:
                         obj_idx = i
+                    elif len(name_lower) > 3 and len(obj_lower) > 3 and (name_lower in obj_lower or obj_lower in name_lower):
+                        if obj_idx is None:
+                            obj_idx = i
 
                 if (
                     subject_idx is not None
@@ -1173,7 +1183,7 @@ class EntropyGate:
                                     0.1, min(1.0, base_conf * 0.6 + proximity * 0.4)
                                 )
 
-                                if confidence >= 0.55:
+                                if confidence >= 0.50:
                                     # UPSERT: skip if fact already exists
                                     if self._active_fact_exists(subset_ids[idx_a], predicate, subset_ids[idx_b]):
                                         if debug:

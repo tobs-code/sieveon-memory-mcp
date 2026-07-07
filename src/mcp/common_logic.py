@@ -307,7 +307,11 @@ def _synthesize_answer(query: str, entities: List[Dict], facts: List[Dict], even
     key_entities = []
     event_snippets = []
 
-    for f in facts[:5]:
+    import re
+    query_lower = query.lower()
+    query_words = {w for w in re.findall(r'\b\w+\b', query_lower) if len(w) > 2}
+
+    for f in facts:
         in_data = f.get("in")
         out_data = f.get("out")
         subj = ""
@@ -322,7 +326,13 @@ def _synthesize_answer(query: str, entities: List[Dict], facts: List[Dict], even
             obj = out_data
         pred = f.get("predicate", "")
         if subj and obj and pred and pred not in ("mentions", "weakly_related"):
+            subj_words = {w for w in re.findall(r'\b\w+\b', subj.lower()) if len(w) > 2}
+            obj_words = {w for w in re.findall(r'\b\w+\b', obj.lower()) if len(w) > 2}
+            if not (subj_words & query_words or obj_words & query_words):
+                continue
             key_facts.append(f"{subj} {pred} {obj}")
+
+    key_facts = key_facts[:5]
 
     for e in entities[:5]:
         name = e.get("name", "")
@@ -330,15 +340,13 @@ def _synthesize_answer(query: str, entities: List[Dict], facts: List[Dict], even
         if name:
             key_entities.append(f"{name} ({etype})" if etype else name)
 
-    import re
-    query_lower = query.lower()
-    query_words = [w for w in re.findall(r'\b\w+\b', query_lower) if len(w) > 2]
+    query_words_list = [w for w in re.findall(r'\b\w+\b', query_lower) if len(w) > 2]
     for ev in events[:5]:
         content = ev.get("content", "")
         if content:
             score = 0
             matched = set()
-            for word in query_words:
+            for word in query_words_list:
                 if word.lower() in content.lower():
                     score += 1
                     matched.add(word)
