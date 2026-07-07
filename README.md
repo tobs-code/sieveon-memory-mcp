@@ -99,6 +99,42 @@ python scripts/quickstart.py
 python -m src.mcp.server
 ```
 
+The server speaks MCP over stdin/stdout. Most MCP clients start the server as a subprocess and communicate via JSON-RPC.
+
+#### Configuration in Claude Desktop (Example)
+
+```json
+{
+  "mcpServers": {
+    "Sieveon-memory": {
+      "command": "python",
+      "args": ["-m", "src.mcp.server"],
+      "cwd": "C:\\workspace\\Sieveon",
+      "env": {
+        "PYTHONPATH": "C:\\workspace\\Sieveon"
+      }
+    }
+  }
+}
+```
+
+#### Configuration in Cursor / VS Code
+
+In `.cursor/mcp.json` or via the VS Code MCP extension:
+
+```json
+{
+  "servers": {
+    "Sieveon-memory": {
+      "type": "stdio",
+      "command": "python",
+      "args": ["-m", "src.mcp.server"],
+      "cwd": "${workspaceFolder}"
+    }
+  }
+}
+```
+
 ---
 
 ## Performance & Benchmarks
