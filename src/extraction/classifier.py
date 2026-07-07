@@ -3,7 +3,7 @@ Query Classifier (Python Implementation) for sieveon
 Klassifiziert Queries in die Typen: temporal, factual, multi-hop, conversational, update
 
 Hybrid approach:
-  1. ML: sklearn LogisticRegression on Qwen3-Embedding-0.6B embeddings (if training data available)
+  1. ML: sklearn LogisticRegression on Qwen3-Embedding-0.6B embeddings + TF-IDF features (if training data available)
   2. Regex: rule-based fallback if ML confidence is low or no model trained
 """
 
@@ -206,11 +206,12 @@ class _RegexClassifier:
 # ── ML Classifier ─────────────────────────────────────────────────────
 
 class _MLClassifier:
-    """LogisticRegression trained on sentence-transformer embeddings."""
+    """LogisticRegression trained on Qwen3 embeddings + TF-IDF features."""
 
     def __init__(self):
         self.model = None
         self.label_encoder = None
+        self.vectorizer = None
         self._embedding_service = None
 
     def _get_emb(self) -> "BaseEmbeddingService":
@@ -249,9 +250,19 @@ class _MLClassifier:
         import os
         os.environ.setdefault("TQDM_DISABLE", "1")
 
+    def _build_features(self, texts: List[str]):
+        import numpy as np
+        svc = self._get_emb()
+        embeddings = np.array(svc.embed_batch(texts, for_storage=True))
+        if self.vectorizer is not None:
+            tfidf = self.vectorizer.transform(texts).toarray()
+            return np.concatenate([embeddings, tfidf], axis=1)
+        return embeddings
+
     def train(self, texts: Optional[List[str]] = None, labels: Optional[List[str]] = None):
         self._suppress_tqdm()
 
+        from sklearn.feature_extraction.text import TfidfVectorizer
         from sklearn.linear_model import LogisticRegression
         from sklearn.preprocessing import LabelEncoder
 
@@ -262,9 +273,18 @@ class _MLClassifier:
             return
 
         import numpy as np
+
+        self.vectorizer = TfidfVectorizer(
+            analyzer="word",
+            ngram_range=(1, 2),
+            max_features=500,
+            sublinear_tf=True,
+        )
+        tfidf = self.vectorizer.fit_transform(texts).toarray()
+
         svc = self._get_emb()
-        embeddings = svc.embed_batch(texts, for_storage=True)
-        X = np.array(embeddings)
+        embeddings = np.array(svc.embed_batch(texts, for_storage=True))
+        X = np.concatenate([embeddings, tfidf], axis=1)
 
         self.label_encoder = LabelEncoder()
         y = self.label_encoder.fit_transform(labels)
@@ -282,7 +302,11 @@ class _MLClassifier:
             data_dir = _ML_MODEL_PATH.parent
             data_dir.mkdir(parents=True, exist_ok=True)
             with open(_ML_MODEL_PATH, "wb") as f:
-                pickle.dump({"model": self.model, "label_encoder": self.label_encoder}, f)
+                pickle.dump({
+                    "model": self.model,
+                    "label_encoder": self.label_encoder,
+                    "vectorizer": self.vectorizer,
+                }, f)
         except OSError:
             pass
 
@@ -294,6 +318,7 @@ class _MLClassifier:
                 data = pickle.load(f)
             self.model = data["model"]
             self.label_encoder = data["label_encoder"]
+            self.vectorizer = data.get("vectorizer")
             return True
         except Exception:
             return False
@@ -304,7 +329,12 @@ class _MLClassifier:
 
         import numpy as np
         emb = np.array([self._embed(query)])
-        probs = self.model.predict_proba(emb)[0]
+        if self.vectorizer is not None:
+            tfidf = self.vectorizer.transform([query]).toarray()
+            features = np.concatenate([emb, tfidf], axis=1)
+        else:
+            features = emb
+        probs = self.model.predict_proba(features)[0]
         best_idx = int(probs.argmax())
         confidence = float(probs[best_idx])
         label = self.label_encoder.inverse_transform([best_idx])[0]
