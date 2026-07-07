@@ -15,10 +15,12 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 
-_ML_MODEL_PATH = Path(__file__).parents[2] / "data" / "classifier_model.pkl"
+_ML_MODEL_PATH = Path(__file__).parents[2] / "docs" / "data" / "classifier_model.pkl"
 _TRAINING_PATHS = [
-    Path(__file__).parents[2] / "data" / "training_queries.jsonl",
-    Path(__file__).parents[2] / "data" / "manual_labels.jsonl",
+    Path(__file__).parents[2] / "docs" / "data" / "trec_queries.jsonl",
+    Path(__file__).parents[2] / "docs" / "data" / "coqa_conversational.jsonl",
+    Path(__file__).parents[2] / "docs" / "data" / "training_queries.jsonl",
+    Path(__file__).parents[2] / "docs" / "data" / "manual_labels.jsonl",
 ]
 _ML_CONFIDENCE_THRESHOLD = 0.60
 
@@ -243,7 +245,13 @@ class _MLClassifier:
     def is_trained(self) -> bool:
         return self.model is not None
 
+    def _suppress_tqdm(self):
+        import os
+        os.environ.setdefault("TQDM_DISABLE", "1")
+
     def train(self, texts: Optional[List[str]] = None, labels: Optional[List[str]] = None):
+        self._suppress_tqdm()
+
         from sklearn.linear_model import LogisticRegression
         from sklearn.preprocessing import LabelEncoder
 
@@ -254,7 +262,8 @@ class _MLClassifier:
             return
 
         import numpy as np
-        embeddings = [self._embed(t) for t in texts]
+        svc = self._get_emb()
+        embeddings = svc.embed_batch(texts, for_storage=True)
         X = np.array(embeddings)
 
         self.label_encoder = LabelEncoder()

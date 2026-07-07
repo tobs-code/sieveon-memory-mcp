@@ -242,4 +242,4 @@ def export_stats(examples: list[dict]):
 if __name__ == "__main__":
     data = generate(count_per_type=100)
     export_stats(data)
-    export_jsonl(data, "data/training_queries.jsonl")
+    export_jsonl(data, "docs/data/training_queries.jsonl")

@@ -1,6 +1,6 @@
 """
-Python Router module for sieveon Memory Control Plane
-Implements the same routing logic as the Rust router for consistency
+Router module for sieveon Memory Control Plane
+Routes queries to appropriate strategies based on type and learned effectiveness
 """
 
 import logging
@@ -16,8 +16,7 @@ from .policy import BudgetLevel, OverBudget, QueryType, RoutingPolicy
 
 class Router:
     """
-    Python implementation of the sieveon router
-    Provides identical routing logic to the Rust implementation for consistency
+    Routes queries through the policy engine with cost tracking and budget enforcement
     """
 
     def __init__(self):

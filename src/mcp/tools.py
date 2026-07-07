@@ -873,8 +873,7 @@ async def memory_consolidate(
 ) -> dict:
     """Consolidates memory entries. When delete_stale=True, physically removes stale facts from the database."""
 
-    # Find stale facts: nur facts mit valid_until in der Vergangenheit
-    # Gleiche Clause für Dry-Run und Delete – Dry-Run zeigt exakt was gelöscht würde
+    # Step 1: Find stale facts (valid_until in der Vergangenheit)
     time_clause = "valid_until != NONE AND valid_until < time::now()"
 
     if entity:
@@ -909,9 +908,50 @@ async def memory_consolidate(
                     "message": f"Failed to delete fact {fact_id}: {str(e)}",
                 }
 
+    # Step 2: Find duplicate active facts — gleiches (subject, predicate, object) mehrfach aktiv
+    if entity:
+        entity_escaped = escape_surrealql(entity)
+        find_dup_sql = f"""
+        SELECT id, predicate, in.id AS in_id, in.name AS subject, out.id AS out_id, out.name AS object, valid_from, confidence
+        FROM fact
+        WHERE (in.name = '{entity_escaped}' OR out.name = '{entity_escaped}')
+          AND (valid_until IS NONE OR valid_until > time::now())
+          AND predicate != 'mentions'
+        ORDER BY valid_from ASC;
+        """
+    else:
+        find_dup_sql = f"""
+        SELECT id, predicate, in.id AS in_id, in.name AS subject, out.id AS out_id, out.name AS object, valid_from, confidence
+        FROM fact
+        WHERE (valid_until IS NONE OR valid_until > time::now())
+          AND predicate != 'mentions'
+        ORDER BY valid_from ASC;
+        """
+
+    dup_result = await _query_surreal(find_dup_sql)
+    all_active = _extract_result(dup_result, 1)
+
+    merged_count = 0
+    seen = {}
+    for fact in all_active:
+        key = (fact.get("in_id"), fact.get("predicate"), fact.get("out_id"))
+        fid = fact.get("id")
+        if key in seen:
+            # Duplicate found — invalidate the newer one
+            older_id = seen[key]
+            if fid:
+                try:
+                    inv_sql = f"UPDATE {fid} SET valid_until = time::now(), invalidated_reason = 'consolidate_duplicate';"
+                    await _query_surreal(inv_sql)
+                    merged_count += 1
+                except Exception as e:
+                    print(f"[WARN] Failed to invalidate duplicate fact {fid}: {e}")
+        else:
+            seen[key] = fid
+
     # Operation ins Event-Log schreiben
     entity_info = f" for entity '{entity}'" if entity else ""
-    log_content = f"Consolidation run{entity_info}: {len(stale_facts)} stale facts found, {deleted_count} deleted."
+    log_content = f"Consolidation run{entity_info}: {len(stale_facts)} stale facts found, {deleted_count} deleted, {merged_count} duplicates merged."
     try:
         log_escaped = escape_surrealql(log_content)
         log_sql = f"""
@@ -919,7 +959,7 @@ async def memory_consolidate(
             content = '{log_escaped}',
             content_hash = '{escape_surrealql(hashlib.md5(log_content.encode()).hexdigest())}',
             source = 'system_maintenance',
-            metadata = {{"action": "consolidate", "scope": "{escape_surrealql(scope)}", "stale_facts": {len(stale_facts)}, "deleted": {deleted_count}}};
+            metadata = {{"action": "consolidate", "scope": "{escape_surrealql(scope)}", "stale_facts": {len(stale_facts)}, "deleted": {deleted_count}, "duplicates_merged": {merged_count}}};
         """
         await _query_surreal(log_sql)
     except Exception as e:
@@ -930,6 +970,7 @@ async def memory_consolidate(
         "scope": scope,
         "stale_facts_found": len(stale_facts),
         "deleted_count": deleted_count,
+        "duplicates_merged": merged_count,
         "stale_facts_sample": stale_facts[:10],
         "status": "success",
     }

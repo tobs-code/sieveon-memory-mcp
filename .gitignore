@@ -44,4 +44,4 @@ test_update_endpoint.py
 comprehensive_test.py
 
 # Generated classifier model (binary, reproducible from training data)
-/data/classifier_model.pkl
+docs/data/classifier_model.pkl

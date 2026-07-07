@@ -59,11 +59,17 @@ Sieveon is an agent memory system that intelligently classifies, routes, plans, 
 
 ### Prerequisites
 
-- Rust 1.75+
-- Python 3.11+
-- SurrealDB running on `http://127.0.0.1:8000`
+- Python 3.10+
+- Docker + Docker Compose (for SurrealDB)
 
-### Setup
+### One-command setup
+
+```bash
+# Everything: checks → Docker → schema → tests
+python scripts/setup.py
+```
+
+### Or step by step
 
 ```bash
 # 1. Copy environment config
@@ -79,11 +85,18 @@ python scripts/load_schema_optimized.py
 python tests/run_all_tests.py
 ```
 
+### Interactive demo
+
+```bash
+# After setup, explore the features interactively:
+python scripts/quickstart.py
+```
+
 ### Start Services
 
 ```bash
 # Terminal 1 — MCP Server (Python)
-cd src/mcp && python server.py
+python -m src.mcp.server
 ```
 
 ---

@@ -930,6 +930,35 @@ class EntropyGate:
             result.append(c)
         return result
 
+    def _active_fact_exists(self, subject_id: str, predicate: str, object_id: str) -> bool:
+        """Check if an active fact already exists for (subject, predicate, object).
+        Prevents duplicate fact creation in the KG."""
+        pred_escaped = self._escape_surrealql(predicate)
+        sql = f"""
+        SELECT id FROM fact
+        WHERE in = {subject_id}
+          AND predicate = '{pred_escaped}'
+          AND out = {object_id}
+          AND (valid_until IS NONE OR valid_until > time::now())
+        LIMIT 1;
+        """
+        result = self._query_surreal(sql)
+        existing = self._extract_result(result)
+        return bool(existing)
+
+    def _event_has_kg_facts(self, event_id: str) -> bool:
+        """Check if an event already has extracted KG facts (mentions)."""
+        sql = f"""
+        SELECT id FROM fact
+        WHERE in = {event_id}
+          AND predicate = 'mentions'
+          AND (valid_until IS NONE OR valid_until > time::now())
+        LIMIT 1;
+        """
+        result = self._query_surreal(sql)
+        existing = self._extract_result(result)
+        return bool(existing)
+
     def _extract_to_kg(self, text: str, event_id: str, debug: bool = False):
         """
         Extract entities and semantic relationships to the Knowledge Graph.
@@ -1027,19 +1056,24 @@ class EntropyGate:
                 ):
                     try:
                         predicate_escaped = self._escape_surrealql(predicate)
-                        relate_sql = f"""
-                        RELATE {entity_ids[subject_idx]}->fact->{entity_ids[obj_idx]}
-                        SET predicate = '{predicate_escaped}',
-                            source_event = {event_id},
-                            confidence = {confidence:.4f};
-                        """
-                        relate_result = self._query_surreal(relate_sql)
-                        if self._extract_ok(relate_result):
-                            facts_created += 1
+                        # UPSERT: skip if fact already exists
+                        if self._active_fact_exists(entity_ids[subject_idx], predicate, entity_ids[obj_idx]):
                             if debug:
-                                print(
-                                    f"  [KG] SVO Fact: {subject} -[{predicate} ({confidence:.2f})]-> {obj}"
-                                )
+                                print(f"  [KG] SVO Fact already exists, skipping: {subject} -[{predicate}]-> {obj}")
+                        else:
+                            relate_sql = f"""
+                            RELATE {entity_ids[subject_idx]}->fact->{entity_ids[obj_idx]}
+                            SET predicate = '{predicate_escaped}',
+                                source_event = {event_id},
+                                confidence = {confidence:.4f};
+                            """
+                            relate_result = self._query_surreal(relate_sql)
+                            if self._extract_ok(relate_result):
+                                facts_created += 1
+                                if debug:
+                                    print(
+                                        f"  [KG] SVO Fact: {subject} -[{predicate} ({confidence:.2f})]-> {obj}"
+                                    )
                     except Exception as e:
                         if debug:
                             print(f"  [KG] Error creating SVO fact: {e}")
@@ -1140,19 +1174,24 @@ class EntropyGate:
                                 )
 
                                 if confidence >= 0.55:
-                                    relate_sql = f"""
-                                    RELATE {subset_ids[idx_a]}->fact->{subset_ids[idx_b]}
-                                    SET predicate = '{predicate}',
-                                        source_event = {event_id},
-                                        confidence = {confidence:.4f};
-                                    """
-                                    relate_result = self._query_surreal(relate_sql)
-                                    if self._extract_ok(relate_result):
-                                        facts_created += 1
+                                    # UPSERT: skip if fact already exists
+                                    if self._active_fact_exists(subset_ids[idx_a], predicate, subset_ids[idx_b]):
                                         if debug:
-                                            print(
-                                                f"  [KG] Co-occurrence Fact: {subset_names[idx_a]} -[{predicate} ({confidence:.2f})]-> {subset_names[idx_b]}"
-                                            )
+                                            print(f"  [KG] Co-occurrence Fact already exists, skipping: {subset_names[idx_a]} -[{predicate}]-> {subset_names[idx_b]}")
+                                    else:
+                                        relate_sql = f"""
+                                        RELATE {subset_ids[idx_a]}->fact->{subset_ids[idx_b]}
+                                        SET predicate = '{predicate}',
+                                            source_event = {event_id},
+                                            confidence = {confidence:.4f};
+                                        """
+                                        relate_result = self._query_surreal(relate_sql)
+                                        if self._extract_ok(relate_result):
+                                            facts_created += 1
+                                            if debug:
+                                                print(
+                                                    f"  [KG] Co-occurrence Fact: {subset_names[idx_a]} -[{predicate} ({confidence:.2f})]-> {subset_names[idx_b]}"
+                                                )
                             except Exception as e:
                                 if debug:
                                     print(
@@ -1161,14 +1200,19 @@ class EntropyGate:
 
         for eid in entity_ids:
             try:
-                relate_sql = f"""
-                RELATE {event_id}->fact->{eid}
-                SET predicate = 'mentions',
-                    confidence = 0.8;
-                """
-                relate_result = self._query_surreal(relate_sql)
-                if self._extract_ok(relate_result):
-                    facts_created += 1
+                # UPSERT: skip if mention fact already exists
+                if not self._active_fact_exists(event_id, "mentions", eid):
+                    relate_sql = f"""
+                    RELATE {event_id}->fact->{eid}
+                    SET predicate = 'mentions',
+                        confidence = 0.8;
+                    """
+                    relate_result = self._query_surreal(relate_sql)
+                    if self._extract_ok(relate_result):
+                        facts_created += 1
+                else:
+                    if debug:
+                        print(f"  [KG] Mention fact already exists, skipping: {event_id} -> {eid}")
             except Exception as e:
                 sys.stderr.write(f"[EntropyGate] Error creating mention fact for {event_id} -> {eid}: {e}\n")
 
@@ -1276,7 +1320,15 @@ class EntropyGate:
             gate_result = self.should_extract(text, exclude_id=event_id) if event_id else {"decision": "skip", "reason": "dedup_no_event_id"}
             gate_decision = gate_result.get("decision", "ignore") if isinstance(gate_result, dict) else "ignore"
             if gate_decision == "extract" and event_id:
-                kg_result = self._extract_to_kg(text, event_id, debug)
+                # Dedup: Nur in KG extrahieren wenn der Event noch keine Facts hat
+                if self._event_has_kg_facts(event_id):
+                    if debug:
+                        print(f"  [Dedup] Event {event_id} already has KG facts, skipping extraction")
+                    gate_result["decision"] = "skip"
+                    gate_result["reason"] = "dedup_kg_exists"
+                    kg_result = {"entities_created": 0, "facts_created": 0}
+                else:
+                    kg_result = self._extract_to_kg(text, event_id, debug)
             return event_id, kg_result, gate_result
 
         # 1. IMMER in Raw Event Log speichern (ohne Gate!)

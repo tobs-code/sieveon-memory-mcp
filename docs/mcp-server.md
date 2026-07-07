@@ -72,6 +72,14 @@ pip install sentence-transformers scikit-learn mcp[fastmcp]
 
 ## Quick Start
 
+### 0. One-command setup (recommended)
+
+```bash
+python scripts/setup.py
+```
+
+This checks prerequisites, starts SurrealDB, loads schema & test data, and runs tests.
+
 ### 1. Start SurrealDB
 
 ```bash
