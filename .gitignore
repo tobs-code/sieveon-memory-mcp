@@ -43,5 +43,5 @@ test_mcp_tools.py
 test_update_endpoint.py
 comprehensive_test.py
 
-# Generated classifier model (binary, reproducible from training data)
-docs/data/classifier_model.pkl
+# Generated classifier model (binary, git-lfs tracked)
+# docs/data/classifier_model.pkl
