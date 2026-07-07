@@ -574,21 +574,25 @@ class EntropyGate:
         for verb in works_verbs:
             if verb in lower_text:
                 parts = lower_text.split(verb, 1)
-                if len(parts) >= 2 and a_lower in parts[0]:
+                if len(parts) >= 2 and a_lower in parts[0] and b_lower in parts[1]:
                     if validate_predicate(a_type, "works_at", b_type):
                         return "works_at"
 
         located_verbs = ["located in", "based in", "situated in"]
         for verb in located_verbs:
             if verb in lower_text:
-                if validate_predicate(a_type, "located_in", b_type):
-                    return "located_in"
+                parts = lower_text.split(verb, 1)
+                if len(parts) >= 2 and a_lower in parts[0] and b_lower in parts[1]:
+                    if validate_predicate(a_type, "located_in", b_type):
+                        return "located_in"
 
         created_verbs = ["created", "developed", "built", "founded", "implemented"]
         for verb in created_verbs:
             if verb in lower_text:
-                if validate_predicate(a_type, "created", b_type):
-                    return "created"
+                parts = lower_text.split(verb, 1)
+                if len(parts) >= 2 and a_lower in parts[0] and b_lower in parts[1]:
+                    if validate_predicate(a_type, "created", b_type):
+                        return "created"
 
         if confidence > 0.85:
             return "strongly_related"
@@ -1062,6 +1066,7 @@ class EntropyGate:
                 if (
                     subject_idx is not None
                     and obj_idx is not None
+                    and subject_idx != obj_idx
                     and confidence >= 0.4
                 ):
                     try:

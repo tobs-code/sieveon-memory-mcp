@@ -43,7 +43,7 @@ class BaseEmbeddingService:
 class SentenceTransformerEmbeddingService(BaseEmbeddingService):
     """Embedding Service mit sentence-transformers (open-source)"""
 
-    def __init__(self, model_name: str = "nomic-ai/nomic-embed-text-v1.5"):
+    def __init__(self, model_name: str = "Qwen/Qwen3-Embedding-0.6B"):
         super().__init__(model_name)
 
         # Dynamische Imports, nur wenn benötigt
@@ -58,40 +58,60 @@ class SentenceTransformerEmbeddingService(BaseEmbeddingService):
         # Initialisiere Modell und Tokenizer
         self.model = SentenceTransformer(model_name, trust_remote_code=True)
         self.tokenizer = AutoTokenizer.from_pretrained(
-            model_name, trust_remote_code=True
+            model_name, trust_remote_code=True, use_fast=True
         )
         self.dimension = self.model.get_sentence_embedding_dimension()
 
+        # Prüfe, ob das Modell einen "query"-Prompt hinterlegt hat (Qwen3 etc.)
+        self._has_query_prompt = "query" in (self.model.prompts or {})
+
     def embed_for_storage(self, text: str) -> List[float]:
-        """Erstellt ein Embedding für die Speicherung mit speziellem Präfix für bessere Retrieval-Qualität"""
-        prefix = "search_document: "
-        if self.model_name.startswith("nomic-"):
-            text = f"{prefix}{text}"
+        """Erstellt ein Embedding für die Speicherung"""
+        model_name_lower = self.model_name.lower()
+        if "nomic" in model_name_lower:
+            text = f"search_document: {text}"
         embedding = self.model.encode(
             [text], convert_to_numpy=True, normalize_embeddings=True
         )
         return embedding[0].tolist()
 
     def embed_for_query(self, text: str) -> List[float]:
-        """Erstellt ein Embedding für Suchanfragen mit speziellem Präfix"""
-        prefix = "search_query: "
-        if self.model_name.startswith("nomic-"):
-            text = f"{prefix}{text}"
-        embedding = self.model.encode(
-            [text], convert_to_numpy=True, normalize_embeddings=True
-        )
+        """Erstellt ein Embedding für Suchanfragen"""
+        model_name_lower = self.model_name.lower()
+        if self._has_query_prompt:
+            embedding = self.model.encode(
+                [text],
+                prompt_name="query",
+                convert_to_numpy=True,
+                normalize_embeddings=True,
+            )
+        else:
+            if "nomic" in model_name_lower:
+                text = f"search_query: {text}"
+            embedding = self.model.encode(
+                [text], convert_to_numpy=True, normalize_embeddings=True
+            )
         return embedding[0].tolist()
 
     def embed_batch(
         self, texts: List[str], for_storage: bool = True
     ) -> List[List[float]]:
         """Erstellt Embeddings für mehrere Texte (Batch)"""
-        prefix = "search_document: " if for_storage else "search_query: "
-        if self.model_name.startswith("nomic-"):
-            texts = [f"{prefix}{t}" for t in texts]
-        embeddings = self.model.encode(
-            texts, convert_to_numpy=True, normalize_embeddings=True
-        )
+        model_name_lower = self.model_name.lower()
+        if self._has_query_prompt and not for_storage:
+            embeddings = self.model.encode(
+                texts,
+                prompt_name="query",
+                convert_to_numpy=True,
+                normalize_embeddings=True,
+            )
+        else:
+            if "nomic" in model_name_lower:
+                prefix = "search_document: " if for_storage else "search_query: "
+                texts = [f"{prefix}{t}" for t in texts]
+            embeddings = self.model.encode(
+                texts, convert_to_numpy=True, normalize_embeddings=True
+            )
         return embeddings.tolist()
 
 
@@ -105,7 +125,7 @@ def get_embedding_service() -> BaseEmbeddingService:
         # Try to load model name from environment variables
         env_model_name = os.getenv("EMBEDDING_MODEL_NAME")
         model_name_to_use = (
-            env_model_name if env_model_name else "nomic-ai/nomic-embed-text-v1.5"
+            env_model_name if env_model_name else "Qwen/Qwen3-Embedding-0.6B"
         )  # Default model name
         print(
             f"[INFO] Initializing Embedding Service with model: {model_name_to_use}..."

@@ -525,26 +525,35 @@ async def semantic_search(query: str, top_k: int = 5) -> dict:
         if eid and eid.startswith("event:"):
             event_ids_for_kg.append(eid)
 
-    # 5) Fetch KG facts for the top candidate events
-    # Extract entity names from event contents for KG matching
+    # 5) Fetch KG facts for the top candidate events + query entities
+    # Extract entity names from event contents AND the query itself for KG matching
     kg_facts_map = {}
     if event_ids_for_kg:
-        # Collect unique entity names mentioned in the top events
+        import re
         entity_names = set()
+        # Extract entities from event contents
         for _, _, ev in scored[:top_k]:
             content = ev.get("content", "")
-            # Simple heuristic: extract capitalized words as potential entities
-            import re
             for match in re.finditer(r'\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\b', content):
                 name = match.group(1).strip()
                 if len(name) >= 2:
                     entity_names.add(name)
+        # Also extract capitalized entities from the query itself
+        for match in re.finditer(r'\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\b', query):
+            name = match.group(1).strip()
+            if len(name) >= 2:
+                entity_names.add(name)
+        # Include significant lowercase query terms (3+ chars) as potential KG entity names
+        for word in query.split():
+            word = word.strip(".,!?;:'\"()[]")
+            if len(word) >= 3 and not word[0].isupper():
+                entity_names.add(word)
         
         if entity_names:
-            # Build OR conditions for entity name matching
+            # Build OR conditions for entity name matching (use up to 20 entities)
             name_conditions = " OR ".join(
                 f"in.name = '{escape_surrealql(name)}' OR out.name = '{escape_surrealql(name)}'"
-                for name in list(entity_names)[:10]
+                for name in list(entity_names)[:20]
             )
             kg_sql = f"""
             SELECT id, predicate, in.name AS subject, out.name AS object, confidence
@@ -1217,12 +1226,23 @@ async def graph_traverse(
 
     max_depth = max(1, min(max_depth, 5))
 
-    entity_sql = f"""
-    SELECT id, name, type FROM entity
-    WHERE forgotten = false
-    AND name = '{escape_surrealql(start_entity)}'
-    LIMIT 1;
-    """
+    is_record_id = start_entity.startswith("entity:") or start_entity.startswith("⟨entity:") or ":" in start_entity.split("entity:", 1)[-1][:1]
+
+    if is_record_id:
+        clean_id = start_entity.strip("⟨⟩")
+        entity_sql = f"""
+        SELECT id, name, type FROM entity
+        WHERE forgotten = false
+        AND (id = {clean_id} OR name = '{escape_surrealql(start_entity)}')
+        LIMIT 1;
+        """
+    else:
+        entity_sql = f"""
+        SELECT id, name, type FROM entity
+        WHERE forgotten = false
+        AND name = '{escape_surrealql(start_entity)}'
+        LIMIT 1;
+        """
     entity_result = await _query_surreal(entity_sql)
     entities = _extract_result(entity_result, 1)
 

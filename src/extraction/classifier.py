@@ -3,7 +3,7 @@ Query Classifier (Python Implementation) for sieveon
 Klassifiziert Queries in die Typen: temporal, factual, multi-hop, conversational, update
 
 Hybrid approach:
-  1. ML: sklearn LogisticRegression on nomic-embed-text-v1.5 embeddings (if training data available)
+  1. ML: sklearn LogisticRegression on Qwen3-Embedding-0.6B embeddings (if training data available)
   2. Regex: rule-based fallback if ML confidence is low or no model trained
 """
 

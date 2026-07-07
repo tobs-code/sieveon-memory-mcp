@@ -188,7 +188,7 @@ DEFINE INDEX IF NOT EXISTS event_timestamp ON event COLUMNS timestamp;
 DEFINE INDEX IF NOT EXISTS event_source ON event COLUMNS source;
 DEFINE ANALYZER IF NOT EXISTS event_analyzer TOKENIZERS class FILTERS lowercase, ascii, snowball(english);
 DEFINE INDEX IF NOT EXISTS event_content_ft ON event FIELDS content FULLTEXT ANALYZER event_analyzer BM25 HIGHLIGHTS;
-DEFINE INDEX IF NOT EXISTS event_embedding_vec ON event FIELDS embedding HNSW DIMENSION 768 DIST COSINE;
+DEFINE INDEX IF NOT EXISTS event_embedding_vec ON event FIELDS embedding HNSW DIMENSION 1024 DIST COSINE;
 DEFINE TABLE IF NOT EXISTS entity SCHEMAFULL;
 DEFINE FIELD IF NOT EXISTS name ON entity TYPE string;
 DEFINE FIELD IF NOT EXISTS type ON entity TYPE string;
@@ -200,7 +200,7 @@ DEFINE FIELD IF NOT EXISTS created_at ON entity TYPE none | datetime DEFAULT tim
 DEFINE FIELD IF NOT EXISTS updated_at ON entity TYPE none | datetime DEFAULT time::now();
 DEFINE INDEX IF NOT EXISTS entity_name ON entity COLUMNS name;
 DEFINE INDEX IF NOT EXISTS entity_type ON entity COLUMNS type;
-DEFINE INDEX IF NOT EXISTS entity_embedding_vec ON entity FIELDS embedding HNSW DIMENSION 768 DIST COSINE;
+DEFINE INDEX IF NOT EXISTS entity_embedding_vec ON entity FIELDS embedding HNSW DIMENSION 1024 DIST COSINE;
 DEFINE TABLE IF NOT EXISTS fact SCHEMALESS;
 DEFINE FIELD IF NOT EXISTS predicate ON fact TYPE string;
 DEFINE FIELD IF NOT EXISTS valid_from ON fact TYPE datetime DEFAULT time::now();

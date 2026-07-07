@@ -29,7 +29,7 @@ DEFINE INDEX IF NOT EXISTS event_content_hash_idx ON event COLUMNS content_hash;
 DEFINE INDEX IF NOT EXISTS event_count ON event COUNT;
 DEFINE ANALYZER IF NOT EXISTS event_analyzer TOKENIZERS class FILTERS lowercase, ascii, snowball(english);
 DEFINE INDEX IF NOT EXISTS event_content_ft ON event FIELDS content FULLTEXT ANALYZER event_analyzer BM25 HIGHLIGHTS;
-DEFINE INDEX IF NOT EXISTS event_embedding_vec ON event FIELDS embedding HNSW DIMENSION 768 DIST COSINE;
+DEFINE INDEX IF NOT EXISTS event_embedding_vec ON event FIELDS embedding HNSW DIMENSION 1024 DIST COSINE;
 
 -- ========================================
 -- ② Knowledge Graph mit Temporal Validity
@@ -48,7 +48,7 @@ DEFINE INDEX IF NOT EXISTS entity_type ON entity COLUMNS type;
 DEFINE INDEX IF NOT EXISTS entity_count ON entity COUNT;
 DEFINE ANALYZER IF NOT EXISTS entity_analyzer TOKENIZERS class FILTERS lowercase, ascii, snowball(english);
 DEFINE INDEX IF NOT EXISTS entity_name_ft ON entity FIELDS name FULLTEXT ANALYZER entity_analyzer BM25;
-DEFINE INDEX IF NOT EXISTS entity_embedding_vec ON entity FIELDS embedding HNSW DIMENSION 768 DIST COSINE;
+DEFINE INDEX IF NOT EXISTS entity_embedding_vec ON entity FIELDS embedding HNSW DIMENSION 1024 DIST COSINE;
 
 DEFINE TABLE IF NOT EXISTS fact SCHEMALESS;
 DEFINE FIELD IF NOT EXISTS predicate ON fact TYPE string;

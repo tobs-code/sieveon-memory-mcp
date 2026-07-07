@@ -70,7 +70,7 @@ def ensure_entity_schema():
     test_name = "__schema_test_delme__"
     # Test with embedding too, because _ensure_entity embeds every entity
     # Use 384 dims to match HNSW index (vector dimension must match)
-    real_emb = "[" + ",".join("0.1" for _ in range(768)) + "]"
+    real_emb = "[" + ",".join("0.1" for _ in range(1024)) + "]"
     result, errors = run_single(
         f"CREATE entity SET name = '{test_name}', type = 'organization', embedding = {real_emb};"
     )

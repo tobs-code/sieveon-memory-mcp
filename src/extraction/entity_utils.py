@@ -321,7 +321,7 @@ def _get_prototype_embedding(
     if key in _EMBEDDING_CACHE:
         return _EMBEDDING_CACHE[key]
     if not texts:
-        result = [0.0] * 768
+        result = [0.0] * 1024
         _EMBEDDING_CACHE[key] = result
         return result
     all_embs = [emb_service.embed_for_storage(t) for t in texts]
@@ -858,6 +858,8 @@ def extract_triples_with_spacy(text: str) -> list[dict]:
     triples = []
 
     for subj, verb, obj in svos:
+        if subj.lower() == obj.lower():
+            continue
         predicate = PREDICATE_MAP.get(verb, "related_to")
 
         try:
@@ -996,6 +998,8 @@ def extract_triples_with_groq(text: str) -> list[dict]:
             continue
         subj, predicate, obj = parts[0], parts[1].lower(), parts[2]
         if len(subj) < 2 or len(obj) < 2:
+            continue
+        if subj.lower() == obj.lower():
             continue
         conf = 0.7
         if len(parts) >= 4:
