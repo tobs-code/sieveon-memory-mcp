@@ -867,7 +867,7 @@ Dry-run preview:
 
 ## MCP Resources
 
-In addition to tools, the server exposes **3 MCP resources** for reading entity and event details directly via `read_mcp_resource`.
+In addition to tools, the server exposes **6 MCP resources** for reading data directly via `read_mcp_resource`.
 
 ### Static Resource
 
@@ -881,12 +881,24 @@ In addition to tools, the server exposes **3 MCP resources** for reading entity 
 |--------------|-------------|--------|
 | `sieveon://entity/{entity_id}` | Entity details with active KG facts | JSON: full entity record + `facts[]` |
 | `sieveon://event/{event_id}` | Single event details | JSON: event record |
+| `sieveon://kg/subject/{subject_name}` | KG facts where the named entity is the subject | JSON: `{subject, facts[], count}` |
+| `sieveon://kg/predicate/{predicate}` | KG facts filtered by predicate/relation type | JSON: `{predicate, facts[], count}` |
+| `sieveon://search/{query}` | Hybrid search (vector + FTX with RRF fusion) | JSON: `{query, events[], count}` |
 
-**Usage example (via MCP protocol):**
+**Usage examples (via MCP protocol):**
 ```
 read_resource("sieveon://entity/entity:alice")
 → { "id": "entity:alice", "name": "Alice", "type": "person",
     "facts": [ { "predicate": "works_at", "object": "Acme Corp", … } ] }
+
+read_resource("sieveon://kg/subject/Rust")
+→ { "subject": "Rust", "facts": [ { "predicate": "uses", "object": "ownership model", … } ], "count": 7 }
+
+read_resource("sieveon://kg/predicate/developed")
+→ { "predicate": "developed", "facts": [ ... ], "count": 5 }
+
+read_resource("sieveon://search/Rust%20async%20runtime")
+→ { "query": "Rust async runtime", "events": [ { "content": "...", "score": 0.48, ... } ], "count": 10 }
 ```
 
 ---

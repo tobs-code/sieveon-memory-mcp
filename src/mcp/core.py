@@ -24,6 +24,7 @@ from fastapi.middleware.cors import CORSMiddleware
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from mcp.server.fastmcp import FastMCP
+from src.extraction.entropy_gate import escape_surrealql
 from src.router.cost_awareness import CostTracker
 from src.router.budget import BudgetTracker
 
@@ -98,6 +99,143 @@ async def get_event_resource(event_id: str) -> str:
         return json.dumps(_clean_output(data[0]), indent=2, default=str)
     except Exception as e:
         return json.dumps({"error": f"Failed to read event {event_id}: {str(e)}"}, indent=2)
+
+
+@mcp.resource("sieveon://kg/subject/{subject_name}", description="Knowledge graph facts where the named entity is the subject")
+async def kg_subject_resource(subject_name: str) -> str:
+    """Get KG facts where the named entity appears as the subject (in.position)."""
+    try:
+        escaped = escape_surrealql(subject_name)
+        sql = f"""
+        SELECT id, predicate, in.name AS subject, out.name AS object,
+               confidence, valid_from, valid_until
+        FROM fact
+        WHERE in.name = '{escaped}'
+          AND (valid_until IS NONE OR valid_until > time::now())
+          AND predicate NOT IN ['weakly_related', 'mentions']
+        ORDER BY confidence DESC
+        LIMIT 50;
+        """
+        result = await _query_surreal(sql)
+        facts = _extract_result(result, 1) or []
+        output = {
+            "subject": subject_name,
+            "facts": _clean_output(facts),
+            "count": len(facts),
+        }
+        return json.dumps(output, indent=2, default=str)
+    except Exception as e:
+        return json.dumps({"error": f"Failed to query KG for subject '{subject_name}': {str(e)}"}, indent=2)
+
+
+@mcp.resource("sieveon://kg/predicate/{predicate}", description="Knowledge graph facts filtered by predicate/relation type")
+async def kg_predicate_resource(predicate: str) -> str:
+    """Get KG facts filtered by a specific predicate/relation type."""
+    try:
+        escaped = escape_surrealql(predicate)
+        sql = f"""
+        SELECT id, predicate, in.name AS subject, out.name AS object,
+               confidence, valid_from, valid_until
+        FROM fact
+        WHERE predicate = '{escaped}'
+          AND (valid_until IS NONE OR valid_until > time::now())
+        ORDER BY confidence DESC
+        LIMIT 50;
+        """
+        result = await _query_surreal(sql)
+        facts = _extract_result(result, 1) or []
+        output = {
+            "predicate": predicate,
+            "facts": _clean_output(facts),
+            "count": len(facts),
+        }
+        return json.dumps(output, indent=2, default=str)
+    except Exception as e:
+        return json.dumps({"error": f"Failed to query KG for predicate '{predicate}': {str(e)}"}, indent=2)
+
+
+@mcp.resource("sieveon://search/{query}", description="Hybrid search results (semantic + lexical) for a query string")
+async def search_resource(query: str) -> str:
+    """Search events by query text using hybrid search (vector + FTX) with RRF fusion."""
+    try:
+        if not query.strip():
+            return json.dumps({"events": [], "count": 0, "message": "Query cannot be empty"}, indent=2)
+
+        from .tools import _prepare_fts_query
+
+        query_escaped = _prepare_fts_query(query, "auto")
+        query_vector = await _embed_query(query)
+        query_vector_str = "[" + ", ".join(map(str, query_vector)) + "]"
+
+        fetch_k = 30
+        forgotten_filter = "forgotten = false"
+
+        vec_sql = f"""
+        SELECT id, content, timestamp, source, metadata,
+               vector::similarity::cosine(embedding, {query_vector_str}) AS vec_score
+        FROM event
+        WHERE embedding IS NOT NONE
+          AND {forgotten_filter}
+          AND array::len(embedding) = {len(query_vector)}
+        ORDER BY vec_score DESC
+        LIMIT {fetch_k};
+        """
+        ftx_sql = f"""
+        SELECT id, content, timestamp, source, metadata
+        FROM event
+        WHERE content @@ '{query_escaped}'
+          AND {forgotten_filter}
+        LIMIT {fetch_k};
+        """
+
+        vec_task = asyncio.create_task(_query_surreal(vec_sql))
+        ftx_task = asyncio.create_task(_query_surreal(ftx_sql))
+
+        vec_result = await vec_task
+        vec_events = _extract_result(vec_result, 1) or []
+        ftx_events = []
+        try:
+            ftx_result = await ftx_task
+            ftx_events = _extract_result(ftx_result, 1) or []
+        except Exception:
+            pass
+
+        k = 60
+        fused = {}
+        seen_ids = set()
+
+        for rank, ev in enumerate(vec_events):
+            eid = ev.get("id")
+            if eid in seen_ids:
+                continue
+            seen_ids.add(eid)
+            vs = ev.get("vec_score", 0.0)
+            if not isinstance(vs, (int, float)):
+                vs = 0.0
+            fused[eid] = {"event": ev, "rrf": 1.0 / (k + rank), "vec_score": vs}
+
+        for rank, ev in enumerate(ftx_events):
+            eid = ev.get("id")
+            if eid not in seen_ids:
+                seen_ids.add(eid)
+                fused[eid] = {"event": ev, "rrf": 1.0 / (k + rank), "vec_score": 0.0}
+            elif eid in fused:
+                fused[eid]["rrf"] += 1.0 / (k + rank)
+
+        scored = sorted(fused.values(), key=lambda x: x["rrf"], reverse=True)
+
+        top_events = []
+        for entry in scored[:10]:
+            ev = _clean_output(entry["event"])
+            ev["score"] = round(entry["rrf"], 4)
+            ev["vec_score"] = round(entry["vec_score"], 4)
+            top_events.append(ev)
+
+        output = {"query": query, "events": top_events, "count": len(top_events)}
+        return json.dumps(output, indent=2, default=str)
+    except Exception as e:
+        return json.dumps({"error": f"Search failed for query '{query}': {str(e)}"}, indent=2)
+
 
 # FastAPI app
 app = FastAPI(title="Sieveon Control Plane Server (MCP Implementation)", version="0.1.0")

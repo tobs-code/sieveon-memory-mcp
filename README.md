@@ -19,7 +19,7 @@ Sieveon is an agent memory system that intelligently classifies, routes, plans, 
 ```
                   ┌─────────────────────────┐
                   │  MCP Server             │  (Python, stdio)
-                  │  18 tools + 3 resources │
+                  │  18 tools + 6 resources │
                   └──────┬──────────────────┘
                          │
                          ▼
@@ -33,7 +33,7 @@ Sieveon is an agent memory system that intelligently classifies, routes, plans, 
 
 | Component | Path | Description |
 |-----------|------|-------------|
-| **MCP Server** | `src/mcp/server.py` | Control plane (Anthropic MCP protocol) — stdio mode. 18 tools + 3 MCP resources: `memory_store`, `memory_store_batch`, `memory_store_markdown`, `memory_query`, `memory_update`, `memory_get`, `event_log_search`, `kg_query`, `graph_traverse`, `semantic_search`, `list_entities`, `list_events`, `memory_stats`, `memory_explain_routing`, `memory_forget`, `memory_unforget`, `memory_consolidate`, `memory_merge_entities`; Resources: `sieveon://stats`, `sieveon://entity/{id}`, `sieveon://event/{id}` |
+| **MCP Server** | `src/mcp/server.py` | Control plane (Anthropic MCP protocol) — stdio mode. 18 tools + 6 MCP resources: `memory_store`, `memory_store_batch`, `memory_store_markdown`, `memory_query`, `memory_update`, `memory_get`, `event_log_search`, `kg_query`, `graph_traverse`, `semantic_search`, `list_entities`, `list_events`, `memory_stats`, `memory_explain_routing`, `memory_forget`, `memory_unforget`, `memory_consolidate`, `memory_merge_entities`; Resources: `sieveon://stats`, `sieveon://entity/{id}`, `sieveon://event/{id}`, `sieveon://kg/subject/{name}`, `sieveon://kg/predicate/{type}`, `sieveon://search/{query}` |
 | **Extraction** | `src/extraction/` | Entropy-gated entity extraction with Groq API (llama-3.1-8b-instant) or spaCy fallback. Pipe-separated LLM prompt, type preservation |
 | **Classifier** | `src/extraction/classifier.py` | Hybrid ML+Regex query classifier: sklearn LogisticRegression on Qwen3-Embedding-0.6B embeddings (1024d), with regex fallback. Synthetic training data generator at `scripts/generate_synthetic_training_data.py`, manual labeling CLI at `scripts/label_queries.py` |
 | **Migrations** | `src/mcp/migrations.py` | Versioned auto-migration engine for breaking schema changes |
