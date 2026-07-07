@@ -267,7 +267,7 @@ class RetrievalExecutor:
 
         fused.sort(key=lambda x: x.get("_rrf_score", 0), reverse=True)
         for ev in fused:
-            ev.pop("_rrf_score", None)
+            ev["relevance_score"] = round(ev.pop("_rrf_score", 0), 4)
 
         return {
             "strategy": "event_log_first",
@@ -438,7 +438,7 @@ class RetrievalExecutor:
 
         fused.sort(key=lambda x: x.get("_rrf_score", 0), reverse=True)
         for ev in fused:
-            ev.pop("_rrf_score", None)
+            ev["relevance_score"] = round(ev.pop("_rrf_score", 0), 4)
 
         return {
             "strategy": "hybrid_bm25_vector_temporal",
@@ -485,7 +485,7 @@ class RetrievalExecutor:
         fused.sort(key=lambda x: x.get("_rrf", 0), reverse=True)
         fused_events = [x for x in fused[:10]]
         for ev in fused_events:
-            ev.pop("_rrf", None)
+            ev["relevance_score"] = round(ev.pop("_rrf", 0), 4)
 
         seen_entity_ids = {e.get("id") for e in entities if e.get("id")}
         expanded_entities = list(entities)
@@ -582,7 +582,7 @@ class RetrievalExecutor:
 
         fused.sort(key=lambda x: x.get("_rrf_score", 0), reverse=True)
         for ev in fused:
-            ev.pop("_rrf_score", None)
+            ev["relevance_score"] = round(ev.pop("_rrf_score", 0), 4)
 
         return {
             "strategy": "hybrid_fallback",

@@ -139,13 +139,39 @@ async def _execute_query(query: str, cost_budget: str = "auto", limit: int = 10)
         results = []
 
     entities, facts, events = _categorize_results(results)
-
     summary = _synthesize_answer(query, entities, facts, events)
 
-    # Apply limit to each result category
+    # Enrich events with matched terms and ranking info
+    import re
+    query_words_list = [w for w in re.findall(r'\b\w+\b', query.lower()) if len(w) > 2]
+    enriched_events = []
+    for ev in events:
+        content = ev.get("content", "")
+        if content and query_words_list:
+            matched = set()
+            relevance_hits = 0
+            for word in query_words_list:
+                if word.lower() in content.lower():
+                    relevance_hits += 1
+                    matched.add(word)
+            ev["matched_terms"] = sorted(matched)
+            ev["relevance_hits"] = relevance_hits
+        enriched_events.append(ev)
+
+    ranking = {
+        "strategy_used": strategy_dict["strategy"],
+        "query_type": q_type.value if hasattr(q_type, 'value') else str(q_type),
+        "classification_confidence": confidence,
+        "total_candidates": len(entities) + len(facts) + len(events),
+        "diversity_note": "Results from multiple retrieval paths (FTX + vector + KG) fused via RRF.",
+    }
+    if any(ev.get("relevance_score") is not None for ev in events):
+        scores = [ev.get("relevance_score", 0) or 0 for ev in events]
+        ranking["score_range"] = {"min": round(min(scores), 4), "max": round(max(scores), 4)} if scores else None
+
+    events = events[:limit]
     entities = entities[:limit]
     facts = facts[:limit]
-    events = events[:limit]
 
     return {
         "query": query,
@@ -155,6 +181,7 @@ async def _execute_query(query: str, cost_budget: str = "auto", limit: int = 10)
         "cost_budget": strategy_dict["cost_budget"],
         "results": {"entities": entities, "facts": facts, "events": events},
         "total": len(entities) + len(facts) + len(events),
+        "ranking": ranking,
         "summary": {
             "found": summary["found"],
             "answer": summary["answer"],

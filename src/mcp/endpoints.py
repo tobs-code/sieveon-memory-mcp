@@ -179,11 +179,11 @@ async def event_log_search_endpoint(
     since: Optional[str] = Query(None, description="Start date"),
     until: Optional[str] = Query(None, description="End date"),
     include_forgotten: bool = Query(False, description="Include forgotten events"),
+    query_syntax: str = Query("auto", description="FTS syntax mode: auto, fts, or exact"),
 ):
     """Direct timeline query without router: hybrid search (BM25 + vector + RRF)."""
-    # Import the tool function directly to reuse the logic
     from .tools import event_log_search
-    return await event_log_search(query, limit=limit, offset=offset, since=since, until=until, include_forgotten=include_forgotten)
+    return await event_log_search(query, limit=limit, offset=offset, since=since, until=until, include_forgotten=include_forgotten, query_syntax=query_syntax)
 
 
 @app.get("/kg/query")
@@ -203,20 +203,22 @@ async def kg_query_endpoint(
 @app.get("/semantic/search")
 async def semantic_search_endpoint(
     query: str = Query(..., description="Search query"),
-    top_k: int = Query(10, description="Top-k results")
+    top_k: int = Query(10, description="Top-k results"),
+    query_syntax: str = Query("auto", description="FTS syntax mode: auto, fts, or exact"),
 ):
     """Pure vector search without KG. Filters out highly repetitive/noise content."""
-    # Import the tool function directly to reuse the logic
     from .tools import semantic_search
-    return await semantic_search(query, top_k)
+    return await semantic_search(query, top_k, query_syntax=query_syntax)
 
 
 @app.get("/memory/stats")
-async def memory_stats_endpoint(random_string: str = ""):
+async def memory_stats_endpoint(
+    random_string: str = "",
+    aggregate: str = Query("none", description="Aggregation mode: none, events_by_source, facts_by_predicate, entities_by_type, or all"),
+):
     """Returns statistics about the memory system."""
-    # Import the tool function directly to reuse the logic
     from .tools import memory_stats
-    return await memory_stats(random_string)
+    return await memory_stats(random_string, aggregate=aggregate)
 
 
 @app.get("/explain/routing")

@@ -6,6 +6,7 @@ MCP Tools implementation
 import asyncio
 import hashlib
 import os
+import re
 import sys
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
@@ -18,6 +19,26 @@ from src.extraction.entropy_gate import character_diversity, escape_surrealql
 from .common_logic import _execute_query, _get_or_create_entity, _store_content
 from .core import _clean_output, _embed_query, _extract_result, _query_surreal, mcp
 from src.extraction.entity_utils import infer_entity_type, validate_predicate
+
+
+def _prepare_fts_query(query: str, syntax: str = "auto") -> str:
+    """Prepare a query string for SurrealDB FTX fulltext search based on syntax mode.
+
+    Modes:
+      'auto'  – escape everything, treat as plain text (safe default)
+      'fts'   – pass through FTS operators (+, -, "), only escape SQL-injection risks
+      'exact' – wrap in double quotes for exact phrase matching
+    """
+    if syntax == "exact":
+        escaped = escape_surrealql(query)
+        return f'"{escaped}"'
+    if syntax == "fts":
+        value = query.replace("\\", "\\\\")
+        value = value.replace("'", "\\'")
+        value = value.replace("}", "\\}")
+        value = re.sub(r"[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]", "", value)
+        return value
+    return escape_surrealql(query)
 
 
 @mcp.tool()
@@ -249,7 +270,10 @@ async def memory_store_markdown(
 
 @mcp.tool()
 async def memory_query(query: str, cost_budget: str = "auto", limit: int = 10) -> dict:
-    """Routes a natural language query through the full pipeline: classify → plan → retrieve."""
+    """Routes a natural language query through the full pipeline: classify → plan → retrieve.
+    Returns results with a 'ranking' section explaining the scoring and strategy used.
+    Each event includes 'relevance_score', 'relevance_hits', and 'matched_terms' for transparency.
+    """
     return await _execute_query(query, cost_budget, limit)
 
 
@@ -307,8 +331,13 @@ async def memory_update(subject: str, predicate: str, new_value: str) -> dict:
 
 
 @mcp.tool()
-async def memory_stats(random_string: str = "") -> dict:
-    """Returns statistics about the memory system."""
+async def memory_stats(random_string: str = "", aggregate: str = "none") -> dict:
+    """Returns statistics about the memory system.
+
+    Set aggregate to one of: 'none' (default), 'events_by_source',
+    'facts_by_predicate', 'entities_by_type', or 'all' to include
+    aggregated breakdowns.
+    """
     f = "forgotten = false"
 
     async def _q(sql):
@@ -323,10 +352,26 @@ async def memory_stats(random_string: str = "") -> dict:
     extract_gate_task = asyncio.create_task(_q("SELECT count() FROM gate_log WHERE decision = 'extract' GROUP ALL;"))
     recent_gate_task = asyncio.create_task(_q("SELECT content_hash, decision, reason, gate_score, threshold, compression_ratio, ts FROM gate_log ORDER BY ts DESC LIMIT 10;"))
 
-    results = await asyncio.gather(
+    agg_tasks = {}
+    if aggregate in ("events_by_source", "all"):
+        agg_tasks["events_by_source"] = asyncio.create_task(
+            _q(f"SELECT source, count() AS cnt FROM event WHERE {f} GROUP BY source ORDER BY cnt DESC LIMIT 20;")
+        )
+    if aggregate in ("facts_by_predicate", "all"):
+        agg_tasks["facts_by_predicate"] = asyncio.create_task(
+            _q("SELECT predicate, count() AS cnt FROM fact WHERE (valid_until IS NONE OR valid_until = NONE) GROUP BY predicate ORDER BY cnt DESC LIMIT 20;")
+        )
+    if aggregate in ("entities_by_type", "all"):
+        agg_tasks["entities_by_type"] = asyncio.create_task(
+            _q(f"SELECT type, count() AS cnt FROM entity WHERE {f} GROUP BY type ORDER BY cnt DESC LIMIT 20;")
+        )
+
+    all_tasks = [
         event_task, entity_task, fact_task, oldest_task, newest_task,
         total_gate_task, extract_gate_task, recent_gate_task,
-    )
+    ] + list(agg_tasks.values())
+
+    results = await asyncio.gather(*all_tasks)
 
     event_count = results[0][0].get("count", 0) if results[0] else 0
     entity_count = results[1][0].get("count", 0) if results[1] else 0
@@ -341,7 +386,7 @@ async def memory_stats(random_string: str = "") -> dict:
     for g in recent_gate_logs:
         g.pop("content_hash", None)
 
-    return {
+    resp = {
         "event_count": event_count,
         "entity_count": entity_count,
         "fact_count": fact_count,
@@ -354,6 +399,17 @@ async def memory_stats(random_string: str = "") -> dict:
         "recent_gate_decisions": recent_gate_logs,
     }
 
+    if agg_tasks:
+        base = 8
+        if "events_by_source" in agg_tasks:
+            resp["events_by_source"] = results[base + list(agg_tasks).index("events_by_source")]
+        if "facts_by_predicate" in agg_tasks:
+            resp["facts_by_predicate"] = results[base + list(agg_tasks).index("facts_by_predicate")]
+        if "entities_by_type" in agg_tasks:
+            resp["entities_by_type"] = results[base + list(agg_tasks).index("entities_by_type")]
+
+    return resp
+
 
 @mcp.tool()
 async def event_log_search(
@@ -363,11 +419,19 @@ async def event_log_search(
     since: Optional[str] = None,
     until: Optional[str] = None,
     include_forgotten: bool = False,
+    query_syntax: str = "auto",
 ) -> dict:
     """Direct timeline query without router: hybrid search (BM25 + vector + RRF fusion).
     When include_forgotten=True, forgotten events are included and marked as such.
+
+    Use query_syntax='fts' for full-text search operators:
+      +term  = term must match     -term  = term must NOT match
+      "a b"  = exact phrase        term1 term2 = any match (OR)
+
+    Use query_syntax='exact' for exact phrase matching (auto-wraps in quotes).
+    Default 'auto' treats the entire input as plain text with full escaping.
     """
-    query_escaped = escape_surrealql(query)
+    query_escaped = _prepare_fts_query(query, query_syntax)
     time_filter = ""
     if since:
         time_filter += f" AND timestamp >= '{escape_surrealql(since)}'"
@@ -588,14 +652,26 @@ async def kg_query(
 
 
 @mcp.tool()
-async def semantic_search(query: str, top_k: int = 5) -> dict:
+async def semantic_search(
+    query: str,
+    top_k: int = 5,
+    query_syntax: str = "auto",
+) -> dict:
     """Hybrid search: Vector (semantic) + FTX (lexical) with RRF fusion.
     Deduplicates by content_hash, enriches with KG facts, filters repetitive noise.
-    Returns normalized scores (0-1)."""
+    Returns normalized scores (0-1).
+
+    Use query_syntax='fts' for full-text search operators:
+      +term  = term must match     -term  = term must NOT match
+      "a b"  = exact phrase        term1 term2 = any match (OR)
+
+    Use query_syntax='exact' for exact phrase matching (auto-wraps in quotes).
+    Default 'auto' treats the entire input as plain text with full escaping.
+    """
     if not query.strip():
         return {"events": [], "count": 0, "message": "Query cannot be empty"}
 
-    query_escaped = escape_surrealql(query)
+    query_escaped = _prepare_fts_query(query, query_syntax)
     query_vector = await _embed_query(query)
     query_vector_str = "[" + ", ".join(map(str, query_vector)) + "]"
 
