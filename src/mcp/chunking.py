@@ -10,6 +10,7 @@ Features:
 - YAML front matter parsing
 - Sentence-splitting fallback for paragraphs exceeding chunk_size
 - Token-count-based chunking via tiktoken
+- Semantic chunking by heading/paragraph boundaries
 """
 
 import re
@@ -159,6 +160,151 @@ def _count_units(text: str, method: str, encoding: Any) -> int:
     return len(text)
 
 
+def _build_section_tree(text: str, blocks: List[Tuple[int, int, str]]) -> List[Dict[str, Any]]:
+    sections = []
+    lines = text.split("\n")
+    current_heading = None
+    current_start = 0
+    current_lines = []
+    protected_map = {}
+    for s, e, t in blocks:
+        for i in range(s, e):
+            protected_map[i] = True
+
+    pos = 0
+    for line in lines:
+        line_start = text.find(line, pos)
+        if line_start == -1:
+            line_start = pos
+        line_end = line_start + len(line)
+        protected = any(s <= line_start < e for s, e, _ in blocks)
+        hm = _HEADING_PATTERN.match(line)
+        if hm and not protected:
+            if current_heading is not None or current_lines:
+                sections.append({
+                    "heading": current_heading,
+                    "start": current_start,
+                    "end": line_start,
+                    "text": "\n".join(current_lines).strip(),
+                })
+            current_heading = (hm.group(1), hm.group(2).strip())
+            current_start = line_start
+            current_lines = []
+        else:
+            current_lines.append(line)
+        pos = line_end + 1
+
+    if current_heading is not None or current_lines:
+        sections.append({
+            "heading": current_heading,
+            "start": current_start,
+            "end": len(text),
+            "text": "\n".join(current_lines).strip(),
+        })
+    return sections
+
+
+def _chunk_semantic(
+    text: str,
+    chunk_size: int,
+    include_heading_context: bool,
+    headings: List[Tuple[int, int, str]],
+    blocks: List[Tuple[int, int, str]],
+) -> List[Dict[str, Any]]:
+    sections = _build_section_tree(text, blocks)
+
+    if not sections:
+        return []
+
+    def is_big_enough(sec: Dict[str, Any]) -> bool:
+        return len(sec["text"]) > chunk_size * 0.3
+
+    def merge_small_adjacent(all_secs: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        merged = []
+        for sec in all_secs:
+            if not merged:
+                merged.append(dict(sec))
+                continue
+            prev = merged[-1]
+            prev_size = len(prev["text"])
+            cur_size = len(sec["text"])
+            if prev_size + cur_size <= chunk_size and not is_big_enough(prev) and not is_big_enough(sec):
+                prev["text"] = prev["text"] + "\n\n" + sec["text"] if prev["text"] else sec["text"]
+                prev["end"] = sec["end"]
+                prev["sub_headings"] = prev.get("sub_headings", [])
+                if sec["heading"]:
+                    prev["sub_headings"].append(sec["heading"])
+            else:
+                merged.append(dict(sec))
+        return merged
+
+    sections = merge_small_adjacent(sections)
+
+    chunks = []
+    for sec in sections:
+        sec_text = sec["text"]
+        sec_len = len(sec_text)
+
+        if sec_len == 0:
+            continue
+
+        if sec_len <= chunk_size:
+            ctx = ""
+            if include_heading_context and sec["heading"]:
+                hlevel, htitle = sec["heading"]
+                ctx = _heading_context(sec["start"], headings)
+                if not ctx:
+                    ctx = htitle
+                sub_h = sec.get("sub_headings", [])
+                if sub_h:
+                    ctx += " > " + " > ".join(t for _, t in sub_h)
+            chunks.append({
+                "text": sec_text,
+                "heading_context": ctx,
+                "char_start": sec["start"],
+                "char_end": sec["end"],
+            })
+            continue
+
+        para_segments = _split_into_segments(sec_text, _find_protected_blocks(sec_text))
+        current_chunk = ""
+        current_start = sec["start"]
+        for seg in para_segments:
+            candidate = current_chunk + ("\n\n" if current_chunk else "") + seg["text"]
+            if len(candidate) > chunk_size and current_chunk:
+                ctx = ""
+                if include_heading_context and sec["heading"]:
+                    hlevel, htitle = sec["heading"]
+                    ctx = _heading_context(current_start, headings)
+                    if not ctx:
+                        ctx = htitle
+                chunks.append({
+                    "text": current_chunk,
+                    "heading_context": ctx,
+                    "char_start": current_start,
+                    "char_end": current_start + len(current_chunk),
+                })
+                current_chunk = seg["text"]
+                current_start = seg["start"]
+            else:
+                current_chunk = candidate
+        if current_chunk:
+            ctx = ""
+            if include_heading_context and sec["heading"]:
+                hlevel, htitle = sec["heading"]
+                ctx = _heading_context(current_start, headings)
+                if not ctx:
+                    ctx = htitle
+            chunks.append({
+                "text": current_chunk,
+                "heading_context": ctx,
+                "char_start": current_start,
+                "char_end": current_start + len(current_chunk),
+            })
+
+    return chunks
+
+
 def chunk_markdown(
     text: str,
     chunk_size: int = 1500,
@@ -177,7 +323,8 @@ def chunk_markdown(
         chunk_size: Target size per chunk (chars or tokens)
         overlap: Overlap between consecutive chunks (chars or tokens)
         include_heading_context: Prepend heading tree to each chunk
-        chunking_method: "char" (default) or "token" (requires tiktoken)
+        chunking_method: "char" (default), "token" (requires tiktoken),
+                         or "semantic" (by heading/paragraph boundaries)
         encoding_name: tiktoken encoding name (default cl100k_base)
         strip_images: Replace image references with alt text / strip
         parse_front_matter: Extract YAML front matter into metadata
@@ -223,6 +370,23 @@ def chunk_markdown(
             "char_end": len(text),
             "total_chunks": 1,
         }]
+        return result
+
+    if chunking_method == "semantic":
+        blocks = _find_protected_blocks(text)
+        headings = _extract_headings(text)
+        semantic_chunks = _chunk_semantic(text, chunk_size, include_heading_context, headings, blocks)
+        out = []
+        for i, c in enumerate(semantic_chunks):
+            out.append({
+                "index": i,
+                "text": c["text"],
+                "heading_context": c["heading_context"],
+                "char_start": c["char_start"],
+                "char_end": c["char_end"],
+                "total_chunks": len(semantic_chunks),
+            })
+        result["chunks"] = out
         return result
 
     blocks = _find_protected_blocks(text)

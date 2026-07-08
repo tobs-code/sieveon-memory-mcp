@@ -140,7 +140,7 @@ async def memory_store_markdown(
         chunk_size: Target size per chunk in characters (default 1500)
         overlap: Overlap in characters between consecutive chunks (default 300)
         include_heading_context: Prepend heading tree to each chunk (default True)
-        chunking_method: 'char' (default) or 'token' (uses tiktoken)
+        chunking_method: 'char' (default), 'token' (uses tiktoken), or 'semantic' (by heading/paragraph boundaries)
         encoding_name: tiktoken encoding name (default cl100k_base)
         strip_images: Replace image references with alt text (default True)
         parse_front_matter: Extract YAML front matter into metadata (default True)
