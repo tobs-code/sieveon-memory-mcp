@@ -1,5 +1,5 @@
 """Test Groq LLM triple extraction for sieveon — Modellvergleich."""
-import os, sys, json, time, requests
+import sys, time, requests
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -167,7 +167,7 @@ for model in MODELS:
             for s, p, o, c in triples:
                 print(f"     ✅  {s}  ─[{p} ({c:.2f})]→  {o}")
         else:
-            print(f"     ⚠️  Keine Triples")
+            print("     ⚠️  Keine Triples")
             if "ERROR" in raw:
                 print(f"     ❌  API Error: {raw[:150]}")
 
@@ -179,7 +179,7 @@ for model in MODELS:
 
 # ---------- Vergleich ----------
 print(f"{'='*70}")
-print(f"  VERGLEICH")
+print("  VERGLEICH")
 print(f"{'='*70}")
 m1, m2 = MODELS
 r1 = results[m1]

@@ -84,8 +84,10 @@ Note on TREC label mapping:
 
 
 def main():
+    SEED = 42
     texts, labels = load_all()
     print(f"Total samples: {len(texts)} total, {dict(Counter(labels))}")
+    print(f"Eval config: seed={SEED}, split=stratified 80/20, dedup=template-hash (normalized lowercase, see below)")
     _note_trec_mapping()
 
     emb_svc = get_embedding_service()
@@ -100,15 +102,30 @@ def main():
     y = le.fit_transform(labels)
 
     X_train, X_test, y_train, y_test, texts_train, texts_test = train_test_split(
-        X, y, texts, test_size=0.2, random_state=42, stratify=y
+        X, y, texts, test_size=0.2, random_state=SEED, stratify=y
     )
+    print(f"Split: train={len(texts_train)}, test={len(texts_test)}, stratify=y, random_state={SEED}")
 
-    # ── Leakage check ──────────────────────────────────────────────
+    # ── Leakage check (D1: template-hash dedup) ────────────────────
+    # Exact-match check (legacy) + normalized template-hash check: lowercase,
+    # digits masked (9 random fills/template x 80 templates collide after masking).
+    import hashlib
+    import re as _re
+
+    def _template_hash(t: str) -> str:
+        norm = _re.sub(r"\d+", "#", t.lower().strip())
+        return hashlib.sha256(norm.encode("utf-8")).hexdigest()[:16]
+
+    train_hashes = {_template_hash(t) for t in texts_train}
     train_set = set(texts_train)
     dup_indices = [i for i, t in enumerate(texts_test) if t in train_set]
+    template_dup_indices = [i for i, t in enumerate(texts_test) if _template_hash(t) in train_hashes]
     print(f"\nData leakage: {len(dup_indices)}/{len(texts_test)} exact test→train duplicates ({100*len(dup_indices)/len(texts_test):.1f}%)")
-    print(f"  -> likely from synthetic template collisions (9 random fills/template × 80 templates)")
+    print(f"Template leakage (normalized, digits masked): {len(template_dup_indices)}/{len(texts_test)} ({100*len(template_dup_indices)/len(texts_test):.1f}%)")
+    print("  -> likely from synthetic template collisions (9 random fills/template × 80 templates)")
     print(f"  -> Clean holdout (excluding {len(dup_indices)} exact duplicates) reported separately below.")
+    print("  -> NOTE: manual_labels.jsonl (scripts/label_queries.py, target n>=200 real agent queries)")
+    print("     is the designated OOD holdout; report its F1 separately once collected.")
 
     # ── Full holdout ───────────────────────────────────────────────
     model = LogisticRegression(
@@ -120,13 +137,13 @@ def main():
     f1_full = f1_score(y_test, y_pred, average="macro")
 
     print(f"\n{'='*60}")
-    print(f"  PRIMARY METRIC: 5-Fold Cross-Validation (more reliable)")
+    print("  PRIMARY METRIC: 5-Fold Cross-Validation (more reliable)")
     print(f"{'='*60}")
     cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
     cv_scores = cross_val_score(model, X, y, cv=cv, scoring="f1_macro")
     print(f"  F1 macro: {cv_scores.mean():.3f} +/- {cv_scores.std():.3f}")
     print(f"  Fold scores: {[f'{s:.3f}' for s in cv_scores]}")
-    print(f"  5-fold CV is robust against the ~9% synthetic template leakage.")
+    print("  5-fold CV is robust against the ~9% synthetic template leakage.")
 
     # ── Clean holdout (exclude exact duplicates) ───────────────────
     if len(dup_indices) > 0:
@@ -177,14 +194,14 @@ def main():
         print("\n=== No misclassifications ===")
 
     # ── TF-IDF feature analysis ────────────────────────────────────
-    print(f"\n=== Top TF-IDF features per class ===")
+    print("\n=== Top TF-IDF features per class ===")
     _show_top_tfidf_features(vectorizer, model, le)
 
     # ── Threshold analysis ─────────────────────────────────────────
     above = max_conf >= 0.6
     correct_above = sum(1 for i in range(len(y_test)) if above[i] and pred_labels[i] == true_labels_arr[i])
     total_above = sum(above)
-    print(f"\n=== ML confidence >= 0.6 threshold analysis ===")
+    print("\n=== ML confidence >= 0.6 threshold analysis ===")
     print(f"Samples above 0.6: {total_above}/{len(y_test)} ({100*total_above/len(y_test):.1f}%)")
     if total_above > 0:
         print(f"Accuracy on those: {correct_above / total_above:.4f}")

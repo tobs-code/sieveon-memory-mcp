@@ -1,6 +1,6 @@
 # MCP Server — Sieveon Memory Stack
 
-The MCP Server exposes the entire Sieveon Memory Stack via the [Model Context Protocol (MCP)](https://modelcontextprotocol.io) — 18 memory tools and 3 MCP resources. Any MCP-compatible client (e.g. Claude Desktop, Cursor, VS Code with MCP extension) can call them directly, without hosting the stack itself.
+The MCP Server exposes the entire Sieveon Memory Stack via the [Model Context Protocol (MCP)](https://modelcontextprotocol.io) — 18 memory tools and 6 MCP resources. Any MCP-compatible client (e.g. Claude Desktop, Cursor, VS Code with MCP extension) can call them directly, without hosting the stack itself.
 
 ## Architecture Overview
 
@@ -12,12 +12,12 @@ The MCP Server exposes the entire Sieveon Memory Stack via the [Model Context Pr
 │                    MCP Server (FastMCP)                       │
 │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌──────────┐│
 │  │   Core      │ │ Primitives  │ │Introspection│ │  Maint.  ││
-│  │  (5 Tools)  │ │  (6 Tools)  │ │  (2 Tools)  │ │(4 Tools) ││
+│  │  (5 Tools)  │ │  (7 Tools)  │ │  (2 Tools)  │ │(4 Tools) ││
 │  │             │ │             │ │             │ │          ││
 │  │  Resources  │ │  Resources  │ │  Resources  │ │          ││
-│  │ (3: entity, │ │ (entity/{id}│ │  (stats)    │ │          ││
-│  │  event,     │ │  event/{id} │ │             │ │          ││
-│  │  stats)     │ │  stats)     │ │             │ │          ││
+│  │ (stats,     │ │ (entity,    │ │  (stats)    │ │          ││
+│  │  entity,    │ │  event, kg, │ │             │ │          ││
+│  │  event)     │ │  search)    │ │             │ │          ││
 │  └──────┬──────┘ └──────┬──────┘ └──────┬──────┘ └───┬────┘│
 │         │               │               │            │      │
 │         ▼               ▼               ▼            ▼      │
@@ -909,7 +909,7 @@ read_resource("sieveon://search/Rust%20async%20runtime")
 |------|-------|-------|--------|
 | `memory_store` | Core | `content`, `source?`, `metadata?` | `event_id`, `status`, `gate` |
 | `memory_store_batch` | Core | `items`, `source?` | `results[]`, `errors[]`, `stored`, `failed` |
-| `memory_store_markdown` | Core | `content` or `file_path`, `source?`, `chunk_size?`, `overlap?`, `include_heading_context?`, `chunking_method?`, `encoding_name?`, `strip_images?`, `parse_front_matter?`, `max_concurrent?`, `metadata?` | `status`, `source`, `total_chunks`, `stored`, `failed`, `results[]`, `errors[]`, `gate_summary` |
+| `memory_store_markdown` | Core | `content` or `file_path`, `source?`, `chunk_size?`, `overlap?`, `include_heading_context?`, `chunking_method?` (`char`/`token`/`semantic`), `encoding_name?`, `strip_images?`, `parse_front_matter?`, `max_concurrent?`, `metadata?` | `status`, `source`, `total_chunks`, `stored`, `failed`, `results[]`, `errors[]`, `gate_summary` |
 | `memory_query` | Core | `query`, `cost_budget?`, `limit?` | `classified_as`, `strategy`, `results` |
 | `memory_update` | Core | `subject`, `predicate`, `new_value` | `invalidated_fact`, `new_fact` |
 | `memory_get` | Primitives | `id`, `include_facts?` | `status`, `type`, `data` |
@@ -919,7 +919,7 @@ read_resource("sieveon://search/Rust%20async%20runtime")
 | `list_entities` | Primitives | `limit?`, `offset?`, `type?`, `name_contains?`, `sort_by?`, `sort_order?` | `entities[]`, `count`, `total` |
 | `list_events` | Primitives | `limit?`, `offset?`, `since?`, `until?`, `source?`, `include_forgotten?` | `events[]`, `count`, `total` |
 | `semantic_search` | Primitives | `query`, `top_k?` | `events[]`, `count` |
-| `memory_stats` | Introspection | — | `event_count`, `entity_count`, `fact_count`, `gate_pass_rate`, … |
+| `memory_stats` | Introspection | `aggregate?` (`none`/`events_by_source`/`facts_by_predicate`/`entities_by_type`/`all`; plus legacy `random_string` dummy for MCP no-required-args compatibility — call with no args) | `event_count`, `entity_count`, `fact_count`, `gate_pass_rate`, … |
 | `memory_explain_routing` | Introspection | `query` | `classified_as`, `strategy_selected`, `reason` |
 | `memory_forget` | Maintenance | `event_id?` or `entity?`, `reason?` | `forgotten_items[]`, `count`, `reason` |
 | `memory_unforget` | Maintenance | `event_id` | `status`, `event_id` |
@@ -1051,7 +1051,7 @@ The HNSW index `event_embedding_vec` is defined on the `embedding` field with `D
 
 | File | Purpose |
 |------|---------|
-| `src/mcp/server.py` | MCP server implementation (18 tools, 3 resources) |
+| `src/mcp/server.py` | MCP server implementation (18 tools, 6 resources) |
 | `docs/schema.surql` | SurrealDB schema (Event Log, KG, indexes) |
 | `docs/helper_functions.surql` | DB-side functions |
 | `docs/test_data.surql` | Sample test data |

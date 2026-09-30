@@ -5,13 +5,12 @@ Simulates DB failures and checks if the system health and budgets scale accordin
 import asyncio
 import sys
 import os
-import time
 
 # Add project root to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from src.router.policy import BudgetTracker
-from src.mcp.server import _budget_aware_should_retry, _surreal_lock
+from src.mcp.server import _budget_aware_should_retry
 
 async def test_adaptive_budgeting():
     print("\n--- Testing Adaptive Budgeting ---")

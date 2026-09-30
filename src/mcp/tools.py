@@ -8,12 +8,10 @@ import hashlib
 import os
 import re
 import sys
-from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from mcp.server.fastmcp import FastMCP
 from src.extraction.entropy_gate import character_diversity, escape_surrealql
 
 from .common_logic import _execute_query, _get_or_create_entity, _store_content
@@ -269,12 +267,22 @@ async def memory_store_markdown(
 
 
 @mcp.tool()
-async def memory_query(query: str, cost_budget: str = "auto", limit: int = 10) -> dict:
+async def memory_query(
+    query: str,
+    cost_budget: str = "auto",
+    limit: int = 10,
+    since: Optional[str] = None,
+    until: Optional[str] = None,
+    at_time: Optional[str] = None,
+) -> dict:
     """Routes a natural language query through the full pipeline: classify → plan → retrieve.
     Returns results with a 'ranking' section explaining the scoring and strategy used.
     Each event includes 'relevance_score', 'relevance_hits', and 'matched_terms' for transparency.
+
+    Temporal filters (B1): `since`/`until` bound event timestamps (ISO datetime),
+    `at_time` pins KG validity ("what did the agent know at T", fn::facts_at_time).
     """
-    return await _execute_query(query, cost_budget, limit)
+    return await _execute_query(query, cost_budget, limit, since=since, until=until, at_time=at_time)
 
 
 @mcp.tool()
@@ -337,6 +345,10 @@ async def memory_stats(random_string: str = "", aggregate: str = "none") -> dict
     Set aggregate to one of: 'none' (default), 'events_by_source',
     'facts_by_predicate', 'entities_by_type', or 'all' to include
     aggregated breakdowns.
+
+    Note: `random_string` is a legacy dummy arg kept so MCP renders this
+    tool as callable with no required args. Call with no args (or
+    `aggregate` only); `random_string` is ignored.
     """
     f = "forgotten = false"
 
@@ -911,21 +923,17 @@ def _is_highly_repetitive(text: str) -> bool:
 async def memory_explain_routing(query: str) -> dict:
     """Explains why the router chose a specific strategy for a query."""
     from src.extraction.classifier import QueryClassifier
-    from src.router.policy import RoutingPolicy
+    from src.router.cost_awareness import cost_tracker
+    from src.router.policy import get_policy, resolve_query_type
 
     classifier = QueryClassifier()
     q_type, confidence = classifier.classify(query)
 
-    # Convert string query type to QueryType enum
-    from src.router.policy import QueryType
+    # Normalize the classifier label ("multi-hop" -> MULTI_HOP) before routing,
+    # otherwise every multi-hop query was explained as a factual one.
+    q_type_enum = resolve_query_type(q_type)
 
-    try:
-        q_type_enum = QueryType(q_type)
-    except ValueError:
-        # Fallback to FACTUAL if unknown type
-        q_type_enum = QueryType.FACTUAL
-
-    policy = RoutingPolicy()
+    policy = get_policy()
     strategy_name, budget_level, policy_applied = policy.get_strategy(
         q_type_enum, confidence
     )
@@ -936,16 +944,24 @@ async def memory_explain_routing(query: str) -> dict:
     else:
         budget_str = str(budget_level)
 
+    # B3: semi-automatic eval->router feedback — surface learned effectiveness
+    # so callers see why a strategy is preferred, not just which one.
+    strategy_costs = cost_tracker.get_all_costs().get(strategy_name, {})
+
     return {
         "query": query,
         "classified_as": q_type,
         "confidence": confidence,
         "strategy_selected": strategy_name,
         "reason": f"The query was classified as '{q_type}' with confidence {confidence}. "
-        f"Based on this classification and available budget, the system selected "
+        "Based on this classification and available budget, the system selected "
         f"the '{strategy_name}' strategy which is optimal for this type of query.",
         "cost_budget_used": budget_str,
         "policy_applied": policy_applied,
+        "effectiveness_score": strategy_costs.get("effectiveness_score"),
+        "average_latency": strategy_costs.get("average_latency"),
+        "success_rate": strategy_costs.get("success_rate"),
+        "total_requests": strategy_costs.get("total_requests", 0),
     }
 
 
@@ -1289,7 +1305,7 @@ async def memory_consolidate(
         ORDER BY valid_from ASC;
         """
     else:
-        find_dup_sql = f"""
+        find_dup_sql = """
         SELECT id, predicate, in.id AS in_id, in.name AS subject, out.id AS out_id, out.name AS object, valid_from, confidence
         FROM fact
         WHERE (valid_until IS NONE OR valid_until > time::now())
@@ -1306,9 +1322,8 @@ async def memory_consolidate(
         key = (fact.get("in_id"), fact.get("predicate"), fact.get("out_id"))
         fid = fact.get("id")
         if key in seen:
-            # Duplicate found — invalidate the newer one
-            older_id = seen[key]
-            if fid:
+            # Duplicate found - invalidate the newer one, keep the first seen
+            if fid and fid != seen[key]:
                 try:
                     inv_sql = f"UPDATE {fid} SET valid_until = time::now(), invalidated_reason = 'consolidate_duplicate';"
                     await _query_surreal(inv_sql)

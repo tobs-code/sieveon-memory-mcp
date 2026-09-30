@@ -1,5 +1,4 @@
 from collections import defaultdict
-import time
 from typing import Dict, List, Optional, Tuple
 import threading
 from datetime import datetime, timedelta
@@ -31,11 +30,17 @@ class CostTracker:
             'event_log_first': 0.5,
             'knowledge_graph_first': 1.0,
             'hybrid_with_graph_expansion': 1.2,
-            'composite_kg_vector': 1.0,
-            'knowledge_graph_with_invalidation': 2.0,  # Most expensive due to writes
+            # 4 parallel searches including the embedding call for the vector side
+            'composite_kg_vector': 1.5,
+            # Read-only: no writes, just a validity-window filter on the results
+            'knowledge_graph_with_invalidation': 1.1,
             'hybrid_bm25_vector_temporal': 1.1,
-            'hybrid_fallback': 0.8
+            'hybrid_fallback': 0.8,
+            # Most expensive: 4 parallel searches plus bounded graph expansion
+            'semantic_hybrid': 2.0
         }
+
+    MIN_SAMPLES = 3
 
     def record_request(self, strategy: str, latency: float, success: bool, num_queries: int = 1, relevance: float = 1.0):
         """
@@ -121,19 +126,24 @@ class CostTracker:
                 if time_since < timedelta(hours=1):
                     recency_bonus = 1.05  # 5% boost for recent strategies
             
-            # Higher score = better (0.0 to 1.0)
-            return (success_rate * 0.6 + cost_efficiency * 0.4) * recency_bonus
+            # Higher score = better (clamped to 0.0-1.0, the recency bonus can push it over)
+            score = (success_rate * 0.6 + cost_efficiency * 0.4) * recency_bonus
+            return max(0.0, min(1.0, score))
 
     def get_all_strategies_ranked(self) -> List[Tuple[str, float]]:
         """
         Returns all strategies ranked by effectiveness (best first).
+        Strategies with fewer than MIN_SAMPLES observations are omitted so that
+        adaptive routing does not flip on a single noisy request.
         """
         with self._metrics_lock:
             strategies = []
-            for strategy in self._metrics.keys():
+            for strategy, metrics in self._metrics.items():
+                if metrics['total_count'] < self.MIN_SAMPLES:
+                    continue
                 score = self.get_effectiveness_score(strategy)
                 strategies.append((strategy, score))
-            
+
             # Sort by effectiveness score descending (highest first = most effective)
             return sorted(strategies, key=lambda x: x[1], reverse=True)
 

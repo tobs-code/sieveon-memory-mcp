@@ -66,8 +66,8 @@ def label(examples: list[dict]) -> list[dict]:
                     f"\n[{i+1}/{len(examples)}] "
                     f"(orig: {orig_type}) "
                     f"{text}\n"
-                    f"  [t]emporal  [f]actual  [m]ulti-hop  "
-                    f"[c]onversational  [u]pdate  [s]kip  [q]uit: "
+                    "  [t]emporal  [f]actual  [m]ulti-hop  "
+                    "[c]onversational  [u]pdate  [s]kip  [q]uit: "
                 )
                 try:
                     key = input(prompt).strip().lower()
@@ -81,7 +81,7 @@ def label(examples: list[dict]) -> list[dict]:
                 if key == "s":
                     ex["type"] = "skip"
                     skipped += 1
-                    print(f"  → SKIPPED")
+                    print("  → SKIPPED")
                     break
 
                 if key in TYPE_KEYS:

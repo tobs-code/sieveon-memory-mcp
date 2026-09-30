@@ -5,8 +5,8 @@ Implements adaptive routing based on query type and learned strategy effectivene
 
 from typing import Dict, Optional, Any, Tuple
 from enum import Enum
+import re
 import threading
-import time
 from datetime import datetime, timedelta
 import logging
 from .cost_awareness import cost_tracker
@@ -24,6 +24,26 @@ class QueryType(Enum):
     MULTI_HOP = "multi_hop"
     CONVERSATIONAL = "conversational"
     UPDATE = "update"
+
+
+_SEPARATOR_RE = re.compile(r"[\s\-]+")
+
+
+def resolve_query_type(query_type) -> QueryType:
+    """Normalize a classifier/caller-supplied query type into a QueryType.
+
+    The classifier emits "multi-hop" while the enum value is "multi_hop",
+    so separators are normalized here. Unknown values fall back to FACTUAL
+    instead of raising, so one odd label can never abort a query.
+    """
+    if isinstance(query_type, QueryType):
+        return query_type
+    try:
+        normalized = _SEPARATOR_RE.sub("_", str(query_type).strip().lower())
+        return QueryType(normalized)
+    except ValueError:
+        logging.warning("Unknown query type '%s', falling back to FACTUAL", query_type)
+        return QueryType.FACTUAL
 
 
 class RoutingPolicy:
@@ -118,18 +138,24 @@ class RoutingPolicy:
                 logging.warning(f"Unknown query type {query_type}, falling back to factual config")
             
             base_strategy = base_config['strategy']
-            
+            max_latency = base_config.get('max_latency_threshold')
+
             # Get ranked strategies from cost tracker
             ranked_strategies = cost_tracker.get_all_strategies_ranked()
-            
+
             if ranked_strategies:
                 # Find the best performing strategy that's appropriate for this query type
                 for strategy, score in ranked_strategies:
                     # Only consider strategies that are valid for this query type
-                    # We prefer strategies with good effectiveness scores
-                    if self._is_strategy_appropriate_for_query_type(strategy, query_type):
-                        return strategy
-            
+                    if not self._is_strategy_appropriate_for_query_type(strategy, query_type):
+                        continue
+                    # Skip strategies that are too slow for this query type's SLO
+                    if max_latency is not None:
+                        latency = cost_tracker.get_average_latency(strategy)
+                        if latency is not None and latency > max_latency:
+                            continue
+                    return strategy
+
             # Fall back to configured default
             return base_strategy
 
@@ -147,6 +173,17 @@ class RoutingPolicy:
         compatible = compatible_strategies.get(query_type, [])
         return strategy in compatible
 
+    def _resolve_query_type(self, query_type) -> QueryType:
+        """Accept QueryType enums or their string values, defaulting to FACTUAL."""
+        return resolve_query_type(query_type)
+
+    def _config_for(self, query_type: QueryType) -> Dict[str, Any]:
+        base_config = self.config.get(query_type)
+        if not base_config:
+            logging.warning(f"Unknown query type {query_type}, falling back to factual config")
+            base_config = self.config[QueryType.FACTUAL]
+        return base_config
+
     def get_strategy(self, query_type: QueryType, confidence: float) -> Tuple[str, BudgetLevel, str]:
         """
         Determine the optimal strategy based on query type, confidence, and learned effectiveness.
@@ -155,23 +192,14 @@ class RoutingPolicy:
         Returns:
             Tuple of (strategy, budget_level, policy_applied)
         """
-        if isinstance(query_type, str):
-            try:
-                query_type = QueryType(query_type)
-            except ValueError:
-                logging.warning(f"Unknown query type string '{query_type}', falling back to FACTUAL")
-                query_type = QueryType.FACTUAL
+        query_type = self._resolve_query_type(query_type)
 
         with self._lock:
             # Perform periodic cleanup
             self._cleanup_old_usage()
-            
+
             # Get base configuration
-            base_config = self.config.get(query_type)
-            if not base_config:
-                # Fallback to factual if unknown query type
-                base_config = self.config[QueryType.FACTUAL]
-                logging.warning(f"Unknown query type {query_type}, falling back to factual config")
+            base_config = self._config_for(query_type)
             
             # Check if confidence is high enough for primary strategy
             min_confidence = base_config['min_confidence']
@@ -203,14 +231,12 @@ class RoutingPolicy:
     def get_budget_for_query(self, query_type: QueryType) -> BudgetLevel:
         """Get the appropriate budget level for a query type."""
         with self._lock:
-            base_config = self.config.get(query_type)
-            if not base_config:
-                base_config = self.config[QueryType.FACTUAL]
-            return base_config['budget']
+            return self._config_for(self._resolve_query_type(query_type))['budget']
 
     def update_query_config(self, query_type: QueryType, **kwargs):
         """Update configuration for a specific query type."""
         with self._lock:
+            query_type = self._resolve_query_type(query_type)
             if query_type in self.config:
                 self.config[query_type].update(kwargs)
             else:
@@ -227,3 +253,23 @@ class RoutingPolicy:
                 'system_health': BudgetTracker.get_system_health(),
                 'usage_patterns_count': len(self._usage)
             }
+
+
+_policy_lock = threading.Lock()
+_shared_policy: Optional[RoutingPolicy] = None
+
+
+def get_policy() -> RoutingPolicy:
+    """Return the process-wide RoutingPolicy.
+
+    Usage statistics and config updates only live on the instance, so building
+    a fresh RoutingPolicy per request threw that state away on every call.
+    Learned strategy effectiveness survives in the global cost_tracker, but the
+    usage log and any update_query_config() changes did not.
+    """
+    global _shared_policy
+    if _shared_policy is None:
+        with _policy_lock:
+            if _shared_policy is None:
+                _shared_policy = RoutingPolicy()
+    return _shared_policy

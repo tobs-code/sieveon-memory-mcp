@@ -1,6 +1,5 @@
 """Shared entity utilities for sieveon - single source of truth."""
 
-import json
 import os
 import re
 import sys
@@ -289,7 +288,6 @@ ONTOLOGY = {
         "invested_in": {"source": ["person", "organization"], "target": "organization"},
         "held": {"source": ["person", "organization"], "target": "event"},
         "met_with": {"source": "person", "target": "person"},
-        "wrote": {"source": "person", "target": "concept"},
         "strongly_related": {"source": "*", "target": "*"},
         "related_to": {"source": "*", "target": "*"},
         "co_occurs_with": {"source": "*", "target": "*"},

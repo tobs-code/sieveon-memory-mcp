@@ -6,7 +6,6 @@ Provides text embedding capabilities for storage and query operations
 import os
 from typing import List, Optional
 
-import numpy as np
 from dotenv import load_dotenv
 
 

@@ -6,16 +6,13 @@ Nur vor KG-Write, Raw Event Log bekommt immer alles!
 
 import gzip
 import hashlib
-import json
 import math
 import os
 import re
-import time
 import sys
 from typing import Any, Dict, List, Optional
 
 import httpx
-import numpy as np
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -683,7 +680,7 @@ class EntropyGate:
             entities = self._extract_result(result)
             if entities and len(entities) > 0:
                 return entities[0].get("id")
-        except Exception as e:
+        except Exception:
             # If embedding fails, skip similarity search
             pass
         return None
@@ -1000,7 +997,7 @@ class EntropyGate:
 
         if not candidates:
             if debug:
-                print(f"  [KG] No candidate entities found in text")
+                print("  [KG] No candidate entities found in text")
             return {"entities_created": 0, "facts_created": 0}
 
         if debug:
@@ -1381,7 +1378,7 @@ class EntropyGate:
         if event_id is None:
             import sys
 
-            sys.stderr.write(f"[EntropyGate] WARNING: ingest returned no event_id\n")
+            sys.stderr.write("[EntropyGate] WARNING: ingest returned no event_id\n")
             sys.stderr.write(
                 f"[EntropyGate]   source={source}, content_length={len(text)}, hash={content_hash[:16]}...\n"
             )

@@ -1,14 +1,19 @@
 """
-Conservative Maintainer for sieveon
-Implements conservative maintenance operations with lazy flushing and debounce
+Conservative Maintainer for sieveon — MANUAL trigger only (C2).
+
+There is deliberately no background/auto-flush loop: the only production
+entrypoint is the `memory_consolidate` MCP tool. `queue_patch_update` +
+`debounce_seconds` batch patch-updates between explicit `flush_pending` /
+`perform_maintenance` calls. Physical stale-fact deletion only happens
+with `delete_stale=true`. Do not add auto-scheduling without updating
+README + docs/mcp-server.md.
 """
 
 import asyncio
 import os
 import time
-import uuid
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 import httpx
 
@@ -232,7 +237,7 @@ class ConservativeMaintainer:
                 if len(group) < 2:
                     continue
                 group.sort(key=lambda x: x.get("timestamp", ""), reverse=True)
-                keep = group[0]
+                # group[0] is the newest event and is kept; the rest are forgotten
                 for dup in group[1:]:
                     dup_id = dup.get("id")
                     if not dup_id:

@@ -8,7 +8,7 @@ services:
       - "8000:8000"
     user: root
     environment:
-      SURREAL_PATH: mem:///data/surrealdb?versioned=true&aol=sync&snapshot=60s&sync=5s
+      SURREAL_PATH: surrealkv:///data/surrealdb?versioned=true
     command: start --log info --user ${SURREALDB_USER:-root} --pass ${SURREALDB_PASS:-root}
     restart: unless-stopped
     volumes:

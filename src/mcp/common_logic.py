@@ -11,19 +11,15 @@ from typing import Any, Dict, List, Optional, Tuple
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
 from src.extraction.classifier import QueryClassifier
-from src.extraction.embedding_service import get_embedding_service
 from src.extraction.entropy_gate import escape_surrealql
 from src.extraction.entity_utils import infer_entity_type
-from src.maintenance.conservative_maintainer import ConservativeMaintainer
-from src.planner.executor import PlanExecutor, RetrievalExecutor
+from src.planner.executor import RetrievalExecutor
 from src.router.budget import BudgetLevel, BudgetTracker
-from src.router.policy import RoutingPolicy, QueryType
+from src.router.policy import get_policy, resolve_query_type
 from .core import (
     _query_surreal,
     _extract_result,
     _clean_output,
-    cost_tracker,
-    MAX_CONTENT_LENGTH
 )
 
 MAX_CONTENT_LENGTH = 100_000
@@ -79,25 +75,27 @@ async def _store_content(content: str, source: str = "user_input", debug: bool =
             "gate": gate_info}
 
 
-async def _execute_query(query: str, cost_budget: str = "auto", limit: int = 10) -> dict:
-    """Einzige Query-Implementierung: classify → route → execute → parse → track."""
+async def _execute_query(
+    query: str,
+    cost_budget: str = "auto",
+    limit: int = 10,
+    since: Optional[str] = None,
+    until: Optional[str] = None,
+    at_time: Optional[str] = None,
+) -> dict:
+    """Einzige Query-Implementierung: classify → route → execute → parse → track.
+
+    since/until bound event timestamps (fn::events_at semantics),
+    at_time pins KG validity (fn::facts_at_time semantics, B1).
+    """
     classifier = QueryClassifier()
     q_type_str, confidence = classifier.classify(query)
-    
-    # Convert string query type to enum
-    # Classifier returns "multi-hop" but QueryType expects "multi_hop"
-    try:
-        if isinstance(q_type_str, str):
-            q_type_normalized = q_type_str.replace("-", "_")
-            q_type = QueryType(q_type_normalized)
-        else:
-            q_type = q_type_str
-    except ValueError:
-        # If the string doesn't match a known enum value, default to factual
-        q_type = QueryType.FACTUAL
-        print(f"Warning: Unknown query type '{q_type_str}', defaulting to FACTUAL")
 
-    policy = RoutingPolicy()
+    # Classifier emits "multi-hop" while the enum uses "multi_hop"; unknown
+    # types normalize to FACTUAL instead of failing the whole query.
+    q_type = resolve_query_type(q_type_str)
+
+    policy = get_policy()
     strategy_info = policy.get_strategy(q_type, confidence)
     
     # Unpack the tuple returned by get_strategy
@@ -121,6 +119,8 @@ async def _execute_query(query: str, cost_budget: str = "auto", limit: int = 10)
         budget_enum = BudgetLevel.MEDIUM
     
     budget_tracker = BudgetTracker(budget_enum)
+    execution_error = None
+    results_raw: Dict[str, Any] = {}
     
     try:
         # Convert strategy string to RetrievalStrategy enum
@@ -128,12 +128,26 @@ async def _execute_query(query: str, cost_budget: str = "auto", limit: int = 10)
         try:
             strategy_enum = RetrievalStrategy(strategy_dict["strategy"])
         except ValueError:
-            # If the strategy is not valid, default to event log first
-            strategy_enum = RetrievalStrategy.EVENT_LOG_FIRST
+            # Unknown strategy: hybrid_fallback is the safe default here too,
+            # it degrades gracefully instead of dropping the graph/vector paths
+            strategy_enum = RetrievalStrategy.HYBRID_FALLBACK
         
-        results_raw = await executor.execute_strategy(strategy_enum, query, budget_tracker)
+        results_raw = await executor.execute_strategy(
+            strategy_enum,
+            query,
+            budget_tracker,
+            since=since,
+            until=until,
+            at_time=at_time,
+        )
+        if isinstance(results_raw, dict) and results_raw.get("error"):
+            execution_error = {
+                "message": results_raw["error"],
+                "type": results_raw.get("error_type", "Exception"),
+            }
         results = _flatten_query_results(results_raw)
     except Exception as e:
+        execution_error = {"message": str(e), "type": type(e).__name__}
         print(f"Error executing strategy: {e}")
         # Fallback: return empty results
         results = []
@@ -160,10 +174,12 @@ async def _execute_query(query: str, cost_budget: str = "auto", limit: int = 10)
 
     ranking = {
         "strategy_used": strategy_dict["strategy"],
-        "query_type": q_type.value if hasattr(q_type, 'value') else str(q_type),
+        "query_type": q_type.value,
         "classification_confidence": confidence,
         "total_candidates": len(entities) + len(facts) + len(events),
+        "relevance_score": results_raw.get("relevance_score"),
         "diversity_note": "Results from multiple retrieval paths (FTX + vector + KG) fused via RRF.",
+        "temporal_window": {"since": since, "until": until, "at_time": at_time},
     }
     if any(ev.get("relevance_score") is not None for ev in events):
         scores = [ev.get("relevance_score", 0) or 0 for ev in events]
@@ -175,13 +191,14 @@ async def _execute_query(query: str, cost_budget: str = "auto", limit: int = 10)
 
     return {
         "query": query,
-        "classified_as": q_type.value if hasattr(q_type, 'value') else str(q_type),
+        "classified_as": q_type.value,
         "confidence": confidence,
         "strategy": strategy_dict["strategy"],
         "cost_budget": strategy_dict["cost_budget"],
         "results": {"entities": entities, "facts": facts, "events": events},
         "total": len(entities) + len(facts) + len(events),
         "ranking": ranking,
+        "error": execution_error,
         "summary": {
             "found": summary["found"],
             "answer": summary["answer"],
@@ -189,7 +206,12 @@ async def _execute_query(query: str, cost_budget: str = "auto", limit: int = 10)
             "total_entities": summary["total_entities"],
             "total_events": summary["total_events"],
         },
-        "budget_tracker_key": None,
+        "budget": {
+            "level": budget_enum.value,
+            "db_calls": budget_tracker.db_calls,
+            "estimated_tokens": budget_tracker.estimated_tokens,
+            "over_budget": budget_tracker.is_over_budget(),
+        },
     }
 
 

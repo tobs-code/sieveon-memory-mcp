@@ -10,10 +10,9 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from src.extraction.classifier import QueryClassifier
-from src.router.policy import BudgetLevel, QueryType, RoutingPolicy
-from src.router.cost_awareness import CostTracker
+from src.router.policy import QueryType, RoutingPolicy
 from src.extraction.entropy_gate import EntropyGate, EntropyGateConfig
-from src.extraction.coarse_extractor import CoarseExtractor
+from src.extraction.entity_utils import extract_entities
 from src.planner.executor import PlanExecutor
 from src.maintenance.conservative_maintainer import ConservativeMaintainer
 from src.extraction.embedding_service import get_embedding_service
@@ -153,17 +152,12 @@ class TestEntropyGateSpecificFunctionality(unittest.TestCase):
         self.assertIn("execution_metadata", result)
 
 
-class TestCoarseExtractor(unittest.TestCase):
-    def test_extractor_initialization(self):
-        """Test coarse extractor initialization"""
-        extractor = CoarseExtractor()
-        self.assertIsNotNone(extractor)
+class TestLiveExtractionPath(unittest.TestCase):
+    """Live extraction path (entity_utils) — replaces removed CoarseExtractor tests."""
 
-    def test_extractor_extraction_on_empty_text(self):
-        """Test extraction on empty text"""
-        extractor = CoarseExtractor()
-        result = extractor.extract("")
-        self.assertEqual(result, {})
+    def test_extract_entities_on_empty_text(self):
+        """Empty text yields no entities via the live path."""
+        self.assertEqual(extract_entities(""), [])
 
     def test_maintainer_with_empty_state(self):
         """Test maintainer behavior when system state is empty"""

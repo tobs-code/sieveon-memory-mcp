@@ -1,7 +1,6 @@
 import asyncio
 import os
 import httpx
-import json
 
 SURREAL_URL = os.getenv("SURREALDB_URL", "http://127.0.0.1:8000/sql")
 SURREAL_AUTH = (os.getenv("SURREALDB_USER", "root"), os.getenv("SURREALDB_PASS", "root"))

@@ -6,10 +6,8 @@ import unittest
 import asyncio
 from src.extraction.classifier import QueryClassifier
 from src.router.policy import BudgetLevel, QueryType, RoutingPolicy
-from src.planner.executor import PlanExecutor, RetrievalExecutor
-from src.maintenance.conservative_maintainer import ConservativeMaintainer
-from src.extraction.entropy_gate import EntropyGate, EntropyGateConfig
-from src.extraction.coarse_extractor import CoarseExtractor
+from src.planner.executor import PlanExecutor
+from src.extraction.entropy_gate import EntropyGate
 from src.extraction.embedding_service import get_embedding_service
 
 

@@ -10,13 +10,11 @@ import os
 import random
 import sys
 import time
-from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
 import httpx
 
 # Standard imports
-import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -75,10 +73,10 @@ async def get_entity_resource(entity_id: str) -> str:
         entity = _clean_output(data[0])
 
         facts_result = await _query_surreal(
-            f"SELECT id, predicate, in.name AS subject, out.name AS object, confidence, valid_from, valid_until "
+            "SELECT id, predicate, in.name AS subject, out.name AS object, confidence, valid_from, valid_until "
             f"FROM fact WHERE (in = {entity_id} OR out = {entity_id}) "
-            f"AND (valid_until IS NONE OR valid_until > time::now()) "
-            f"ORDER BY confidence DESC LIMIT 50;"
+            "AND (valid_until IS NONE OR valid_until > time::now()) "
+            "ORDER BY confidence DESC LIMIT 50;"
         )
         facts = _extract_result(facts_result, 1) or []
         entity["facts"] = _clean_output(facts)
@@ -322,7 +320,7 @@ def _jittered_backoff(level: int) -> float:
 
 def _budget_aware_should_retry(sql: str) -> bool:
     """Adaptive retry logic based on query complexity and system health."""
-    health = BudgetTracker._health_factor
+    health = BudgetTracker.get_system_health()
 
     # Heavy queries get fewer retries
     heavy = sql.strip().upper().startswith(("RELATE", "DEFINE", "CREATE"))
@@ -366,14 +364,12 @@ async def _query_surreal(sql: str, params: Optional[Dict[str, Any]] = None) -> A
         # Inject namespace + db via params (SurrealDB 2.x supports $ns, $db)
         body_dict["params"] = dict(params)
         body = json.dumps(body_dict)
-        full_sql = sql  # USE NS/DB can be omitted when using params with ns/db
     else:
         headers = {
             "Accept": "application/json",
             "Content-Type": "text/plain",
         }
         body = f"USE NS {SURREAL_NS} DB {SURREAL_DB};\n{sql}"
-        full_sql = body
 
     # Read circuit state without holding lock while query runs
     async with _surreal_lock:
@@ -701,7 +697,7 @@ async def ensure_schema_loaded():
                     print(f"   [WARN] Warnings: {stderr.decode('utf-8', errors='replace')}")
                 print("[OK] Schema loading complete!")
             except asyncio.TimeoutError:
-                print(f"   [ERROR] Schema loading timed out after 60s")
+                print("   [ERROR] Schema loading timed out after 60s")
                 if proc:
                     proc.kill()
             except Exception as e:
@@ -712,11 +708,14 @@ async def ensure_schema_loaded():
     else:
         print("[OK] Sieveon schema already loaded")
 
-    # Ensure entity table has all required fields (in case schema was loaded without them)
+    # Ensure entity table has all required fields (in case schema was loaded without them).
+    # Every DEFAULT must match docs/schema.surql: these are OVERWRITE statements, so a
+    # missing DEFAULT silently strips the schema default and later CREATEs that omit
+    # the field fail with "Couldn't coerce value for field `type`".
     try:
         required_fields = [
             "DEFINE FIELD OVERWRITE name ON entity TYPE string;",
-            "DEFINE FIELD OVERWRITE type ON entity TYPE string;",
+            "DEFINE FIELD OVERWRITE type ON entity TYPE string DEFAULT 'unknown';",
             "DEFINE FIELD OVERWRITE embedding ON entity TYPE option<array>;",
             "DEFINE FIELD OVERWRITE metadata ON entity TYPE option<object>;",
             "DEFINE FIELD OVERWRITE forgotten ON entity TYPE bool DEFAULT false;",

@@ -13,7 +13,6 @@ This is the main entry point that ties together all modular components:
 import asyncio
 import os
 import threading
-from typing import NoReturn
 
 # Import all components to register them
 from .core import (
@@ -29,12 +28,11 @@ from .core import (
 from .common_logic import (
     _store_content,
     _execute_query,
-    _get_or_create_entity
 )
 
 from .tools import (
     memory_store,
-    memory_store_markdown,
+    memory_store_batch,
     memory_query,
     memory_update,
     memory_stats,
@@ -45,10 +43,7 @@ from .tools import (
     semantic_search,
     memory_explain_routing,
     memory_forget,
-    memory_unforget,
     memory_consolidate,
-    list_entities,
-    list_events,
 )
 
 # Import endpoints module to register HTTP endpoints (without importing specific functions)

@@ -77,7 +77,7 @@ def ensure_env():
         ok(".env already exists")
         return
     shutil.copy(str(env_example), str(env_file))
-    ok(f"Created .env from .env.example (edit if needed)")
+    ok("Created .env from .env.example (edit if needed)")
 
 
 def start_surrealdb():

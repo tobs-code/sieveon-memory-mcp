@@ -15,7 +15,7 @@ from src.extraction.entropy_gate import EntropyGate
 def _query_surreal(sql: str):
     """Helper function to query SurrealDB"""
     headers = {"Accept": "application/json"}
-    full_sql = f"USE NS {SURREAL_NS} DB {SUREAL_DB};\n{sql}"
+    full_sql = f"USE NS {SURREAL_NS} DB {SURREAL_DB};\n{sql}"
     response = requests.post(SURREAL_URL, data=full_sql, headers=headers, auth=SURREAL_AUTH, timeout=30)
     response.raise_for_status()
     return response.json()
@@ -169,7 +169,7 @@ class TestSurrealIntegration(unittest.TestCase):
             """
             _query_surreal(sql)
 
-        past_query = f"""
+        past_query = """
         SELECT * FROM event 
         WHERE content = 'Past event for timestamp test';
         """
@@ -190,20 +190,25 @@ class TestSurrealIntegration(unittest.TestCase):
         self.assertIn("decision", result)
         self.assertIn(result["decision"], ["extract", "ignore", "skip"])
 
-        # If it decided to extract, verify it was logged
-        if result["decision"] == "extract":
-            # Check that the event was added to the vector DB
-            self.assertIsNotNone(gate.vector_db.vectors)
+        # Ingest end-to-end so the decision is persisted
+        event_id, _kg, gate_log = gate.ingest(test_text, "integration_test")
+        self.assertIsNotNone(event_id)
 
-        test_text_clean = test_text.replace("'", "''")
-        log_check_sql = f"SELECT * FROM gate_log WHERE content_hash = '{test_text_clean}';"
-        try:
-            log_result = _query_surreal(log_check_sql)
-            logs = _extract_result(log_result)
-            # May not find log if DB is unavailable, but shouldn't error
-        except:
-            # If logging fails, that's OK for this test
-            pass
+        # The event must exist and be retrievable
+        stored = _extract_result(_query_surreal(f"SELECT * FROM {event_id};"))
+        self.assertEqual(len(stored), 1)
+        self.assertEqual(stored[0]["content"], test_text)
+        self.assertEqual(stored[0]["source"], "integration_test")
+
+        # The gate decision must be logged against the content hash.
+        # should_extract() above already logged once, ingest() logs again.
+        self.assertIn("decision", gate_log)
+        content_hash = gate._hash_content(test_text)
+        logs = _extract_result(
+            _query_surreal(f"SELECT * FROM gate_log WHERE content_hash = '{content_hash}';")
+        )
+        self.assertGreaterEqual(len(logs), 1)
+        self.assertEqual(logs[-1]["decision"], gate_log["decision"])
 
     def test_complex_query_with_joins(self):
         """Test more complex queries with joins"""
@@ -245,6 +250,16 @@ class TestSurrealIntegration(unittest.TestCase):
 
 class TestSurrealConsistency(unittest.TestCase):
     """Tests to ensure consistency in SurrealDB operations"""
+
+    @classmethod
+    def setUpClass(cls):
+        """Clean up records from previous runs.
+
+        entity.name carries a UNIQUE index, so re-running these tests against a
+        persistent database would otherwise fail on the CREATE.
+        """
+        for name in ("ConsistencyTest", "PersistenceTest"):
+            _query_surreal(f"DELETE entity WHERE name = '{name}';")
 
     def test_transaction_like_behavior(self):
         """Test that operations behave consistently"""

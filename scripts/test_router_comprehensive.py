@@ -6,12 +6,11 @@ Tests routing logic, fallback mechanisms, and budget tracking including edge cas
 import sys
 import os
 import unittest
-from datetime import datetime, timezone
 
 # Add src to path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from src.router.policy import RoutingPolicy, BudgetTracker, OverBudget
+from src.router.policy import RoutingPolicy, BudgetTracker
 
 class TestRouterComprehensive(unittest.TestCase):
     def setUp(self):

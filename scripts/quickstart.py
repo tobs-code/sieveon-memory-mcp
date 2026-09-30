@@ -17,7 +17,6 @@ import asyncio
 import json
 import os
 import sys
-import time
 from pathlib import Path
 
 os.environ.setdefault("TQDM_DISABLE", "1")

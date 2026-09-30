@@ -1,12 +1,12 @@
 # Sieveon
 
-![Python](https://img.shields.io/badge/python-3.11%2B-blue)
+![Python](https://img.shields.io/badge/python-3.10%2B-blue)
 ![SurrealDB](https://img.shields.io/badge/SurrealDB-3.1.5-8B5CF6)
 ![License](https://img.shields.io/badge/license-Apache%202.0-green)
 ![arXiv](https://img.shields.io/badge/arXiv-2606.24775-b31b1b)
 ![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen)
 
-> A workload-adaptive agent memory system combining event logs, knowledge graphs, and vector embeddings. Evidence-based architecture inspired from [Zhou et al. arXiv:2606.24775](https://arxiv.org/abs/2606.24775).
+> A workload-adaptive agent memory system combining event logs, knowledge graphs, and vector embeddings. Inspired from [Zhou et al. arXiv:2606.24775](https://arxiv.org/abs/2606.24775).
 
 ---
 
@@ -20,14 +20,25 @@ Sieveon is an agent memory system that intelligently classifies, routes, plans, 
                   ┌─────────────────────────┐
                   │  MCP Server             │  (Python, stdio)
                   │  18 tools + 6 resources │
+                  │  Classifier → QueryType │
+                  │  RoutingPolicy → Strategy + Budget
+                  │  RetrievalExecutor → FTX / Vector / KG / Temporal
+                  │  EntropyGate → KG Extraction
+                  │  Maintenance → Forgetting / Consolidation
                   └──────┬──────────────────┘
                          │
                          ▼
         ┌─────────────────────────────┐
         │     SurrealDB Storage       │
         │  (NS:sieveon DB:sieveon)    │
+        │  event / entity / fact /    │
+        │  gate_log / _schema_migrations
         └─────────────────────────────┘
 ```
+
+`memory_query` classifies via `QueryClassifier`, selects a strategy via
+`RoutingPolicy` and executes it via `RetrievalExecutor`. Direct tools like
+`event_log_search` and `semantic_search` bypass classification for explicit lookups.
 
 ### Python Components
 
@@ -35,12 +46,12 @@ Sieveon is an agent memory system that intelligently classifies, routes, plans, 
 |-----------|------|-------------|
 | **MCP Server** | `src/mcp/server.py` | Control plane (Anthropic MCP protocol) — stdio mode. 18 tools + 6 MCP resources: `memory_store`, `memory_store_batch`, `memory_store_markdown`, `memory_query`, `memory_update`, `memory_get`, `event_log_search`, `kg_query`, `graph_traverse`, `semantic_search`, `list_entities`, `list_events`, `memory_stats`, `memory_explain_routing`, `memory_forget`, `memory_unforget`, `memory_consolidate`, `memory_merge_entities`; Resources: `sieveon://stats`, `sieveon://entity/{id}`, `sieveon://event/{id}`, `sieveon://kg/subject/{name}`, `sieveon://kg/predicate/{type}`, `sieveon://search/{query}` |
 | **Extraction** | `src/extraction/` | Entropy-gated entity extraction with Groq API (llama-3.1-8b-instant) or spaCy fallback. Pipe-separated LLM prompt, type preservation |
-| **Classifier** | `src/extraction/classifier.py` | Hybrid ML+Regex query classifier: sklearn LogisticRegression on Qwen3-Embedding-0.6B embeddings (1024d), with regex fallback. Synthetic training data generator at `scripts/generate_synthetic_training_data.py`, manual labeling CLI at `scripts/label_queries.py` |
+| **Classifier** | `src/extraction/classifier.py` | Hybrid ML+Regex query classifier: sklearn LogisticRegression on Qwen3-Embedding-0.6B embeddings (1024d) + TF-IDF (500 unigrams+bigrams), with regex fallback when ML confidence < 0.6. Synthetic training data generator at `scripts/generate_synthetic_training_data.py`, manual labeling CLI at `scripts/label_queries.py` |
 | **Migrations** | `src/mcp/migrations.py` | Versioned auto-migration engine for breaking schema changes |
-| **Router** | `src/router/` | Policy engine & cost tracking |
-| **Planner** | `src/planner/` | Execution engine |
-| **Maintenance** | `src/maintenance/` | Conservative maintainer |
-| **Chunking** | `src/mcp/chunking.py` | Overlapping char/token chunking engine with YAML front matter parsing, table/HTML fence protection, image stripping (alt-text preserved), heading context prepended to each chunk |
+| **Router** | `src/router/` | Query classification policy + budget tracking: `policy.py` (RoutingPolicy, strategy per QueryType), `budget.py` (BudgetTracker, BudgetLevel), `cost_awareness.py` (CostTracker effectiveness ranking) |
+| **Planner** | `src/planner/executor.py` | No separate `Planner` class — retrieval execution only: `RetrievalExecutor.execute_strategy()` + `PlanExecutor.execute_plan()` run the strategy chosen by the Router |
+| **Maintenance** | `src/maintenance/conservative_maintainer.py` | Internal conservative maintainer (debounced patch updates, stale-fact cleanup, duplicate consolidation). Only MCP entrypoint is `memory_consolidate` |
+| **Chunking** | `src/mcp/chunking.py` | Overlapping `char`/`token`/`semantic` chunking engine with YAML front matter parsing, table/HTML fence protection, image stripping (alt-text preserved), heading context prepended to each chunk |
 
 ---
 
@@ -52,14 +63,15 @@ Sieveon is an agent memory system that intelligently classifies, routes, plans, 
   - Full holdout F1-macro (n=180, incl. ~9% leakage): 0.995 — but 5-fold CV is the reliable number
   - factual recall improved from 0.925 (embeddings only) to **0.975 (+TF-IDF)**
   - **0.6-threshold accuracy**: 100% (106/106 samples above threshold)
-  - **Caveats:** (1) TREC original 6 labels were heuristically mapped to 3 Sieveon types (ABBR/ENTY/HUM/LOC → factual, NUM/time → temporal, DESC/why → multi-hop); original labels discarded. (2) CoQA mapped 100% → conversational. (3) Synthetic data uses templates → ~9% exact duplicates across any random train/test split.
+  - **Caveats:** (1) TREC original 6 labels were heuristically mapped to 3 Sieveon types (ABBR/ENTY/HUM/LOC → factual, NUM/time → temporal, DESC/why → multi-hop); original labels discarded. (2) CoQA mapped 100% → conversational. (3) Synthetic data uses templates → ~9% exact duplicates across any random train/test split. (4) Internal eval on synthetic + TREC + CoQA only — not yet validated on real agent traffic.
   - Run `python scripts/eval_classifier.py` to reproduce.
-- **Adaptive Retrieval** — Strategy selection per query type (event log, KG, hybrid BM25+vector+temporal)
+- **Adaptive Retrieval** — `memory_query` (classify → route → execute) selects per query type (event log, KG, hybrid BM25+vector+temporal). Direct tools (`event_log_search`, `semantic_search`, `kg_query`, `graph_traverse`) bypass the router for explicit lookups
 - **Entropy Gating** — Composite score: Shannon character entropy + gzip compression ratio (Kolmogorov complexity proxy) + embedding novelty. Raw Event Log is always append-only; the gate decides only whether to extract into the Knowledge Graph.
 - **Entity Extraction** — Groq API (`llama-3.1-8b-instant`) with spaCy fallback. Pipe-separated LLM prompt, type preservation (LLM classification preferred over heuristic).
 - **Logical Invalidation** — `valid_until` timestamps instead of hard deletes. `memory_update` auto-creates target entities if they don't exist yet.
-- **Forgetting & Consolidation** — `memory_forget` soft-deletes events or entities; `memory_consolidate` triggers maintenance runs (with optional physical stale-fact removal).
+- **Forgetting & Consolidation** — `memory_forget` soft-deletes events or entities; `memory_consolidate` (sole MCP entrypoint) triggers `ConservativeMaintainer` runs (with optional physical stale-fact removal).
 - **Cost Awareness** — Tracks & budgets resource consumption per strategy
+- **Tool notes** — `memory_stats` accepts optional `aggregate` (`none`/`events_by_source`/`facts_by_predicate`/`entities_by_type`/`all`); the extra `random_string` param exists only for MCP no-required-args compatibility — call with no args.
 
 ---
 
@@ -197,7 +209,7 @@ composite = alpha * normalized_text_entropy + gamma * compression_ratio + beta *
 
 **Decision:** `extract` if `composite >= threshold`, otherwise `ignore`.
 
-**Near-duplicate guardrail:** If embedding novelty (1 − avg similarity to top-5 existing) falls below `min_novelty = 0.20`, the content is skipped as a near-duplicate. Uses SurrealDB native vector search with event_id exclusion to prevent self-matches.
+**Near-duplicate guardrail:** embedding novelty (`1 − avg similarity` to top-5 existing) is compared against an adaptive `min_novelty` ramping from `0.05` (cold start) to `0.20` (mature DB). A value below the ramp raises a `near_duplicate_warning` flag only — there is no hard skip; the composite score decides (`extract` vs `ignore`). Uses SurrealDB native vector search with event_id exclusion to prevent self-matches.
 
 **Diversity guardrails (pre-filter):** Short texts (≤150 chars) are checked for `character_diversity < 0.15`; longer texts use `word_diversity < 0.20`. This blocks noise ("aaaa...", "test test...") while allowing normal English text of any length to pass through to the composite score.
 
@@ -236,7 +248,7 @@ Budgets are measured and enforced per execution, and adaptively scaled based on 
 | `medium` | <= 25 DB calls / 3k tokens | Hybrid BM25+vector+temporal | result truncation |
 | `high` | <= 50 DB calls / 8k tokens | Graph expansion + invalidation | best-effort truncation |
 
-- **Adaptive Scaling:** Limits are automatically scaled down based on a **System Health Factor**. As SurrealDB failures increase, budgets are tightened to reduce load and improve stability.
+- **Adaptive Scaling:** Limits are automatically scaled down based on a **System Health Factor** (`BudgetTracker.get_system_health()`, range `0.1–1.0`). It is set to `1.0` on successful SurrealDB calls and lowered on failures (`src/mcp/core.py`); low health (< 0.5) also reduces retry attempts. Read it via `get_system_health()` — do not access the private `BudgetTracker._health_factor` directly.
 - **Token counting:** uses `tiktoken` (`gpt-3.5-turbo` encoding) where available; otherwise falls back to `chars/4`.
 - **BudgetTracker:** records `db_calls` and `estimated_tokens` and exposes `OverBudget` for aborts/throttling.
 
@@ -272,7 +284,6 @@ engine.register(Migration(
 | `entity` | SCHEMAFULL | Knowledge graph entities (name, type, embedding) |
 | `fact` | SCHEMALESS | Relations between entities (subject → predicate → object) |
 | `gate_log` | SCHEMAFULL | Entropy gate decisions (composite score, threshold, reason) |
-| `retrieval_cache` | SCHEMALESS | Hybrid search result cache (query_hash, result, ttl) |
 | `_schema_migrations` | SCHEMAFULL | Applied migration versions (version, description, checksum) |
 
 ---

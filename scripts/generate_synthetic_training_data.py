@@ -2,7 +2,6 @@
 
 import json
 import random
-import hashlib
 
 random.seed(42)
 

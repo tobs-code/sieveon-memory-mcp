@@ -7,7 +7,6 @@ import requests
 import sys
 import os
 import json
-from urllib.parse import urljoin
 
 # Try to load environment variables from .env file
 try:
@@ -20,8 +19,8 @@ except ImportError:
 # Get configuration from environment variables or use defaults
 SURREAL_URL = os.getenv("SURREALDB_URL", "http://127.0.0.1:8000/sql")
 SURREAL_AUTH = (os.getenv("SURREALDB_USER", "root"), os.getenv("SURREALDB_PASS", "root"))
-SURREAL_NS = os.getenv("SURREALDB_NS", "strata")  # Updated from agent_memory to strata
-SURREAL_DB = os.getenv("SURREALDB_DB", "strata")  # Updated from agent_memory to strata
+SURREAL_NS = os.getenv("SURREALDB_NS", "sieveon")
+SURREAL_DB = os.getenv("SURREALDB_DB", "sieveon")
 
 def _query_surreal_with_debug(sql_query: str) -> tuple:
     headers = {
@@ -63,7 +62,7 @@ def debug_query(sql_query, verbose=True):
     full_sql = f"USE NS {SURREAL_NS} DB {SURREAL_DB};\n{sql_query}"
     
     if verbose:
-        print(f"Full SQL sent to SurrealDB:")
+        print("Full SQL sent to SurrealDB:")
         print(full_sql)
         print("-" * 50)
     
@@ -71,7 +70,7 @@ def debug_query(sql_query, verbose=True):
         response = requests.post(
             SURREAL_URL,
             headers=headers,
-            auth=(SURREAL_USER, SURREAL_PASS),
+            auth=SURREAL_AUTH,
             data=full_sql,
             timeout=30
         )

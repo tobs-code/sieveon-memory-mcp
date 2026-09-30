@@ -7,7 +7,6 @@ Measures:
 """
 
 import hashlib
-import json
 import os
 import statistics
 import time
@@ -89,7 +88,7 @@ def main():
     print(f"  Load time     : {model_load_time:.3f}s")
 
     # Warm-up embed (first call may compile graph)
-    print(f"\n  Warming up model (first embed)...")
+    print("\n  Warming up model (first embed)...")
     t0 = time.time()
     service.embed_for_storage("warm up sentence.")
     warmup_time = time.time() - t0
@@ -166,7 +165,7 @@ def main():
     print(f"  Model warm-up embed     : {warmup_time:.3f}s")
     print(f"  Embedding dimension     : {service.dimension}")
     print()
-    print(f"  Embedding Generation:")
+    print("  Embedding Generation:")
     print(f"    Rounds                : {len(embed_times)}")
     print(f"    Total time            : {sum(embed_times):.3f}s")
     print(f"    Min                   : {min(embed_times):.4f}s")
@@ -175,7 +174,7 @@ def main():
     if len(embed_times) > 1:
         print(f"    Stddev                : {statistics.stdev(embed_times):.4f}s")
     print()
-    print(f"  SurrealDB Store:")
+    print("  SurrealDB Store:")
     print(f"    Rounds                : {len(store_times)}")
     print(f"    Total time            : {sum(store_times):.3f}s")
     print(f"    Min                   : {min(store_times):.4f}s")
@@ -184,7 +183,7 @@ def main():
     if len(store_times) > 1:
         print(f"    Stddev                : {statistics.stdev(store_times):.4f}s")
     print()
-    print(f"  Combined (Embed + Store):")
+    print("  Combined (Embed + Store):")
     print(f"    Total time            : {sum(total_times):.3f}s")
     print(f"    Min                   : {min(total_times):.4f}s")
     print(f"    Max                   : {max(total_times):.4f}s")

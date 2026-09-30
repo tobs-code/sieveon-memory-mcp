@@ -1,19 +1,23 @@
 """
-Extractor Integration for sieveon
-Coordinates the integration between extraction components and the broader system
+Extractor Integration for sieveon — OFFLINE batch path.
+
+Uses the live extraction building blocks (`entity_utils.extract_entities` /
+`extract_triples`: Groq -> spaCy -> regex) after the entropy gate.
+This is NOT the live store path: `src/mcp/common_logic._store_content`
+calls `EntropyGate.ingest` directly. Keep both paths consistent only via
+shared `EntropyGate.should_extract`. (CoarseExtractor removed 2026-09-30.)
 """
 
-import json
 import os
 import sys
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 import httpx
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from src.extraction.coarse_extractor import ExtractionPipeline
 from src.extraction.embedding_service import get_embedding_service
+from src.extraction.entity_utils import extract_entities, extract_triples
 from src.extraction.entropy_gate import EntropyGate, escape_surrealql
 
 SURREAL_URL = os.getenv("SURREALDB_URL", "http://127.0.0.1:8000/sql")
@@ -82,12 +86,30 @@ def _extract_surreal_result(data: Any) -> list:
 
 
 class ExtractorIntegration:
-    """Main integration point for extraction components"""
+    """Main integration point for extraction components (offline batch)."""
 
     def __init__(self, entropy_gate: Optional[EntropyGate] = None):
-        self.pipeline = ExtractionPipeline()
         self.entropy_gate = entropy_gate or EntropyGate()
         self.embedding_service = get_embedding_service()
+
+    @staticmethod
+    def _to_pipeline_shape(
+        entities: List[Dict[str, Any]], triples: List[Dict[str, Any]]
+    ) -> Dict[str, Any]:
+        """Shape live extraction output like the old pipeline result."""
+        by_type: Dict[str, List[str]] = {}
+        for ent in entities:
+            by_type.setdefault(ent.get("type", "unknown"), []).append(ent["name"])
+        relations = [
+            {
+                "subject": t["subject"],
+                "predicate": t["predicate"],
+                "object": t["object"],
+                "confidence": t.get("confidence", 0.5),
+            }
+            for t in triples
+        ]
+        return {"entities": by_type, "relations": relations}
 
     def process_text(self, text: str, source: str = "unknown") -> Dict[str, Any]:
         """
@@ -105,7 +127,9 @@ class ExtractorIntegration:
         }
 
         if entropy_result["decision"] == "extract":
-            extraction_result = self.pipeline.process(text, apply_entropy_filter=False)
+            extraction_result = self._to_pipeline_shape(
+                extract_entities(text), extract_triples(text)
+            )
             result["extraction_result"] = extraction_result
             result["applied_extraction"] = True
 
@@ -124,6 +148,22 @@ class ExtractorIntegration:
                 asyncio.run(self._store_extracted_entities(extraction_result, source))
 
         return result
+
+    async def _resolve_entity_id(
+        self, name: str, entity_id_map: Dict[str, str]
+    ) -> Optional[str]:
+        """Resolve a relation endpoint to an entity ID via the batch map, else DB."""
+        for key, eid in entity_id_map.items():
+            if key.split(":", 1)[-1].lower() == name.lower():
+                return eid
+        name_escaped = escape_surrealql(name)
+        lookup = await _query_surreal(
+            f"SELECT id FROM entity WHERE name = '{name_escaped}' LIMIT 1;"
+        )
+        found = _extract_surreal_result(lookup)
+        if found:
+            return found[0]["id"]
+        return None
 
     async def _store_extracted_entities(
         self, extraction_result: Dict[str, Any], source: str = "extraction"
@@ -177,31 +217,27 @@ class ExtractorIntegration:
                     stored_entities += 1
 
         for relation in relations:
-            verbs = relation.get("verbs", [])
-            predicate = verbs[0] if verbs else "related_to"
-            entity_entries = list(relation.get("entities", {}).items())
-            if len(entity_entries) < 2:
-                continue
-
-            subject_name = entity_entries[0][1][0] if entity_entries[0][1] else None
-            object_name = (
-                entity_entries[1][1][0]
-                if len(entity_entries) > 1 and entity_entries[1][1]
-                else None
-            )
+            # New shape (live path): {subject, predicate, object, confidence}.
+            # Old coarse shape {verbs, entities}: no longer produced, not supported.
+            subject_name = relation.get("subject")
+            object_name = relation.get("object")
+            predicate = relation.get("predicate", "related_to")
 
             if not subject_name or not object_name:
                 continue
 
-            subject_id = entity_id_map.get(f"{entity_entries[0][0]}:{subject_name}")
-            object_id = entity_id_map.get(f"{entity_entries[1][0]}:{object_name}")
+            subject_id = await self._resolve_entity_id(
+                subject_name, entity_id_map
+            )
+            object_id = await self._resolve_entity_id(
+                object_name, entity_id_map
+            )
 
             if not subject_id or not object_id or subject_id == object_id:
                 continue
 
-            subject_escaped = escape_surrealql(subject_name)
             predicate_escaped = escape_surrealql(predicate)
-            object_escaped = escape_surrealql(object_name)
+            source_escaped = escape_surrealql(source)
 
             sql = (
                 f"SELECT id FROM fact "
@@ -220,7 +256,7 @@ class ExtractorIntegration:
                 f"RELATE '{subject_id}'->fact->'{object_id}' "
                 f"SET predicate = '{predicate_escaped}', "
                 f"confidence = 1.0, "
-                f"source = '{source}';"
+                f"source = '{source_escaped}';"
             )
 
             try:

@@ -16,7 +16,7 @@ USE NS sieveon DB sieveon;
 -- ========================================
 DEFINE TABLE IF NOT EXISTS event SCHEMALESS;
 DEFINE FIELD IF NOT EXISTS timestamp ON event TYPE datetime DEFAULT time::now();
-DEFINE FIELD IF NOT EXISTS source ON event TYPE string;
+DEFINE FIELD IF NOT EXISTS source ON event TYPE string DEFAULT 'user_input';
 DEFINE FIELD IF NOT EXISTS content ON event TYPE string;
 DEFINE FIELD IF NOT EXISTS embedding ON event TYPE none | array;
 DEFINE FIELD IF NOT EXISTS metadata ON event TYPE none | object;
@@ -36,7 +36,7 @@ DEFINE INDEX IF NOT EXISTS event_embedding_vec ON event FIELDS embedding HNSW DI
 -- ========================================
 DEFINE TABLE IF NOT EXISTS entity SCHEMAFULL;
 DEFINE FIELD IF NOT EXISTS name ON entity TYPE string;
-DEFINE FIELD IF NOT EXISTS type ON entity TYPE string;
+DEFINE FIELD IF NOT EXISTS type ON entity TYPE string DEFAULT 'unknown';
 DEFINE FIELD IF NOT EXISTS embedding ON entity TYPE none | array;
 DEFINE FIELD IF NOT EXISTS metadata ON entity TYPE none | object;
 DEFINE FIELD IF NOT EXISTS forgotten ON entity TYPE bool DEFAULT false;
@@ -64,17 +64,7 @@ DEFINE INDEX IF NOT EXISTS fact_count ON fact COUNT;
 DEFINE INDEX IF NOT EXISTS fact_predicate_ft ON fact FIELDS predicate FULLTEXT ANALYZER entity_analyzer BM25;
 
 -- ========================================
--- ③ Retrieval Cache
--- ========================================
-DEFINE TABLE IF NOT EXISTS retrieval_cache SCHEMALESS;
-DEFINE FIELD IF NOT EXISTS query_hash ON retrieval_cache TYPE string;
-DEFINE FIELD IF NOT EXISTS result ON retrieval_cache TYPE array;
-DEFINE FIELD IF NOT EXISTS timestamp ON retrieval_cache TYPE datetime DEFAULT time::now();
-DEFINE FIELD IF NOT EXISTS ttl ON retrieval_cache TYPE duration DEFAULT 1h;
-DEFINE INDEX IF NOT EXISTS cache_query ON retrieval_cache COLUMNS query_hash;
-
--- ========================================
--- ④ Gate Log
+-- ③ Gate Log
 -- ========================================
 DEFINE TABLE IF NOT EXISTS gate_log SCHEMAFULL;
 DEFINE FIELD IF NOT EXISTS content_hash ON gate_log TYPE string;
@@ -91,7 +81,7 @@ DEFINE INDEX IF NOT EXISTS gate_log_decision ON gate_log COLUMNS decision;
 DEFINE INDEX IF NOT EXISTS gate_log_count ON gate_log COUNT;
 
 -- ========================================
--- ⑤ Schema Migration Tracking
+-- ④ Schema Migration Tracking
 -- ========================================
 DEFINE TABLE IF NOT EXISTS _schema_migrations SCHEMAFULL;
 DEFINE FIELD IF NOT EXISTS version ON _schema_migrations TYPE int;

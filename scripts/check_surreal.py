@@ -6,8 +6,7 @@ Verifies that SurrealDB is accessible and responding correctly
 import requests
 import sys
 import os
-from typing import Any, List, Dict, Optional
-from urllib.parse import urljoin
+from typing import Any
 
 # Try to load environment variables from .env file
 try:

@@ -5,7 +5,7 @@ HTTP Endpoints implementation
 
 import sys
 import os
-from typing import Any, Dict, Optional
+from typing import Optional
 from fastapi import Query
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
@@ -15,7 +15,7 @@ from .common_logic import _store_content, _execute_query
 from src.extraction.classifier import QueryClassifier
 from src.planner.executor import PlanExecutor
 from src.maintenance.conservative_maintainer import ConservativeMaintainer
-from src.router.policy import RoutingPolicy
+from src.router.policy import get_policy, resolve_query_type
 
 
 @app.get("/classify")
@@ -32,15 +32,10 @@ async def classify_endpoint(
 async def route_endpoint(query: str = Query(..., description="The query to route")):
     """Route a query according to the routing policy"""
     classifier = QueryClassifier()
-    policy = RoutingPolicy()
+    policy = get_policy()
 
     query_type_str, confidence = classifier.classify(query)
-    # Convert string to QueryType enum
-    from src.router.policy import QueryType
-    try:
-        q_type_enum = QueryType(query_type_str)
-    except ValueError:
-        q_type_enum = QueryType.FACTUAL
+    q_type_enum = resolve_query_type(query_type_str)
     strategy_name, budget_level, policy_applied = policy.get_strategy(q_type_enum, confidence)
 
     return {
@@ -59,17 +54,12 @@ async def plan_and_execute_endpoint(request_data: dict):
     """Create and execute a plan for the given query"""
     query = request_data.get("query", "")
     classifier = QueryClassifier()
-    policy = RoutingPolicy()
+    policy = get_policy()
     executor = PlanExecutor()
 
     # Classify and route the query
     query_type_str, confidence = classifier.classify(query)
-    # Convert string to QueryType enum
-    from src.router.policy import QueryType
-    try:
-        q_type_enum = QueryType(query_type_str)
-    except ValueError:
-        q_type_enum = QueryType.FACTUAL
+    q_type_enum = resolve_query_type(query_type_str)
     strategy_name, budget_level, policy_applied = policy.get_strategy(q_type_enum, confidence)
 
     budget_str = budget_level.value if hasattr(budget_level, "value") else str(budget_level)
@@ -79,6 +69,10 @@ async def plan_and_execute_endpoint(request_data: dict):
         query=query,
         budget_level=budget_str,
     )
+    result["routing"] = {
+        "classification": {"type": query_type_str, "confidence": confidence},
+        "policy_applied": policy_applied,
+    }
 
     return result
 

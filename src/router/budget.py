@@ -62,3 +62,17 @@ class BudgetTracker:
     def get_system_health(cls) -> float:
         with cls._health_lock:
             return cls._health_factor
+
+    @classmethod
+    def get_system_health_factor(cls) -> float:
+        """Public alias for get_system_health().
+
+        Use this (or get_system_health()) from other modules.
+        Do not access BudgetTracker._health_factor directly.
+        """
+        return cls.get_system_health()
+
+    @property
+    def system_health_factor(self) -> float:
+        """Instance-level read access to the global health factor."""
+        return type(self).get_system_health()

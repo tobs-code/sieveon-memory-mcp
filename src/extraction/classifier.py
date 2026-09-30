@@ -8,11 +8,13 @@ Hybrid approach:
 """
 
 import json
-import os
 import pickle
 import re
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import TYPE_CHECKING, Dict, List, Optional, Tuple
+
+if TYPE_CHECKING:
+    from src.extraction.embedding_service import BaseEmbeddingService
 
 
 _ML_MODEL_PATH = Path(__file__).parents[2] / "docs" / "data" / "classifier_model.pkl"

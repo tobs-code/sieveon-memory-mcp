@@ -6,11 +6,10 @@ On server startup, compares current version against registered migrations
 and applies any pending ones in order.
 """
 
-import asyncio
 import hashlib
 import inspect
 import logging
-from typing import Any, Callable, Coroutine, Dict, List, Optional
+from typing import Any, Callable, Coroutine, Dict, List
 
 logger = logging.getLogger(__name__)
 
@@ -172,12 +171,24 @@ def _register_builtin(engine: MigrationEngine):
         apply_fn=_m003_performance_indexes,
     ))
 
+    engine.register(Migration(
+        version=4,
+        description="Add DEFAULTs to event.source and entity.type so schemafull tables reject fewer valid writes",
+        apply_fn=_m004_required_field_defaults,
+    ))
+
+    engine.register(Migration(
+        version=5,
+        description="Drop the unused retrieval_cache table (never read or written by the planner)",
+        apply_fn=_m005_drop_retrieval_cache,
+    ))
+
 
 async def _m001_baseline(query):
     sql = r"""
 DEFINE TABLE IF NOT EXISTS event SCHEMALESS;
 DEFINE FIELD IF NOT EXISTS timestamp ON event TYPE datetime DEFAULT time::now();
-DEFINE FIELD IF NOT EXISTS source ON event TYPE string;
+DEFINE FIELD IF NOT EXISTS source ON event TYPE string DEFAULT 'user_input';
 DEFINE FIELD IF NOT EXISTS content ON event TYPE string;
 DEFINE FIELD IF NOT EXISTS embedding ON event TYPE none | array;
 DEFINE FIELD IF NOT EXISTS metadata ON event TYPE none | object;
@@ -191,7 +202,7 @@ DEFINE INDEX IF NOT EXISTS event_content_ft ON event FIELDS content FULLTEXT ANA
 DEFINE INDEX IF NOT EXISTS event_embedding_vec ON event FIELDS embedding HNSW DIMENSION 1024 DIST COSINE;
 DEFINE TABLE IF NOT EXISTS entity SCHEMAFULL;
 DEFINE FIELD IF NOT EXISTS name ON entity TYPE string;
-DEFINE FIELD IF NOT EXISTS type ON entity TYPE string;
+DEFINE FIELD IF NOT EXISTS type ON entity TYPE string DEFAULT 'unknown';
 DEFINE FIELD IF NOT EXISTS embedding ON entity TYPE none | array;
 DEFINE FIELD IF NOT EXISTS metadata ON entity TYPE none | object;
 DEFINE FIELD IF NOT EXISTS forgotten ON entity TYPE bool DEFAULT false;
@@ -311,3 +322,27 @@ async def _m003_performance_indexes(query):
     ]
     for stmt in statements:
         await query(stmt)
+
+
+async def _m004_required_field_defaults(query):
+    """Give event.source and entity.type a DEFAULT.
+
+    In SurrealDB 3.x `TYPE string` rejects both a missing value and an explicit
+    NONE, so any write that omits `source` (or `type`) failed with a coercion
+    error. A DEFAULT fills the field in on write while keeping the type strict.
+    """
+    statements = [
+        "DEFINE FIELD OVERWRITE source ON event TYPE string DEFAULT 'user_input';",
+        "DEFINE FIELD OVERWRITE type ON entity TYPE string DEFAULT 'unknown';",
+    ]
+    for stmt in statements:
+        await query(stmt)
+
+
+async def _m005_drop_retrieval_cache(query):
+    """Remove the retrieval_cache table.
+
+    It was defined in the baseline schema but no code path ever read or wrote
+    it, so it only accumulated an unused table and index.
+    """
+    await query("REMOVE TABLE IF EXISTS retrieval_cache;")

@@ -76,10 +76,13 @@ def ensure_entity_schema():
     )
 
     if errors:
-        print(f"\n⚠️  Entity table schema incomplete — re-applying DEFINE FIELDs...")
+        print("\n⚠️  Entity table schema incomplete — re-applying DEFINE FIELDs...")
         fields_sql = [
             "DEFINE FIELD OVERWRITE name ON entity TYPE string",
-            "DEFINE FIELD OVERWRITE type ON entity TYPE string",
+            # Keep the DEFAULT from docs/schema.surql. These are OVERWRITE statements,
+            # so omitting it strips the default and later CREATEs that leave out
+            # `type` fail with "Couldn't coerce value for field `type`".
+            "DEFINE FIELD OVERWRITE type ON entity TYPE string DEFAULT 'unknown'",
             "DEFINE FIELD OVERWRITE embedding ON entity TYPE option<array>",
             "DEFINE FIELD OVERWRITE metadata ON entity TYPE option<object>",
             "DEFINE FIELD OVERWRITE forgotten ON entity TYPE bool DEFAULT false",
@@ -99,7 +102,7 @@ def ensure_entity_schema():
         if errors:
             print(f"   ❌ Entity schema still broken: {errors}")
             sys.exit(1)
-        print(f"   ✅ Entity schema repaired")
+        print("   ✅ Entity schema repaired")
 
     # Cleanup test entity (ignore errors)
     run_single(f"DELETE entity WHERE name = '{test_name}';")
@@ -143,7 +146,7 @@ if __name__ == "__main__":
     check, errors = run_sql_batch(
         ["SELECT count() FROM event", "SELECT count() FROM entity"]
     )
-    print(f"\n🔍 Quick check:")
+    print("\n🔍 Quick check:")
     if errors:
         print(f"   ⚠️  Errors: {errors}")
     else:

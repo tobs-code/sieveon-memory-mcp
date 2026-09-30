@@ -53,3 +53,27 @@ DEFINE FUNCTION fn::append_event($source: string, $content: string, $embedding: 
         embedding = $embedding,
         metadata = $metadata;
 };
+
+-- 6. fn::events_at($from, $to)
+-- Events in einem Zeitfenster (B1 Temporal-Pfad: "was wusste der Agent zu Zeitpunkt T").
+-- $from/$to sind optionale datetimes (NONE = offen). Nutzt den event_timestamp-Index.
+DEFINE FUNCTION fn::events_at($from: option<datetime>, $to: option<datetime>) {
+    RETURN SELECT id, content, timestamp, source, metadata
+    FROM event
+    WHERE forgotten = false
+      AND ($from = NONE OR timestamp >= $from)
+      AND ($to = NONE OR timestamp <= $to)
+    ORDER BY timestamp DESC;
+};
+
+-- 7. fn::facts_at_time($time)
+-- Alle zu $time gueltigen Facts (validity-window statt "nur aktuell").
+-- Ergaenzt fn::facts_at (subjekt+pраеdikat) um die globale Variante fuer den Executor.
+DEFINE FUNCTION fn::facts_at_time($time: datetime) {
+    RETURN SELECT id, in.name AS in_name, out.name AS out_name,
+           predicate, confidence, valid_from, valid_until
+    FROM fact
+    WHERE valid_from <= $time
+      AND (valid_until = NONE OR valid_until > $time)
+    ORDER BY confidence DESC;
+};
