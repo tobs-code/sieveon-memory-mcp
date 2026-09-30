@@ -81,6 +81,10 @@ Sieveon is an agent memory system that intelligently classifies, routes, plans, 
 
 - Python 3.10+
 - Docker + Docker Compose (for SurrealDB)
+- ~4 GB disk for local models (downloaded lazily on first use into `~/.cache/huggingface`):
+  `relex-multi` ~1.3 GB, `gliner2.5-multi` ~1.2 GB, `Qwen3-Embedding-0.6B` ~1.2 GB.
+  GPU optional — everything runs on CPU too; on CUDA all three fit side by side
+  in 8 GB VRAM (~5 GB used).
 
 ### One-command setup
 
