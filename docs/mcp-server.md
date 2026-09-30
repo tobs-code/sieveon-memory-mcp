@@ -325,6 +325,9 @@ The high-level entry point. Classifies the query, selects a retrieval strategy, 
 | `query` | `string` | yes | Natural language query |
 | `cost_budget` | `string` | no | `"auto"` (default), `"low"`, `"medium"`, `"high"` |
 | `limit` | `int` | no | Max results per category (default: 10) |
+| `since` | `string` | no | ISO datetime — lower bound for event timestamps (`fn::events_at` semantics) |
+| `until` | `string` | no | ISO datetime — upper bound for event timestamps |
+| `at_time` | `string` | no | ISO datetime — pins KG validity ("what did the agent know at T", `fn::facts_at_time` semantics via `type::datetime`) |
 
 **Returns:**
 
@@ -910,7 +913,7 @@ read_resource("sieveon://search/Rust%20async%20runtime")
 | `memory_store` | Core | `content`, `source?`, `metadata?` | `event_id`, `status`, `gate` |
 | `memory_store_batch` | Core | `items`, `source?` | `results[]`, `errors[]`, `stored`, `failed` |
 | `memory_store_markdown` | Core | `content` or `file_path`, `source?`, `chunk_size?`, `overlap?`, `include_heading_context?`, `chunking_method?` (`char`/`token`/`semantic`), `encoding_name?`, `strip_images?`, `parse_front_matter?`, `max_concurrent?`, `metadata?` | `status`, `source`, `total_chunks`, `stored`, `failed`, `results[]`, `errors[]`, `gate_summary` |
-| `memory_query` | Core | `query`, `cost_budget?`, `limit?` | `classified_as`, `strategy`, `results` |
+| `memory_query` | Core | `query`, `cost_budget?`, `limit?`, `since?`, `until?`, `at_time?` | `classified_as`, `strategy`, `results` |
 | `memory_update` | Core | `subject`, `predicate`, `new_value` | `invalidated_fact`, `new_fact` |
 | `memory_get` | Primitives | `id`, `include_facts?` | `status`, `type`, `data` |
 | `event_log_search` | Primitives | `query`, `since?`, `until?`, `limit?`, `offset?`, `include_forgotten?` | `events[]`, `count` |
