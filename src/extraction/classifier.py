@@ -18,11 +18,47 @@ if TYPE_CHECKING:
 
 
 _ML_MODEL_PATH = Path(__file__).parents[2] / "docs" / "data" / "classifier_model.pkl"
+
+# Read-requests worded with "update" that are never updates (asking for
+# information, changing nothing). Used by the regex fallback AND as an ML
+# veto in QueryClassifier (an ML "update" verdict never survives these).
+_UPDATE_READ_REQUEST_RE = re.compile(
+    r"\bupdate\s+me\s+on\b|\blatest\s+updates?\b"
+    r"|\bbring\s+me\s+up\s+to\s+date\b"
+)
+
+# Distinct question words: 2+ in one query usually means multiple facts
+# ("Who ... and where ...") -> multi-hop, even if each word alone is factual.
+_WH_WORD_RE = re.compile(
+    r"\b(who|what|which|where|when|why|how|wer|was|welche|wo|wann|warum|wie)\b"
+)
+
+# Definitional why ("why is/are ..."): asks for an explanation of a stable
+# fact (lookup), not multi-hop synthesis. Past-tense/causal why
+# ("why did/was ...") stays multi-hop territory.
+_WHY_DEFINITIONAL_RE = re.compile(r"\bwhy\s+(is|are)\b")
+
+# German factual question frames. Conversational DE training data uses
+# worüber/gesprochen/erinnerst-frames exclusively, so these frames never
+# legitimately route to conversational -- an ML "conversational" verdict on
+# them is always template gravity from EN CoQA "What ..." questions.
+_DE_FACTUAL_RE = re.compile(
+    r"\bwas\s+(ist|sind|hat|haben|war|waren|wurde|wurden|bedeutet|kostet|steht)\b"
+    r"|\bwer\s+(ist|war|hat)\b|\bwo\s+ist\b|\bwie\s+funktioni"
+)
 _TRAINING_PATHS = [
     Path(__file__).parents[2] / "docs" / "data" / "trec_queries.jsonl",
     Path(__file__).parents[2] / "docs" / "data" / "coqa_conversational.jsonl",
     Path(__file__).parents[2] / "docs" / "data" / "training_queries.jsonl",
+    Path(__file__).parents[2] / "docs" / "data" / "training_queries_extra.jsonl",
     Path(__file__).parents[2] / "docs" / "data" / "manual_labels.jsonl",
+    # Public sources (scripts/fetch_classifier_data.py). CoQA overlap with
+    # coqa_conversational.jsonl was removed (9 rows); classes noted per file.
+    Path(__file__).parents[2] / "docs" / "data" / "hotpot_multihop.jsonl",
+    Path(__file__).parents[2] / "docs" / "data" / "squad_factual.jsonl",
+    Path(__file__).parents[2] / "docs" / "data" / "coqa_conv.jsonl",
+    Path(__file__).parents[2] / "docs" / "data" / "clinc_mapped.jsonl",
+    Path(__file__).parents[2] / "docs" / "data" / "timeqa_temporal.jsonl",
 ]
 _ML_CONFIDENCE_THRESHOLD = 0.60
 
@@ -57,8 +93,10 @@ class _RegexClassifier:
             r"\bdate\b",
             r"\bsince\b",
             r"\buntil\b",
-            r"\bchange\b",
-            r"\bchanged\b",
+            # NOTE: no bare change/changed here (removed 2026-09-30): "what
+            # changed" asks for facts (factual + optional time window), the
+            # time aspect comes from when/since/until words. Bare "change"
+            # routed too many lookups to temporal.
         ]
         self.factual_patterns = [
             # Deutsch
@@ -91,6 +129,15 @@ class _RegexClassifier:
             r"\bshow\b",
             r"\bfind\b",
             r"\btell\b",
+            # Englisch + Deutsch: how-questions are lookups, not multi-hop
+            r"\bhow\b",
+            r"\bwie\b",
+            # Deutsch: reflexive change-questions ask what changed (factual).
+            # Umlaute in beiden Schreibweisen (ä/ae), da User beides tippen.
+            r"\bwas hat sich\b",
+            r"\bwas haben sich\b",
+            r"\bhat sich ge(ä|ae)ndert\b",
+            r"\bhaben sich ge(ä|ae)ndert\b",
         ]
         self.multi_hop_patterns = [
             # Deutsch
@@ -131,8 +178,24 @@ class _RegexClassifier:
             r"\btalked about\b",
             r"\bspoke about\b",
             r"\btalking about\b",
-            r"\bremember\b",
+            # Recall-questions stay conversational; bare "remember that/note"
+            # (memory writes) must NOT match here -- ML learned update for those.
+            r"\bremember what\b",
+            r"\bremember when\b",
+            r"\bremember who\b",
             r"\bdo you recall\b",
+            r"\bdo you remember\b",
+            # Greetings / acknowledgements (CLINC greeting/goodbye/thank_you)
+            r"^\s*hi\b",
+            r"^\s*hello\b",
+            r"^\s*hey\b",
+            r"^\s*hallo\b",
+            r"\bgood morning\b",
+            r"\bgood evening\b",
+            r"\bthank you\b",
+            r"\bthanks\b",
+            r"\bdanke\b",
+            r"\bsee you\b",
         ]
         self.update_patterns = [
             # Deutsch
@@ -142,6 +205,13 @@ class _RegexClassifier:
             r"\bkorrigiere\b",
             r"\bsetze\b",
             r"\büberschreibe\b",
+            # Deutsch: memory-write verbs (erinnern/vergessen/merken)
+            r"\bvergiss\b",
+            r"\bvergisst\b",
+            r"\bvergesse\b",
+            r"\berinnere\b",
+            r"\bmerke\b",
+            r"\bmerk dir\b",
             # Englisch
             r"\bupdate\b",
             r"\bchange\b",
@@ -149,6 +219,12 @@ class _RegexClassifier:
             r"\bcorrect\b",
             r"\bset\b",
             r"\boverwrite\b",
+            # Englisch: memory-write verbs
+            r"\bforget\b",
+            r"\bremind\b",
+            r"\bremember to\b",
+            r"\bmake a note\b",
+            r"\btake note\b",
         ]
 
     def classify(self, query: Optional[str]) -> Tuple[str, float]:
@@ -170,6 +246,10 @@ class _RegexClassifier:
             if re.search(pattern, query_lower):
                 scores["factual"] += 1
         for pattern in self.multi_hop_patterns:
+            # Definitional why ("why is/are ...") is a lookup, not synthesis.
+            # Skip only the bare "why" hit; coordination still counts via _WH_WORD_RE.
+            if pattern == r"\bwhy\b" and _WHY_DEFINITIONAL_RE.search(query_lower):
+                continue
             if re.search(pattern, query_lower):
                 scores["multi-hop"] += 1
         for pattern in self.conversational_patterns:
@@ -178,6 +258,19 @@ class _RegexClassifier:
         for pattern in self.update_patterns:
             if re.search(pattern, query_lower):
                 scores["update"] += 2
+
+        # Read-requests worded with "update" are NOT updates: "update me on
+        # X", "latest update(s) ...", "bring me up to date" ask for information
+        # (factual/conversational), they change nothing. Bare "update(s) on"
+        # stays ambiguous on purpose -- the ML model decides those.
+        if scores["update"] > 0 and _UPDATE_READ_REQUEST_RE.search(query_lower):
+            scores["update"] = 0
+
+        # Coordination: two distinct question words in one query ("Who ...
+        # and where ...") combine multiple facts -> multi-hop. Counts distinct
+        # wh-words so "where ... where" repetition does not trigger it.
+        if len(set(_WH_WORD_RE.findall(query_lower))) >= 2:
+            scores["multi-hop"] += 2
 
         priority_order = [
             "update",
@@ -261,7 +354,8 @@ class _MLClassifier:
             return np.concatenate([embeddings, tfidf], axis=1)
         return embeddings
 
-    def train(self, texts: Optional[List[str]] = None, labels: Optional[List[str]] = None):
+    def train(self, texts: Optional[List[str]] = None, labels: Optional[List[str]] = None,
+              cap_per_class: int = 600):
         self._suppress_tqdm()
 
         from sklearn.feature_extraction.text import TfidfVectorizer
@@ -273,6 +367,23 @@ class _MLClassifier:
 
         if len(texts) < 10:
             return
+
+        # Per-class cap (deterministic): keeps dominant sources (e.g. 5.4k TREC
+        # factual templates) from drowning minority classes. Seed fixed for
+        # reproducible retrains.
+        if cap_per_class and cap_per_class > 0:
+            import random as _random
+            rng = _random.Random(42)
+            by_class: Dict[str, List[str]] = {}
+            for t, lbl in zip(texts, labels):
+                by_class.setdefault(lbl, []).append(t)
+            texts, labels = [], []
+            for lbl in sorted(by_class):
+                items = by_class[lbl][:]
+                rng.shuffle(items)
+                for t in items[:cap_per_class]:
+                    texts.append(t)
+                    labels.append(lbl)
 
         import numpy as np
 
@@ -368,6 +479,13 @@ class QueryClassifier:
         if self._ml.is_trained():
             label, confidence = self._ml.classify(query)
             if confidence >= _ML_CONFIDENCE_THRESHOLD:
+                # Deterministic vetoes: known phrasings must never route to
+                # update (triggers writes) or conversational (EN-template
+                # gravity on DE factual frames), no matter the ML confidence.
+                if label == "update" and _UPDATE_READ_REQUEST_RE.search(query.lower()):
+                    return self._regex.classify(query)
+                if label == "conversational" and _DE_FACTUAL_RE.search(query.lower()):
+                    return self._regex.classify(query)
                 return label, confidence
 
         return self._regex.classify(query)

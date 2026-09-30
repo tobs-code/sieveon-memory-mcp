@@ -11,6 +11,54 @@ from src.extraction.entropy_gate import EntropyGate
 from src.extraction.embedding_service import get_embedding_service
 
 
+class TestRegexClassifier(unittest.TestCase):
+    """Pure regex fallback tests (no model, deterministic)."""
+
+    def setUp(self):
+        from src.extraction.classifier import _RegexClassifier
+        self.regex = _RegexClassifier()
+
+    def test_how_is_factual(self):
+        self.assertEqual(self.regex.classify("How does RAG work?")[0], "factual")
+
+    def test_greetings_are_conversational(self):
+        for q in ("hi", "hello there", "hey, are you there?", "hallo", "good morning"):
+            self.assertEqual(self.regex.classify(q)[0], "conversational", q)
+
+    def test_update_read_requests_suppressed(self):
+        q_type, _ = self.regex.classify("Update me on the project status")
+        self.assertNotEqual(q_type, "update")
+
+    def test_memory_write_verbs_are_update(self):
+        for q in ("Don't forget the meeting", "Remind me to call", "Vergiss die Blumen nicht"):
+            self.assertEqual(self.regex.classify(q)[0], "update", q)
+
+    def test_coordination_is_multi_hop(self):
+        self.assertEqual(
+            self.regex.classify("Who runs Orion Labs and where are they?")[0], "multi-hop"
+        )
+
+    def test_german_change_is_factual(self):
+        self.assertEqual(self.regex.classify("Was hat sich geaendert?")[0], "factual")
+
+    def test_why_definition_not_multi_hop(self):
+        # "why is/are" alone must not score multi-hop (lookup, not synthesis)
+        q_type, _ = self.regex.classify("Why is the sky blue?")
+        self.assertNotEqual(q_type, "multi-hop")
+
+    def test_ml_vetoes(self):
+        """Deterministic vetoes override confident ML verdicts."""
+        clf = QueryClassifier()
+        clf._ensure_ml()
+        if clf._ml.is_trained():
+            label, conf = clf._ml.classify("Update me on the project status")
+            if label == "update" and conf >= 0.60:
+                self.assertNotEqual(clf.classify("Update me on the project status")[0], "update")
+            label, conf = clf._ml.classify("Was hat sich geaendert?")
+            if label == "conversational" and conf >= 0.60:
+                self.assertEqual(clf.classify("Was hat sich geaendert?")[0], "factual")
+
+
 class TestQueryClassifier(unittest.TestCase):
     def setUp(self):
         self.classifier = QueryClassifier()

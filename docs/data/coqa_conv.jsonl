@@ -1,0 +1,374 @@
+{"text": "When was the Vat formally opened?", "type": "conversational", "source": "coqa_hf"}
+{"text": "what is the library for?", "type": "conversational", "source": "coqa_hf"}
+{"text": "for what subjects?", "type": "conversational", "source": "coqa_hf"}
+{"text": "what was started in 2014?", "type": "conversational", "source": "coqa_hf"}
+{"text": "how do scholars divide the library?", "type": "conversational", "source": "coqa_hf"}
+{"text": "how many?", "type": "conversational", "source": "coqa_hf"}
+{"text": "what is the official name of the Vat?", "type": "conversational", "source": "coqa_hf"}
+{"text": "where is it?", "type": "conversational", "source": "coqa_hf"}
+{"text": "how many printed books does it contain?", "type": "conversational", "source": "coqa_hf"}
+{"text": "when were the Secret Archives moved from the rest of the library?", "type": "conversational", "source": "coqa_hf"}
+{"text": "how many items are in this secret collection?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Can anyone use this library?", "type": "conversational", "source": "coqa_hf"}
+{"text": "what must be requested to view?", "type": "conversational", "source": "coqa_hf"}
+{"text": "what must be requested in person or by mail?", "type": "conversational", "source": "coqa_hf"}
+{"text": "of what books?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What is the Vat the library of?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How many books survived the Pre Lateran period?", "type": "conversational", "source": "coqa_hf"}
+{"text": "what is the point of the project started in 2014?", "type": "conversational", "source": "coqa_hf"}
+{"text": "what will this allow?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Where was the Auction held?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How much did they make?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How much did they expected?", "type": "conversational", "source": "coqa_hf"}
+{"text": "WHo buy the Jackson Glove", "type": "conversational", "source": "coqa_hf"}
+{"text": "Where was the buyer of the glove from?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What did Venters call Lassiter?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who asked Lassiter to be their rider?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Did he agree?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Why did she ask him?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Did she tell him as much?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What was she willing to give up?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Where was Milly led to?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who took her there?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Whose name would Jane not speak?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Did she allow herself to even think it?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What was Jane hoping Lassiter would become to her?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who was oppressing her?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What was she hoping she could keep from happening to him?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who had shouted Lassiter's name?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who did that affect?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Did Jane think she could control Lassiter?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who is Bells?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How did he get his name?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Was Lassiter impressed with the horse?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Did he want to take him for himself?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who is Rudolph's father?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Why does Rudolph run away?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What makes him different from the other reindeer?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who does he save during a snow storm?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Does he save Christmas?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What Island does he travel to?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Which company produced the movie?", "type": "conversational", "source": "coqa_hf"}
+{"text": "When did it premiere?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What methods were used in filming the movie?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Are all of the puppets still in existence?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How many remain?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Which?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Where had they been stored since their use in the show?", "type": "conversational", "source": "coqa_hf"}
+{"text": "When were they rediscovered?", "type": "conversational", "source": "coqa_hf"}
+{"text": "When were they put on display?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Where?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How much did they appraise for in 2005?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How much did they originally cost to produce?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What year were they made?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who bought them?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who arrived at the church?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who was followed by a clerk dressed in black?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who was crying?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who noticed it?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Did any others arrive with her?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What other group of people were in her group?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Was she well-rested?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who should be reinforced?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who thought these measures were required?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Was Budapest always one city?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How many was it?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What was one called?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Where was it located?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What was the other?", "type": "conversational", "source": "coqa_hf"}
+{"text": "When did they combine?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Is it an important city in it's country?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How many people live there?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Do other people visit?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What do they do?", "type": "conversational", "source": "coqa_hf"}
+{"text": "When do people like to go?", "type": "conversational", "source": "coqa_hf"}
+{"text": "When was LA started?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What is the climate like there?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What is it close to?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How many people live in Taipei?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Is it cheap to live there?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Do people prefer to buy things in Hong Kong?", "type": "conversational", "source": "coqa_hf"}
+{"text": "WHO IS FILING THE LAWSUIT?", "type": "conversational", "source": "coqa_hf"}
+{"text": "AGAINST WHOM?", "type": "conversational", "source": "coqa_hf"}
+{"text": "WHAT DOES THE FAMILY ACCUSE THE COMPANY OF?", "type": "conversational", "source": "coqa_hf"}
+{"text": "WHAT HAPPENED TO ROBERT?", "type": "conversational", "source": "coqa_hf"}
+{"text": "WHERE WAS HE KILLED?", "type": "conversational", "source": "coqa_hf"}
+{"text": "HOW DO THEY IDENTIFY THAT BUS?", "type": "conversational", "source": "coqa_hf"}
+{"text": "WHERE WAS IT LOCATED WHEN THE INCIDENT TOOK PLACE?", "type": "conversational", "source": "coqa_hf"}
+{"text": "WAS ROBERT IN A UNIVERSITY?", "type": "conversational", "source": "coqa_hf"}
+{"text": "WHICH ONE?", "type": "conversational", "source": "coqa_hf"}
+{"text": "DID THE DRIVER HELP HIM?", "type": "conversational", "source": "coqa_hf"}
+{"text": "WAS IS A MALE DRIVER>", "type": "conversational", "source": "coqa_hf"}
+{"text": "ARE THEY SUING HER TOO?", "type": "conversational", "source": "coqa_hf"}
+{"text": "WHAT IS THE REQUEST FOR DAMAGES?", "type": "conversational", "source": "coqa_hf"}
+{"text": "IS THE FAMILY FOCUSED ON THE MONEY?", "type": "conversational", "source": "coqa_hf"}
+{"text": "WHAT'S THEIR MAIN FOCUS?", "type": "conversational", "source": "coqa_hf"}
+{"text": "DOES THE BUS COMPANY HAVE MULTIPLE ATTORNEYS?", "type": "conversational", "source": "coqa_hf"}
+{"text": "HOW MANY>", "type": "conversational", "source": "coqa_hf"}
+{"text": "HOW HAVE THEY RESPONDED TO THE CALLS?", "type": "conversational", "source": "coqa_hf"}
+{"text": "DO THEY HAVE PROOF THE BUS COMPANY WAS IN ON IT?", "type": "conversational", "source": "coqa_hf"}
+{"text": "WHAT HAPPENED WHEN CHAMPION FIRST STEPPED OUT OF THE BUS?", "type": "conversational", "source": "coqa_hf"}
+{"text": "who recently had heart surgery?", "type": "conversational", "source": "coqa_hf"}
+{"text": "what should the driver have done?", "type": "conversational", "source": "coqa_hf"}
+{"text": "where did he leave them off?", "type": "conversational", "source": "coqa_hf"}
+{"text": "did the driver help?", "type": "conversational", "source": "coqa_hf"}
+{"text": "who tried to bring Nicole back to life?", "type": "conversational", "source": "coqa_hf"}
+{"text": "how old is Ted?", "type": "conversational", "source": "coqa_hf"}
+{"text": "did the driver try to pick more people up?", "type": "conversational", "source": "coqa_hf"}
+{"text": "who is looking into the situation?", "type": "conversational", "source": "coqa_hf"}
+{"text": "where was May heading with Nicole?", "type": "conversational", "source": "coqa_hf"}
+{"text": "what day?", "type": "conversational", "source": "coqa_hf"}
+{"text": "what had recently been put into nicole?", "type": "conversational", "source": "coqa_hf"}
+{"text": "what time were they going to the hospital?", "type": "conversational", "source": "coqa_hf"}
+{"text": "what is the mother's name?", "type": "conversational", "source": "coqa_hf"}
+{"text": "how old is she?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What is a valuable service?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What is the issue?", "type": "conversational", "source": "coqa_hf"}
+{"text": "When did it begin?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Is is happening quickly?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What is a safety issue?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What is easier about online?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Overhead higher or lower?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What is a reason online is cheaper?", "type": "conversational", "source": "coqa_hf"}
+{"text": "who does it affect most?", "type": "conversational", "source": "coqa_hf"}
+{"text": "When was teh University established?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How many professionals schools is it organized into?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How many students are enrolled?", "type": "conversational", "source": "coqa_hf"}
+{"text": "and in the college?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What is the University home to?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Is that a small press?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What will be completed in 2020?", "type": "conversational", "source": "coqa_hf"}
+{"text": "where will that be?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What will be there?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Does the University have a medical school?", "type": "conversational", "source": "coqa_hf"}
+{"text": "A law school?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What is the energy source for an incandescent bulb?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Is it hot?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How does it get hot?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How is is protected?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How does the bulb get its energy supply?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Are incandescent lights efficient?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How much energy do they convert to light?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What happens to the rest of the energy?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How many lumens per watt does an incandescent bulb create?", "type": "conversational", "source": "coqa_hf"}
+{"text": "An LED bulb?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What are other uses of incandescent bulbs?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How long does an incandescent bulb last?", "type": "conversational", "source": "coqa_hf"}
+{"text": "And LED?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What age did Einstein start talking?", "type": "conversational", "source": "coqa_hf"}
+{"text": "When did he start reading?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who was worried about him?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Did Beethoven's music teacher support him?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Did Thomas Edison's teachers think he was smart?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Did Thomas have any family members that thought he was stupid?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Which one in particular?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What did Auguste Rodin become famous for?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What did he have difficulty with as a youngster?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What condition would we have diagnosed him with today?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Did his father believe he could overcome his difficulties?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Did anyone agree with his father?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Was it another family member?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Did the uncle think he could be taught?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Was Walt Disney a successful newspaper editor?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What did his boss think he did not have?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What does the article state that you have?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What did Neolithic follow?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What was the Neolithic considered?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What culture did it come from?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What is that called today?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What did the this period begin?", "type": "conversational", "source": "coqa_hf"}
+{"text": "And it ended when?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What produced the Neolithic Revolution?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What was produced during that time?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What did this evolve into?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What forced people to farm?", "type": "conversational", "source": "coqa_hf"}
+{"text": "From what?", "type": "conversational", "source": "coqa_hf"}
+{"text": "When was the Natufian period?", "type": "conversational", "source": "coqa_hf"}
+{"text": "When was poultry first domesticated?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Why might people have kept quail in captivity before using them for nourishment?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Are today's chickens virtually the same as their ancestors?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What did breeders look for when breeding?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How can one avoid food poisoning when eating poultry?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How is the term poultry defined?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Are pidgeons considered poultry?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What are they sometimes alternatively called?", "type": "conversational", "source": "coqa_hf"}
+{"text": "From which language is \"poultry\" derived?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Which means?", "type": "conversational", "source": "coqa_hf"}
+{"text": "In what language originally?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Which scientific order includes both chickens and turkeys?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Which is a subcategory of which superorder?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How are most birds raised today?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Globally, where does poultry rank as a meat source?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Are chickens and eggs a high source of fat?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What nuitritonal benefit do they have?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Originally, where did people find birds to raise?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Was Meg telling her Mom about Beth being sick?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who was not allowed to see Beth?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who was taking care of Beth?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How did Jo feel emotionally?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What did Jack shoot?", "type": "conversational", "source": "coqa_hf"}
+{"text": "was it killed?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What did the other wolves do then?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How long did the sleigh get away from the other wolves?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What was shining?", "type": "conversational", "source": "coqa_hf"}
+{"text": "On what?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Was the moon bright?", "type": "conversational", "source": "coqa_hf"}
+{"text": "After two hours, how many wolves were alive?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Was it still following the sleigh?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What nationality was Jack Brown?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Why did he go to Russia?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How long did he stay?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Where did he then return to?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who visited him when he returned?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What kind of trip did he say he had in Russia?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What made him late during that trip?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Was he a little late or very late?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How many wolves were initially following him?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What animals were spooked by the wolves?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Was it light or dark in the forest?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What is the name of the Chinese actor in the story?", "type": "conversational", "source": "coqa_hf"}
+{"text": "and his wife?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Why is Wang getting a divorce?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What percent of the Chinese population are mad at Ma?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What trope does this divorce fit?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What did Ma do with their assetts?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How many flats did they have?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What kind of car did they have?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How many social media views has their divorce had?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What is one of their hashtags?", "type": "conversational", "source": "coqa_hf"}
+{"text": "And another?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Is it the top topic in China?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Did somebody did?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Was he able to swim?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What nation is this?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Was somebody conceited?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Was he old?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Where did he live?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Was he well-known?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Was he prideful?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Did anybody look better than him?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Did he try to kiss someone?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What did he get nearer to?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Was he well-balanced?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Did he take a fall?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Was he able to get out?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Did his looks improve as he aged?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who was throwing a party?", "type": "conversational", "source": "coqa_hf"}
+{"text": "For who?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What for?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Is she planning on staying near her friends?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Was the party huge and loud?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Where is she going?", "type": "conversational", "source": "coqa_hf"}
+{"text": "To become an engineer?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What is she going for?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who did she bring to the party?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who sat out the drinks and snacks?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who does Birdman star?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What type of show does he need the confidence to perform in?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Is it a light and fluffy comedy?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Is it about a current Hollywood star?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who won the Best Leading Actor award?", "type": "conversational", "source": "coqa_hf"}
+{"text": "For what film?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Was he ever nominated for anything before?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who pretends to be a college professor in another movie?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Did she win anything for her role?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What award does she earn?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What does she suffer from in her movie?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Where did the Oscars ceremony take place?", "type": "conversational", "source": "coqa_hf"}
+{"text": "On which day?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Was it early in the day or later?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What was the biggest award of the evening?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How many contenders were there for it?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Which film was predicted to win?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What film did J.K. Simmons win an award for?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What was the award?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Was Czechoslovakia ever apart of the Soviet bloc?", "type": "conversational", "source": "coqa_hf"}
+{"text": "when were they a part of it?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What happened in 1993?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What were the two states?", "type": "conversational", "source": "coqa_hf"}
+{"text": "When did it gain independence?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who it did gain independence from?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Do they have an alternate name?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Were they a sovereign state?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Where in Europe is it located?", "type": "conversational", "source": "coqa_hf"}
+{"text": "When was it originated?", "type": "conversational", "source": "coqa_hf"}
+{"text": "True or false, their government was once in exile", "type": "conversational", "source": "coqa_hf"}
+{"text": "What kind of economy did they have from 48-90", "type": "conversational", "source": "coqa_hf"}
+{"text": "What was the Prague Spring?", "type": "conversational", "source": "coqa_hf"}
+{"text": "When did this occur?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What type of terrain do they have?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Did they have mountains?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What body of water is present?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What river speicifcally?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Is humor important in the opinion of the author?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Where was the study done showing we look for humor when dating?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What is mirrored by a culture?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who didn't like humor?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What did he think it was?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who said it helps us see things less seriously?", "type": "conversational", "source": "coqa_hf"}
+{"text": "When do we elected politicians in America?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Is laughter important in this process?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What television show provides an outlet for this?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who jokes about a song?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What is it's name", "type": "conversational", "source": "coqa_hf"}
+{"text": "By whom?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Is humor only used to help?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What is something less than positive that may appear there?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What might it be linked to?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What does the author see in his reflection?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What do they tell him?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who was beaten?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Did the kid live?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How old was the kid?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Why did he hit the kid?", "type": "conversational", "source": "coqa_hf"}
+{"text": "When?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What was he driving?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who beat him up?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Were they the relatives of the kid?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What did they beat him up with?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How bad was he hurt?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Where did he go afterwards?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What was his condition?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who found them?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who intervened?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Did he have any siblings?", "type": "conversational", "source": "coqa_hf"}
+{"text": "relatives?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What did she communicate about it?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who was found guilty of 10 charges?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What was the name of the person who was found guilty of 10 charges?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Was anyone injured in the attack?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Where was the bombing?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who did Love convince to bomb the courthouse?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How long could Love get in prison?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who was that according to?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who is Fred Sheppard?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who else was directed by Love besides Carlock?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What did Love tell them to buy and steal?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What city was Love's house in?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Was Love rich?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who set off the bombs at the courthouse?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How long was the trial?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Where did Carlock, Robinson and Love drive to with a backpack?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How many pipe bombs did they have?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Did they drive to the San Diego in an SUV?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How many pending criminal cases did Love face?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who runs the zoo?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who has been kissed?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who gets woofed at?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who is the favorite animal?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Is it male or female?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What is his name?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What does he like to eat?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Where did they eat lunch?", "type": "conversational", "source": "coqa_hf"}
+{"text": "What did they eat?", "type": "conversational", "source": "coqa_hf"}
+{"text": "who believe he has good fortune?", "type": "conversational", "source": "coqa_hf"}
+{"text": "where is he educated?", "type": "conversational", "source": "coqa_hf"}
+{"text": "is he testing?", "type": "conversational", "source": "coqa_hf"}
+{"text": "what is the test called?", "type": "conversational", "source": "coqa_hf"}
+{"text": "when is he testing?", "type": "conversational", "source": "coqa_hf"}
+{"text": "is really good in one class?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who looks after the bean roots?", "type": "conversational", "source": "coqa_hf"}
+{"text": "How does he care for them?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Why are they important?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Who was talking to the giant?", "type": "conversational", "source": "coqa_hf"}
+{"text": "Was he quiet?", "type": "conversational", "source": "coqa_hf"}

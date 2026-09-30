@@ -1,0 +1,108 @@
+{"text": "Update me on the Orion Labs launch status", "type": "factual", "source": "boundary-v1"}
+{"text": "Give me the latest updates on the Vienna office", "type": "factual", "source": "boundary-v1"}
+{"text": "Any status update on the Brandt contract?", "type": "factual", "source": "boundary-v1"}
+{"text": "Show me the latest update about QuantumDB pricing", "type": "factual", "source": "boundary-v1"}
+{"text": "Update me on what the team decided yesterday", "type": "conversational", "source": "boundary-v1"}
+{"text": "Bring me up to date on the Helios merger talks", "type": "factual", "source": "boundary-v1"}
+{"text": "What is the update policy for security patches?", "type": "factual", "source": "boundary-v1"}
+{"text": "Post an update to the team channel about the release", "type": "update", "source": "boundary-v1"}
+{"text": "Publish the status update on the website", "type": "update", "source": "boundary-v1"}
+{"text": "Send the weekly update to all stakeholders", "type": "update", "source": "boundary-v1"}
+{"text": "Remember that Dr. Brandt is allergic to peanuts", "type": "update", "source": "boundary-v1"}
+{"text": "Don't forget to water the plants on Friday", "type": "update", "source": "boundary-v1"}
+{"text": "Note that the Vienna office closes at six", "type": "update", "source": "boundary-v1"}
+{"text": "Keep in mind that Orion Labs uses euros for billing", "type": "update", "source": "boundary-v1"}
+{"text": "Remind me to call the dentist tomorrow morning", "type": "update", "source": "boundary-v1"}
+{"text": "Make a note that the server password changed", "type": "update", "source": "boundary-v1"}
+{"text": "Remember the anniversary is in June", "type": "update", "source": "boundary-v1"}
+{"text": "Don't forget that the client prefers morning meetings", "type": "update", "source": "boundary-v1"}
+{"text": "Store that my flight number is LH440", "type": "update", "source": "boundary-v1"}
+{"text": "Memorize that the backup code is in the safe", "type": "update", "source": "boundary-v1"}
+{"text": "Why is the Danube green near Vienna?", "type": "factual", "source": "boundary-v1"}
+{"text": "Why do chameleons change color?", "type": "factual", "source": "boundary-v1"}
+{"text": "Why is the Orion satellite still in orbit?", "type": "factual", "source": "boundary-v1"}
+{"text": "Why does bread rise without yeast?", "type": "factual", "source": "boundary-v1"}
+{"text": "Why is the euro stronger this quarter?", "type": "factual", "source": "boundary-v1"}
+{"text": "Why do we celebrate the solstice in June?", "type": "factual", "source": "boundary-v1"}
+{"text": "Why is Helios Labs hiring in Barcelona?", "type": "factual", "source": "boundary-v1"}
+{"text": "Why did the Vienna marathon move to autumn?", "type": "multi-hop", "source": "boundary-v1"}
+{"text": "Who runs Orion Labs and where are they headquartered?", "type": "multi-hop", "source": "boundary-v1"}
+{"text": "Who discovered penicillin and when was it first used?", "type": "multi-hop", "source": "boundary-v1"}
+{"text": "What does Brandt GmbH sell and who owns it?", "type": "multi-hop", "source": "boundary-v1"}
+{"text": "Which team won the cup and who coached them?", "type": "multi-hop", "source": "boundary-v1"}
+{"text": "Who wrote Dune and where was the author born?", "type": "multi-hop", "source": "boundary-v1"}
+{"text": "What founded the city archive and where is it kept?", "type": "multi-hop", "source": "boundary-v1"}
+{"text": "Who leads the expedition and what is their goal?", "type": "multi-hop", "source": "boundary-v1"}
+{"text": "What changed in the Vienna rental contract?", "type": "factual", "source": "boundary-v1"}
+{"text": "What has changed about the refund policy?", "type": "factual", "source": "boundary-v1"}
+{"text": "Which files changed since yesterday?", "type": "temporal", "source": "boundary-v1+relabeled-v2"}
+{"text": "What is different in the new employee handbook?", "type": "factual", "source": "boundary-v1"}
+{"text": "List all open tickets from this week", "type": "factual", "source": "boundary-v1"}
+{"text": "Show me every meeting from last Friday", "type": "factual", "source": "boundary-v1"}
+{"text": "List the ingredients for rye bread", "type": "factual", "source": "boundary-v1"}
+{"text": "Enumerate the stops on tram line 5", "type": "factual", "source": "boundary-v1"}
+{"text": "How do solar panels work at night?", "type": "factual", "source": "boundary-v1"}
+{"text": "How did the Romans heat their baths?", "type": "factual", "source": "boundary-v1"}
+{"text": "How can I reset my router to factory settings?", "type": "factual", "source": "boundary-v1"}
+{"text": "How does the Vienna metro pricing work?", "type": "factual", "source": "boundary-v1"}
+{"text": "How was the Orion telescope calibrated?", "type": "factual", "source": "boundary-v1"}
+{"text": "How do I change my seat reservation?", "type": "update", "source": "boundary-v1"}
+{"text": "hi", "type": "conversational", "source": "boundary-v1"}
+{"text": "hello there", "type": "conversational", "source": "boundary-v1"}
+{"text": "hey, are you still there?", "type": "conversational", "source": "boundary-v1"}
+{"text": "good morning", "type": "conversational", "source": "boundary-v1"}
+{"text": "thanks a lot", "type": "conversational", "source": "boundary-v1"}
+{"text": "see you tomorrow", "type": "conversational", "source": "boundary-v1"}
+{"text": "Was hat sich an den Vienna Mietpreisen geaendert?", "type": "factual", "source": "boundary-v1"}
+{"text": "Merke dir, dass mein Zug um acht faehrt", "type": "update", "source": "boundary-v1"}
+{"text": "Vergiss nicht, die Blumen zu giessen", "type": "update", "source": "boundary-v1"}
+{"text": "Wer leitet Orion Labs und wo sitzen sie?", "type": "multi-hop", "source": "boundary-v1"}
+{"text": "Warum ist der Himmel ueber Wien heute grau?", "type": "factual", "source": "boundary-v1"}
+{"text": "Wie funktioniert die U-Bahn Preisstaffelung?", "type": "factual", "source": "boundary-v1"}
+{"text": "hallo", "type": "conversational", "source": "boundary-v1"}
+{"text": "Set the thermostat to 21 degrees", "type": "update", "source": "boundary-v1"}
+{"text": "Cancel my booking for Thursday evening", "type": "update", "source": "boundary-v1"}
+{"text": "Reschedule the dentist to next Monday", "type": "update", "source": "boundary-v1"}
+{"text": "Why do leaves turn red in autumn?", "type": "factual", "source": "boundary-v2"}
+{"text": "Why is the ocean salty?", "type": "factual", "source": "boundary-v2"}
+{"text": "Why do cats purr when petted?", "type": "factual", "source": "boundary-v2"}
+{"text": "Why is the Eiffel Tower taller in summer?", "type": "factual", "source": "boundary-v2"}
+{"text": "Why do onions make us cry?", "type": "factual", "source": "boundary-v2"}
+{"text": "Why is Mars called the red planet?", "type": "factual", "source": "boundary-v2"}
+{"text": "Why do veins look blue through skin?", "type": "factual", "source": "boundary-v2"}
+{"text": "Why is helium used in balloons?", "type": "factual", "source": "boundary-v2"}
+{"text": "Why does metal feel colder than wood?", "type": "factual", "source": "boundary-v2"}
+{"text": "Why is the Dead Sea so salty?", "type": "factual", "source": "boundary-v2"}
+{"text": "Why do we yawn when others yawn?", "type": "factual", "source": "boundary-v2"}
+{"text": "Why is glass transparent to light?", "type": "factual", "source": "boundary-v2"}
+{"text": "Why does the moon appear larger at the horizon?", "type": "factual", "source": "boundary-v2"}
+{"text": "Why is saffron the most expensive spice?", "type": "factual", "source": "boundary-v2"}
+{"text": "Why is honey sweeter than sugar?", "type": "factual", "source": "boundary-v3"}
+{"text": "Why are flamingos pink in color?", "type": "factual", "source": "boundary-v3"}
+{"text": "Why is the grass greener after rain?", "type": "factual", "source": "boundary-v3"}
+{"text": "Why do birds migrate south in winter?", "type": "factual", "source": "boundary-v3"}
+{"text": "Why is coffee bitter without milk?", "type": "factual", "source": "boundary-v3"}
+{"text": "Why are deserts hot during daytime?", "type": "factual", "source": "boundary-v3"}
+{"text": "Why do we dream during deep sleep?", "type": "factual", "source": "boundary-v3"}
+{"text": "Why is silver used for mirrors?", "type": "factual", "source": "boundary-v3"}
+{"text": "Why are pandas black and white?", "type": "factual", "source": "boundary-v3"}
+{"text": "Why does ice float on cold water?", "type": "factual", "source": "boundary-v3"}
+{"text": "Why is olive oil liquid at room temperature?", "type": "factual", "source": "boundary-v3"}
+{"text": "Why do clocks tick in a steady rhythm?", "type": "factual", "source": "boundary-v3"}
+{"text": "Was hat sich geaendert?", "type": "factual", "source": "boundary-v3"}
+{"text": "Was ist neu?", "type": "factual", "source": "boundary-v3"}
+{"text": "Was gibt es Neues?", "type": "factual", "source": "boundary-v3"}
+{"text": "Was hat sich ereignet?", "type": "factual", "source": "boundary-v3"}
+{"text": "Was ist passiert?", "type": "factual", "source": "boundary-v3"}
+{"text": "Erinnerst du dich an den Ausflug?", "type": "conversational", "source": "boundary-v3"}
+{"text": "What changed since this morning?", "type": "temporal", "source": "boundary-v3+relabeled"}
+{"text": "What has changed in the schedule?", "type": "factual", "source": "boundary-v3"}
+{"text": "What exactly changed overnight?", "type": "temporal", "source": "boundary-v3+relabeled"}
+{"text": "Which details changed in the report?", "type": "factual", "source": "boundary-v3"}
+{"text": "What differences are there versus yesterday?", "type": "factual", "source": "boundary-v3"}
+{"text": "Was kostet das Ticket?", "type": "factual", "source": "boundary-v4"}
+{"text": "Was bedeutet Demokratie?", "type": "factual", "source": "boundary-v4"}
+{"text": "Wo ist der Wiener Hauptbahnhof?", "type": "factual", "source": "boundary-v4"}
+{"text": "Wer war Mozart?", "type": "factual", "source": "boundary-v4"}
+{"text": "Was ist der Unterschied zwischen Rye und Weizen?", "type": "factual", "source": "boundary-v4"}
+{"text": "Was steht im neuen Bericht?", "type": "factual", "source": "boundary-v4"}

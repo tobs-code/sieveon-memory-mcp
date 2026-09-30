@@ -57,14 +57,13 @@ Sieveon is an agent memory system that intelligently classifies, routes, plans, 
 
 ## Key Features
 
-- **Query Classification** — 5 types: Temporal, Factual, Multi-Hop, Conversational, Update. Hybrid approach: sklearn LogisticRegression on Qwen3-Embedding-0.6B embeddings (1024d) **+ TF-IDF (500 unigrams+bigrams)** with regex fallback when ML confidence < 0.6. Trained on synthetic (500), TREC (2000 capped), and CoQA (800) data.
-  - **5-fold CV F1-macro** (primary metric, n=900, 200/class before split): **0.967 ± 0.010**
-  - Clean holdout F1-macro (excl. ~9% synthetic template collisions): **~0.96**
-  - Full holdout F1-macro (n=180, incl. ~9% leakage): 0.995 — but 5-fold CV is the reliable number
-  - factual recall improved from 0.925 (embeddings only) to **0.975 (+TF-IDF)**
-  - **0.6-threshold accuracy**: 100% (106/106 samples above threshold)
-  - **Caveats:** (1) TREC original 6 labels were heuristically mapped to 3 Sieveon types (ABBR/ENTY/HUM/LOC → factual, NUM/time → temporal, DESC/why → multi-hop); original labels discarded. (2) CoQA mapped 100% → conversational. (3) Synthetic data uses templates → ~9% exact duplicates across any random train/test split. (4) Internal eval on synthetic + TREC + CoQA only — not yet validated on real agent traffic.
-  - Run `python scripts/eval_classifier.py` to reproduce.
+- **Query Classification** — 5 types: Temporal, Factual, Multi-Hop, Conversational, Update. Hybrid approach: sklearn LogisticRegression on Qwen3-Embedding-0.6B embeddings (1024d) **+ TF-IDF (500 unigrams+bigrams)** with regex fallback when ML confidence < 0.6, plus deterministic vetoes (update read-requests, DE factual frames). Trained on TREC + SQuAD (factual), HotpotQA (multi-hop), TimeQA + CLINC-time (temporal), CoQA + CLINC-greetings (conversational), CLINC-intents + synthetic (update); per-class cap 600, seed 42.
+  - **5-fold CV F1-macro** (primary metric, n=1000, 200/class): **0.944 ± 0.006**
+  - Holdout F1-macro (n=200, ~8.5% template leakage): 0.955 (clean: 0.949) — all residual errors below the 0.6 threshold, i.e. the regex fallback decides them in production
+  - **0.6-threshold accuracy**: 100% (105/105 samples above threshold; coverage 52.5%)
+  - **Boundary suite**: 25/25 adversarial queries (update-negatives, memory-writes, why-factuals, coordination, greetings, DE) — behaviors pinned as `TestRegexClassifier` unit tests in `tests/python_unit_tests.py`
+  - **Caveats:** (1) TREC original 6 labels were heuristically mapped (ABBR/ENTY/HUM/LOC → factual, NUM/time → temporal, NUM/count → factual); the old DESC/why → multi-hop mapping was **removed 2026-09-30** (197 rows → factual: TREC why-questions are single-fact explanations). Original labels discarded. (2) CoQA mapped 100% → conversational. (3) Synthetic data uses templates → ~9% exact duplicates across any random train/test split. (4) Aggregate CV intentionally lower than the old 0.967 — the remapped training set is harder and honest (template memorization removed); robustness moved to the boundary suite. (5) Internal eval only — not yet validated on real agent traffic.
+  - Run `python scripts/eval_classifier.py` to reproduce. Retrain via `python scripts/train_classifier.py --cap 600`.
 - **Adaptive Retrieval** — `memory_query` (classify → route → execute) selects per query type (event log, KG, hybrid BM25+vector+temporal). Direct tools (`event_log_search`, `semantic_search`, `kg_query`, `graph_traverse`) bypass the router for explicit lookups. Temporal pinning: `memory_query(..., since?, until?, at_time?)` bounds event timestamps (`fn::events_at` semantics) and pins KG validity (`fn::facts_at_time` semantics, `type::datetime`); graph expansion is bounded BFS (depth 2)
 - **Entropy Gating** — Composite score: Shannon character entropy + gzip compression ratio (Kolmogorov complexity proxy) + embedding novelty. Raw Event Log is always append-only; the gate decides only whether to extract into the Knowledge Graph.
 - **Entity Extraction** — Local-first: relex joint NER+RE → gliner2.5-multi → spaCy fallback (all on the RTX 2080, no API in the default chain). Groq API opt-in only (`EXTRACTION_METHOD=groq`). Type preservation (LLM classification preferred over heuristic).

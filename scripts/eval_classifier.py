@@ -30,8 +30,14 @@ def load_all(limit_per_class=200):
     texts, labels = [], []
     for p in [
         "docs/data/training_queries.jsonl",
+        "docs/data/training_queries_extra.jsonl",
         "docs/data/trec_queries.jsonl",
         "docs/data/coqa_conversational.jsonl",
+        "docs/data/hotpot_multihop.jsonl",
+        "docs/data/squad_factual.jsonl",
+        "docs/data/coqa_conv.jsonl",
+        "docs/data/clinc_mapped.jsonl",
+        "docs/data/timeqa_temporal.jsonl",
     ]:
         fp = PROJ / p
         if not fp.exists():
@@ -76,7 +82,11 @@ def _note_trec_mapping():
 Note on TREC label mapping:
   Original TREC 6-category → Sieveon mapping (heuristic):
     ABBR → factual   | ENTY → factual    | DESC (how) → factual
-    DESC (why) → multi-hop | HUM → factual | LOC → factual
+    DESC (why) → factual [CHANGED 2026-09-30: was multi-hop. Wrong: TREC why-
+    questions ("Why is the grass green?") are single-fact explanations, not
+    multi-hop synthesis. 197 rows remapped; multi-hop now comes from HotpotQA
+    + synthetic coordination only.]
+    HUM → factual | LOC → factual
     NUM (time/date) → temporal | NUM (count) → factual
   CoQA → 100% mapped to 'conversational'.
   Synthetic data → generated from templates per type.

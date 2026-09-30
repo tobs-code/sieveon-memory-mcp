@@ -9,7 +9,7 @@
 {"text": "What are liver enzymes ?", "type": "factual", "source": "trec_train"}
 {"text": "Name the scar-faced bounty hunter of The Old West .", "type": "factual", "source": "trec_train"}
 {"text": "When was Ozzy Osbourne born ?", "type": "temporal", "source": "trec_train"}
-{"text": "Why do heavier objects travel downhill faster ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do heavier objects travel downhill faster ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Who was The Pride of the Yankees ?", "type": "factual", "source": "trec_train"}
 {"text": "Who killed Gandhi ?", "type": "factual", "source": "trec_train"}
 {"text": "What is considered the costliest disaster the insurance industry has ever faced ?", "type": "factual", "source": "trec_train"}
@@ -65,9 +65,9 @@
 {"text": "Who do Herb and Tootsie live next door to ?", "type": "factual", "source": "trec_train"}
 {"text": "Which city has the oldest relationship as a sisterðcity with Los Angeles ?", "type": "factual", "source": "trec_train"}
 {"text": "What is a caldera ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do people get calluses ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do people get calluses ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What are the names of the tourist attractions in Reims ?", "type": "factual", "source": "trec_train"}
-{"text": "What are Cushman and Wakefield known for ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What are Cushman and Wakefield known for ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What body of water does the Danube River flow into ?", "type": "factual", "source": "trec_train"}
 {"text": "Who is the founder of Scientology ?", "type": "factual", "source": "trec_train"}
 {"text": "What does the six-footed Musca domestica become when it enters a house ?", "type": "factual", "source": "trec_train"}
@@ -89,7 +89,7 @@
 {"text": "Who were the five Marx brothers ?", "type": "factual", "source": "trec_train"}
 {"text": "In which year was New Zealand excluded from the ANZUS alliance ?", "type": "temporal", "source": "trec_train"}
 {"text": "When did CNN begin broadcasting ?", "type": "temporal", "source": "trec_train"}
-{"text": "What causes the body to shiver in cold temperatures ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What causes the body to shiver in cold temperatures ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What are bear and bull markets ?", "type": "factual", "source": "trec_train"}
 {"text": "What J.R.R. Tolkien book features Bilbo Baggins as the central character ?", "type": "factual", "source": "trec_train"}
 {"text": "What is `` dew point '' ?", "type": "factual", "source": "trec_train"}
@@ -175,16 +175,16 @@
 {"text": "On what T.V. show could Tom Terrific be found ?", "type": "factual", "source": "trec_train"}
 {"text": "What Indian tribe is F Troop perpetually doing battle with ?", "type": "factual", "source": "trec_train"}
 {"text": "Where did Indian Pudding come from ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do some clothing labels say `` Use a nonchlorine bleach '' ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do some clothing labels say `` Use a nonchlorine bleach '' ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "How many colonies were involved in the American Revolution ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the name of the city that Maurizio Pellegrin lives in ?", "type": "factual", "source": "trec_train"}
 {"text": "Where can I find pictorial directions on how to build a very simple treehouse ?", "type": "factual", "source": "trec_train"}
 {"text": "What game 's board shows the territories of Irkutsk , Yakutsk and Kamchatka ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the name of the managing director of Apricot Computer ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the occupation of Nicholas Cage ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do horseshoes bring luck ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do horseshoes bring luck ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is the 401 , K , plan ?", "type": "factual", "source": "trec_train"}
-{"text": "What causes pneumonia ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What causes pneumonia ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What are the three winter months in the southern hemisphere ?", "type": "temporal", "source": "trec_train"}
 {"text": "What does gringo mean ?", "type": "factual", "source": "trec_train"}
 {"text": "What country contains Africa 's northernmost point ?", "type": "factual", "source": "trec_train"}
@@ -206,13 +206,13 @@
 {"text": "What explorer was nicknamed Iberia 's Pilot ?", "type": "factual", "source": "trec_train"}
 {"text": "CNN began broadcasting in what year ?", "type": "temporal", "source": "trec_train"}
 {"text": "What is a ball that hits the foul pole called ?", "type": "factual", "source": "trec_train"}
-{"text": "What makes hamburgers taste like steakburgers ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What makes hamburgers taste like steakburgers ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Which company created the Internet browser Mosaic ?", "type": "factual", "source": "trec_train"}
 {"text": "What are the rites accompanying the circumcision of a newly born-child in Judaism called ?", "type": "factual", "source": "trec_train"}
 {"text": "What was the education system in the 1960 's ?", "type": "factual", "source": "trec_train"}
 {"text": "What South American city has the world 's highest commercial landing field ?", "type": "factual", "source": "trec_train"}
 {"text": "How can I find out which cities have cable-modem access ?", "type": "factual", "source": "trec_train"}
-{"text": "What is Betsy Ross famous for ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What is Betsy Ross famous for ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "How many species of sharks are there ?", "type": "factual", "source": "trec_train"}
 {"text": "What is `` snoogans '' ?", "type": "factual", "source": "trec_train"}
 {"text": "How many people are there in the world ?", "type": "factual", "source": "trec_train"}
@@ -231,7 +231,7 @@
 {"text": "What two European countries entered the War of American Independence against the British ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the filmmakers collabrative ?", "type": "factual", "source": "trec_train"}
 {"text": "What Russian composer 's Prelude in C Sharp Minor brought him fame and fortune ?", "type": "factual", "source": "trec_train"}
-{"text": "What caused Harry Houdini 's death ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What caused Harry Houdini 's death ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Who was the mother of the man who would not be king , the duke of Windsor ?", "type": "factual", "source": "trec_train"}
 {"text": "How many revolutions does a standard LP make in three minutes ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the name of the tallest mountain in the world ?", "type": "factual", "source": "trec_train"}
@@ -310,7 +310,7 @@
 {"text": "What is the fastest commercial automobile that can be bought in the US ?", "type": "factual", "source": "trec_train"}
 {"text": "What stadium do the Miami Dolphins play their home games in ?", "type": "factual", "source": "trec_train"}
 {"text": "Who has the only speaking role in `` Silent Movie '' ?", "type": "factual", "source": "trec_train"}
-{"text": "Why is poop sometimes different colors ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why is poop sometimes different colors ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What was Einstein 's IQ ?", "type": "factual", "source": "trec_train"}
 {"text": "What day was Pearl Harbor attacked in 1942 ?", "type": "temporal", "source": "trec_train"}
 {"text": "What girl 's name is `` Teddy '' an affectionate form of ?", "type": "factual", "source": "trec_train"}
@@ -356,7 +356,7 @@
 {"text": "Who was the first American poet to win the Nobel Prize for literature , in 1948 ?", "type": "factual", "source": "trec_train"}
 {"text": "What year did Jack Nicklaus join the Professional Golfers Association tour ?", "type": "temporal", "source": "trec_train"}
 {"text": "How many sonnets did Shakespeare write ?", "type": "factual", "source": "trec_train"}
-{"text": "What causes the redness in your cheeks when you blush ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What causes the redness in your cheeks when you blush ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Who won the Nobel Peace Prize in 1991 ?", "type": "factual", "source": "trec_train"}
 {"text": "Who are the Challengers of the Unknown ?", "type": "factual", "source": "trec_train"}
 {"text": "Define the Pheonix Club ?", "type": "factual", "source": "trec_train"}
@@ -382,7 +382,7 @@
 {"text": "What is the abbreviation of the company name ` General Motors ' ?", "type": "factual", "source": "trec_train"}
 {"text": "What mountains lie between the Arkansas and Missouri rivers ?", "type": "factual", "source": "trec_train"}
 {"text": "Who received the Will Rogers Award in 1989 ?", "type": "factual", "source": "trec_train"}
-{"text": "What is the function of RAM ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What is the function of RAM ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What 's the closest G2 Spectrum Yellow Dwarf to Earth ?", "type": "factual", "source": "trec_train"}
 {"text": "How many equal angles are there in an isosceles triangle ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the fear of cockroaches called ?", "type": "factual", "source": "trec_train"}
@@ -418,7 +418,7 @@
 {"text": "What movie tour of the Roman empire features the admonition : `` Row well and live '' ?", "type": "factual", "source": "trec_train"}
 {"text": "What Nevada center has been dubbed The Biggest Little City in the World ?", "type": "factual", "source": "trec_train"}
 {"text": "What President lived at 219 North Delaware Street , Independence , Missouri ?", "type": "factual", "source": "trec_train"}
-{"text": "Give a reason for American Indians oftentimes dropping out of school .", "type": "multi-hop", "source": "trec_train"}
+{"text": "Give a reason for American Indians oftentimes dropping out of school .", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Where must a soccer goalie stand to be permitted to handle the ball ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the difference between classical conditioning and operant conditioning ?", "type": "factual", "source": "trec_train"}
 {"text": "In what U.S. state was the first woman governor elected ?", "type": "factual", "source": "trec_train"}
@@ -426,7 +426,7 @@
 {"text": "What year did Hitler die ?", "type": "temporal", "source": "trec_train"}
 {"text": "What famous model was married to Billy Joel ?", "type": "factual", "source": "trec_train"}
 {"text": "What kind of animal is Babar ?", "type": "factual", "source": "trec_train"}
-{"text": "What is Jane Goodall known for ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What is Jane Goodall known for ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What killed Bob Marley ?", "type": "factual", "source": "trec_train"}
 {"text": "How much money are Dumbo 's ears insured for ?", "type": "factual", "source": "trec_train"}
 {"text": "Who danced into stardom with Fred Astaire in 1941 's You 'll Never Get Rich ?", "type": "factual", "source": "trec_train"}
@@ -437,7 +437,7 @@
 {"text": "Where is Procter & Gamble headquartered in the U.S. ?", "type": "factual", "source": "trec_train"}
 {"text": "What desert has been called The Garden of Allah ?", "type": "factual", "source": "trec_train"}
 {"text": "What do bicornate animals have two of ?", "type": "factual", "source": "trec_train"}
-{"text": "What function does a community 's water tower serve ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What function does a community 's water tower serve ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is a fear of weakness ?", "type": "factual", "source": "trec_train"}
 {"text": "How many miles is it to Ohio from North Carolina ?", "type": "factual", "source": "trec_train"}
 {"text": "How much snow equals an inch of rain ?", "type": "factual", "source": "trec_train"}
@@ -447,17 +447,17 @@
 {"text": "What field sport did dentist William Beers promote and write a standard book of rules for ?", "type": "factual", "source": "trec_train"}
 {"text": "How do I tie dye clothes ?", "type": "factual", "source": "trec_train"}
 {"text": "When does the average teenager first have intercourse ?", "type": "temporal", "source": "trec_train"}
-{"text": "Why doesn 't www.answers.com have any answers to my questions ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why doesn 't www.answers.com have any answers to my questions ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What actor 's autobiography is titled All My Yesterdays ?", "type": "factual", "source": "trec_train"}
 {"text": "What Russian master spy lived in the U.S. under the name Emil Goldfus ?", "type": "factual", "source": "trec_train"}
 {"text": "Where 's the 19th hole on a golf course ?", "type": "factual", "source": "trec_train"}
-{"text": "What 's nature 's purpose for tornadoes ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What 's nature 's purpose for tornadoes ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Who played the original Charlie 's Angels ?", "type": "factual", "source": "trec_train"}
 {"text": "Where can I find a person 's address from a telephone number ?", "type": "factual", "source": "trec_train"}
 {"text": "What English word comes from the Old French covrefeu , meaning cover fire ?", "type": "factual", "source": "trec_train"}
 {"text": "What musical instrument did Prewitt play in James Jones 's From Here to Eternity ?", "type": "factual", "source": "trec_train"}
 {"text": "Where did Sarge Steel get his metal hand ?", "type": "factual", "source": "trec_train"}
-{"text": "What makes popcorn pop ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What makes popcorn pop ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Who wrote The Night of the Iguana ?", "type": "factual", "source": "trec_train"}
 {"text": "Where does your hair grow the fastest ?", "type": "factual", "source": "trec_train"}
 {"text": "What country did King Gustav V reign over from 197 to 195 ?", "type": "factual", "source": "trec_train"}
@@ -479,7 +479,7 @@
 {"text": "What cocktail do you concoct with whisky and sweet vermouth ?", "type": "factual", "source": "trec_train"}
 {"text": "How do you say `` fresh '' in Spanish ?", "type": "factual", "source": "trec_train"}
 {"text": "What do bee hives do in cranberry bogs ?", "type": "factual", "source": "trec_train"}
-{"text": "What caused the Lynmouth floods ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What caused the Lynmouth floods ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "When is the Tulip Festival in Michigan ?", "type": "temporal", "source": "trec_train"}
 {"text": "Who came up with the name , El Nino ?", "type": "factual", "source": "trec_train"}
 {"text": "What movie did Madilyn Kahn star in with Gene Wilder ?", "type": "factual", "source": "trec_train"}
@@ -494,7 +494,7 @@
 {"text": "How many degrees cooler is the inside of a cucumber than the air outside ?", "type": "factual", "source": "trec_train"}
 {"text": "What Spanish artist painted Crucifixion ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the Jewish bible called ?", "type": "factual", "source": "trec_train"}
-{"text": "Why is the grass green ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why is the grass green ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is a firewall ?", "type": "factual", "source": "trec_train"}
 {"text": "What spy novelist served as Moscow correspondent for Reuter and The Times of London ?", "type": "factual", "source": "trec_train"}
 {"text": "Which oil company almost picked a word that meant `` stalled car '' in Japanese as its new international name ?", "type": "factual", "source": "trec_train"}
@@ -519,7 +519,7 @@
 {"text": "What does SIDS stand for ?", "type": "factual", "source": "trec_train"}
 {"text": "What is Grenada 's main commodity export ?", "type": "factual", "source": "trec_train"}
 {"text": "How much would a black-and-white 1-cent stamp be worth , Thomas Jefferson on it , ?", "type": "factual", "source": "trec_train"}
-{"text": "What makes a clitoris sensitive ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What makes a clitoris sensitive ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What country has the most time zones , with 11 ?", "type": "factual", "source": "trec_train"}
 {"text": "What `` magic '' does Mandrake employ ?", "type": "factual", "source": "trec_train"}
 {"text": "Who is the president of Stanford University ?", "type": "factual", "source": "trec_train"}
@@ -580,7 +580,7 @@
 {"text": "Name the soft drink that is `` number one in the sun . ''", "type": "factual", "source": "trec_train"}
 {"text": "What is the web address of the list of e-mail addresses of members of the House of Representatives ?", "type": "factual", "source": "trec_train"}
 {"text": "What was her real name ?", "type": "factual", "source": "trec_train"}
-{"text": "Why are the ears your center of balance ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why are the ears your center of balance ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Who invented the toothbrush ?", "type": "factual", "source": "trec_train"}
 {"text": "What was the name of that popular song the Creeps sang ?", "type": "factual", "source": "trec_train"}
 {"text": "Where is the Abominable Snowman said to wander ?", "type": "factual", "source": "trec_train"}
@@ -624,13 +624,13 @@
 {"text": "Where can I find the best free evidence for debate about Russia ?", "type": "factual", "source": "trec_train"}
 {"text": "What is Bill Gates of Microsoft E-mail address ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the second hardest substance ?", "type": "factual", "source": "trec_train"}
-{"text": "Why did several San Diego schools stop serving apples to students ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why did several San Diego schools stop serving apples to students ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What Russian city boasts the Hermitage Museum ?", "type": "factual", "source": "trec_train"}
 {"text": "When is Bastille Day ?", "type": "temporal", "source": "trec_train"}
-{"text": "What makes a tornado turn ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What makes a tornado turn ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "How many shots can a stock M16 hold ?", "type": "factual", "source": "trec_train"}
 {"text": "What two colors are you blind to if you suffer from protanopia ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do n't you guys have some sort of contest where you ask a question and whoever finds the answers wins a prize ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do n't you guys have some sort of contest where you ask a question and whoever finds the answers wins a prize ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Who is Coronado ?", "type": "factual", "source": "trec_train"}
 {"text": "What was the name of the movie that starred Sharon Stone and Arnold Schwarzenegger ?", "type": "factual", "source": "trec_train"}
 {"text": "What is artificial intelligence ?", "type": "factual", "source": "trec_train"}
@@ -680,7 +680,7 @@
 {"text": "What is a fear of passing high objects ?", "type": "factual", "source": "trec_train"}
 {"text": "What do players try to do when the music stops in a game of musical chairs ?", "type": "factual", "source": "trec_train"}
 {"text": "What are the top ten most common girl names in the US ?", "type": "factual", "source": "trec_train"}
-{"text": "Why is black the color of mourning in the West ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why is black the color of mourning in the West ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is the rarest coin ?", "type": "factual", "source": "trec_train"}
 {"text": "What Judith Rossner novel was made into a film starring Diane Keaton ?", "type": "factual", "source": "trec_train"}
 {"text": "Which country is Australia 's largest export market ?", "type": "factual", "source": "trec_train"}
@@ -759,7 +759,7 @@
 {"text": "What percent liked Thatcher after she had been in power for a decade ?", "type": "factual", "source": "trec_train"}
 {"text": "Where does Buzz Aldrin want to build a permanent , manned space station ?", "type": "factual", "source": "trec_train"}
 {"text": "What was Mel Gibson 's first movie ?", "type": "factual", "source": "trec_train"}
-{"text": "Why was the L.A. office of Shea and Gould closed ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why was the L.A. office of Shea and Gould closed ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "How do I start a bank ?", "type": "factual", "source": "trec_train"}
 {"text": "How do Ouija Boards work ?", "type": "factual", "source": "trec_train"}
 {"text": "What horse did Zorro ride ?", "type": "factual", "source": "trec_train"}
@@ -768,14 +768,14 @@
 {"text": "How do you determine heating requirements for your home ?", "type": "factual", "source": "trec_train"}
 {"text": "What former major-league left-handed baseball pitcher was known as `` Space Man '' ?", "type": "factual", "source": "trec_train"}
 {"text": "Which hair care product told us `` hate that gray , wash it away '' ?", "type": "factual", "source": "trec_train"}
-{"text": "Why did the chicken cross the road ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why did the chicken cross the road ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What was Michelangelo 's last name ?", "type": "factual", "source": "trec_train"}
 {"text": "Who is Barbara Jordan ?", "type": "factual", "source": "trec_train"}
 {"text": "Who was the Democratic nominee in the American presidential election ?", "type": "factual", "source": "trec_train"}
 {"text": "What was Connecticut 's first constitution called ?", "type": "factual", "source": "trec_train"}
 {"text": "What historical event happened in Dogtown in 1899 ?", "type": "factual", "source": "trec_train"}
 {"text": "What is being done about the millennium bug ?", "type": "factual", "source": "trec_train"}
-{"text": "What was the claim to fame of King Camp Gillette ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What was the claim to fame of King Camp Gillette ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is the most common kind of skin cancer in the U.S. ?", "type": "factual", "source": "trec_train"}
 {"text": "What is Olestra ?", "type": "factual", "source": "trec_train"}
 {"text": "What Asian country has a bill of rights for cows ?", "type": "factual", "source": "trec_train"}
@@ -797,7 +797,7 @@
 {"text": "Who fired Maria Ybarra from her position in San Diego council ?", "type": "factual", "source": "trec_train"}
 {"text": "The italian artist , Maurizio Pellegrin , is how old ?", "type": "temporal", "source": "trec_train"}
 {"text": "What type of hunting are retrievers used for ?", "type": "factual", "source": "trec_train"}
-{"text": "What is Colin Powell best known for ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What is Colin Powell best known for ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Who was the first black golfer to tee off in the Masters ?", "type": "factual", "source": "trec_train"}
 {"text": "What city is the setting for Puccini 's opera La Boheme ?", "type": "factual", "source": "trec_train"}
 {"text": "What U.S. President showed a fondness for munching on bee pollen bars ?", "type": "factual", "source": "trec_train"}
@@ -842,8 +842,8 @@
 {"text": "What Boris Pasternak book sold 5 , 0 copies to become the fiction best-seller of 1958 ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the origin of the expression `` tout de suite '' ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the longest English word ?", "type": "factual", "source": "trec_train"}
-{"text": "What is the purpose of a car bra ?", "type": "multi-hop", "source": "trec_train"}
-{"text": "What is D.B. Cooper known for ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What is the purpose of a car bra ?", "type": "factual", "source": "trec_train+remap-why"}
+{"text": "What is D.B. Cooper known for ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Who is Colin Powell ?", "type": "factual", "source": "trec_train"}
 {"text": "What species is a colt ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the full name of the PLO ?", "type": "factual", "source": "trec_train"}
@@ -863,7 +863,7 @@
 {"text": "What is the student population at the University of Massachusetts in Amherst ?", "type": "factual", "source": "trec_train"}
 {"text": "Where is Windsor Castle ?", "type": "factual", "source": "trec_train"}
 {"text": "When did the Dow first reach ?", "type": "temporal", "source": "trec_train"}
-{"text": "Why were people recruited for the Vietnam War ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why were people recruited for the Vietnam War ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What party was Winston Churchill a member of ?", "type": "factual", "source": "trec_train"}
 {"text": "What American League baseball team 's worst finish between 1926 and 1964 was fourth ?", "type": "factual", "source": "trec_train"}
 {"text": "Where can I find the names of all the 15 Pokemon ?", "type": "factual", "source": "trec_train"}
@@ -876,7 +876,7 @@
 {"text": "Who was the author of `` John Brown 's Body '' ?", "type": "factual", "source": "trec_train"}
 {"text": "What American poet wrote : `` Good fences make good neighbors '' ?", "type": "factual", "source": "trec_train"}
 {"text": "What state in the U.S. has the most blacks ?", "type": "factual", "source": "trec_train"}
-{"text": "Why are electric cars less efficient in the northeast than in California ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why are electric cars less efficient in the northeast than in California ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What was the occupation of Mandy Rice-Davies ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the city in which Maurizio Pellegrin lives called ?", "type": "factual", "source": "trec_train"}
 {"text": "Who painted the Sistine Chapel ?", "type": "factual", "source": "trec_train"}
@@ -906,7 +906,7 @@
 {"text": "How many double-word-score spaces are there on a Scrabble Crossword Game board ?", "type": "factual", "source": "trec_train"}
 {"text": "What year did Germany sign its nonaggression pact with the Soviet Union ?", "type": "temporal", "source": "trec_train"}
 {"text": "What mountain range is traversed by the highest railroad in the world ?", "type": "factual", "source": "trec_train"}
-{"text": "Why were the American soldiers in WWI called `` Doughboys ''", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why were the American soldiers in WWI called `` Doughboys ''", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Who was nicknamed The Little Corporal ?", "type": "factual", "source": "trec_train"}
 {"text": "How many CDs has Garth Brooks sold ?", "type": "factual", "source": "trec_train"}
 {"text": "Name the vessel used by the Atari Force in the DC comics .", "type": "factual", "source": "trec_train"}
@@ -922,7 +922,7 @@
 {"text": "What was American folk hero John Chapman 's nickname ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the difference between a median and a mean ?", "type": "factual", "source": "trec_train"}
 {"text": "What was the top box office movie in April 1998 ?", "type": "factual", "source": "trec_train"}
-{"text": "What makes thunder ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What makes thunder ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What author did photographer Yousuf Karsh call `` the shiest man I ever met '' ?", "type": "factual", "source": "trec_train"}
 {"text": "Which is the largest clock , diameter wise , in Europe ?", "type": "factual", "source": "trec_train"}
 {"text": "What plant is rum made from ?", "type": "factual", "source": "trec_train"}
@@ -930,7 +930,7 @@
 {"text": "Name the poet of the poem which begins : I do not know much about gods ; but I think that the river Is a strong brown god-sullen , and untamed ?", "type": "factual", "source": "trec_train"}
 {"text": "Which condiment was once sold as a patent medicine ?", "type": "factual", "source": "trec_train"}
 {"text": "What U.S. state records the least rainfall ?", "type": "factual", "source": "trec_train"}
-{"text": "Why did the world enter a global depression in 1929 ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why did the world enter a global depression in 1929 ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What was archy , and mehitabel ?", "type": "factual", "source": "trec_train"}
 {"text": "What Texas city got its name from the Spanish for `` yellow '' ?", "type": "factual", "source": "trec_train"}
 {"text": "What are the chemicals used in glowsticks ?", "type": "factual", "source": "trec_train"}
@@ -981,7 +981,7 @@
 {"text": "What does NN O `` mean when used as a prefix in Irish surnames ?", "type": "factual", "source": "trec_train"}
 {"text": "How do you find oxidation numbers ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the state nickname of Mississippi ?", "type": "factual", "source": "trec_train"}
-{"text": "What is Black Hills , South Dakota most famous for ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What is Black Hills , South Dakota most famous for ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What 1966 boob tube bomb took astronauts back to prehistoric times ?", "type": "factual", "source": "trec_train"}
 {"text": "How many students attend the University of Massachusetts ?", "type": "factual", "source": "trec_train"}
 {"text": "Who said , `` I shall return . '' during World War Two ?", "type": "factual", "source": "trec_train"}
@@ -1006,10 +1006,10 @@
 {"text": "What famous singing cowboy owns the California Angels baseball team ?", "type": "factual", "source": "trec_train"}
 {"text": "What 1915 film was the first to gross $5 million ?", "type": "factual", "source": "trec_train"}
 {"text": "Where did the term `` 86 '' come from ?", "type": "factual", "source": "trec_train"}
-{"text": "What causes someone to be ticklish ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What causes someone to be ticklish ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is the probability that at least 2 out of 25 people will have the same birthday ?", "type": "factual", "source": "trec_train"}
 {"text": "How many Canadians emmigrate each year ?", "type": "factual", "source": "trec_train"}
-{"text": "Why did several San Diego schools remove apples from students menus ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why did several San Diego schools remove apples from students menus ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What musical instrument did Sherlock Holmes play ?", "type": "factual", "source": "trec_train"}
 {"text": "Who was Gerald Ford 's vice president ?", "type": "factual", "source": "trec_train"}
 {"text": "What is `` the washed vodka '' ?", "type": "factual", "source": "trec_train"}
@@ -1017,7 +1017,7 @@
 {"text": "What year was Desmond Mpilo Tutu awarded the Nobel Peace Prize ?", "type": "temporal", "source": "trec_train"}
 {"text": "What 's a `` Drinker respirator '' better known as ?", "type": "factual", "source": "trec_train"}
 {"text": "Who invented batteries ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do recipe books recommend starting with cold water when you boil something ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do recipe books recommend starting with cold water when you boil something ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Where can I buy a good snowboard for less than $200 ?", "type": "factual", "source": "trec_train"}
 {"text": "What title did Suzette Charles assume for two months in 1984 ?", "type": "factual", "source": "trec_train"}
 {"text": "What was the infamous pseudonym of Peter Sutcliffe ?", "type": "factual", "source": "trec_train"}
@@ -1112,7 +1112,7 @@
 {"text": "What are the lengths of pearl necklaces ?", "type": "factual", "source": "trec_train"}
 {"text": "Who said : `` Soldiers win the battles and generals get the credit '' ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the proof that houseplants metabolize carcinogens ?", "type": "factual", "source": "trec_train"}
-{"text": "What prompted the co-pilot of the Enola Gay to enter only `` My God '' in his log ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What prompted the co-pilot of the Enola Gay to enter only `` My God '' in his log ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "How long does it take the typical hen to lay 19 dozen eggs ?", "type": "temporal", "source": "trec_train"}
 {"text": "What Colorado city owns its own glacier ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the history of `` the toast '' ?", "type": "factual", "source": "trec_train"}
@@ -1123,19 +1123,19 @@
 {"text": "Who provides telephone service in Orange County , California ?", "type": "factual", "source": "trec_train"}
 {"text": "Where did guinea pigs originate ?", "type": "factual", "source": "trec_train"}
 {"text": "What two countries ' coastlines border the Bay of Biscay ?", "type": "factual", "source": "trec_train"}
-{"text": "Why did Egyptians shave their eyebrows ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why did Egyptians shave their eyebrows ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What organization did Mr. Waverly assign agents for ?", "type": "factual", "source": "trec_train"}
 {"text": "When was the slinky invented ?", "type": "temporal", "source": "trec_train"}
 {"text": "What are the characters ' names in the Scooby-Doo cartoon ?", "type": "factual", "source": "trec_train"}
 {"text": "What is a fear of cold ?", "type": "factual", "source": "trec_train"}
 {"text": "What was Eduard Shevardnadze 's job in the Soviet Union ?", "type": "factual", "source": "trec_train"}
-{"text": "What causes rust ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What causes rust ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Which is the only Dick Tracy villain to appear three times ?", "type": "factual", "source": "trec_train"}
 {"text": "What was the monster in Spielberg 's film `` Jaws '' ?", "type": "factual", "source": "trec_train"}
 {"text": "What color is an Arctic fox in winter ?", "type": "factual", "source": "trec_train"}
 {"text": "What do the names Neil , Mary , and Anthony mean ?", "type": "factual", "source": "trec_train"}
 {"text": "What European capital celebrated its 2 , 000th anniversary in 1951 ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do people in the upper peninsula of Michagin say `` eh ? '' ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do people in the upper peninsula of Michagin say `` eh ? '' ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What flower did Vincent Van Gogh paint ?", "type": "factual", "source": "trec_train"}
 {"text": "What country was the setting of You Only Live Twice ?", "type": "factual", "source": "trec_train"}
 {"text": "What was Thatcher 's approval rating after 10 years in power ?", "type": "factual", "source": "trec_train"}
@@ -1185,7 +1185,7 @@
 {"text": "How big is a quart ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the Hub of London ?", "type": "factual", "source": "trec_train"}
 {"text": "Jude Law acted in which film ?", "type": "factual", "source": "trec_train"}
-{"text": "What causes panic attacks ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What causes panic attacks ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What was the filling in the first golf balls ?", "type": "factual", "source": "trec_train"}
 {"text": "What drug did Sigmund Freud become fascinated with while experimenting with the treatment of neurasthenia ?", "type": "factual", "source": "trec_train"}
 {"text": "What country was A Terrible Beauty to Leon Uris ?", "type": "factual", "source": "trec_train"}
@@ -1206,7 +1206,7 @@
 {"text": "Who played Humpty Dumpty in the 1933 film Alice in Wonderland ?", "type": "factual", "source": "trec_train"}
 {"text": "Who is Karenna Gore , Al Gore 's oldest daughter , married to ?", "type": "factual", "source": "trec_train"}
 {"text": "Who played the title role in I Was a Teenage Werewolf ?", "type": "factual", "source": "trec_train"}
-{"text": "Why are there olives in martinis ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why are there olives in martinis ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "In what year did Hitler gain power of Germany ?", "type": "temporal", "source": "trec_train"}
 {"text": "What year did Rossetti paint `` Beata Beatrix '' ?", "type": "temporal", "source": "trec_train"}
 {"text": "What record company produced the 1978 movie The Wiz ?", "type": "factual", "source": "trec_train"}
@@ -1259,7 +1259,7 @@
 {"text": "In what deodorant commercial did tenants have adjoining medicine cabinets ?", "type": "factual", "source": "trec_train"}
 {"text": "Where is Rider College located ?", "type": "factual", "source": "trec_train"}
 {"text": "What boxer 's life story is titled Raging Bull ?", "type": "factual", "source": "trec_train"}
-{"text": "For what reason did some San Diego schools stop serving apples ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "For what reason did some San Diego schools stop serving apples ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Who advised listeners to `` see the U.S.A. in your Chevrolet '' ?", "type": "factual", "source": "trec_train"}
 {"text": "Where was the first restaurant ?", "type": "factual", "source": "trec_train"}
 {"text": "Where can I find full written draft of CTBT ?", "type": "factual", "source": "trec_train"}
@@ -1283,7 +1283,7 @@
 {"text": "What are the words to `` My Way '' written by Paul Anka ?", "type": "factual", "source": "trec_train"}
 {"text": "How do I install a tile floor ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the quickest and easiest way to get nail polish out of clothes ?", "type": "factual", "source": "trec_train"}
-{"text": "Why was the zipper invented ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why was the zipper invented ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What 's the No. 1 killer in industrialized countries ?", "type": "factual", "source": "trec_train"}
 {"text": "Name four famous cartoon cats .", "type": "factual", "source": "trec_train"}
 {"text": "What daughter of Henry VIII and Anne Boleyn became queen of England ?", "type": "factual", "source": "trec_train"}
@@ -1338,8 +1338,8 @@
 {"text": "Where is Ocho Rios ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the half-life of P-32 ?", "type": "factual", "source": "trec_train"}
 {"text": "What ocean does Mauritania border ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do pressure cookers save time in the kitchen ?", "type": "multi-hop", "source": "trec_train"}
-{"text": "Why are there 12 people on a jury in criminal cases ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do pressure cookers save time in the kitchen ?", "type": "factual", "source": "trec_train+remap-why"}
+{"text": "Why are there 12 people on a jury in criminal cases ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What do Christian Scientists believe in ?", "type": "factual", "source": "trec_train"}
 {"text": "What World War I battle saw 6 , 0 troops killed in one day ?", "type": "factual", "source": "trec_train"}
 {"text": "What country is Kosovo a part of ?", "type": "factual", "source": "trec_train"}
@@ -1382,9 +1382,9 @@
 {"text": "Who is the best known villain of the 165 Gunpowder Plot ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the capital of Burkina Faso ?", "type": "factual", "source": "trec_train"}
 {"text": "What continent is Bolivia on ?", "type": "factual", "source": "trec_train"}
-{"text": "Why was Muhammad Ali stripped of his title and barred from boxing in 1967 ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why was Muhammad Ali stripped of his title and barred from boxing in 1967 ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Who killed more people , Hitler or Stalin ?", "type": "factual", "source": "trec_train"}
-{"text": "What caused Shea & Gould to close their L.A. office ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What caused Shea & Gould to close their L.A. office ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What 's the only mammal that can 't jump ?", "type": "factual", "source": "trec_train"}
 {"text": "What U.S. state has the most blondes ?", "type": "factual", "source": "trec_train"}
 {"text": "What war saw battles at Parrot 's Beak and Black Virgin ?", "type": "factual", "source": "trec_train"}
@@ -1486,7 +1486,7 @@
 {"text": "What army 's motto is Blood and Fire ?", "type": "factual", "source": "trec_train"}
 {"text": "What kind of patent did Ermal Fraze get in 1963 ?", "type": "factual", "source": "trec_train"}
 {"text": "What are you hearing when you put a seashell to your ear ?", "type": "factual", "source": "trec_train"}
-{"text": "Why are haunted houses popular ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why are haunted houses popular ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Which gender has bigger thighs ?", "type": "factual", "source": "trec_train"}
 {"text": "What U.S. state has the second-longest coastline ?", "type": "factual", "source": "trec_train"}
 {"text": "What state 's home to the Buffalo Bill Historical Center ?", "type": "factual", "source": "trec_train"}
@@ -1519,7 +1519,7 @@
 {"text": "What is the first personal computer company ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the most efficient way to start a barbeque ?", "type": "factual", "source": "trec_train"}
 {"text": "Who was Jane Goodall ?", "type": "factual", "source": "trec_train"}
-{"text": "Why are there Braille things on the ATM machines that people drive through ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why are there Braille things on the ATM machines that people drive through ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Where is the Isle of Man ?", "type": "factual", "source": "trec_train"}
 {"text": "What book did Aaron Hass write ?", "type": "factual", "source": "trec_train"}
 {"text": "What was the death toll at the eruption of Mount Pinatubo ?", "type": "factual", "source": "trec_train"}
@@ -1571,7 +1571,7 @@
 {"text": "Who was Thucydides ?", "type": "factual", "source": "trec_train"}
 {"text": "How is the element strontium purified ?", "type": "factual", "source": "trec_train"}
 {"text": "Which of the following rock 'n roll stars has a `` star '' on Hollywood Boulevard ?", "type": "factual", "source": "trec_train"}
-{"text": "What are tonsils for ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What are tonsils for ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What molecules include fluorine , sodium and magnesium ?", "type": "factual", "source": "trec_train"}
 {"text": "What was the name of the ball game played by the mayans ?", "type": "factual", "source": "trec_train"}
 {"text": "What was the sequel to The Moon 's Balloon ?", "type": "factual", "source": "trec_train"}
@@ -1593,7 +1593,7 @@
 {"text": "Which company claimed to be `` the world 's biggest toy store '' ?", "type": "factual", "source": "trec_train"}
 {"text": "What brand number graces the black label of a bottle of Jack Daniel 's ?", "type": "factual", "source": "trec_train"}
 {"text": "What do I call the sons and daughters of my first cousins ?", "type": "factual", "source": "trec_train"}
-{"text": "What were the causes of the Civil War ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What were the causes of the Civil War ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What are Maid-Rites ?", "type": "factual", "source": "trec_train"}
 {"text": "What city is terrorized by Dracula in The Night Stalker ?", "type": "factual", "source": "trec_train"}
 {"text": "How can you prevent it ?", "type": "factual", "source": "trec_train"}
@@ -1616,7 +1616,7 @@
 {"text": "What is film noir ?", "type": "factual", "source": "trec_train"}
 {"text": "Who is stationed at Camp Swampy in the comic strips ?", "type": "factual", "source": "trec_train"}
 {"text": "In what year did China and the Republic of Korea establish diplomatic relations ?", "type": "temporal", "source": "trec_train"}
-{"text": "What causes tuberculosis ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What causes tuberculosis ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "How tall is the giraffe ?", "type": "factual", "source": "trec_train"}
 {"text": "What actor dressed up as Santa Claus and had a once-a-year affair with actress Shelley Winters every Christmas for many years ?", "type": "factual", "source": "trec_train"}
 {"text": "What animal was the heat-seeking missile called the Sidewinder named for ?", "type": "factual", "source": "trec_train"}
@@ -1636,7 +1636,7 @@
 {"text": "Who claims to have the greatest show on earth ?", "type": "factual", "source": "trec_train"}
 {"text": "What is Head Start ?", "type": "factual", "source": "trec_train"}
 {"text": "What Honeymooners actress did Television magazine name as 1953 's most promising star ?", "type": "factual", "source": "trec_train"}
-{"text": "Why can 't women serve in the Navy on board submarines ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why can 't women serve in the Navy on board submarines ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What did the Yalta Conference lead to ?", "type": "factual", "source": "trec_train"}
 {"text": "What dog was dubbed The Mortgage Lifter ?", "type": "factual", "source": "trec_train"}
 {"text": "What is saltpeter ?", "type": "factual", "source": "trec_train"}
@@ -1668,7 +1668,7 @@
 {"text": "What is the definition of ` graphic details ' ?", "type": "factual", "source": "trec_train"}
 {"text": "What was `` America 's recessed-filter cigarette '' ?", "type": "factual", "source": "trec_train"}
 {"text": "What kind of dog is Scooby Doo ?", "type": "factual", "source": "trec_train"}
-{"text": "What is the function of the appendix ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What is the function of the appendix ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What department store heir is responsible for raising a three-ton safe from the underwater wreckage of the Andrea Doria ?", "type": "factual", "source": "trec_train"}
 {"text": "Which sex is twice as likely to contract leprosy ?", "type": "factual", "source": "trec_train"}
 {"text": "What was the first town to be chartered in Vermont ?", "type": "factual", "source": "trec_train"}
@@ -1699,7 +1699,7 @@
 {"text": "What was the business of the animated Sky Hawks ?", "type": "factual", "source": "trec_train"}
 {"text": "Who was credited with saying : `` I never met a man I did n't like '' ?", "type": "factual", "source": "trec_train"}
 {"text": "What overalls are named for Dungri , a suburb of Bombay ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do rooftops give off steam after a big rainstorm ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do rooftops give off steam after a big rainstorm ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What nationality was Jackson Pollock ?", "type": "factual", "source": "trec_train"}
 {"text": "How much of the earth 's surface is permanently frozen ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the connection between New Krypton and Daxam ?", "type": "factual", "source": "trec_train"}
@@ -1710,7 +1710,7 @@
 {"text": "What type of performer is Ileana Cotrubas ?", "type": "factual", "source": "trec_train"}
 {"text": "When was Yemen reunified ?", "type": "temporal", "source": "trec_train"}
 {"text": "What line of candy products included Super Skrunch and Peanut Butter Oompas ?", "type": "factual", "source": "trec_train"}
-{"text": "Why did the Anglican church split from the Vatican ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why did the Anglican church split from the Vatican ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What organization has a Security Council ?", "type": "factual", "source": "trec_train"}
 {"text": "How would I find the price of different organs that have been donated ?", "type": "factual", "source": "trec_train"}
 {"text": "What Mexican leader was shot dead in 1923 ?", "type": "factual", "source": "trec_train"}
@@ -1755,7 +1755,7 @@
 {"text": "Who invented the game Scrabble ?", "type": "factual", "source": "trec_train"}
 {"text": "What part of their attire were `` pothooks '' to cowboys of the Old West ?", "type": "factual", "source": "trec_train"}
 {"text": "When did humans first begin to write history seriously ?", "type": "temporal", "source": "trec_train"}
-{"text": "Why do we have to go to school ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do we have to go to school ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is Toulmin logic ?", "type": "factual", "source": "trec_train"}
 {"text": "A corgi is a kind of what ?", "type": "factual", "source": "trec_train"}
 {"text": "What city in the U.S. experienced the most growth recently ?", "type": "factual", "source": "trec_train"}
@@ -1850,7 +1850,7 @@
 {"text": "What kind of suit did true hepcats wear in 1942 ?", "type": "factual", "source": "trec_train"}
 {"text": "Where does Mother Angelica live ?", "type": "factual", "source": "trec_train"}
 {"text": "How can I find out my Moon sign ?", "type": "factual", "source": "trec_train"}
-{"text": "Why does a candle need a wick ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why does a candle need a wick ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Musician Ray Charles plays what instrument ?", "type": "factual", "source": "trec_train"}
 {"text": "What were the three prophecies the witches make to Macbeth ?", "type": "factual", "source": "trec_train"}
 {"text": "What 's the population of Mississippi ?", "type": "factual", "source": "trec_train"}
@@ -1914,8 +1914,8 @@
 {"text": "What is the origin of the word Ozymandias ?", "type": "factual", "source": "trec_train"}
 {"text": "Who 's the only man to have won the Olympic decathlon twice ?", "type": "factual", "source": "trec_train"}
 {"text": "What Kenyan city is the safari center for East Africa ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do men snore ?", "type": "multi-hop", "source": "trec_train"}
-{"text": "What causes `` rolling thunder '' ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do men snore ?", "type": "factual", "source": "trec_train+remap-why"}
+{"text": "What causes `` rolling thunder '' ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is the name of Miss India 1994 ?", "type": "factual", "source": "trec_train"}
 {"text": "What four U.S. states have active volcanoes ?", "type": "factual", "source": "trec_train"}
 {"text": "What 's the setting of John Le Carre 's A Small Town in Germany ?", "type": "factual", "source": "trec_train"}
@@ -1923,7 +1923,7 @@
 {"text": "What is the secret of the universe ?", "type": "factual", "source": "trec_train"}
 {"text": "Who was the second man to walk on the moon ?", "type": "factual", "source": "trec_train"}
 {"text": "What major Victorian novelist spent as much time working for the post office as he did writing ?", "type": "factual", "source": "trec_train"}
-{"text": "What caused an adjournment of the 25th anniversary session of the United Nations General Assembly ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What caused an adjournment of the 25th anniversary session of the United Nations General Assembly ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "The major league baseball team in Pittsburgh is called what ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the name of the Islamic counterpart to the Red Cross ?", "type": "factual", "source": "trec_train"}
 {"text": "What year were the Olympic Games played in where Nadia Comaneci became popular ?", "type": "temporal", "source": "trec_train"}
@@ -1970,7 +1970,7 @@
 {"text": "What is `` flintknapping '' ?", "type": "factual", "source": "trec_train"}
 {"text": "What 's the most popular contact lens color ?", "type": "factual", "source": "trec_train"}
 {"text": "What were the cities of Dickens 's A Tale of Two Cities ?", "type": "factual", "source": "trec_train"}
-{"text": "What causes canker sores in the mouth ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What causes canker sores in the mouth ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "In what year was the movie the Ten Commandments released ?", "type": "temporal", "source": "trec_train"}
 {"text": "What is the fastest fish in the world ?", "type": "factual", "source": "trec_train"}
 {"text": "What color are the castellated walls of the Kremlin ?", "type": "factual", "source": "trec_train"}
@@ -1986,7 +1986,7 @@
 {"text": "What creature is the absolute fastest in moving in the world , birds , mammals , etc. , ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the date of Bastille Day ?", "type": "temporal", "source": "trec_train"}
 {"text": "What is IOC an abbreviation of ?", "type": "factual", "source": "trec_train"}
-{"text": "What 's the proud claim to fame of the young women who formed Kappa Alpha Theta ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What 's the proud claim to fame of the young women who formed Kappa Alpha Theta ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Which two products use a tiger as their symbol ?", "type": "factual", "source": "trec_train"}
 {"text": "Where did Freidreich Wilhelm Ludwig Leichhardt , Prussian born explorer , go to school ?", "type": "factual", "source": "trec_train"}
 {"text": "What color eyes are most sensitive to light ?", "type": "factual", "source": "trec_train"}
@@ -1998,7 +1998,7 @@
 {"text": "What is the name of the art of growing miniature trees ?", "type": "factual", "source": "trec_train"}
 {"text": "What two countries in South America are landlocked ?", "type": "factual", "source": "trec_train"}
 {"text": "What does Tiffany mean ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do magnets attract ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do magnets attract ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "How do you address a Chinese person ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the meaning of thalassemia ?", "type": "factual", "source": "trec_train"}
 {"text": "What is Columbia Tristar 's phone number ?", "type": "factual", "source": "trec_train"}
@@ -2027,7 +2027,7 @@
 {"text": "What is the population in India ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the origin of the word `` pallbearer ? ''", "type": "factual", "source": "trec_train"}
 {"text": "How long do flies live ?", "type": "temporal", "source": "trec_train"}
-{"text": "Why is Microsoft 's Windows 3 software so successful ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why is Microsoft 's Windows 3 software so successful ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Who runs Andy Capp 's favorite pub ?", "type": "factual", "source": "trec_train"}
 {"text": "What state produces the best lobster to eat ?", "type": "factual", "source": "trec_train"}
 {"text": "How many times a day does the typical person go to the bathroom ?", "type": "factual", "source": "trec_train"}
@@ -2064,7 +2064,7 @@
 {"text": "What 's the rathaus in Frankfurt ?", "type": "factual", "source": "trec_train"}
 {"text": "What President served for five years , six months and 2 days ?", "type": "factual", "source": "trec_train"}
 {"text": "What do you call the feeling of having experienced something before ?", "type": "factual", "source": "trec_train"}
-{"text": "What incident caused the canning of a summit conference between Eisenhower and Khrushchev ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What incident caused the canning of a summit conference between Eisenhower and Khrushchev ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is the abbreviated form of the National Bureau of Investigation ?", "type": "factual", "source": "trec_train"}
 {"text": "What is a fear of odors , body , ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the formula to calculate pi ?", "type": "factual", "source": "trec_train"}
@@ -2082,12 +2082,12 @@
 {"text": "In what year did the US Marine Corps adopt the motto `` Semper Fidelis '' ?", "type": "temporal", "source": "trec_train"}
 {"text": "How many films did Ingmar Bergman make ?", "type": "factual", "source": "trec_train"}
 {"text": "What does a deltiologist collect ?", "type": "factual", "source": "trec_train"}
-{"text": "What is Garry Kasparov famous for ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What is Garry Kasparov famous for ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What does the `` c '' stand for in the equation E=mc2 ?", "type": "factual", "source": "trec_train"}
 {"text": "Who is the Greek God of the Sea ?", "type": "factual", "source": "trec_train"}
 {"text": "What well-known music personality is the father of an adopted son named Hans Christian Henderson ?", "type": "factual", "source": "trec_train"}
 {"text": "How do you measure the heat of the sun ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do some people have two different color eyes ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do some people have two different color eyes ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Which leg does a cat move with its left front leg when walking - its left rear or right rear leg ?", "type": "factual", "source": "trec_train"}
 {"text": "When was the first Barbie produced ?", "type": "temporal", "source": "trec_train"}
 {"text": "What 's the hardest substance in the human body ?", "type": "factual", "source": "trec_train"}
@@ -2112,7 +2112,7 @@
 {"text": "What are fingernails made of ?", "type": "factual", "source": "trec_train"}
 {"text": "What nationality were the 123 people who died in the Black Hole of Calcutta ?", "type": "factual", "source": "trec_train"}
 {"text": "What does storm wave mean in Japanese ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do they sterilize the needle for lethal injection ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do they sterilize the needle for lethal injection ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What TV family sometimes buys eclairs from Nelson 's Bakery ?", "type": "factual", "source": "trec_train"}
 {"text": "How can you get rust stains out of clothing ?", "type": "factual", "source": "trec_train"}
 {"text": "How does a small businessman contact the Good Humor Ice Cream company to do business with them ?", "type": "factual", "source": "trec_train"}
@@ -2121,7 +2121,7 @@
 {"text": "Who sings Angel Eyes from the 80 's ?", "type": "factual", "source": "trec_train"}
 {"text": "When did the Jurassic Period end ?", "type": "temporal", "source": "trec_train"}
 {"text": "What is the one thing you need before you can purchase life insurance ?", "type": "factual", "source": "trec_train"}
-{"text": "What caused the Titanic to sink ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What caused the Titanic to sink ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is the chemiosmotic theory ?", "type": "factual", "source": "trec_train"}
 {"text": "What information can you tell me about actor James Cromwell ?", "type": "factual", "source": "trec_train"}
 {"text": "How does an ion drive work ?", "type": "factual", "source": "trec_train"}
@@ -2150,7 +2150,7 @@
 {"text": "How do I contact answers.com ?", "type": "factual", "source": "trec_train"}
 {"text": "What are the names of the different toes ?", "type": "factual", "source": "trec_train"}
 {"text": "What are different products of petroleum ?", "type": "factual", "source": "trec_train"}
-{"text": "What causes asthma ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What causes asthma ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "When was the Bill of Rights ratified ?", "type": "temporal", "source": "trec_train"}
 {"text": "What do the number 1 , 2 , and 4 mean on Dr. Pepper bottles ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the largest U.S. state east of the Mississippi ?", "type": "factual", "source": "trec_train"}
@@ -2162,9 +2162,9 @@
 {"text": "In the Miller Lite TV commercial , who is the creature ?", "type": "factual", "source": "trec_train"}
 {"text": "Who wrote ` Hamlet ' ?", "type": "factual", "source": "trec_train"}
 {"text": "How did the jack-o '-lantern get it 's name ?", "type": "factual", "source": "trec_train"}
-{"text": "Why can 't ostriches fly ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why can 't ostriches fly ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Where do the Blackhawks maintain their operations ?", "type": "factual", "source": "trec_train"}
-{"text": "Why are the rooftops in Canada green ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why are the rooftops in Canada green ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What African country was founded by freed American slaves in 1847 ?", "type": "factual", "source": "trec_train"}
 {"text": "What year did the first issue of `` Playboy '' come out ?", "type": "temporal", "source": "trec_train"}
 {"text": "The Orange Bowl is located in what city ?", "type": "factual", "source": "trec_train"}
@@ -2252,9 +2252,9 @@
 {"text": "What is carpal tunnel syndrome ?", "type": "factual", "source": "trec_train"}
 {"text": "What does IOC stand for ?", "type": "factual", "source": "trec_train"}
 {"text": "Which area produces the least acidic coffee ?", "type": "factual", "source": "trec_train"}
-{"text": "Why is it called `` hamburger '' if there is no ham in it ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why is it called `` hamburger '' if there is no ham in it ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is the trademark of a Washington Redskin 's fan ?", "type": "factual", "source": "trec_train"}
-{"text": "Why does cotton get caught in belly buttons ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why does cotton get caught in belly buttons ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What suburban housewife and mother of three wrote The Feminine Mystique ?", "type": "factual", "source": "trec_train"}
 {"text": "How does a glacier form ?", "type": "factual", "source": "trec_train"}
 {"text": "On which date is the Ukrainians ' Christmas ?", "type": "temporal", "source": "trec_train"}
@@ -2285,10 +2285,10 @@
 {"text": "How much is Clara Peller being paid by Wendy 's to say `` Where 's the beef '' ?", "type": "factual", "source": "trec_train"}
 {"text": "What do I need to learn to design web pages ?", "type": "factual", "source": "trec_train"}
 {"text": "What was the date of CNN 's first broadcast ?", "type": "temporal", "source": "trec_train"}
-{"text": "Shea and Gould closed their Los Angeles office for what reason ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Shea and Gould closed their Los Angeles office for what reason ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What Peter Blatty novel recounts the horrors of Regan MacNeil 's possession by the devil ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the all-time stock high of Apple Computer , and where can I find this information ?", "type": "factual", "source": "trec_train"}
-{"text": "Why are lions called `` King of the Jungle '' ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why are lions called `` King of the Jungle '' ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What non-alcoholic syrup is made from pomegranate juice ?", "type": "factual", "source": "trec_train"}
 {"text": "What meter was invented by C.C. Magee in 1935 ?", "type": "factual", "source": "trec_train"}
 {"text": "When was Calypso music invented ?", "type": "temporal", "source": "trec_train"}
@@ -2311,7 +2311,7 @@
 {"text": "Who said : `` The victor will never be asked if he told the truth '' ?", "type": "factual", "source": "trec_train"}
 {"text": "Approximately how many students are enrolled at the University of Massachusetts ?", "type": "factual", "source": "trec_train"}
 {"text": "What do West Indian steel bands use as instruments ?", "type": "factual", "source": "trec_train"}
-{"text": "Why did David Koresh ask the FBI for a word processor ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why did David Koresh ask the FBI for a word processor ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is the fastest growing state in the U.S.A. in 1998 ?", "type": "factual", "source": "trec_train"}
 {"text": "How many American soldiers have died for their country to date ?", "type": "factual", "source": "trec_train"}
 {"text": "What was the name of the U.S. 's first manned space program ?", "type": "factual", "source": "trec_train"}
@@ -2350,7 +2350,7 @@
 {"text": "What little boy and dog live in a shoe ?", "type": "factual", "source": "trec_train"}
 {"text": "What percent of world 's fresh water is found in Canada ?", "type": "factual", "source": "trec_train"}
 {"text": "CNN 's first broadcast occurred on what date ?", "type": "temporal", "source": "trec_train"}
-{"text": "Why are the U.S. presidential elections held in November ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why are the U.S. presidential elections held in November ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "How many grooves are on a dime ?", "type": "factual", "source": "trec_train"}
 {"text": "What was Marilyn Monroe 's real name ?", "type": "factual", "source": "trec_train"}
 {"text": "What number of American soldiers remain unaccounted from the Vietnam war ?", "type": "factual", "source": "trec_train"}
@@ -2410,7 +2410,7 @@
 {"text": "Who is Johnny Carson ?", "type": "factual", "source": "trec_train"}
 {"text": "What does 7847+5943 equal ?", "type": "factual", "source": "trec_train"}
 {"text": "What book is subtitled The Preservation of Favoured Races in the Struggle for Life ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do the chickenpoxs last so long ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do the chickenpoxs last so long ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What attorneys work for The Center for the Defense of Free Enterprise ?", "type": "factual", "source": "trec_train"}
 {"text": "How did the U.S. come into the possession of an empire in the wake of the Spanish-American War ?", "type": "factual", "source": "trec_train"}
 {"text": "What is Dick Clark 's date of birth ?", "type": "temporal", "source": "trec_train"}
@@ -2444,7 +2444,7 @@
 {"text": "Who killed Caesar ?", "type": "factual", "source": "trec_train"}
 {"text": "Where is Kings Canyon ?", "type": "factual", "source": "trec_train"}
 {"text": "What are the words to the song sung by `` Banana in Pajamas '' ?", "type": "factual", "source": "trec_train"}
-{"text": "Why are organ transplants more successful today ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why are organ transplants more successful today ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Which is the most-used computer program ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the root of all evil ?", "type": "factual", "source": "trec_train"}
 {"text": "What animal has the best hearing ?", "type": "factual", "source": "trec_train"}
@@ -2460,7 +2460,7 @@
 {"text": "What Ernest Hemingway novel had the working title Fiesta ?", "type": "factual", "source": "trec_train"}
 {"text": "What color of Monopoly properties are landed on most often ?", "type": "factual", "source": "trec_train"}
 {"text": "Which Beatles disc cover honors the Rolling Stones ?", "type": "factual", "source": "trec_train"}
-{"text": "Why does it snow ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why does it snow ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is the average life expectancy of a male in Ireland in 1996 ?", "type": "temporal", "source": "trec_train"}
 {"text": "What is `` Vocal Sampling '' ?", "type": "factual", "source": "trec_train"}
 {"text": "How do windmills work ?", "type": "factual", "source": "trec_train"}
@@ -2501,10 +2501,10 @@
 {"text": "What does SHIELD stand for ?", "type": "factual", "source": "trec_train"}
 {"text": "How do you say , `` I love you '' in other languages ?", "type": "factual", "source": "trec_train"}
 {"text": "What is The Gay Science ?", "type": "factual", "source": "trec_train"}
-{"text": "Why is Jane Goodall famous ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why is Jane Goodall famous ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is the chemical reactivity of helium ?", "type": "factual", "source": "trec_train"}
 {"text": "The name of the actor who played the detective in the film Kindergarden Cop is what ?", "type": "factual", "source": "trec_train"}
-{"text": "What is main reason for that electric vehicles can 't be popular nowadays ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What is main reason for that electric vehicles can 't be popular nowadays ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is the difference between optical and digital video ?", "type": "factual", "source": "trec_train"}
 {"text": "What clause in the U.S. Constitution may not be changed , altered or amended ?", "type": "factual", "source": "trec_train"}
 {"text": "What 's new in the postal world in 1999 ?", "type": "factual", "source": "trec_train"}
@@ -2545,12 +2545,12 @@
 {"text": "What are the four largest mountain ranges on the Asian continent ?", "type": "factual", "source": "trec_train"}
 {"text": "What are the Poconos ?", "type": "factual", "source": "trec_train"}
 {"text": "What does caliente mean , in English ?", "type": "factual", "source": "trec_train"}
-{"text": "What is Jane Goodall famous for ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What is Jane Goodall famous for ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is the mission of Nike ?", "type": "factual", "source": "trec_train"}
 {"text": "What is thalassemia ?", "type": "factual", "source": "trec_train"}
 {"text": "How far can you see ?", "type": "factual", "source": "trec_train"}
 {"text": "What nuclear-powered Russian submarine sank in the Norwegian Sea on April 7 , 1989 ?", "type": "factual", "source": "trec_train"}
-{"text": "Why can 't you taste anything when you have a cold ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why can 't you taste anything when you have a cold ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Where in the Bible does it tell about Jesus Christ 's brothers and sisters ?", "type": "factual", "source": "trec_train"}
 {"text": "What country boasts the southernmost point in continental Europe ?", "type": "factual", "source": "trec_train"}
 {"text": "When did Nostradamus believe World War III would begin ?", "type": "temporal", "source": "trec_train"}
@@ -2564,13 +2564,13 @@
 {"text": "Who wrote : `` Poems are made by fools like me but only God can make a tree '' ?", "type": "factual", "source": "trec_train"}
 {"text": "What is June 's birthstone ?", "type": "factual", "source": "trec_train"}
 {"text": "Where did the 6th annual meeting of Indonesia-Malaysia forest experts take place ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do we ask for the `` check '' and not the bill at a restaurant ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do we ask for the `` check '' and not the bill at a restaurant ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Who played the part of the Godfather in the movie , ` The Godfather ' ?", "type": "factual", "source": "trec_train"}
 {"text": "When was London 's Docklands Light Railway constructed ?", "type": "temporal", "source": "trec_train"}
 {"text": "Who invented the Wonderbra ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the origin of the proverb `` A stitch in time saves nine '' ?", "type": "factual", "source": "trec_train"}
 {"text": "What state capital comes last alphabetically ?", "type": "factual", "source": "trec_train"}
-{"text": "Why is Thanksgiving on a Thursday ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why is Thanksgiving on a Thursday ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "How do telephones work ?", "type": "factual", "source": "trec_train"}
 {"text": "What 's the main vegetable in vichyssoise ?", "type": "factual", "source": "trec_train"}
 {"text": "How long did the Charles Manson murder trial last ?", "type": "temporal", "source": "trec_train"}
@@ -2642,7 +2642,7 @@
 {"text": "What Chilean president was killed in a 1973 coup d 'etat ?", "type": "factual", "source": "trec_train"}
 {"text": "What was Einstein 's IQ ?", "type": "factual", "source": "trec_train"}
 {"text": "Name the first Russian astronaut to do a spacewalk .", "type": "factual", "source": "trec_train"}
-{"text": "Why do eyes sometimes look red in photographs ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do eyes sometimes look red in photographs ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What are John C. Calhoun and Henry Clay known as ?", "type": "factual", "source": "trec_train"}
 {"text": "What are the first names of the famous husband-and-wife acting team of Lunt and Fontanne ?", "type": "factual", "source": "trec_train"}
 {"text": "What are some good exercises for kids to do ?", "type": "factual", "source": "trec_train"}
@@ -2659,7 +2659,7 @@
 {"text": "Which comic book was not spawned directly from the pulp magazines ?", "type": "factual", "source": "trec_train"}
 {"text": "What product is for kids , and not for silly rabbits ?", "type": "factual", "source": "trec_train"}
 {"text": "What else has the swastika stood for ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do people get goosebumps when they have something emotional happen to them , like when they hear a beautiful piece of music , or see something beautiful , or get aroused by someone they love ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do people get goosebumps when they have something emotional happen to them , like when they hear a beautiful piece of music , or see something beautiful , or get aroused by someone they love ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "How many frames does a disk camera shoot ?", "type": "factual", "source": "trec_train"}
 {"text": "What are the 7 Wonders of the World ?", "type": "factual", "source": "trec_train"}
 {"text": "When did Theo Rousseau paint the `` Forest of Fontaine '' ?", "type": "temporal", "source": "trec_train"}
@@ -2696,7 +2696,7 @@
 {"text": "What high school does Archie attend ?", "type": "factual", "source": "trec_train"}
 {"text": "What animal migrates the farthest ?", "type": "factual", "source": "trec_train"}
 {"text": "What film was based on the play Everybody Comes to Rick 's ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do we call someone `` honey '' ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do we call someone `` honey '' ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Madonna hocks which soft drink ?", "type": "factual", "source": "trec_train"}
 {"text": "What television network flogged its sports programming on Inga Nielsen 's body in 197 ?", "type": "factual", "source": "trec_train"}
 {"text": "In what country is Lund ?", "type": "factual", "source": "trec_train"}
@@ -2713,7 +2713,7 @@
 {"text": "Where does the tennis star Stefan Edberg come from ?", "type": "factual", "source": "trec_train"}
 {"text": "What continent pushes up the Executive Committee mountain range ?", "type": "factual", "source": "trec_train"}
 {"text": "How do they raise the cranes when building high-rise buildings ?", "type": "factual", "source": "trec_train"}
-{"text": "What was Al Capone finally imprisoned for , in 1931 ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What was Al Capone finally imprisoned for , in 1931 ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What food can I use to catch a possum ?", "type": "factual", "source": "trec_train"}
 {"text": "What was Al Capone 's nickname ?", "type": "factual", "source": "trec_train"}
 {"text": "Who was the author of the famous fairy tale `` Snow White and Seven Dwarfs '' ?", "type": "factual", "source": "trec_train"}
@@ -2755,8 +2755,8 @@
 {"text": "What 's the last line of Dickens 's A Christmas Carol ?", "type": "factual", "source": "trec_train"}
 {"text": "How many trees go into paper making in a year ?", "type": "factual", "source": "trec_train"}
 {"text": "Where can I find info on research being done on oilseeds thru genetics ?", "type": "factual", "source": "trec_train"}
-{"text": "How come light bulbs go out ?", "type": "multi-hop", "source": "trec_train"}
-{"text": "For what reason did the Shea & Gould law firm close their L.A. office ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "How come light bulbs go out ?", "type": "factual", "source": "trec_train+remap-why"}
+{"text": "For what reason did the Shea & Gould law firm close their L.A. office ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "How far out is the universe ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the difference between a bottle and a jar ?", "type": "factual", "source": "trec_train"}
 {"text": "What disease is the second-biggest killer of North Americans ?", "type": "factual", "source": "trec_train"}
@@ -2801,7 +2801,7 @@
 {"text": "How long does it take to hike the entire Appalachian Trail ?", "type": "temporal", "source": "trec_train"}
 {"text": "What role do fruits play in the survival of plants ?", "type": "factual", "source": "trec_train"}
 {"text": "Where is the world championship sled dog race held each February ?", "type": "factual", "source": "trec_train"}
-{"text": "What are the medical purposes of `` clitoridectomy '' ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What are the medical purposes of `` clitoridectomy '' ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "How is thalassemia defined ?", "type": "factual", "source": "trec_train"}
 {"text": "What 's the name of the Tampa newspaper ?", "type": "factual", "source": "trec_train"}
 {"text": "What is a storm surge ?", "type": "factual", "source": "trec_train"}
@@ -2837,7 +2837,7 @@
 {"text": "What baseball player was walked the most times ?", "type": "factual", "source": "trec_train"}
 {"text": "What famous male vocalist has the same name as the composer of the opera Hansel and Gretel ?", "type": "factual", "source": "trec_train"}
 {"text": "What were the first frozen foods ?", "type": "factual", "source": "trec_train"}
-{"text": "Why is Indiglo called Indiglo ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why is Indiglo called Indiglo ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is the word for love of pain or abuse ?", "type": "factual", "source": "trec_train"}
 {"text": "When did they canonize the Bible ?", "type": "temporal", "source": "trec_train"}
 {"text": "Who was the only president to serve two nonconsecutive terms ?", "type": "factual", "source": "trec_train"}
@@ -2861,7 +2861,7 @@
 {"text": "What 's the supreme policy-making bureau of the Soviet Communist Party ?", "type": "factual", "source": "trec_train"}
 {"text": "What was the Vietnam War ?", "type": "factual", "source": "trec_train"}
 {"text": "What is La Nina ?", "type": "factual", "source": "trec_train"}
-{"text": "Why did the Globe Theatre burn down ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why did the Globe Theatre burn down ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "On what day were John F and Jackie Kennedy married ?", "type": "temporal", "source": "trec_train"}
 {"text": "What was the non-fiction best-seller of 1952 , 1953 and 1954 ?", "type": "factual", "source": "trec_train"}
 {"text": "What is meant by blood SED rate ?", "type": "factual", "source": "trec_train"}
@@ -2871,7 +2871,7 @@
 {"text": "Where is your corpus callosum ?", "type": "factual", "source": "trec_train"}
 {"text": "What Broadway musical featured the song , `` If I were a rich man ? ''", "type": "factual", "source": "trec_train"}
 {"text": "Who portrayed Sherlock Holmes in 14 films between 1939 and 1946 ?", "type": "factual", "source": "trec_train"}
-{"text": "Why is the development of space so important ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why is the development of space so important ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is the nursery rhyme Rock-a-by Baby about ?", "type": "factual", "source": "trec_train"}
 {"text": "When Superman needs to get away from it all , where does he go ?", "type": "factual", "source": "trec_train"}
 {"text": "How old is singer Freedy Johnston ?", "type": "temporal", "source": "trec_train"}
@@ -2901,7 +2901,7 @@
 {"text": "What is the name of Kevin Costner 's movie about Sioux Indians ?", "type": "factual", "source": "trec_train"}
 {"text": "What are Kythnos , Siphnos , Seriphos and Mykonos ?", "type": "factual", "source": "trec_train"}
 {"text": "Name a female figure skater .", "type": "factual", "source": "trec_train"}
-{"text": "Why are there no white lines on pro footballs ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why are there no white lines on pro footballs ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "How long would it take for a $ savings bond to mature ?", "type": "temporal", "source": "trec_train"}
 {"text": "How is Abigail Arcane related to the villainous opponent of the Swamp Thing ?", "type": "factual", "source": "trec_train"}
 {"text": "What did the Congress of Vienna establish ?", "type": "factual", "source": "trec_train"}
@@ -2990,7 +2990,7 @@
 {"text": "How long did Shea and Gould practice law in Los Angeles ?", "type": "temporal", "source": "trec_train"}
 {"text": "What 's a perfect score in a gymnastics exercise ?", "type": "factual", "source": "trec_train"}
 {"text": "What group included Abbey Hoffman , Jerry Rubin , and Tom Hayden ?", "type": "factual", "source": "trec_train"}
-{"text": "What made Jane Goodall famous ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What made Jane Goodall famous ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "At what age did Rossini stop writing opera ?", "type": "temporal", "source": "trec_train"}
 {"text": "What Russian seaport has a name meaning `` Lord of the East '' ?", "type": "factual", "source": "trec_train"}
 {"text": "Name the two actress daughters of John Mills .", "type": "factual", "source": "trec_train"}
@@ -3003,13 +3003,13 @@
 {"text": "What is porphyria ?", "type": "factual", "source": "trec_train"}
 {"text": "What gate opened on East and West Berlin ?", "type": "factual", "source": "trec_train"}
 {"text": "Who was the first king of England ?", "type": "factual", "source": "trec_train"}
-{"text": "What made the Finger Lakes in western New York state ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What made the Finger Lakes in western New York state ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "In what movie is the number nine found in the title ?", "type": "factual", "source": "trec_train"}
 {"text": "How many calories are there in soy sauce ?", "type": "factual", "source": "trec_train"}
 {"text": "Who killed Kurt Cobain ?", "type": "factual", "source": "trec_train"}
 {"text": "Who created the monster in Mary Shelley 's novel Frankenstein ?", "type": "factual", "source": "trec_train"}
 {"text": "What 's the farthest planet from the sun ?", "type": "factual", "source": "trec_train"}
-{"text": "Why does the sun shine only a short time in Alaska ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why does the sun shine only a short time in Alaska ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What chemical in red wine is good for the heart and what exactly does it do to your body ?", "type": "factual", "source": "trec_train"}
 {"text": "How does blood clot ?", "type": "factual", "source": "trec_train"}
 {"text": "How big is our galaxy in diameter ?", "type": "factual", "source": "trec_train"}
@@ -3041,7 +3041,7 @@
 {"text": "What is it like to experience a near death episode ?", "type": "factual", "source": "trec_train"}
 {"text": "What mythical figure carries an hourglass and a scythe ?", "type": "factual", "source": "trec_train"}
 {"text": "How much is a Canadian 1967 twenty dollar gold coin worth ?", "type": "factual", "source": "trec_train"}
-{"text": "Why didn 't European colonial rule spread until after the first and second industrial revolutions ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why didn 't European colonial rule spread until after the first and second industrial revolutions ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What natural attractions draw the most visitors in the United States ?", "type": "factual", "source": "trec_train"}
 {"text": "What presidential administration challenged Americans to explore The New Frontier ?", "type": "factual", "source": "trec_train"}
 {"text": "How many years did Sleeping Beauty sleep ?", "type": "factual", "source": "trec_train"}
@@ -3134,7 +3134,7 @@
 {"text": "How far away is the moon ?", "type": "factual", "source": "trec_train"}
 {"text": "What famous film and TV cowboy lent his name to a fast food chain ?", "type": "factual", "source": "trec_train"}
 {"text": "What is mandibulofacial dysostosis ?", "type": "factual", "source": "trec_train"}
-{"text": "What was the reason for the partition of the Anglican and Vatican churches ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What was the reason for the partition of the Anglican and Vatican churches ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is Butterfield 8 in Butterfield 8 ?", "type": "factual", "source": "trec_train"}
 {"text": "Who famously rode to warn the people of Massachusetts that the British were coming ?", "type": "factual", "source": "trec_train"}
 {"text": "What is DTMF ?", "type": "factual", "source": "trec_train"}
@@ -3213,7 +3213,7 @@
 {"text": "Which college did Dikembe Mutombo play basketball at ?", "type": "factual", "source": "trec_train"}
 {"text": "What is a fear of going to bed ?", "type": "factual", "source": "trec_train"}
 {"text": "Where did the saying `` rule of thumb '' come from ?", "type": "factual", "source": "trec_train"}
-{"text": "Why does sound travel quicker through water than air ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why does sound travel quicker through water than air ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "How much money does the Sultan of Brunei have ?", "type": "factual", "source": "trec_train"}
 {"text": "What country would you visit to ski in the Dolomites ?", "type": "factual", "source": "trec_train"}
 {"text": "What month 's third weekend is the Monterey Jazz Festival held on ?", "type": "temporal", "source": "trec_train"}
@@ -3256,7 +3256,7 @@
 {"text": "Who wrote Unsafe at Any Speed ?", "type": "factual", "source": "trec_train"}
 {"text": "How many islands make up Antigua ?", "type": "factual", "source": "trec_train"}
 {"text": "How does an abacus work ?", "type": "factual", "source": "trec_train"}
-{"text": "What causes rust ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What causes rust ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is the fear of the computer called ?", "type": "factual", "source": "trec_train"}
 {"text": "What is a technique popularly used to detect birth defects ?", "type": "factual", "source": "trec_train"}
 {"text": "What U.S. state boasts Stone Mountain , the world 's largest mass of exposed granite ?", "type": "factual", "source": "trec_train"}
@@ -3289,7 +3289,7 @@
 {"text": "What is the population of Mexico ?", "type": "factual", "source": "trec_train"}
 {"text": "How do you get silly putty out of fabric ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the best online games site ?", "type": "factual", "source": "trec_train"}
-{"text": "Why is the word `` abbreviation '' so long ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why is the word `` abbreviation '' so long ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What century did art 's Romantic Period begin in ?", "type": "temporal", "source": "trec_train"}
 {"text": "How many spaces follow a period at the end of a sentence ?", "type": "factual", "source": "trec_train"}
 {"text": "What is a cake of soap ?", "type": "factual", "source": "trec_train"}
@@ -3337,7 +3337,7 @@
 {"text": "What river runs through Colorado , Kansas , and Oklahoma ?", "type": "factual", "source": "trec_train"}
 {"text": "Which airplane did Fawaz Younis hijack ?", "type": "factual", "source": "trec_train"}
 {"text": "What is Win Rah ?", "type": "factual", "source": "trec_train"}
-{"text": "Why is the moon different sizes and colors ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why is the moon different sizes and colors ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What college enlivens Hanover , New Hampshire ?", "type": "factual", "source": "trec_train"}
 {"text": "What does VCR stand for ?", "type": "factual", "source": "trec_train"}
 {"text": "How close a cousin was Franklin D. to Theodore Roosevelt ?", "type": "factual", "source": "trec_train"}
@@ -3373,7 +3373,7 @@
 {"text": "How many Russians have landed on the moon ?", "type": "factual", "source": "trec_train"}
 {"text": "Which thrilled taste buds first - Snickers or 3 Musketeers ?", "type": "factual", "source": "trec_train"}
 {"text": "What animal do buffalo wings come from ?", "type": "factual", "source": "trec_train"}
-{"text": "What is the purpose of the SysRq key on my computer keyboard ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What is the purpose of the SysRq key on my computer keyboard ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "When was Franklin D. Roosevelt stricken with polio ?", "type": "temporal", "source": "trec_train"}
 {"text": "How do you find out what is allowed to claim as a contibution for income tax purposes ?", "type": "factual", "source": "trec_train"}
 {"text": "How do you build a solar car for a high school experiment ?", "type": "factual", "source": "trec_train"}
@@ -3506,7 +3506,7 @@
 {"text": "Who is the prophet that is most connected to the Dead Sea ?", "type": "factual", "source": "trec_train"}
 {"text": "What are the chances of pregnacy if the penis does not penetrate the vagina ?", "type": "factual", "source": "trec_train"}
 {"text": "What is infomatics ?", "type": "factual", "source": "trec_train"}
-{"text": "What is the purpose of BIOS ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What is the purpose of BIOS ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Where is the Keck telescope ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the name of the kids ' show from Canadian Public TV with the singing pineapple ?", "type": "factual", "source": "trec_train"}
 {"text": "Where are the apartments in Saint John , New Brunswick ?", "type": "factual", "source": "trec_train"}
@@ -3514,7 +3514,7 @@
 {"text": "What country did the Mau Mau Uprising take place in ?", "type": "factual", "source": "trec_train"}
 {"text": "What are some good medical sites for information ?", "type": "factual", "source": "trec_train"}
 {"text": "What does a resurrectionist steal ?", "type": "factual", "source": "trec_train"}
-{"text": "Why did the Shea & Gould law firm leave Los Angeles ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why did the Shea & Gould law firm leave Los Angeles ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is the best art and design school in the world ?", "type": "factual", "source": "trec_train"}
 {"text": "What two vegetables are combined in succotash ?", "type": "factual", "source": "trec_train"}
 {"text": "Who is the Incredible Hulk in reality ?", "type": "factual", "source": "trec_train"}
@@ -3532,7 +3532,7 @@
 {"text": "What is a cullion ?", "type": "factual", "source": "trec_train"}
 {"text": "What are the ten safest American cities for pedestrians ?", "type": "factual", "source": "trec_train"}
 {"text": "What TV detective did Craig Stevens play ?", "type": "factual", "source": "trec_train"}
-{"text": "What are the most common causes of death in the U.S. ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What are the most common causes of death in the U.S. ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Where can I find a picture of a Blue Meanie ?", "type": "factual", "source": "trec_train"}
 {"text": "What university fired Angela Davis ?", "type": "factual", "source": "trec_train"}
 {"text": "What U.S. state does the Continental Divide leave to enter Canada ?", "type": "factual", "source": "trec_train"}
@@ -3540,7 +3540,7 @@
 {"text": "In AD 999 , what sort of celebrations , fears , were there ?", "type": "factual", "source": "trec_train"}
 {"text": "Who played Emperor Palpatine in Star Wars ?", "type": "factual", "source": "trec_train"}
 {"text": "What 's the name of the Wilkes plantation in Gone with the Wind ?", "type": "factual", "source": "trec_train"}
-{"text": "Why is the universe flat , if it started by an explosion , shouldn 't it be a sphere ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why is the universe flat , if it started by an explosion , shouldn 't it be a sphere ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Where is the Statistical Abstract of the United States online ?", "type": "factual", "source": "trec_train"}
 {"text": "What is barnstorming ?", "type": "factual", "source": "trec_train"}
 {"text": "What 's the dumbest domesticated animal ?", "type": "factual", "source": "trec_train"}
@@ -3599,7 +3599,7 @@
 {"text": "What is New England 's highest mountain ?", "type": "factual", "source": "trec_train"}
 {"text": "What TV station did Mary Richards work for ?", "type": "factual", "source": "trec_train"}
 {"text": "What does idle mean ?", "type": "factual", "source": "trec_train"}
-{"text": "What was the claim to fame of the football game that saw Fordham defeat Waynesburg State 12601 on September 3 , 1939 ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What was the claim to fame of the football game that saw Fordham defeat Waynesburg State 12601 on September 3 , 1939 ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is a serigraph ?", "type": "factual", "source": "trec_train"}
 {"text": "What football bowl game 's first queen was Hallie Woods ?", "type": "factual", "source": "trec_train"}
 {"text": "Who was the first black to be head coach of a major league pro sports team ?", "type": "factual", "source": "trec_train"}
@@ -3616,7 +3616,7 @@
 {"text": "What is a geoscientist ?", "type": "factual", "source": "trec_train"}
 {"text": "What robust U.S. President imported his own instructor after seeing a judo match ?", "type": "factual", "source": "trec_train"}
 {"text": "What are all the different types of pizza ?", "type": "factual", "source": "trec_train"}
-{"text": "From what cause does tuberculosis stem ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "From what cause does tuberculosis stem ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "In what nation is Edessa located nowadays ?", "type": "factual", "source": "trec_train"}
 {"text": "Name a country that is developing a magnetic levitation railway system ?", "type": "factual", "source": "trec_train"}
 {"text": "What does BTU mean ?", "type": "factual", "source": "trec_train"}
@@ -3629,7 +3629,7 @@
 {"text": "Who held the endurance record for women pilots in 1929 ?", "type": "factual", "source": "trec_train"}
 {"text": "What did Andy Hardy 's father do for a living ?", "type": "factual", "source": "trec_train"}
 {"text": "Independent silversmith 's account for what percentage of silver production ?", "type": "factual", "source": "trec_train"}
-{"text": "Why is hockey so violent ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why is hockey so violent ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "In what part of the world is Mozambique ?", "type": "factual", "source": "trec_train"}
 {"text": "Who are Woody Woodpecker 's niece and nephew ?", "type": "factual", "source": "trec_train"}
 {"text": "What film opens with an assassin tumbling from the Seattle Space Needle ?", "type": "factual", "source": "trec_train"}
@@ -3658,10 +3658,10 @@
 {"text": "How many dollars a day did Arthur Frommer say you could get by on in Europe in 1968 ?", "type": "factual", "source": "trec_train"}
 {"text": "What holidays or observances are celebrated in Italy ?", "type": "factual", "source": "trec_train"}
 {"text": "Who appointed the chair of the Federal Reserve ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do people shake hands to show friendliness ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do people shake hands to show friendliness ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "In a computer , what does SCSI mean ?", "type": "factual", "source": "trec_train"}
 {"text": "To get the most caffeine , what soda should I drink ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do they call it a `` funny bone '' ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do they call it a `` funny bone '' ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Where can I find up-to-date coastal ocean surface temperature information , preferably along North America and the Caribbean ?", "type": "factual", "source": "trec_train"}
 {"text": "What exactly is radiation ?", "type": "factual", "source": "trec_train"}
 {"text": "What are the two cities in Dicken 's `` A Tale of Two Cities '' ?", "type": "factual", "source": "trec_train"}
@@ -3726,7 +3726,7 @@
 {"text": "Who wrote ` Dubliners ' ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the life expectancy of an elephant ?", "type": "temporal", "source": "trec_train"}
 {"text": "What are the short- and long-term effects of underage drinking ?", "type": "factual", "source": "trec_train"}
-{"text": "What 's the claim to fame of night watchman Frank Wills ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What 's the claim to fame of night watchman Frank Wills ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Name of King Arthur 's sword ?", "type": "factual", "source": "trec_train"}
 {"text": "What 1981 Candice Bergen-Jacqueline Bisset movie was a remake of 1943 's Old Acquaintance ?", "type": "factual", "source": "trec_train"}
 {"text": "Who is Malaysia 's 43rd prime minister ?", "type": "factual", "source": "trec_train"}
@@ -3739,7 +3739,7 @@
 {"text": "What does the abbreviation OAS stand for ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the nickname of the Cleveland Indians ?", "type": "factual", "source": "trec_train"}
 {"text": "What Frederick Forsyth novel chronicles the toppling of an African government by mercenaries ?", "type": "factual", "source": "trec_train"}
-{"text": "What makes Black Hills , South Dakota a tourist attraction ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What makes Black Hills , South Dakota a tourist attraction ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What was the name of Baretta 's cockatoo ?", "type": "factual", "source": "trec_train"}
 {"text": "By how much will the California state gas tax rise by the year 2000 ?", "type": "factual", "source": "trec_train"}
 {"text": "What 's Japan 's largest car manufacturer ?", "type": "factual", "source": "trec_train"}
@@ -3752,7 +3752,7 @@
 {"text": "Where is Rider College ?", "type": "factual", "source": "trec_train"}
 {"text": "Where was chop suey invented ?", "type": "factual", "source": "trec_train"}
 {"text": "How can I gain access to a spy satelite ?", "type": "factual", "source": "trec_train"}
-{"text": "What is Archimedes famous for ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What is Archimedes famous for ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Where does dew come from ?", "type": "factual", "source": "trec_train"}
 {"text": "How old was Lucille Ball when the show `` I Love Lucy '' premiered ?", "type": "temporal", "source": "trec_train"}
 {"text": "What 's the most delicate-tasting member of the onion family ?", "type": "factual", "source": "trec_train"}
@@ -3765,7 +3765,7 @@
 {"text": "What 1942 espionage movie reunited director John Huston with Maltese Falconers Humphrey Bogart , Mary Astor , and Sidney Greenstreet ?", "type": "factual", "source": "trec_train"}
 {"text": "What nationality is Ileana Cotrubas ?", "type": "factual", "source": "trec_train"}
 {"text": "What is object-oriented design ?", "type": "factual", "source": "trec_train"}
-{"text": "Why does a woman have to be a virgin to be a nun ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why does a woman have to be a virgin to be a nun ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is the population of Kansas ?", "type": "factual", "source": "trec_train"}
 {"text": "Who invented the pull-tab opener on cans ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the name of the deranged super-criminal Otto Octavius uses ?", "type": "factual", "source": "trec_train"}
@@ -3813,7 +3813,7 @@
 {"text": "What New Orleans D.A. claimed : `` My staff and I solved the assassination weeks ago '' ?", "type": "factual", "source": "trec_train"}
 {"text": "Where can one find Rider College ?", "type": "factual", "source": "trec_train"}
 {"text": "How much caffeine is in a 16 oz cup of coffee ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do oceans contain salt water instead of fresh water ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do oceans contain salt water instead of fresh water ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is Bella Abzug 's sartorial trademark ?", "type": "factual", "source": "trec_train"}
 {"text": "What was the real name of writer Ross Macdonald , creator of the hero Lew Archer ?", "type": "factual", "source": "trec_train"}
 {"text": "What spider makes a superb pet , even said to recognize its master ?", "type": "factual", "source": "trec_train"}
@@ -3881,7 +3881,7 @@
 {"text": "How long was the OJ Simpson trial ?", "type": "temporal", "source": "trec_train"}
 {"text": "What country lies directly south of Detroit ?", "type": "factual", "source": "trec_train"}
 {"text": "Where did surfing originate ?", "type": "factual", "source": "trec_train"}
-{"text": "Why was Henry Ford 's first automobile calleda Model T & his second type of automobile , introduced in 1928 , called a Model A ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why was Henry Ford 's first automobile calleda Model T & his second type of automobile , introduced in 1928 , called a Model A ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "How do companies cut paper so thin ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the tallest mountain ?", "type": "factual", "source": "trec_train"}
 {"text": "What is `` the computer for the rest of us '' ?", "type": "factual", "source": "trec_train"}
@@ -3931,7 +3931,7 @@
 {"text": "Where is the Kentucky Horse Park ?", "type": "factual", "source": "trec_train"}
 {"text": "What Argentine boxer was shot dead outside a Nevada brothel in May ?", "type": "factual", "source": "trec_train"}
 {"text": "What country boasts the most cars per mile of road ?", "type": "factual", "source": "trec_train"}
-{"text": "How come a doughnut has a hole in it ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "How come a doughnut has a hole in it ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What happened to Pompeii ?", "type": "factual", "source": "trec_train"}
 {"text": "What does a farrier put shoes on ?", "type": "factual", "source": "trec_train"}
 {"text": "Name a Sioux language .", "type": "factual", "source": "trec_train"}
@@ -3949,7 +3949,7 @@
 {"text": "What U.S. President was the first to breed mules ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the difference between molecules and compounds ?", "type": "factual", "source": "trec_train"}
 {"text": "What astronomer-architect designed the present St. Paul 's Cathedral in London ?", "type": "factual", "source": "trec_train"}
-{"text": "Why are so many umbrellas black ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why are so many umbrellas black ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What feminist wrote Sexual Politics and Flying ?", "type": "factual", "source": "trec_train"}
 {"text": "Who was the first American world chess champion ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the zodiac sign for August 14 ?", "type": "factual", "source": "trec_train"}
@@ -3977,20 +3977,20 @@
 {"text": "How hot should the oven be when making Peachy Oat Muffins ?", "type": "factual", "source": "trec_train"}
 {"text": "How old is Britney Spears ?", "type": "temporal", "source": "trec_train"}
 {"text": "Where can I get piano music for the Jamiroquai song Everyday for the midi ?", "type": "factual", "source": "trec_train"}
-{"text": "Why is Microsoft 's Windows 3 such a successful computer program ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why is Microsoft 's Windows 3 such a successful computer program ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What country 's capital was formed when Pesth and Buda merged ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the origin of U.S. Army sergeant 's stripes ?", "type": "factual", "source": "trec_train"}
 {"text": "What is proposition 98 about ?", "type": "factual", "source": "trec_train"}
 {"text": "What town was the setting for The Music Man ?", "type": "factual", "source": "trec_train"}
 {"text": "What was Simple Simon fishing for in his mother 's pail ?", "type": "factual", "source": "trec_train"}
 {"text": "What did Woody Allen call the Japanese gangster film he dubbed into English as a comedy ?", "type": "factual", "source": "trec_train"}
-{"text": "Why does a candle go out when we blow on it ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why does a candle go out when we blow on it ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What title does comedian Henry Youngman claim ?", "type": "factual", "source": "trec_train"}
 {"text": "What is `` the taste that beats the others cold '' ?", "type": "factual", "source": "trec_train"}
 {"text": "Who made the first airplane that could fly ?", "type": "factual", "source": "trec_train"}
 {"text": "What kind of sports did they play in the years 1642-1649 , the English Civil War time ?", "type": "factual", "source": "trec_train"}
 {"text": "Where can I find scientific data , `` research papers , '' on textile engineering ?", "type": "factual", "source": "trec_train"}
-{"text": "What makes salt ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What makes salt ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "How many people die from snakebite poisoning in the U.S. per year ?", "type": "factual", "source": "trec_train"}
 {"text": "How high is the city of Denver ?", "type": "factual", "source": "trec_train"}
 {"text": "Who was International Olympic Committee chairman at the 1936 Summer Games ?", "type": "factual", "source": "trec_train"}
@@ -4015,12 +4015,12 @@
 {"text": "How many cables support the main span of the Golden Gate Bridge ?", "type": "factual", "source": "trec_train"}
 {"text": "How much did Manchester United spend on players in 1993 ?", "type": "factual", "source": "trec_train"}
 {"text": "What was the birthplace of Edgar Allen Poe ?", "type": "factual", "source": "trec_train"}
-{"text": "Why were red M&Ms discontinued then brought back ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why were red M&Ms discontinued then brought back ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What does it take to become a lawyer ?", "type": "factual", "source": "trec_train"}
 {"text": "What American sergeant lost both of his hands in combat during World War II and then went on to act in a single movie for which he won two Oscars ?", "type": "factual", "source": "trec_train"}
 {"text": "Who invented the fountain ?", "type": "factual", "source": "trec_train"}
 {"text": "What room did W.C. Fields keep his library in ?", "type": "factual", "source": "trec_train"}
-{"text": "What causes an earthquake ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What causes an earthquake ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What Batman character tools around on a Batcycle ?", "type": "factual", "source": "trec_train"}
 {"text": "What are the main blood vessels ?", "type": "factual", "source": "trec_train"}
 {"text": "What does `` saute '' mean ?", "type": "factual", "source": "trec_train"}
@@ -4032,7 +4032,7 @@
 {"text": "What are the top vegetable crops in the world ?", "type": "factual", "source": "trec_train"}
 {"text": "What volcano showers ash on Sicily ?", "type": "factual", "source": "trec_train"}
 {"text": "Where are the U.S. headquarters for Procter & Gamble ?", "type": "factual", "source": "trec_train"}
-{"text": "Why did the Aztecs first think the Spanish were Gods ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why did the Aztecs first think the Spanish were Gods ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What are the rules to `` snow golf '' ?", "type": "factual", "source": "trec_train"}
 {"text": "What does Warner Bros. call a flightless cuckoo ?", "type": "factual", "source": "trec_train"}
 {"text": "When did Mount St. Helen last have a major eruption ?", "type": "temporal", "source": "trec_train"}
@@ -4060,7 +4060,7 @@
 {"text": "How tall is the replica of the Matterhorn at Disneyland ?", "type": "factual", "source": "trec_train"}
 {"text": "What are the largest deserts in the world ?", "type": "factual", "source": "trec_train"}
 {"text": "Where is Qatar ?", "type": "factual", "source": "trec_train"}
-{"text": "Why are peanut butter cookies topped with crisscrosses ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why are peanut butter cookies topped with crisscrosses ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is the richest state in the U.S. ?", "type": "factual", "source": "trec_train"}
 {"text": "Who is the prime minister in Norway ?", "type": "factual", "source": "trec_train"}
 {"text": "What is a urologist ?", "type": "factual", "source": "trec_train"}
@@ -4118,7 +4118,7 @@
 {"text": "When did the supercontinent Pangaea break up ?", "type": "temporal", "source": "trec_train"}
 {"text": "What kind of mammal is a colt ?", "type": "factual", "source": "trec_train"}
 {"text": "Who created Harry Lime ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do many Native American students not complete college ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do many Native American students not complete college ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What color are a cherry tree 's flowers ?", "type": "factual", "source": "trec_train"}
 {"text": "Who was President Cleveland 's wife ?", "type": "factual", "source": "trec_train"}
 {"text": "What class of animals makes up more than two-thirds of known species ?", "type": "factual", "source": "trec_train"}
@@ -4137,7 +4137,7 @@
 {"text": "How does a bill become law ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the starting salary of a radiographer ?", "type": "factual", "source": "trec_train"}
 {"text": "What is a disaccharide ?", "type": "factual", "source": "trec_train"}
-{"text": "Colin Powell is most famous for what ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Colin Powell is most famous for what ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What star-faring race brought about the Inhumans on Marvel 's Earth ?", "type": "factual", "source": "trec_train"}
 {"text": "How do you buy stocks ?", "type": "factual", "source": "trec_train"}
 {"text": "What does appropriates money mean ?", "type": "factual", "source": "trec_train"}
@@ -4182,7 +4182,7 @@
 {"text": "Name one of King Henry VIII 's wives .", "type": "factual", "source": "trec_train"}
 {"text": "What southwestern state is dubbed The Silver State ?", "type": "factual", "source": "trec_train"}
 {"text": "What are pomegranates ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do pharmacists work on raised floors ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do pharmacists work on raised floors ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What does Robin Williams do ?", "type": "factual", "source": "trec_train"}
 {"text": "What country did the Allies invade in World War II 's Operation Avalanche ?", "type": "factual", "source": "trec_train"}
 {"text": "What famed river was Hernando de Soto the first European to see ?", "type": "factual", "source": "trec_train"}
@@ -4197,12 +4197,12 @@
 {"text": "What country surrounds San Marino , the world 's smallest Republic ?", "type": "factual", "source": "trec_train"}
 {"text": "Who killed Martin Luther King ?", "type": "factual", "source": "trec_train"}
 {"text": "Who owns the rights on a TV program ?", "type": "factual", "source": "trec_train"}
-{"text": "What did Cool Hand Luke go to jail for ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What did Cool Hand Luke go to jail for ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What was the V-8 Juice slogan : `` the tastebud '' ?", "type": "factual", "source": "trec_train"}
 {"text": "What was Mae West 's last film ?", "type": "factual", "source": "trec_train"}
 {"text": "What letter does Gorbachev 's middle name start with ?", "type": "factual", "source": "trec_train"}
 {"text": "Who invented Astroturf ?", "type": "factual", "source": "trec_train"}
-{"text": "What makes you fat ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What makes you fat ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Name a flying mammal .", "type": "factual", "source": "trec_train"}
 {"text": "What season does a hiemal activity normally take place in ?", "type": "temporal", "source": "trec_train"}
 {"text": "What direction do the best surfing beaches face ?", "type": "factual", "source": "trec_train"}
@@ -4258,8 +4258,8 @@
 {"text": "What is SAP ?", "type": "factual", "source": "trec_train"}
 {"text": "What layer of the atmosphere contains most of the ozone layer ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the airport code for Los Angeles International ?", "type": "factual", "source": "trec_train"}
-{"text": "What was the claim to fame of Explorer I , launched February 1 , 1958 ?", "type": "multi-hop", "source": "trec_train"}
-{"text": "In the song `` Yankee Doodle , '' why did Yankee Doodle stick a feather in his cap and call it macaroni ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What was the claim to fame of Explorer I , launched February 1 , 1958 ?", "type": "factual", "source": "trec_train+remap-why"}
+{"text": "In the song `` Yankee Doodle , '' why did Yankee Doodle stick a feather in his cap and call it macaroni ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What do the letters CE stand for on so many products , particularly electrical , purchased now ?", "type": "factual", "source": "trec_train"}
 {"text": "Where did the real St. Nicholas live ?", "type": "factual", "source": "trec_train"}
 {"text": "Who manufactures the software , `` PhotoShop '' ?", "type": "factual", "source": "trec_train"}
@@ -4291,14 +4291,14 @@
 {"text": "How did the Hohenzollerns build their power around 17 ?", "type": "factual", "source": "trec_train"}
 {"text": "When was China 's first nuclear test ?", "type": "temporal", "source": "trec_train"}
 {"text": "What is the name given to a group of geese ?", "type": "factual", "source": "trec_train"}
-{"text": "Why was Washington , DC originally called District of Columbia ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why was Washington , DC originally called District of Columbia ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "How do I find a snowboarding website ?", "type": "factual", "source": "trec_train"}
 {"text": "What singer 's hit song inspired the Dolly Parton Stallone movie Rhinestone ?", "type": "factual", "source": "trec_train"}
 {"text": "How much can a person be fined for having a dog on a beach ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do movie and TV stars get paid so much ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do movie and TV stars get paid so much ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is a turnkey contract ?", "type": "factual", "source": "trec_train"}
 {"text": "What are people doing to help prevent the extinction of birds ?", "type": "factual", "source": "trec_train"}
-{"text": "Why is the mile 528 feet ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why is the mile 528 feet ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What Asian gulf were the destroyers Maddox and C Turner Joy shot up in ?", "type": "factual", "source": "trec_train"}
 {"text": "How is carbon dioxide removed from natural gas ?", "type": "factual", "source": "trec_train"}
 {"text": "Who is Edmund Kemper ?", "type": "factual", "source": "trec_train"}
@@ -4327,7 +4327,7 @@
 {"text": "What is the Homelite Inc. home page ?", "type": "factual", "source": "trec_train"}
 {"text": "How old was Stevie Wonder when he signed with Motown Records ?", "type": "temporal", "source": "trec_train"}
 {"text": "What is `` alternative '' anymore ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do they call a hamburger a hamburger when there is no ham ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do they call a hamburger a hamburger when there is no ham ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Who won two gold medals in skiing in the Olympic Games in Calgary ?", "type": "factual", "source": "trec_train"}
 {"text": "What year was the Avery Dennison company founded ?", "type": "temporal", "source": "trec_train"}
 {"text": "Where does the U.S. rank among world countries in area ?", "type": "factual", "source": "trec_train"}
@@ -4420,9 +4420,9 @@
 {"text": "Name the child left on a doorstep at the beginning of Gasoline Alley .", "type": "factual", "source": "trec_train"}
 {"text": "How many zip codes are there in the U.S. ?", "type": "factual", "source": "trec_train"}
 {"text": "In Beetle Bailey , can you name Sarge 's dog ?", "type": "factual", "source": "trec_train"}
-{"text": "Why shouldn 't you remove a bee stinger with tweezers ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why shouldn 't you remove a bee stinger with tweezers ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Which college did Dikembe Mutombo play basketball for ?", "type": "factual", "source": "trec_train"}
-{"text": "Why did Europeans first come to Australia and Oceania ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why did Europeans first come to Australia and Oceania ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What did the Confederate Constitution say about slavery ?", "type": "factual", "source": "trec_train"}
 {"text": "How long does it take the Milky Way Galaxy to make one revolution ?", "type": "temporal", "source": "trec_train"}
 {"text": "How many people own pets ?", "type": "factual", "source": "trec_train"}
@@ -4431,7 +4431,7 @@
 {"text": "How long does it take different materials to decompose ?", "type": "temporal", "source": "trec_train"}
 {"text": "How many colors are there in a rainbow ?", "type": "factual", "source": "trec_train"}
 {"text": "What was Darth Vader 's son named ?", "type": "factual", "source": "trec_train"}
-{"text": "What problems contributed to the high failure rate of Plains farmers in the 1800s ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What problems contributed to the high failure rate of Plains farmers in the 1800s ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What British female pop singing star of the 1960s and early 1970s was a child actress in the 1940s and '50s ?", "type": "factual", "source": "trec_train"}
 {"text": "Where is McCarren Airport located ?", "type": "factual", "source": "trec_train"}
 {"text": "How effective are condoms in protecting against AIDS ?", "type": "factual", "source": "trec_train"}
@@ -4497,7 +4497,7 @@
 {"text": "What was the name of the horse that fell on Queen Elizabeth , Prince Albert 's wife ?", "type": "factual", "source": "trec_train"}
 {"text": "What are the current immigration laws in US ?", "type": "factual", "source": "trec_train"}
 {"text": "What were the five opening words on Ben Casey ?", "type": "factual", "source": "trec_train"}
-{"text": "Why does it say on children 's cough syrup not to drive while using this medication ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why does it say on children 's cough syrup not to drive while using this medication ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What hair color can I use to just cover a little gray ?", "type": "factual", "source": "trec_train"}
 {"text": "Where was Tesla born ?", "type": "factual", "source": "trec_train"}
 {"text": "What does Larry King do for a living ?", "type": "factual", "source": "trec_train"}
@@ -4512,7 +4512,7 @@
 {"text": "What plants are found in an estuary ?", "type": "factual", "source": "trec_train"}
 {"text": "What are the side effects of mevacor ?", "type": "factual", "source": "trec_train"}
 {"text": "What are the top 5 tallest buildings in the world ?", "type": "factual", "source": "trec_train"}
-{"text": "Colin Powell is best known for what achievement ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Colin Powell is best known for what achievement ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What was the name of the computer in ` 2001 : A Space Odyssey ' ?", "type": "factual", "source": "trec_train"}
 {"text": "Who portrayed Renaud in Casablanca ?", "type": "factual", "source": "trec_train"}
 {"text": "What country has problems with hooligans ?", "type": "factual", "source": "trec_train"}
@@ -4523,7 +4523,7 @@
 {"text": "What country contains the westernmost point in South America ?", "type": "factual", "source": "trec_train"}
 {"text": "What did Abolitionists try to end ?", "type": "factual", "source": "trec_train"}
 {"text": "What 's the American dollar equivalent for 8 pounds in the U.K. ?", "type": "factual", "source": "trec_train"}
-{"text": "Why should cigarette smoking be banned ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why should cigarette smoking be banned ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What year did Charles Dicken die ?", "type": "temporal", "source": "trec_train"}
 {"text": "What D.H. Lawrence novel was originally titled Tenderness ?", "type": "factual", "source": "trec_train"}
 {"text": "What rock group raised a ruckus at the White House by singing American Woman ?", "type": "factual", "source": "trec_train"}
@@ -4552,9 +4552,9 @@
 {"text": "Who was the first animal into space ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the correct way to mount a roll of toilet paper ?", "type": "factual", "source": "trec_train"}
 {"text": "What Jules Verne novel features scientists held captive in the submarine Nautilus ?", "type": "factual", "source": "trec_train"}
-{"text": "Why is Rush 's 2112 called 2112 ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why is Rush 's 2112 called 2112 ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What 's the state motto of California ?", "type": "factual", "source": "trec_train"}
-{"text": "What function does homeostasis have on the existence of an organism ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What function does homeostasis have on the existence of an organism ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What company started out making pies , and wound up manufacturing plastic throwing toys ?", "type": "factual", "source": "trec_train"}
 {"text": "What does the acronym CPR mean ?", "type": "factual", "source": "trec_train"}
 {"text": "The Jewish alphabet is called what ?", "type": "factual", "source": "trec_train"}
@@ -4595,10 +4595,10 @@
 {"text": "What kind of creatures are the Canary Islands named for ?", "type": "factual", "source": "trec_train"}
 {"text": "What was the name of the US helicopter pilot shot down over North Korea ?", "type": "factual", "source": "trec_train"}
 {"text": "What 's a male `` cuckquean '' ?", "type": "factual", "source": "trec_train"}
-{"text": "What are the factors leading to the high teen pregnancy rate in Spartanburg , South Carolina ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What are the factors leading to the high teen pregnancy rate in Spartanburg , South Carolina ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Name the designer of the shoe that spawned millions of plastic imitations , known as ` jellies ' .", "type": "factual", "source": "trec_train"}
 {"text": "What does RCA stand for ?", "type": "factual", "source": "trec_train"}
-{"text": "Why are ice cream sundaes called sundaes ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why are ice cream sundaes called sundaes ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What 's the singular of dice ?", "type": "factual", "source": "trec_train"}
 {"text": "Who is Olive Oyl 's brother ?", "type": "factual", "source": "trec_train"}
 {"text": "What 12-hour cold medicine uses the formula `` 6 , 6 , 12 '' in its ads ?", "type": "factual", "source": "trec_train"}
@@ -4626,7 +4626,7 @@
 {"text": "Who were John F. Kennedy 's dogs ?", "type": "factual", "source": "trec_train"}
 {"text": "Where are good science sites on the Internet ?", "type": "factual", "source": "trec_train"}
 {"text": "What woman was Time 's Man of the Year for 1952 ?", "type": "factual", "source": "trec_train"}
-{"text": "What currents affect the area of the Shetland Islands and Orkney Islands in the North Sea ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What currents affect the area of the Shetland Islands and Orkney Islands in the North Sea ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Who wrote The Ugly Duckling ?", "type": "factual", "source": "trec_train"}
 {"text": "Who designed London Bridge ?", "type": "factual", "source": "trec_train"}
 {"text": "How many miles are there between Tel Aviv , Israel and Memphis , Tennessee ?", "type": "factual", "source": "trec_train"}
@@ -4645,7 +4645,7 @@
 {"text": "Where was the largest concentration camp in World War II ?", "type": "factual", "source": "trec_train"}
 {"text": "How much did Alaska cost when bought from Russia ?", "type": "factual", "source": "trec_train"}
 {"text": "How many events make up the decathlon ?", "type": "factual", "source": "trec_train"}
-{"text": "What causes blue balls ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What causes blue balls ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What were the first bodies visited by spacecraft ?", "type": "factual", "source": "trec_train"}
 {"text": "Who succeeded Nikita Khrushchev as first secretary of the Communist Party ?", "type": "factual", "source": "trec_train"}
 {"text": "Who was chosen to be the first black chairman of the military Joint Chiefs of Staff ?", "type": "factual", "source": "trec_train"}
@@ -4705,7 +4705,7 @@
 {"text": "How many people died in the Vietnam war ?", "type": "factual", "source": "trec_train"}
 {"text": "What year did Montana become a state ?", "type": "temporal", "source": "trec_train"}
 {"text": "When was the USSR dissolved ?", "type": "temporal", "source": "trec_train"}
-{"text": "Why are there letters on the telephone ? Why are there no Q or Z ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why are there letters on the telephone ? Why are there no Q or Z ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What Japanese city was once called Edo ?", "type": "factual", "source": "trec_train"}
 {"text": "Who did the Seven Mules block for ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the world 's largest distilling company ?", "type": "factual", "source": "trec_train"}
@@ -4727,7 +4727,7 @@
 {"text": "Name of heroine in `` Scruples '' ?", "type": "factual", "source": "trec_train"}
 {"text": "How big is the Chappellet vineyard ?", "type": "factual", "source": "trec_train"}
 {"text": "Jackson Pollock was a native of what country ?", "type": "factual", "source": "trec_train"}
-{"text": "What makes sperm ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What makes sperm ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "How do I know how much money to save for retirement ?", "type": "factual", "source": "trec_train"}
 {"text": "What does the dot on the letter i mean ?", "type": "factual", "source": "trec_train"}
 {"text": "Who wrote The Godfather ?", "type": "factual", "source": "trec_train"}
@@ -4737,7 +4737,7 @@
 {"text": "What island was the target of the U.S. 's Operation Urgent Fury ?", "type": "factual", "source": "trec_train"}
 {"text": "What is a fear of robbers ?", "type": "factual", "source": "trec_train"}
 {"text": "What Nevil Shute novel is about the doomed survivors of a nuclear war ?", "type": "factual", "source": "trec_train"}
-{"text": "What is the cause of endangered species ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What is the cause of endangered species ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Which of the following TV newsmen was a Rhodes scholar ?", "type": "factual", "source": "trec_train"}
 {"text": "What did Warlock wear on his forehead in Marvel comics ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the softest part of the body ?", "type": "factual", "source": "trec_train"}
@@ -4808,7 +4808,7 @@
 {"text": "What country saw the origin of the Asian Flu ?", "type": "factual", "source": "trec_train"}
 {"text": "Who is the richest woman in the world ?", "type": "factual", "source": "trec_train"}
 {"text": "Where can I take a test that will tell me what I should be when I grow up ?", "type": "factual", "source": "trec_train"}
-{"text": "What caused the death of Bob Marley ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What caused the death of Bob Marley ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What 's Mrs. Bridges 's job on TV 's Upstairs , Downstairs ?", "type": "factual", "source": "trec_train"}
 {"text": "What daily newspaper will `` help you see clearer across the USA '' ?", "type": "factual", "source": "trec_train"}
 {"text": "What lake in Scotland is said to hold one or more monsters ?", "type": "factual", "source": "trec_train"}
@@ -4831,9 +4831,9 @@
 {"text": "What is witch hazel ?", "type": "factual", "source": "trec_train"}
 {"text": "What is state tree of Nebraska ?", "type": "factual", "source": "trec_train"}
 {"text": "Where is Glasgow ?", "type": "factual", "source": "trec_train"}
-{"text": "Why is Chicago named Chicago ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why is Chicago named Chicago ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What three colors of ink are used to print a U.S. dollar bill ?", "type": "factual", "source": "trec_train"}
-{"text": "What exactly is the purpose of the anteater ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What exactly is the purpose of the anteater ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is the correct way to use `` may '' vs. `` might '' ?", "type": "factual", "source": "trec_train"}
 {"text": "What North American city boasts the biggest Polish population ?", "type": "factual", "source": "trec_train"}
 {"text": "What radio , TV and movie character did Jackie Gleason and William Bendix play ?", "type": "factual", "source": "trec_train"}
@@ -4854,8 +4854,8 @@
 {"text": "What newspaper returned a Pulitzer Prize for the fraudulent story Jimmy 's World ?", "type": "factual", "source": "trec_train"}
 {"text": "What is a fear of speaking ?", "type": "factual", "source": "trec_train"}
 {"text": "What was Hitler 's favorite movie ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do airliners crash vs. gliding down ?", "type": "multi-hop", "source": "trec_train"}
-{"text": "What are those little blue reflectors in the middle of the road for ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do airliners crash vs. gliding down ?", "type": "factual", "source": "trec_train+remap-why"}
+{"text": "What are those little blue reflectors in the middle of the road for ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What member of The Little Rascals has an on-again , off-again sweetheart in Darla Hood ?", "type": "factual", "source": "trec_train"}
 {"text": "How is saline used in medicine ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the name of the ` female ' counterpart to El Nino , which results in cooling temperatures and very dry weather ?", "type": "factual", "source": "trec_train"}
@@ -4909,7 +4909,7 @@
 {"text": "What 's a `` coup de poing '' to a French boxer ?", "type": "factual", "source": "trec_train"}
 {"text": "What 's the difference between carelessness and carefreeness ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the Islamic counterpart to the Red Cross ?", "type": "factual", "source": "trec_train"}
-{"text": "Why does tuberculosis afflict people ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why does tuberculosis afflict people ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Who loved Flash Gordon besides Dale ?", "type": "factual", "source": "trec_train"}
 {"text": "What is tyvek ?", "type": "factual", "source": "trec_train"}
 {"text": "What do humans catch zoonose diseases from ?", "type": "factual", "source": "trec_train"}
@@ -4983,7 +4983,7 @@
 {"text": "What are the historical trials following World War II called ?", "type": "factual", "source": "trec_train"}
 {"text": "What states do not have state income tax ?", "type": "factual", "source": "trec_train"}
 {"text": "What city has the two steepest streets in the U.S. ?", "type": "factual", "source": "trec_train"}
-{"text": "What is Margaret Thatcher known for ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What is Margaret Thatcher known for ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Name the country of giants twelve times the size of man in `` Gulliver 's Travels . ''", "type": "factual", "source": "trec_train"}
 {"text": "What 's men 's par on a 455-yard golf hole ?", "type": "factual", "source": "trec_train"}
 {"text": "What four elements make up 90 percent of the human body ?", "type": "factual", "source": "trec_train"}
@@ -4994,7 +4994,7 @@
 {"text": "What is the most common cancer ?", "type": "factual", "source": "trec_train"}
 {"text": "Who are the top 10 richest people in the world ?", "type": "factual", "source": "trec_train"}
 {"text": "How do I contact Answers.com direct ?", "type": "factual", "source": "trec_train"}
-{"text": "What causes a person to have constantly sweaty hands and feet ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What causes a person to have constantly sweaty hands and feet ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What happened to Answers.com ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the spectrum of a sine wave ?", "type": "factual", "source": "trec_train"}
 {"text": "What ethnic group introduced the idea of potlatch ?", "type": "factual", "source": "trec_train"}
@@ -5005,7 +5005,7 @@
 {"text": "What does R.E.M. stand for , as in the rock group R.E.M. ?", "type": "factual", "source": "trec_train"}
 {"text": "What Cruise Line does Kathie Lee Gifford advertise for ?", "type": "factual", "source": "trec_train"}
 {"text": "What does the name Jenna mean ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do girls have to wear training bras ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do girls have to wear training bras ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "When was the first successful heart transplant for a human ?", "type": "temporal", "source": "trec_train"}
 {"text": "How did Edith Bunker die ?", "type": "factual", "source": "trec_train"}
 {"text": "What country boasts Cawdor Castle , Glamis Castle , and Blair Castle ?", "type": "factual", "source": "trec_train"}
@@ -5030,7 +5030,7 @@
 {"text": "How many times has Harold Stassen announced a drive for the White House ?", "type": "factual", "source": "trec_train"}
 {"text": "What are bottle caps with presidents ' pictures inside worth ?", "type": "factual", "source": "trec_train"}
 {"text": "Where can I find the history of the Hungarian language ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do USA fax machines not work in UK , NNP ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do USA fax machines not work in UK , NNP ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What cigarette is `` a whole new world '' ?", "type": "factual", "source": "trec_train"}
 {"text": "Who tramped through Florida looking for the Fountain of Youth ?", "type": "factual", "source": "trec_train"}
 {"text": "In 1990 , what day of the week did Christmas fall on ?", "type": "temporal", "source": "trec_train"}
@@ -5093,7 +5093,7 @@
 {"text": "The Olympic Games in which year allowed Nadia Comaneci to become popular ?", "type": "temporal", "source": "trec_train"}
 {"text": "What TV talk-show host lends his name to a line of men 's clothing ?", "type": "factual", "source": "trec_train"}
 {"text": "What soft drink held a national flavor poll in 1967 ?", "type": "factual", "source": "trec_train"}
-{"text": "Colin Powell is famous for what ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Colin Powell is famous for what ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "The Jewish alphabet is known as what ?", "type": "factual", "source": "trec_train"}
 {"text": "What is a fear of home surroundings ?", "type": "factual", "source": "trec_train"}
 {"text": "How many people die of tuberculosis yearly ?", "type": "factual", "source": "trec_train"}
@@ -5126,7 +5126,7 @@
 {"text": "What is a hormone ?", "type": "factual", "source": "trec_train"}
 {"text": "What American naval officer broke Japan 's isolationist policy in 1853 ?", "type": "factual", "source": "trec_train"}
 {"text": "What is fellatio ?", "type": "factual", "source": "trec_train"}
-{"text": "What characteristics contribute to its `` intelligence '' ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What characteristics contribute to its `` intelligence '' ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What significant battle was fought in Belgium in 1815 ?", "type": "factual", "source": "trec_train"}
 {"text": "Which police department made the all-time biggest cocaine bust in Ventura County ?", "type": "factual", "source": "trec_train"}
 {"text": "Who gave us the `` Rolling Writer '' ?", "type": "factual", "source": "trec_train"}
@@ -5136,7 +5136,7 @@
 {"text": "What is fiber in food ?", "type": "factual", "source": "trec_train"}
 {"text": "What 's the traditional drink at the Kentucky Derby ?", "type": "factual", "source": "trec_train"}
 {"text": "Who is the head of the World Bank ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do some jets have a vapor trail , and others do not ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do some jets have a vapor trail , and others do not ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is a fear of childbirth ?", "type": "factual", "source": "trec_train"}
 {"text": "How many people does Honda employ in the U.S. ?", "type": "factual", "source": "trec_train"}
 {"text": "What species was Winnie the Pooh ?", "type": "factual", "source": "trec_train"}
@@ -5145,7 +5145,7 @@
 {"text": "What does an ashen-faced eidologist search out the existence of ?", "type": "factual", "source": "trec_train"}
 {"text": "Who moderated the first Kennedy-Nixon TV debate ?", "type": "factual", "source": "trec_train"}
 {"text": "Who portrayed George M. Cohan in 1942 's Yankee Doodle Dandy ?", "type": "factual", "source": "trec_train"}
-{"text": "What is the S&P 500 used for ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What is the S&P 500 used for ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What does `` Philebus-like '' mean ?", "type": "factual", "source": "trec_train"}
 {"text": "When was Nostradamus born ?", "type": "temporal", "source": "trec_train"}
 {"text": "What are the ingredients of Coca-Cola ?", "type": "factual", "source": "trec_train"}
@@ -5153,12 +5153,12 @@
 {"text": "What is nuclear proliferation ?", "type": "factual", "source": "trec_train"}
 {"text": "Who was Maria Theresa ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the country of origin for the name Thomas ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do you say `` God bless you '' when people sneeze ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do you say `` God bless you '' when people sneeze ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is the population of the largest Chilean city", "type": "factual", "source": "trec_train"}
 {"text": "What country has the highest per capita consumption of cheese ?", "type": "factual", "source": "trec_train"}
 {"text": "What is Larry King 's occupation ?", "type": "factual", "source": "trec_train"}
 {"text": "Who invented `` The Muppets '' ?", "type": "factual", "source": "trec_train"}
-{"text": "Why does a wheel , e.g. a car tire , appear to spin in the opposite direction as it slows down ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why does a wheel , e.g. a car tire , appear to spin in the opposite direction as it slows down ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What sea is Bombay on ?", "type": "factual", "source": "trec_train"}
 {"text": "Who are cartoondom 's Super Six ?", "type": "factual", "source": "trec_train"}
 {"text": "What does `` E Pluribus Unum '' on the penny mean ?", "type": "factual", "source": "trec_train"}
@@ -5184,13 +5184,13 @@
 {"text": "What is idealab ! ?", "type": "factual", "source": "trec_train"}
 {"text": "Where are there aborigines ?", "type": "factual", "source": "trec_train"}
 {"text": "What toy can you make sleep ?", "type": "factual", "source": "trec_train"}
-{"text": "What caused the division between the Anglicans and the Vatican ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What caused the division between the Anglicans and the Vatican ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What corporation does Madonna advertise for ?", "type": "factual", "source": "trec_train"}
 {"text": "On what river is Rome built ?", "type": "factual", "source": "trec_train"}
 {"text": "Where on the Web is Adventours Tours from Sydney , Australia ?", "type": "factual", "source": "trec_train"}
 {"text": "Where were the 1936 Summer Olympics held ?", "type": "factual", "source": "trec_train"}
 {"text": "What cathedral was Thomas Becket murdered in ?", "type": "factual", "source": "trec_train"}
-{"text": "Why was Curious George curious ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why was Curious George curious ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "How did U.S.A become involved in the Barbary Wars", "type": "factual", "source": "trec_train"}
 {"text": "The Kentucky Horse Park is close to which American city ?", "type": "factual", "source": "trec_train"}
 {"text": "What store does Martha Stewart advertise for ?", "type": "factual", "source": "trec_train"}
@@ -5213,7 +5213,7 @@
 {"text": "What king is satirized in the line : `` The King was in the countinghouse , counting all his money '' ?", "type": "factual", "source": "trec_train"}
 {"text": "What shape-shifting menace did Rom come to Earth to fight ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the nickname of Pennsylvania ?", "type": "factual", "source": "trec_train"}
-{"text": "What causes headaches ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What causes headaches ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "Names of books by James A. Michener set in the following locations ?", "type": "factual", "source": "trec_train"}
 {"text": "When was the first stained glass window made ?", "type": "temporal", "source": "trec_train"}
 {"text": "What company 's trademark was His Master 's Voice ?", "type": "factual", "source": "trec_train"}
@@ -5231,7 +5231,7 @@
 {"text": "When does menstruation begin ?", "type": "temporal", "source": "trec_train"}
 {"text": "Where did makeup originate ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the only modern language that capitalizes its singular first-person pronoun ?", "type": "factual", "source": "trec_train"}
-{"text": "What is the claim to fame of Agra , India ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What is the claim to fame of Agra , India ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What flag flies over Wake Island ?", "type": "factual", "source": "trec_train"}
 {"text": "How deep is a fathom ?", "type": "factual", "source": "trec_train"}
 {"text": "What Kennedy was married to Ethel ?", "type": "factual", "source": "trec_train"}
@@ -5267,7 +5267,7 @@
 {"text": "Who is the richest person in the world ?", "type": "factual", "source": "trec_train"}
 {"text": "What is an aurora ?", "type": "factual", "source": "trec_train"}
 {"text": "How much time does the blinking of an eye take ?", "type": "factual", "source": "trec_train"}
-{"text": "What made the short-lived Star Hawks strip so unique ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What made the short-lived Star Hawks strip so unique ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What 's the biggest-selling U.S. magazine aimed at a black audience ?", "type": "factual", "source": "trec_train"}
 {"text": "How deep is a fathom ?", "type": "factual", "source": "trec_train"}
 {"text": "What is the primary language of the Philippines ?", "type": "factual", "source": "trec_train"}
@@ -5338,7 +5338,7 @@
 {"text": "What 's the middle name of movie producer Joseph E. Levine ?", "type": "factual", "source": "trec_train"}
 {"text": "Define Sinn Fein .", "type": "factual", "source": "trec_train"}
 {"text": "What two Caribbean countries share the island of Hispaniola ?", "type": "factual", "source": "trec_train"}
-{"text": "What is in baby powder and baby lotion that makes it smell the way it does ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "What is in baby powder and baby lotion that makes it smell the way it does ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What is probability theory ?", "type": "factual", "source": "trec_train"}
 {"text": "Who told all in Ball Four ?", "type": "factual", "source": "trec_train"}
 {"text": "What kind of car did Janis Joplin ask the Lord to buy her ?", "type": "factual", "source": "trec_train"}
@@ -5361,7 +5361,7 @@
 {"text": "How long do you have to pay back debt after claiming chapter 11 bankruptcy ?", "type": "temporal", "source": "trec_train"}
 {"text": "What Shakespearean play featured Shylock ?", "type": "factual", "source": "trec_train"}
 {"text": "Which magazine is `` fine entertainment for men '' ?", "type": "factual", "source": "trec_train"}
-{"text": "Why do roosters sing at five o 'clock in the morning ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why do roosters sing at five o 'clock in the morning ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What features of the African elephant are larger than those of the Indian elephant ?", "type": "factual", "source": "trec_train"}
 {"text": "What ocean surrounds the Maldive Islands ?", "type": "factual", "source": "trec_train"}
 {"text": "What South American country won its first World Cup soccer title in 1978 ?", "type": "factual", "source": "trec_train"}
@@ -5405,7 +5405,7 @@
 {"text": "In what year did Joe DiMaggio compile his 56-game hitting streak ?", "type": "temporal", "source": "trec_train"}
 {"text": "What year was the setting for American Graffiti ?", "type": "temporal", "source": "trec_train"}
 {"text": "When did the art of quilting begin ?", "type": "temporal", "source": "trec_train"}
-{"text": "Why are eggs supposed to be stored small end down ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why are eggs supposed to be stored small end down ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What must be exceeded to produce a sonic boom ?", "type": "factual", "source": "trec_train"}
 {"text": "What is a fear of fish ?", "type": "factual", "source": "trec_train"}
 {"text": "How much did the Iran-Contra investigation cost ?", "type": "factual", "source": "trec_train"}
@@ -5429,7 +5429,7 @@
 {"text": "How many people live in Chile ?", "type": "factual", "source": "trec_train"}
 {"text": "What sport do the Cleaveland Cavaliers play ?", "type": "factual", "source": "trec_train"}
 {"text": "What European country 's monarchy was restored in 1975 ?", "type": "factual", "source": "trec_train"}
-{"text": "Why are sometimes your hands cold , but the rest of you isn 't ?", "type": "multi-hop", "source": "trec_train"}
+{"text": "Why are sometimes your hands cold , but the rest of you isn 't ?", "type": "factual", "source": "trec_train+remap-why"}
 {"text": "What English explorer discovered and named Virginia ?", "type": "factual", "source": "trec_train"}
 {"text": "What war added jeep and quisling to the English language ?", "type": "factual", "source": "trec_train"}
 {"text": "What country is home to Heineken beer ?", "type": "factual", "source": "trec_train"}
@@ -5458,7 +5458,7 @@
 {"text": "How tall is the Sears Building ?", "type": "factual", "source": "trec_test"}
 {"text": "George Bush purchased a small interest in which baseball team ?", "type": "factual", "source": "trec_test"}
 {"text": "What is Australia 's national flower ?", "type": "factual", "source": "trec_test"}
-{"text": "Why does the moon turn orange ?", "type": "multi-hop", "source": "trec_test"}
+{"text": "Why does the moon turn orange ?", "type": "factual", "source": "trec_test+remap-why"}
 {"text": "What is autism ?", "type": "factual", "source": "trec_test"}
 {"text": "What city had a world fair in 1900 ?", "type": "factual", "source": "trec_test"}
 {"text": "What person 's head is on a dime ?", "type": "factual", "source": "trec_test"}
@@ -5535,7 +5535,7 @@
 {"text": "Who was elected president of South Africa in 1994 ?", "type": "factual", "source": "trec_test"}
 {"text": "What is the population of China ?", "type": "factual", "source": "trec_test"}
 {"text": "When was Rosa Parks born ?", "type": "temporal", "source": "trec_test"}
-{"text": "Why is a ladybug helpful ?", "type": "multi-hop", "source": "trec_test"}
+{"text": "Why is a ladybug helpful ?", "type": "factual", "source": "trec_test+remap-why"}
 {"text": "What is amoxicillin ?", "type": "factual", "source": "trec_test"}
 {"text": "Who was the first female United States Representative ?", "type": "factual", "source": "trec_test"}
 {"text": "What are xerophytes ?", "type": "factual", "source": "trec_test"}
@@ -5692,7 +5692,7 @@
 {"text": "How fast is sound ?", "type": "factual", "source": "trec_test"}
 {"text": "What French province is cognac produced in ?", "type": "factual", "source": "trec_test"}
 {"text": "What is Valentine 's Day ?", "type": "factual", "source": "trec_test"}
-{"text": "What causes gray hair ?", "type": "multi-hop", "source": "trec_test"}
+{"text": "What causes gray hair ?", "type": "factual", "source": "trec_test+remap-why"}
 {"text": "What is hypertension ?", "type": "factual", "source": "trec_test"}
 {"text": "What is bandwidth ?", "type": "factual", "source": "trec_test"}
 {"text": "What is the longest suspension bridge in the U.S. ?", "type": "factual", "source": "trec_test"}
@@ -5725,7 +5725,7 @@
 {"text": "What is osteoporosis ?", "type": "factual", "source": "trec_test"}
 {"text": "Who was the first woman governor in the U.S. ?", "type": "factual", "source": "trec_test"}
 {"text": "What is peyote ?", "type": "factual", "source": "trec_test"}
-{"text": "What is the esophagus used for ?", "type": "multi-hop", "source": "trec_test"}
+{"text": "What is the esophagus used for ?", "type": "factual", "source": "trec_test+remap-why"}
 {"text": "What is viscosity ?", "type": "factual", "source": "trec_test"}
 {"text": "What year did Oklahoma become a state ?", "type": "temporal", "source": "trec_test"}
 {"text": "What is the abbreviation for Texas ?", "type": "factual", "source": "trec_test"}
@@ -5776,7 +5776,7 @@
 {"text": "What color is yak milk ?", "type": "factual", "source": "trec_test"}
 {"text": "What date was Dwight D. Eisenhower born ?", "type": "temporal", "source": "trec_test"}
 {"text": "What does the technical term ISDN mean ?", "type": "factual", "source": "trec_test"}
-{"text": "Why is the sun yellow ?", "type": "multi-hop", "source": "trec_test"}
+{"text": "Why is the sun yellow ?", "type": "factual", "source": "trec_test+remap-why"}
 {"text": "What is the conversion rate between dollars and pounds ?", "type": "factual", "source": "trec_test"}
 {"text": "When was Abraham Lincoln born ?", "type": "temporal", "source": "trec_test"}
 {"text": "What is the Milky Way ?", "type": "factual", "source": "trec_test"}
@@ -5808,7 +5808,7 @@
 {"text": "Who wrote `` The Divine Comedy '' ?", "type": "factual", "source": "trec_test"}
 {"text": "What is the speed of light ?", "type": "factual", "source": "trec_test"}
 {"text": "What is the width of a football field ?", "type": "factual", "source": "trec_test"}
-{"text": "Why in tennis are zero points called love ?", "type": "multi-hop", "source": "trec_test"}
+{"text": "Why in tennis are zero points called love ?", "type": "factual", "source": "trec_test+remap-why"}
 {"text": "What kind of dog was Toto in the Wizard of Oz ?", "type": "factual", "source": "trec_test"}
 {"text": "What is a thyroid ?", "type": "factual", "source": "trec_test"}
 {"text": "What does ciao mean ?", "type": "factual", "source": "trec_test"}

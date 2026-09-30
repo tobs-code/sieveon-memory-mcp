@@ -1,9 +1,13 @@
 """
-Train the ML classifier with a capped subset of training data (1000 TREC samples).
-Saves the model to docs/data/classifier_model.pkl so future starts skip training.
+Train the ML classifier on all registered training files
+(classifier._TRAINING_PATHS) with a per-class cap, then save to
+docs/data/classifier_model.pkl so future starts skip training.
+
+Usage:
+    python scripts/train_classifier.py [--cap 600]
 """
 
-import json
+import argparse
 import os
 import sys
 from pathlib import Path
@@ -14,67 +18,35 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 os.environ["TQDM_DISABLE"] = "1"
 
-from src.extraction.classifier import QueryClassifier
-
-TREC_PATH = PROJECT_ROOT / "docs" / "data" / "trec_queries.jsonl"
-TRAINING_PATH = PROJECT_ROOT / "docs" / "data" / "training_queries.jsonl"
-COQA_PATH = PROJECT_ROOT / "docs" / "data" / "coqa_conversational.jsonl"
-TREC_LIMIT = 1000
+from src.extraction.classifier import QueryClassifier  # noqa: E402
 
 
-def load_jsonl(path, limit=None):
-    texts, labels = [], []
-    if not path.exists():
-        print(f"  skipping (not found): {path.name}")
-        return texts, labels
-    with open(path, "r", encoding="utf-8") as f:
-        for i, line in enumerate(f):
-            if limit is not None and i >= limit:
-                break
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                ex = json.loads(line)
-            except json.JSONDecodeError:
-                continue
-            t = ex.get("type")
-            txt = ex.get("text")
-            if t and txt and t != "skip":
-                texts.append(txt)
-                labels.append(t)
-    print(f"  loaded {len(texts)} samples from {path.name}")
-    return texts, labels
+def main() -> int:
+    ap = argparse.ArgumentParser(description="Retrain the query classifier")
+    ap.add_argument("--cap", type=int, default=600,
+                    help="max samples per class (default 600)")
+    args = ap.parse_args()
 
-
-def main():
-    print("Training classifier...\n")
-
-    all_texts, all_labels = [], []
-
-    texts, labels = load_jsonl(TREC_PATH, limit=TREC_LIMIT)
-    all_texts.extend(texts)
-    all_labels.extend(labels)
-
-    texts, labels = load_jsonl(TRAINING_PATH)
-    all_texts.extend(texts)
-    all_labels.extend(labels)
-
-    texts, labels = load_jsonl(COQA_PATH)
-    all_texts.extend(texts)
-    all_labels.extend(labels)
-
-    print(f"\nTotal: {len(all_texts)} samples")
-
+    print("Training classifier (all registered sources)...\n")
     classifier = QueryClassifier()
-    classifier.train(all_texts, all_labels)
+    texts, labels = classifier._ml._load_training_data()
+    print(f"  loaded {len(texts)} samples (pre-cap)")
 
-    model_path = PROJECT_ROOT / "docs" / "data" / "classifier_model.pkl"
-    if model_path.exists():
-        print(f"\nModel saved to {model_path}")
-    else:
-        print("\nWarning: model file was not created")
+    # Delete stale model so _ensure_ml cannot short-circuit anything;
+    # train() below saves the fresh model itself.
+    from src.extraction.classifier import _ML_MODEL_PATH
+    if _ML_MODEL_PATH.exists():
+        _ML_MODEL_PATH.unlink()
+        print("  removed stale model")
+
+    classifier._ml.train(texts, labels, cap_per_class=args.cap)
+
+    if _ML_MODEL_PATH.exists():
+        print(f"\nModel saved to {_ML_MODEL_PATH}")
+        return 0
+    print("\nWarning: model file was not created")
+    return 1
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
