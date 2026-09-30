@@ -1,18 +1,22 @@
 """
 Multi-dimensional Evaluation Harness
-Measures the 5 key metrics from the paper:
+Measures the 5 key metrics from the paper, plus a salience diagnostic:
 
-1. Retrieval Fidelity    — are the expected facts/terms actually returned, and how
-                            often does a case return everything it asks for?
+1. Retrieval Fidelity    — expected terms present (recall) AND absent terms
+                           avoided; rank of first hit logged as diagnostic.
 2. Update Robustness     — does a logical invalidation leave exactly one active
-                            fact, with the new value and not the old one?
+                           fact, with the new value and not the old one?
 3. Long-Horizon Stability— is state still consistent after a long write sequence
-                            (chain insert + churn), and does the chain still resolve?
-4. Latency               — end-to-end p50/p95 of the real query path against an SLO.
+                           (chain insert + churn), incl. 2-hop chain probes?
+4. Latency               — end-to-end p50/p95 of fidelity queries against an SLO
+                           (warmup/stability phases reported separately).
 5. Operation Cost        — DB calls / tokens per query against the allocated budget.
+6. Fact Salience         — diagnostic distribution of v1 fact salience;
+                           unscored, feeds the composite-vs-salience decision.
 
-Every metric reports a normalized `score` in [0, 1] where **higher is better**, so
-`overall_score` is a plain mean over comparable numbers.
+Quality metrics (1-3) report a normalized `score` in [0, 1] (higher is
+better); `overall_score` is their mean. Latency/cost gate via
+`operational_pass` instead of flattering the mean.
 
 Design notes:
   * The harness drives the real pipeline (`_execute_query`, `memory_update`) instead
@@ -40,7 +44,7 @@ import os
 import statistics
 import sys
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -52,7 +56,7 @@ _PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(
 if _PROJECT_ROOT not in sys.path:
     sys.path.insert(0, _PROJECT_ROOT)
 
-from src.extraction.entropy_gate import escape_surrealql
+from src.extraction.entropy_gate import SALIENCE_VERSION, EntropyGate, escape_surrealql
 from src.mcp import core as mcp_core
 from src.mcp.common_logic import _execute_query
 from src.mcp.core import _extract_result, _query_surreal
@@ -116,6 +120,7 @@ class EvalCase:
     since: Optional[str] = None
     until: Optional[str] = None
     at_time: Optional[str] = None
+    absent: List[str] = field(default_factory=list)
 
 
 # Temporal demo (B1 regression): fixed validity windows, independent of
@@ -167,6 +172,22 @@ RETRIEVAL_CASES: List[EvalCase] = [
         [TEMPORAL_NEW_VALUE],
         category="temporal",
         note="B1 regression: unpinned query must resolve to current value Graz, not superseded Vienna",
+    ),
+    EvalCase(
+        "Which protocol was ratified by a committee?",
+        ["Oldtown"],
+        category="temporal",
+        note="since/until regression: until=2021 must find only the 2020 Oldtown event",
+        until="2021-01-01T00:00:00Z",
+        absent=["Newtown"],
+    ),
+    EvalCase(
+        "Which protocol was ratified by a committee?",
+        ["Newtown"],
+        category="temporal",
+        note="since/until regression: since=2024 must find only the 2025 Newtown event",
+        since="2024-01-01T00:00:00Z",
+        absent=["Oldtown"],
     ),
 ]
 
@@ -276,6 +297,15 @@ def _percentile(values: List[float], pct: float) -> float:
 # ─────────────────────────────────────────────────────────────────────────────
 
 
+# Two windowed events with fixed timestamps for since/until regression.
+# Contents use distinctive terms (Oldtown vs Newtown) so the time filter --
+# not term matching -- decides what is found.
+WINDOW_OLD_TS = "2020-06-01T00:00:00Z"
+WINDOW_NEW_TS = "2025-06-01T00:00:00Z"
+WINDOW_OLD_TEXT = "Archive note: the Oldtown protocol was ratified by the harbor committee."
+WINDOW_NEW_TEXT = "Fresh note: the Newtown protocol was ratified by the airport committee."
+
+
 class SieveonEvalHarness:
     def __init__(
         self,
@@ -296,7 +326,7 @@ class SieveonEvalHarness:
         mcp_core.SURREAL_DB = self.database
 
         self.metrics: Dict[str, float] = {}
-        self._latencies_ms: List[float] = []
+        self._latencies_ms: List[Tuple[str, float]] = []
         self._budget_samples: List[Dict[str, Any]] = []
         self._failures: List[str] = []
 
@@ -368,9 +398,13 @@ class SieveonEvalHarness:
 
         for subject, predicate, obj, confidence in EVAL_FACTS:
             if subject in entity_ids and obj in entity_ids:
+                # Seed salience too (pure function): keeps the salience
+                # diagnostic meaningful on the seeded corpus.
+                sal = EntropyGate.fact_salience(confidence, predicate, None)
                 await _query_surreal(
                     f"RELATE {entity_ids[subject]}->fact->{entity_ids[obj]} SET "
-                    f"predicate = '{escape_surrealql(predicate)}', confidence = {confidence};"
+                    f"predicate = '{escape_surrealql(predicate)}', confidence = {confidence}, "
+                    f"salience = {sal:.4f}, salience_version = '{SALIENCE_VERSION}';"
                 )
 
         vectors = await self._embed(EVAL_EVENTS)
@@ -388,15 +422,16 @@ class SieveonEvalHarness:
 
         chain_links = await self._seed_chain()
         temporal = await self._seed_temporal()
+        windowed = await self._seed_window_events()
         return {
             "entities": len(entity_ids),
             "facts": len(EVAL_FACTS),
             "events": len(EVAL_EVENTS),
             "chain_links": chain_links,
             "temporal": temporal,
+            "windowed_events": windowed,
             "vector_channel": bool(vectors),
         }
-
     async def _seed_temporal(self) -> Dict[str, Any]:
         """Seed fixed-window validity demo (B1): Vienna valid until cutoff, Graz since cutoff."""
         ids: Dict[str, str] = {}
@@ -416,17 +451,41 @@ class SieveonEvalHarness:
         if len(ids) != 3:
             return {"seeded": False}
         subj, old, new = ids[TEMPORAL_SUBJECT], ids[TEMPORAL_OLD_VALUE], ids[TEMPORAL_NEW_VALUE]
+        sal = EntropyGate.fact_salience(1.0, TEMPORAL_PREDICATE, None)
         await _query_surreal(
             f"RELATE {subj}->fact->{old} SET "
             f"predicate = '{escape_surrealql(TEMPORAL_PREDICATE)}', confidence = 1.0, "
+            f"salience = {sal:.4f}, salience_version = '{SALIENCE_VERSION}', "
             f'valid_from = type::datetime("2020-01-01T00:00:00Z"), valid_until = type::datetime("{TEMPORAL_CUTOFF}");'
         )
         await _query_surreal(
             f"RELATE {subj}->fact->{new} SET "
             f"predicate = '{escape_surrealql(TEMPORAL_PREDICATE)}', confidence = 1.0, "
+            f"salience = {sal:.4f}, salience_version = '{SALIENCE_VERSION}', "
             f'valid_from = type::datetime("{TEMPORAL_CUTOFF}");'
         )
         return {"seeded": True, "subject": TEMPORAL_SUBJECT, "cutoff": TEMPORAL_CUTOFF}
+
+    async def _seed_window_events(self) -> Dict[str, Any]:
+        """Seed Oldtown (2020) + Newtown (2025) events for since/until tests."""
+        vectors = await self._embed([WINDOW_OLD_TEXT, WINDOW_NEW_TEXT])
+        seeded = 0
+        for idx, (text, ts) in enumerate(
+            [(WINDOW_OLD_TEXT, WINDOW_OLD_TS), (WINDOW_NEW_TEXT, WINDOW_NEW_TS)]
+        ):
+            emb = ""
+            if vectors:
+                emb = f", embedding = {_vector_literal(vectors[idx])}"
+            await _query_surreal(
+                "CREATE event SET "
+                f"content = '{escape_surrealql(text)}', "
+                f"content_hash = '{_content_hash(text)}', "
+                "source = 'eval-window', forgotten = false, "
+                f'timestamp = type::datetime("{ts}")'
+                f"{emb};"
+            )
+            seeded += 1
+        return {"seeded": seeded}
 
     async def _seed_chain(self) -> int:
         """Seed the retrieval chain plus the (still empty) churn subject."""
@@ -442,9 +501,11 @@ class SieveonEvalHarness:
             if rows:
                 ids.append(rows[0]["id"])
         for i in range(CHAIN_LENGTH - 1):
+            sal = EntropyGate.fact_salience(1.0, CHAIN_PREDICATE, None)
             await _query_surreal(
                 f"RELATE {ids[i]}->fact->{ids[i + 1]} SET "
-                f"predicate = '{CHAIN_PREDICATE}', confidence = 1.0;"
+                f"predicate = '{CHAIN_PREDICATE}', confidence = 1.0, "
+                f"salience = {sal:.4f}, salience_version = '{SALIENCE_VERSION}';"
             )
         return max(0, CHAIN_LENGTH - 1)
 
@@ -456,17 +517,24 @@ class SieveonEvalHarness:
         since: Optional[str] = None,
         until: Optional[str] = None,
         at_time: Optional[str] = None,
+        phase: str = "retrieval",
     ) -> Tuple[Dict[str, Any], float]:
-        """Run one query through the real pipeline, recording latency and cost."""
+        """Run one query through the real pipeline, recording latency and cost.
+
+        phase tags the sample ("retrieval" for fidelity cases, "stability"
+        for long-horizon probes) so latency/cost metrics can slice cleanly
+        instead of assuming the last N samples belong to fidelity.
+        """
         start = time.perf_counter()
         response = await _execute_query(query, since=since, until=until, at_time=at_time)
         latency_ms = (time.perf_counter() - start) * 1000.0
 
-        self._latencies_ms.append(latency_ms)
+        self._latencies_ms.append((phase, latency_ms))
         budget = response.get("budget") or {}
         self._budget_samples.append(
             {
                 "query": query,
+                "phase": phase,
                 "latency_ms": round(latency_ms, 2),
                 "strategy": response.get("strategy"),
                 "level": budget.get("level"),
@@ -495,7 +563,7 @@ class SieveonEvalHarness:
     # ── metric 1: retrieval fidelity ──────────────────────────────────
 
     async def measure_retrieval_fidelity(self, cases: List[EvalCase]) -> Dict[str, Any]:
-        self._log("  [1/5] retrieval fidelity")
+        self._log("  [1/6] retrieval fidelity")
         details = []
         recalls: List[float] = []
 
@@ -504,10 +572,25 @@ class SieveonEvalHarness:
                 case.query, since=case.since, until=case.until, at_time=case.at_time
             )
             blob = _result_blob(response)
+            items = _flatten_items(response)
             found = [term for term in case.expected if term.lower() in blob]
             missing = [term for term in case.expected if term.lower() not in blob]
             recall = len(found) / len(case.expected) if case.expected else 0.0
-            recalls.append(recall)
+            # Negative assertions: terms that must NOT appear (superseded values,
+            # out-of-window events). Substring matching, same as expected.
+            present_absent = [term for term in case.absent if term.lower() in blob]
+            absent_score = (
+                1.0 - len(present_absent) / len(case.absent) if case.absent else 1.0
+            )
+            case_score = round((recall + absent_score) / 2, 4) if case.absent else round(recall, 4)
+            recalls.append(case_score)
+            # Rank diagnostic (not scored): index of the first flattened item
+            # containing any expected term. Lower is better.
+            first_hit_at: Optional[int] = None
+            for idx, item in enumerate(items):
+                if any(term.lower() in _item_text(item) for term in case.expected):
+                    first_hit_at = idx
+                    break
             details.append(
                 {
                     "query": case.query,
@@ -519,23 +602,34 @@ class SieveonEvalHarness:
                     "found": found,
                     "missing": missing,
                     "recall": round(recall, 4),
+                    "absent": case.absent,
+                    "absent_violations": present_absent,
+                    "absent_score": round(absent_score, 4),
+                    "score": case_score,
+                    "first_hit_at": first_hit_at,
                 }
             )
-            flag = "OK  " if not missing else "MISS"
+            flag = "OK  " if not missing and not present_absent else "MISS"
             self._log(
                 f"    {flag} [{case.category}] {case.query}"
                 f" -> found={found or '[]'}{' missing=' + str(missing) if missing else ''}"
+                f"{' absent_violation=' + str(present_absent) if present_absent else ''}"
+                f"{' rank=' + str(first_hit_at) if first_hit_at is not None else ''}"
             )
 
-        hit_rate = _mean([1.0 if d["missing"] == [] else 0.0 for d in details])
+        hit_rate = _mean(
+            [1.0 if d["missing"] == [] and d["absent_violations"] == [] else 0.0 for d in details]
+        )
         score = _mean(recalls)
         by_category: Dict[str, float] = {}
         for cat in sorted({d["category"] for d in details}):
-            by_category[cat] = _mean([d["recall"] for d in details if d["category"] == cat])
+            by_category[cat] = _mean([d["score"] for d in details if d["category"] == cat])
 
         return {
             "score": score,
-            "definition": "mean fraction of expected terms present in the top-k response",
+            "definition": "mean case score: expected-term recall, averaged with "
+            "absent-term avoidance where absent terms are defined "
+            "(substring matching; first_hit_at is diagnostic only)",
             "hit_rate": hit_rate,
             "cases": len(details),
             "by_category": by_category,
@@ -547,7 +641,7 @@ class SieveonEvalHarness:
     async def measure_update_robustness(
         self, cases: List[Tuple[str, str, str, str]]
     ) -> Dict[str, Any]:
-        self._log("  [2/5] update robustness")
+        self._log("  [2/6] update robustness")
         details = []
 
         for subject, predicate, old_value, new_value in cases:
@@ -575,9 +669,9 @@ class SieveonEvalHarness:
             points_at_new = bool(active) and active[0].get("out_name") == new_value
             old_invalidated = old_value in {f.get("out_name") for f in invalidated}
             new_retrievable = new_value in returned_objects
-            # A superseded value must not be served as a current fact. The KG
-            # searches do not filter on valid_until, so this is the check that
-            # catches read-side invalidation gaps.
+            # A superseded value must not be served as a current fact. All KG
+            # read paths filter on the validity window (ACTIVE_FACT_FILTER),
+            # so this is the check that catches read-side invalidation gaps.
             old_absent = old_value not in returned_objects
 
             passed = (
@@ -624,20 +718,20 @@ class SieveonEvalHarness:
     # ── metric 3: long-horizon stability ──────────────────────────────
 
     async def measure_long_horizon_stability(self) -> Dict[str, Any]:
-        self._log("  [3/5] long-horizon stability")
+        self._log("  [3/6] long-horizon stability")
 
-        # Baseline retrieval over the seeded chain. The executor expands one hop
-        # from the entities named in the query, so the reachable neighbours are
-        # the honest expectation — deeper hops are not implemented.
+        # Baseline retrieval over the seeded chain. The executor expands two
+        # hops (bounded BFS) from the entities named in the query, so the
+        # 2-hop neighbourhood is the honest expectation.
         probes = [
             (_chain_node(0), _chain_node(3), [_chain_node(1), _chain_node(2)]),
-            (_chain_node(0), _chain_node(4), [_chain_node(1), _chain_node(3)]),
+            (_chain_node(0), _chain_node(4), [_chain_node(1), _chain_node(2), _chain_node(3)]),
             (_chain_node(5), _chain_node(6), [_chain_node(6)]),
         ]
         probe_details = []
         for src, dst, expected in probes:
             query = f"What is the connection between {src} and {dst}?"
-            response, _ = await self._run_query(query)
+            response, _ = await self._run_query(query, phase="stability")
             blob = _result_blob(response)
             found = [t for t in expected if t.lower() in blob]
             probe_details.append(
@@ -746,27 +840,33 @@ class SieveonEvalHarness:
     # ── metric 4: latency ─────────────────────────────────────────────
 
     async def measure_latency(self, cases: List[EvalCase]) -> Dict[str, Any]:
-        self._log("  [4/5] latency")
-        samples = self._latencies_ms or []
-        if not samples:
+        self._log("  [4/6] latency")
+        # Only fidelity-phase samples count toward the SLO score; the warmup
+        # query (phase "warmup") and stability probes are reported separately.
+        # Previously this sliced samples[-len(cases):], silently mixing in
+        # long-horizon probes.
+        retrieval = [ms for phase, ms in (self._latencies_ms or []) if phase == "retrieval"]
+        other = {phase: [ms for ph, ms in (self._latencies_ms or []) if ph == phase] for phase in ("warmup", "stability")}
+        if not retrieval:
             return {
                 "score": 0.0,
-                "definition": f"share of queries completing under {self.latency_slo_ms}ms",
+                "definition": f"share of fidelity queries completing under {self.latency_slo_ms}ms",
                 "samples": 0,
             }
 
-        # Drop the seeding queries: they pay for cold FTX/analyzer/HNSW state.
-        probe_samples = samples[-len(cases) :] if len(samples) >= len(cases) else samples
+        probe_samples = retrieval
         under_slo = [1.0 if s <= self.latency_slo_ms else 0.0 for s in probe_samples]
         by_strategy: Dict[str, List[float]] = {}
         for sample in self._budget_samples:
+            if sample.get("phase", "retrieval") != "retrieval":
+                continue
             by_strategy.setdefault(sample["strategy"] or "unknown", []).append(
                 sample["latency_ms"]
             )
 
         return {
             "score": _mean(under_slo),
-            "definition": f"share of queries completing under {self.latency_slo_ms}ms",
+            "definition": f"share of fidelity queries completing under {self.latency_slo_ms}ms",
             "slo_ms": self.latency_slo_ms,
             "samples": len(probe_samples),
             "mean_ms": round(statistics.fmean(probe_samples), 2),
@@ -776,12 +876,15 @@ class SieveonEvalHarness:
             "by_strategy_mean_ms": {
                 k: round(statistics.fmean(v), 2) for k, v in sorted(by_strategy.items())
             },
+            "other_phases_mean_ms": {
+                phase: round(statistics.fmean(vals), 2) for phase, vals in sorted(other.items()) if vals
+            },
         }
 
     # ── metric 5: operation cost ──────────────────────────────────────
 
     async def measure_operation_cost(self) -> Dict[str, Any]:
-        self._log("  [5/5] operation cost")
+        self._log("  [5/6] operation cost")
         samples = self._budget_samples or []
         if not samples:
             return {"score": 0.0, "definition": "share of queries staying within budget", "samples": 0}
@@ -801,6 +904,51 @@ class SieveonEvalHarness:
             "over_budget_queries": sum(1 for s in samples if s["over_budget"]),
             "failed_queries": sum(1 for s in samples if s["error"]),
             "strategy_metrics": strategy_costs,
+        }
+
+    # ── metric 6: fact salience distribution (diagnostic, unscored) ──
+
+    async def measure_salience(self) -> Dict[str, Any]:
+        """Histogram over per-fact salience (v1-heuristic) in the eval corpus.
+
+        Diagnostic only: feeds the composite-vs-salience switchover decision.
+        Compares avg fact salience against avg gate composite on extract rows.
+        """
+        self._log("  [6/6] fact salience (diagnostic)")
+        facts = await self._sql(
+            "SELECT predicate, confidence, salience FROM fact "
+            "WHERE valid_until IS NONE OR valid_until = NONE LIMIT 500;"
+        )
+        scored = [f for f in facts if isinstance(f.get("salience"), (int, float))]
+        buckets = {"<0.4": 0, "0.4-0.6": 0, "0.6-0.8": 0, ">=0.8": 0}
+        for f in scored:
+            s = float(f["salience"])
+            buckets["<0.4" if s < 0.4 else "0.4-0.6" if s < 0.6 else "0.6-0.8" if s < 0.8 else ">=0.8"] += 1
+        by_predicate: Dict[str, float] = {}
+        for pred in sorted({str(f.get("predicate")) for f in scored}):
+            vals = [float(f["salience"]) for f in scored if str(f.get("predicate")) == pred]
+            by_predicate[pred] = round(statistics.fmean(vals), 4)
+        gate = await self._sql(
+            "SELECT gate_score, salience FROM gate_log WHERE decision = 'extract' LIMIT 500;"
+        )
+        pairs = [
+            (float(g["gate_score"]), float(g["salience"]))
+            for g in gate
+            if isinstance(g.get("gate_score"), (int, float))
+            and isinstance(g.get("salience"), (int, float))
+        ]
+        return {
+            "score": None,
+            "definition": "diagnostic distribution of v1 fact salience; unscored, "
+            "does not affect overall_score",
+            "facts_scored": len(scored),
+            "facts_total": len(facts),
+            "mean_salience": round(statistics.fmean([float(f["salience"]) for f in scored]), 4) if scored else 0.0,
+            "histogram": buckets,
+            "by_predicate": by_predicate,
+            "composite_vs_salience_pairs": len(pairs),
+            "mean_composite_on_extract": round(statistics.fmean([p[0] for p in pairs]), 4) if pairs else 0.0,
+            "mean_salience_on_extract": round(statistics.fmean([p[1] for p in pairs]), 4) if pairs else 0.0,
         }
 
     # ── orchestration ─────────────────────────────────────────────────
@@ -830,7 +978,8 @@ class SieveonEvalHarness:
 
         try:
             # One warmup so the first measured query is not the cold one.
-            await self._run_query("warmup query for analyzer and index state")
+            # Phase "warmup" keeps it out of the latency SLO score.
+            await self._run_query("warmup query for analyzer and index state", phase="warmup")
 
             results: Dict[str, Any] = {
                 "timestamp": datetime.now().isoformat(),
@@ -852,10 +1001,21 @@ class SieveonEvalHarness:
             )
             results["metrics"]["latency"] = await self.measure_latency(cases)
             results["metrics"]["operation_cost"] = await self.measure_operation_cost()
+            results["metrics"]["fact_salience"] = await self.measure_salience()
 
-            scores = [m.get("score", 0.0) for m in results["metrics"].values()]
-            results["overall_score"] = round(statistics.fmean(scores), 4) if scores else 0.0
-            self.metrics = {k: v.get("score", 0.0) for k, v in results["metrics"].items()}
+            # Overall = mean over quality metrics only (fidelity, update
+            # robustness, stability). Latency/cost are near-constant 1.0 and
+            # would flatter the score; they gate via operational_pass instead.
+            quality = [
+                results["metrics"][m].get("score", 0.0)
+                for m in ("retrieval_fidelity", "update_robustness", "long_horizon_stability")
+            ]
+            results["overall_score"] = round(statistics.fmean(quality), 4) if quality else 0.0
+            results["operational_pass"] = bool(
+                results["metrics"]["latency"].get("score", 0.0) >= 1.0
+                and results["metrics"]["operation_cost"].get("score", 0.0) >= 1.0
+            )
+            self.metrics = {k: v.get("score", 0.0) for k, v in results["metrics"].items() if v.get("score") is not None}
             return results
         finally:
             if not keep_data:
@@ -873,7 +1033,7 @@ class SieveonEvalHarness:
 
         for metric, data in results.get("metrics", {}).items():
             print(f"\n{metric.upper()}")
-            print(f"  score: {data.get('score', 'N/A')}")
+            print(f"  score: {data.get('score', 'N/A') if data.get('score') is not None else 'N/A (diagnostic)'}")
             for key, value in data.items():
                 if key in ("score", "definition", "details", "probes", "strategy_metrics"):
                     continue
@@ -890,7 +1050,8 @@ class SieveonEvalHarness:
             for failure in failures:
                 print(f"  - {failure}")
 
-        print(f"\nOVERALL SCORE: {results.get('overall_score', 0.0):.3f}")
+        print(f"\nOVERALL SCORE (quality mean): {results.get('overall_score', 0.0):.3f}")
+        print(f"OPERATIONAL PASS (latency+cost): {results.get('operational_pass', False)}")
         print("=" * 62)
 
 

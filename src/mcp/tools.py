@@ -12,7 +12,7 @@ from typing import Any, Dict, List, Optional
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from src.extraction.entropy_gate import character_diversity, escape_surrealql
+from src.extraction.entropy_gate import SALIENCE_VERSION, character_diversity, escape_surrealql
 
 from .common_logic import _execute_query, _get_or_create_entity, _store_content
 from .core import _clean_output, _embed_query, _extract_result, _query_surreal, mcp
@@ -323,7 +323,15 @@ async def memory_update(subject: str, predicate: str, new_value: str) -> dict:
         await _query_surreal(invalidate_sql)
         invalidated = old_fact_id
 
-    relate_sql = f"RELATE {subject_id}->fact->{object_id} SET predicate = '{predicate_escaped}', confidence = 1.0;"
+    # Salience coverage: update-created facts carry it too (novelty unknown
+    # here -> neutral 0.5 inside fact_salience).
+    from src.extraction.entropy_gate import EntropyGate
+
+    sal = EntropyGate.fact_salience(1.0, predicate, None)
+    relate_sql = (
+        f"RELATE {subject_id}->fact->{object_id} SET predicate = '{predicate_escaped}', "
+        f"confidence = 1.0, salience = {sal:.4f}, salience_version = '{SALIENCE_VERSION}';"
+    )
     relate_result = await _query_surreal(relate_sql)
     new_fact = _extract_result(relate_result, 1)
     new_fact_id = new_fact[0]["id"] if new_fact else None
@@ -335,6 +343,7 @@ async def memory_update(subject: str, predicate: str, new_value: str) -> dict:
         "subject": subject,
         "predicate": predicate,
         "new_value": new_value,
+        "salience": sal,
     }
 
 
@@ -444,11 +453,13 @@ async def event_log_search(
     Default 'auto' treats the entire input as plain text with full escaping.
     """
     query_escaped = _prepare_fts_query(query, query_syntax)
+    # Datetime-Vergleiche brauchen type::datetime (plain strings coerces
+    # SurrealDB v3 bei datetime-Feldern NICHT -- stiller Wrong-Result-Bug).
     time_filter = ""
     if since:
-        time_filter += f" AND timestamp >= '{escape_surrealql(since)}'"
+        time_filter += f" AND timestamp >= type::datetime(\"{escape_surrealql(since)}\")"
     if until:
-        time_filter += f" AND timestamp <= '{escape_surrealql(until)}'"
+        time_filter += f" AND timestamp <= type::datetime(\"{escape_surrealql(until)}\")"
 
     if include_forgotten:
         forgotten_filter = "1=1"
@@ -1554,9 +1565,9 @@ async def list_events(
     if not include_forgotten:
         filters.append("forgotten = false")
     if since:
-        filters.append(f"timestamp >= '{escape_surrealql(since)}'")
+        filters.append(f"timestamp >= type::datetime(\"{escape_surrealql(since)}\")")
     if until:
-        filters.append(f"timestamp <= '{escape_surrealql(until)}'")
+        filters.append(f"timestamp <= type::datetime(\"{escape_surrealql(until)}\")")
     if source:
         source_escaped = escape_surrealql(source)
         filters.append(f"source = '{source_escaped}'")

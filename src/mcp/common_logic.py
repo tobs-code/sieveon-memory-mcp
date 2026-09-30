@@ -69,7 +69,8 @@ async def _store_content(content: str, source: str = "user_input", debug: bool =
     # KG-Resultate aus ingest() verwenden (kein zweiter _extract_to_kg-Aufruf!)
     if kg_result:
         gate_info["kg"] = {"entities_created": kg_result.get("entities_created", 0),
-                            "facts_created": kg_result.get("facts_created", 0)}
+                            "facts_created": kg_result.get("facts_created", 0),
+                            "tier_skipped": kg_result.get("tier_skipped", 0)}
 
     return {"event_id": event_id, "status": "stored", "source": source,
             "gate": gate_info}

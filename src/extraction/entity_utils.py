@@ -16,6 +16,10 @@ _nlp = None
 # Cache for embedding calculations
 _EMBEDDING_CACHE = {}
 
+# Cache for infer_entity_type embedding-path results (name.lower() -> type).
+# Types are stable; each miss costs a full model.encode (~110ms CPU).
+_INFER_TYPE_CACHE: dict[str, str] = {}
+
 
 def _get_nlp():
     """Lazy-load spaCy model with fallback to regex if not available."""
@@ -418,12 +422,201 @@ def extract_entities_with_spacy(text: str) -> list[dict]:
 
 _GROQ_API_KEY = None
 
+_DEFAULT_GROQ_MODEL = "openai/gpt-oss-20b"
+
+# --- Local joint extraction backends (relex primary, gliner fallback) ---
+
+_RELEX_MODEL = None
+_GLINER_MODEL = None
+
+_SIEVEON_ENTITY_LABELS = ["person", "organization", "location", "technology", "concept", "event"]
+
+_SIEVEON_RELATION_LABELS = [
+    "works at", "located in", "created", "developed", "discovered",
+    "uses", "leads", "acquired", "founded", "part of",
+]
+
+
+def _get_relex():
+    """Lazy-load knowledgator/gliner-relex-multi-v1.0 (CUDA if available)."""
+    global _RELEX_MODEL
+    if _RELEX_MODEL is None:
+        from gliner import GLiNER
+
+        model = GLiNER.from_pretrained("knowledgator/gliner-relex-multi-v1.0")
+        try:
+            import torch
+
+            if torch.cuda.is_available():
+                model = model.to("cuda")
+        except ImportError:
+            pass
+        model.eval()
+        _RELEX_MODEL = model
+    return _RELEX_MODEL
+
+
+def _get_gliner():
+    """Lazy-load fastino/gliner2.5-multi-v1 (multilingual, CUDA if available)."""
+    global _GLINER_MODEL
+    if _GLINER_MODEL is None:
+        from gliner2 import AutoExtractor
+
+        model = AutoExtractor.from_pretrained("fastino/gliner2.5-multi-v1")
+        try:
+            import torch
+
+            if torch.cuda.is_available():
+                model.cuda()
+        except ImportError:
+            pass
+        model.eval()
+        _GLINER_MODEL = model
+    return _GLINER_MODEL
+
+
+def _env_float(name: str, default: float) -> float:
+    try:
+        return float(os.getenv(name, default))
+    except (TypeError, ValueError):
+        return default
+
+
+def _normalize_relation_label(label: str) -> str:
+    """Map a zero-shot relation label to a Sieveon predicate slug."""
+    slug = re.sub(r"[\s\-]+", "_", (label or "").strip().lower())
+    return re.sub(r"[^a-z0-9_]", "", slug) or "related_to"
+
+
+def extract_entities_with_relex(text: str) -> list[dict]:
+    """Entities via local relex model. Returns [] on any failure (chain falls through)."""
+    if not text or not text.strip():
+        return []
+    try:
+        model = _get_relex()
+        threshold = _env_float("RELEX_ENT_THRESHOLD", 0.5)
+        raw = model.predict_entities(text, _SIEVEON_ENTITY_LABELS, threshold=threshold)
+    except Exception as e:
+        sys.stderr.write(f"[Relex] entity extraction failed: {e}\n")
+        return []
+    out = []
+    for ent in raw or []:
+        name = ent.get("text", "").strip() if isinstance(ent, dict) else str(ent).strip()
+        if len(name) < 2:
+            continue
+        etype = (ent.get("label", "concept") if isinstance(ent, dict) else "concept").lower()
+        conf = ent.get("score", 0.7) if isinstance(ent, dict) else 0.7
+        try:
+            conf = float(conf)
+        except (TypeError, ValueError):
+            conf = 0.7
+        out.append({"name": name, "type": etype, "label": "RELEX", "confidence": conf})
+    return out
+
+
+def extract_triples_with_relex(text: str) -> list[dict]:
+    """Triples via local relex model (joint NER+RE, one forward pass)."""
+    if not text or not text.strip():
+        return []
+    try:
+        model = _get_relex()
+        ent_thr = _env_float("RELEX_ENT_THRESHOLD", 0.5)
+        rel_thr = _env_float("RELEX_REL_THRESHOLD", 0.7)
+        _ents, rels = model.predict_relations(
+            text, _SIEVEON_ENTITY_LABELS, _SIEVEON_RELATION_LABELS,
+            threshold=ent_thr, relation_threshold=rel_thr,
+        )
+    except Exception as e:
+        sys.stderr.write(f"[Relex] triple extraction failed: {e}\n")
+        return []
+    triples, seen = [], set()
+    for rel in rels or []:
+        try:
+            head = rel["head"]["text"].strip()
+            tail = rel["tail"]["text"].strip()
+            pred = _normalize_relation_label(rel.get("relation", ""))
+            conf = float(rel.get("score", 0.7))
+        except (KeyError, TypeError, ValueError, AttributeError):
+            continue
+        if len(head) < 2 or len(tail) < 2 or head.lower() == tail.lower():
+            continue
+        key = f"{head.lower()}|{pred}|{tail.lower()}"
+        if key in seen:
+            continue
+        seen.add(key)
+        triples.append({"subject": head, "predicate": pred, "object": tail, "confidence": conf})
+    return triples
+
+
+def extract_entities_with_gliner(text: str) -> list[dict]:
+    """Entities via local gliner2.5-multi (zero-shot, multilingual)."""
+    if not text or not text.strip():
+        return []
+    try:
+        model = _get_gliner()
+        threshold = _env_float("GLINER_ENT_THRESHOLD", 0.5)
+        import torch
+
+        with torch.no_grad():
+            raw = model.extract_entities(text, _SIEVEON_ENTITY_LABELS, threshold=threshold)
+    except Exception as e:
+        sys.stderr.write(f"[GLiNER] entity extraction failed: {e}\n")
+        return []
+    groups = raw.get("entities", {}) if isinstance(raw, dict) else {}
+    out = []
+    for label, items in (groups.items() if isinstance(groups, dict) else []):
+        for it in items or []:
+            name = (it if isinstance(it, str) else it.get("text", "")).strip()
+            if len(name) < 2:
+                continue
+            out.append({"name": name, "type": label.lower(), "label": "GLINER", "confidence": 0.8})
+    return out
+
+
+def extract_triples_with_gliner(text: str) -> list[dict]:
+    """Triples via local gliner2.5-multi relation head."""
+    if not text or not text.strip():
+        return []
+    try:
+        model = _get_gliner()
+        rel_thr = _env_float("GLINER_REL_THRESHOLD", 0.7)
+        import torch
+
+        with torch.no_grad():
+            raw = model.extract_relations(text, _SIEVEON_RELATION_LABELS, threshold=rel_thr)
+    except Exception as e:
+        sys.stderr.write(f"[GLiNER] triple extraction failed: {e}\n")
+        return []
+    groups = raw.get("relation_extraction", {}) if isinstance(raw, dict) else {}
+    triples, seen = [], set()
+    if isinstance(groups, dict):
+        for label, pairs in groups.items():
+            pred = _normalize_relation_label(label)
+            for pair in pairs or []:
+                try:
+                    head, tail = pair[0].strip(), pair[1].strip()
+                except (IndexError, TypeError, AttributeError):
+                    continue
+                if len(head) < 2 or len(tail) < 2 or head.lower() == tail.lower():
+                    continue
+                key = f"{head.lower()}|{pred}|{tail.lower()}"
+                if key in seen:
+                    continue
+                seen.add(key)
+                triples.append({"subject": head, "predicate": pred, "object": tail, "confidence": 0.7})
+    return triples
+
 
 def _get_groq_key() -> str | None:
     global _GROQ_API_KEY
     if _GROQ_API_KEY is None:
         _GROQ_API_KEY = os.getenv("GROQ_API_KEY")
     return _GROQ_API_KEY if _GROQ_API_KEY else None
+
+
+def _get_groq_model() -> str:
+    """Groq chat model, override via GROQ_MODEL in .env."""
+    return os.getenv("GROQ_MODEL", _DEFAULT_GROQ_MODEL)
 
 
 _GROQ_SYSTEM_PROMPT = (
@@ -460,7 +653,7 @@ def extract_entities_with_groq(text: str) -> list[dict]:
     if not key:
         return []
     payload = {
-        "model": "llama-3.1-8b-instant",
+        "model": _get_groq_model(),
         "messages": [
             {"role": "system", "content": _GROQ_SYSTEM_PROMPT},
             {
@@ -470,7 +663,8 @@ def extract_entities_with_groq(text: str) -> list[dict]:
         ],
         "temperature": 0.0,
         "max_tokens": 512,
-        "stop": ["\n\n"],
+        # NOTE: kein "stop" hier -- gpt-oss-Modelle beenden sonst sofort
+        # mit leerer Antwort (fuehrender Umbruch triggert "\n\n").
     }
     try:
         resp = requests.post(
@@ -482,7 +676,8 @@ def extract_entities_with_groq(text: str) -> list[dict]:
         resp.raise_for_status()
         data = resp.json()
         content = data["choices"][0]["message"]["content"]
-    except Exception:
+    except Exception as e:
+        sys.stderr.write(f"[Groq] entity extraction failed ({_get_groq_model()}): {e}\n")
         return []
 
     entities = []
@@ -536,8 +731,23 @@ def extract_entities_with_groq(text: str) -> list[dict]:
 
 
 def extract_entities(text: str) -> list[dict]:
+    """Dispatch entity extraction.
+
+    Chain (default "auto"): relex (local, joint NER+RE model) -> gliner
+    (local zero-shot NER) -> spacy (regex fallback inside). Groq is NOT in
+    the default chain (API latency, retired-model risk); opt in explicitly
+    with EXTRACTION_METHOD=groq.
+    """
     method = os.getenv("EXTRACTION_METHOD", "auto")
-    if method in ("groq", "auto"):
+    if method in ("relex", "auto"):
+        entities = extract_entities_with_relex(text)
+        if entities:
+            return entities
+    if method in ("gliner", "auto"):
+        entities = extract_entities_with_gliner(text)
+        if entities:
+            return entities
+    if method == "groq":
         entities = extract_entities_with_groq(text)
         if entities:
             return entities
@@ -681,6 +891,12 @@ def infer_entity_type(
     if embedding_service is None:
         return "concept"
 
+    # Result cache: entity types are stable, and each miss costs a full
+    # model.encode (~110ms CPU). Heuristic hits above never reach this path.
+    cache_key = lower
+    cached = _INFER_TYPE_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
     try:
         name_emb = embedding_service.embed_for_storage(name)
         best_type = "concept"
@@ -698,6 +914,9 @@ def infer_entity_type(
                 best_sim = sim
                 best_type = etype
 
+        if len(_INFER_TYPE_CACHE) >= 2048:
+            _INFER_TYPE_CACHE.clear()
+        _INFER_TYPE_CACHE[cache_key] = best_type
         return best_type
     except Exception:
         return "concept"
@@ -972,7 +1191,7 @@ def extract_triples_with_groq(text: str) -> list[dict]:
         resp = requests.post(
             "https://api.groq.com/openai/v1/chat/completions",
             json={
-                "model": "llama-3.1-8b-instant",
+                "model": _get_groq_model(),
                 "messages": messages,
                 "temperature": 0.0,
                 "max_tokens": 2048,
@@ -982,7 +1201,8 @@ def extract_triples_with_groq(text: str) -> list[dict]:
         )
         resp.raise_for_status()
         content = resp.json()["choices"][0]["message"]["content"]
-    except Exception:
+    except Exception as e:
+        sys.stderr.write(f"[Groq] triple extraction failed ({_get_groq_model()}): {e}\n")
         return []
 
     triples = []
@@ -1077,8 +1297,17 @@ def extract_triples_with_groq(text: str) -> list[dict]:
 
 
 def extract_triples(text: str) -> list[dict]:
+    """Dispatch triple extraction. Same chain as extract_entities (no Groq in auto)."""
     method = os.getenv("EXTRACTION_METHOD", "auto")
-    if method in ("groq", "auto"):
+    if method in ("relex", "auto"):
+        triples = extract_triples_with_relex(text)
+        if triples:
+            return triples
+    if method in ("gliner", "auto"):
+        triples = extract_triples_with_gliner(text)
+        if triples:
+            return triples
+    if method == "groq":
         triples = extract_triples_with_groq(text)
         if triples:
             return triples

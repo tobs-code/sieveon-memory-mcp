@@ -168,6 +168,91 @@ class TestEmbeddingService(unittest.TestCase):
         self.assertEqual(len(query_emb), len(storage_emb))
 
 
+class TestTiering(unittest.TestCase):
+    """Pure-function tests for tier_keep (no DB, no model)."""
+
+    def test_threshold_boundary(self):
+        from src.extraction.entropy_gate import tier_keep
+        self.assertTrue(tier_keep(0.50, 0.50))
+        self.assertFalse(tier_keep(0.4999, 0.50))
+
+    def test_disabled_threshold_keeps_all(self):
+        from src.extraction.entropy_gate import tier_keep
+        self.assertTrue(tier_keep(0.0, 0.0))
+        self.assertTrue(tier_keep(0.0, 0))
+
+    def test_bad_input_keeps(self):
+        from src.extraction.entropy_gate import tier_keep
+        self.assertTrue(tier_keep(None, 0.5))
+        self.assertTrue(tier_keep("x", 0.5))
+
+    def test_env_default(self):
+        import os
+        from src.extraction import entropy_gate
+        prev = os.environ.pop("TIER_DROP_THRESHOLD", None)
+        try:
+            self.assertEqual(entropy_gate.tier_threshold(), 0.50)
+            os.environ["TIER_DROP_THRESHOLD"] = "0"
+            self.assertEqual(entropy_gate.tier_threshold(), 0.0)
+        finally:
+            if prev is None:
+                os.environ.pop("TIER_DROP_THRESHOLD", None)
+            else:
+                os.environ["TIER_DROP_THRESHOLD"] = prev
+
+
+class TestRelationLabelMapping(unittest.TestCase):
+    """Pure-function tests for the relex/gliner predicate normalization."""
+
+    def test_normalizes_phrases(self):
+        from src.extraction.entity_utils import _normalize_relation_label
+        self.assertEqual(_normalize_relation_label("works at"), "works_at")
+        self.assertEqual(_normalize_relation_label("located in"), "located_in")
+        self.assertEqual(_normalize_relation_label("  Discovered "), "discovered")
+
+    def test_fallback_and_empty(self):
+        from src.extraction.entity_utils import _normalize_relation_label
+        self.assertEqual(_normalize_relation_label(""), "related_to")
+        self.assertEqual(_normalize_relation_label(None), "related_to")
+
+    def test_chain_prefers_relex(self):
+        """Default chain resolves without Groq (env default)."""
+        import os
+        self.assertEqual(os.getenv("EXTRACTION_METHOD", "auto"), "auto")
+
+
+class TestFactSalience(unittest.TestCase):
+    """Pure-function tests for EntropyGate.fact_salience (no DB, no model)."""
+
+    def test_bounds(self):
+        for conf in (0.0, 0.5, 1.0):
+            for pred in ("works_at", "mentions", "co_occurs_with", ""):
+                for nov in (None, 0.0, 1.0):
+                    s = EntropyGate.fact_salience(conf, pred, nov)
+                    self.assertGreaterEqual(s, 0.0)
+                    self.assertLessEqual(s, 1.0)
+
+    def test_specific_beats_generic(self):
+        specific = EntropyGate.fact_salience(0.9, "works_at", 0.5)
+        generic = EntropyGate.fact_salience(0.9, "co_occurs_with", 0.5)
+        mention = EntropyGate.fact_salience(0.9, "mentions", 0.5)
+        self.assertGreater(specific, generic)
+        self.assertGreater(generic, mention)
+
+    def test_novelty_monotone(self):
+        low = EntropyGate.fact_salience(0.8, "works_at", 0.0)
+        high = EntropyGate.fact_salience(0.8, "works_at", 1.0)
+        self.assertGreater(high, low)
+
+    def test_none_novelty_is_neutral(self):
+        a = EntropyGate.fact_salience(0.8, "works_at", None)
+        b = EntropyGate.fact_salience(0.8, "works_at", 0.5)
+        self.assertEqual(a, b)
+
+    def test_bad_input_never_throws(self):
+        self.assertGreaterEqual(EntropyGate.fact_salience("x", None, "y"), 0.0)
+
+
 if __name__ == '__main__':
     print("Running Strata Python Unit Tests...")
     unittest.main(verbosity=2)

@@ -45,7 +45,7 @@ Sieveon is an agent memory system that intelligently classifies, routes, plans, 
 | Component | Path | Description |
 |-----------|------|-------------|
 | **MCP Server** | `src/mcp/server.py` | Control plane (Anthropic MCP protocol) — stdio mode. 18 tools + 6 MCP resources: `memory_store`, `memory_store_batch`, `memory_store_markdown`, `memory_query`, `memory_update`, `memory_get`, `event_log_search`, `kg_query`, `graph_traverse`, `semantic_search`, `list_entities`, `list_events`, `memory_stats`, `memory_explain_routing`, `memory_forget`, `memory_unforget`, `memory_consolidate`, `memory_merge_entities`; Resources: `sieveon://stats`, `sieveon://entity/{id}`, `sieveon://event/{id}`, `sieveon://kg/subject/{name}`, `sieveon://kg/predicate/{type}`, `sieveon://search/{query}` |
-| **Extraction** | `src/extraction/` | Entropy-gated entity extraction with Groq API (llama-3.1-8b-instant) or spaCy fallback. Pipe-separated LLM prompt, type preservation |
+| **Extraction** | `src/extraction/` | Local-first entity extraction: relex (`knowledgator/gliner-relex-multi-v1.0`, joint NER+RE, ~60ms) → gliner2.5-multi (zero-shot, multilingual) → spaCy fallback. Groq API (`GROQ_MODEL`, default `openai/gpt-oss-20b`) explicit opt-in only via `EXTRACTION_METHOD=groq`. Thresholds via `RELEX_ENT/REL_THRESHOLD`, `GLINER_ENT/REL_THRESHOLD` |
 | **Classifier** | `src/extraction/classifier.py` | Hybrid ML+Regex query classifier: sklearn LogisticRegression on Qwen3-Embedding-0.6B embeddings (1024d) + TF-IDF (500 unigrams+bigrams), with regex fallback when ML confidence < 0.6. Synthetic training data generator at `scripts/generate_synthetic_training_data.py`, manual labeling CLI at `scripts/label_queries.py` |
 | **Migrations** | `src/mcp/migrations.py` | Versioned auto-migration engine for breaking schema changes |
 | **Router** | `src/router/` | Query classification policy + budget tracking: `policy.py` (RoutingPolicy, strategy per QueryType), `budget.py` (BudgetTracker, BudgetLevel), `cost_awareness.py` (CostTracker effectiveness ranking) |
@@ -67,7 +67,7 @@ Sieveon is an agent memory system that intelligently classifies, routes, plans, 
   - Run `python scripts/eval_classifier.py` to reproduce.
 - **Adaptive Retrieval** — `memory_query` (classify → route → execute) selects per query type (event log, KG, hybrid BM25+vector+temporal). Direct tools (`event_log_search`, `semantic_search`, `kg_query`, `graph_traverse`) bypass the router for explicit lookups. Temporal pinning: `memory_query(..., since?, until?, at_time?)` bounds event timestamps (`fn::events_at` semantics) and pins KG validity (`fn::facts_at_time` semantics, `type::datetime`); graph expansion is bounded BFS (depth 2)
 - **Entropy Gating** — Composite score: Shannon character entropy + gzip compression ratio (Kolmogorov complexity proxy) + embedding novelty. Raw Event Log is always append-only; the gate decides only whether to extract into the Knowledge Graph.
-- **Entity Extraction** — Groq API (`llama-3.1-8b-instant`) with spaCy fallback. Pipe-separated LLM prompt, type preservation (LLM classification preferred over heuristic).
+- **Entity Extraction** — Local-first: relex joint NER+RE → gliner2.5-multi → spaCy fallback (all on the RTX 2080, no API in the default chain). Groq API opt-in only (`EXTRACTION_METHOD=groq`). Type preservation (LLM classification preferred over heuristic).
 - **Logical Invalidation** — `valid_until` timestamps instead of hard deletes. `memory_update` auto-creates target entities if they don't exist yet.
 - **Forgetting & Consolidation** — `memory_forget` soft-deletes events or entities; `memory_consolidate` (sole MCP entrypoint) triggers `ConservativeMaintainer` runs (with optional physical stale-fact removal).
 - **Cost Awareness** — Tracks & budgets resource consumption per strategy
@@ -219,7 +219,9 @@ composite = alpha * normalized_text_entropy + gamma * compression_ratio + beta *
 
 **Logging:** Each decision is recorded in the `gate_log` table (including `compression_ratio`) for later calibration/evaluation.
 
-**Calibration note:** `alpha`, `beta`, `gamma`, and `threshold` are currently **initial defaults**. Use the logged `gate_log` entries to tune them against real traffic and find the sweet spot for your workload.
+**Calibration note:** `alpha`, `beta`, `gamma`, and `threshold` are currently **initial defaults**. A 2026-09-30 calibration on real web data (31 stores: Wikipedia RAG/sourdough/Curie/geothermal + paraphrases + junk) showed the composite barely discriminates (entropy ~constant on prose, cold threshold never binds, weights irrelevant) — the guardrails do all the filtering. The composite is therefore **deprecated**; use `gate_log.salience` instead (see below). Weights will not be tuned further.
+
+**Fact salience (v1-heuristic, active tiering):** every created fact gets `salience = 0.6*confidence + 0.25*event_novelty + 0.15*predicate_specificity` stored on the fact row; the average lands in `gate_log.salience` (`salience_version='v1-heuristic'`). Specific SVO predicates outrank generic `co_occurs_with`/`mentions`. Co-occurrence facts below `TIER_DROP_THRESHOLD` (default 0.50, calibrated 2026-09-30) are not created as KG facts — mentions stay as provenance; SVO facts are never tiered. Skipped counts surface as `tier_skipped` in `memory_store` responses. 
 
 **MCP path status:** The current MCP memory tools (`memory_store`, query endpoints) write to the raw event log **and invoke the entropy gate**. The `memory_store` tool calls `EntropyGate.ingest()` which logs decisions to `gate_log` for calibration.
 

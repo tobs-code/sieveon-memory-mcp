@@ -75,6 +75,8 @@ DEFINE FIELD IF NOT EXISTS decision ON gate_log TYPE string;
 DEFINE FIELD IF NOT EXISTS reason ON gate_log TYPE string;
 DEFINE FIELD IF NOT EXISTS threshold ON gate_log TYPE float;
 DEFINE FIELD IF NOT EXISTS compression_ratio ON gate_log TYPE float;
+DEFINE FIELD IF NOT EXISTS salience ON gate_log TYPE none | float;
+DEFINE FIELD IF NOT EXISTS salience_version ON gate_log TYPE none | string;
 DEFINE FIELD IF NOT EXISTS ts ON gate_log TYPE datetime DEFAULT time::now();
 DEFINE INDEX IF NOT EXISTS gate_log_ts ON gate_log COLUMNS ts;
 DEFINE INDEX IF NOT EXISTS gate_log_decision ON gate_log COLUMNS decision;

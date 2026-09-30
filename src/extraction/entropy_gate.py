@@ -1,7 +1,16 @@
 """
-sieveon - LightMem-style Entropy Gate
+sieveon - Entropy Gate
 Composite Score aus Text-Entropy und Embedding-Novelty
 Nur vor KG-Write, Raw Event Log bekommt immer alles!
+
+NOTE (2026-09-30): Der alte "LightMem-style"-Kommentar war falsch.
+LightMem (_unused/LightMem/src/lightmem/factory/pre_compressor/entropy_compress.py)
+berechnet LM-Surprisal (-log2 p(Token|Kontext) via GPT-2) und behaelt die
+Top-k informativsten Woerter (Pre-Compression). Dieses Gate berechnet dagegen
+Shannon-Entropie ueber Zeichenhaeufigkeiten + gzip-Ratio als Write/No-Write
+Signal. Gleiches Wort, anderes Konzept, anderer Zweck. Echter LightMem-Ansatz
+(LM-Surprisal als Salience-Signal) ist als spaetere Stufe vorgesehen, siehe
+`salience_version`.
 """
 
 import gzip
@@ -14,8 +23,14 @@ from typing import Any, Dict, List, Optional
 
 import httpx
 from dotenv import load_dotenv
+from pathlib import Path
 
-# Load environment variables
+# Load environment variables: project .env by explicit path first (bare
+# load_dotenv resolves caller-relative and silently picked up parent .env
+# files without GROQ_API_KEY for out-of-tree scripts). No override.
+_project_env = Path(__file__).resolve().parents[2] / ".env"
+if _project_env.exists():
+    load_dotenv(dotenv_path=_project_env)
 load_dotenv()
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
@@ -63,6 +78,46 @@ def character_diversity(text: str) -> float:
         return 0.0
     unique = len(set(text.lower()))
     return unique / len(text)
+
+
+# Fact salience v1 (heuristic, 2026-09-30): scores an extracted fact 0..1 from
+# signals available at extraction time. Logged in parallel to the (deprecated)
+# composite gate score; no behavior change yet -- every fact is still created.
+SALIENCE_VERSION = "v1-heuristic"
+
+# Tiering (active since calibration 2026-09-30): co-occurrence facts below
+# TIER_DROP_THRESHOLD are not created as KG facts (mentions stay as
+# provenance). SVO facts and mentions are never tiered. 0 disables.
+DEFAULT_TIER_DROP_THRESHOLD = 0.50
+
+
+def tier_threshold() -> float:
+    """Read TIER_DROP_THRESHOLD from env (default 0.50, 0 = disabled)."""
+    try:
+        return max(0.0, float(os.getenv("TIER_DROP_THRESHOLD", DEFAULT_TIER_DROP_THRESHOLD)))
+    except (TypeError, ValueError):
+        return DEFAULT_TIER_DROP_THRESHOLD
+
+
+def tier_keep(salience: float, threshold: Optional[float] = None) -> bool:
+    """Pure tier decision: keep the KG fact iff salience >= threshold."""
+    thr = threshold if threshold is not None else tier_threshold()
+    if thr <= 0.0:
+        return True
+    try:
+        return float(salience) >= thr
+    except (TypeError, ValueError):
+        return True
+
+# Predicate specificity: generic co-occurrence predicates carry less signal
+# than explicit SVO predicates. Unknown predicates are assumed specific (1.0).
+_PREDICATE_SPECIFICITY = {
+    "mentions": 0.2,
+    "weakly_related": 0.2,
+    "co_occurs_with": 0.4,
+    "related_to": 0.4,
+    "strongly_related": 0.5,
+}
 
 
 class EntropyGateConfig:
@@ -142,7 +197,16 @@ class EntropyGate:
     @staticmethod
     def _extract_result(data: Any, index: int = 1) -> List[Dict]:
         """Safely extract the result list from a SurrealDB multi-statement response.
-        Filters out USE NS/DB connection-info responses and None entries."""
+        Filters out USE NS/DB connection-info responses and None entries.
+
+        Index-Konvention (P4): Jeder Aufruf in dieser Klasse sendet genau EIN
+        Statement (der USE-Prefix wird vorher herausgefiltert, s. Filter unten),
+        daher ist candidates[0] immer das eigene Statement. index != 1 nimmt
+        candidates[-1] (letztes) -- das ist nur Fallback für mehrteilige Batches
+        und wird aktuell nirgends mit index != 1 aufgerufen. Wer hier jemals
+        echte Multi-Statement-Batches parsen will: nicht über den Index, sondern
+        über explizite Statement-Marker gehen.
+        """
         if not isinstance(data, list):
             return []
         candidates = [
@@ -184,7 +248,8 @@ class EntropyGate:
 
     def calculate_char_entropy(self, text: str) -> float:
         """
-        Shannon-Entropy auf Zeichenebene (wie LightMem)
+        Shannon-Entropy auf Zeichenebene (Eigenbau, NICHT LightMem --
+        siehe Modul-Docstring).
         Returns *unnormalized* entropy (typically 0-4.5)
         """
         if not text:
@@ -231,25 +296,40 @@ class EntropyGate:
         fraction = min(n / ramp, 1.0)
         return base + (maximum - base) * fraction
 
-    def calculate_novelty(self, text: str, exclude_id: Optional[str] = None) -> float:
+    def calculate_novelty(
+        self,
+        text: str,
+        exclude_id: Optional[str] = None,
+        embedding: Optional[List[float]] = None,
+    ) -> float:
         """
         Novelty based on embedding similarity against existing content in SurrealDB.
         Returns value between 0 (no novelty) and 1 (maximum novelty).
         Uses SurrealDB's native vector functions.
         exclude_id: if provided, excludes the event with this id (prevents self-match).
+        embedding: precomputed storage embedding for `text` (saves one model call
+        when the caller already embedded it, e.g. _ingest_impl for the CREATE).
         """
         if not text.strip():
             return 0.0
 
-        # Generate embedding for the text
-        embedding = self.embedding_service.embed_for_storage(text)
+        # Generate embedding for the text (or reuse the caller's)
+        embedding = (
+            embedding
+            if embedding is not None
+            else self.embedding_service.embed_for_storage(text)
+        )
         emb_str = "[" + ", ".join(map(str, embedding)) + "]"
 
         # Search for top-k similar vectors in SurrealDB
         # We use cosine similarity and calculate 1.0 - avg_similarity for novelty
+        # Self-match exclusion MUST use the record literal (id != event:xxx):
+        # id != 'event:xxx' (string) never matches a record id in SurrealDB v3,
+        # so the quoted form silently kept the self-match (sim 1.0) in top-5 and
+        # dragged every novelty down by up to 0.2. Verified empirically.
         exclude_self = ""
-        if exclude_id:
-            exclude_self = f"\n  AND id != '{exclude_id}'"
+        if exclude_id and re.fullmatch(r"[A-Za-z0-9_]+:[A-Za-z0-9_]+", exclude_id):
+            exclude_self = f"\n  AND id != {exclude_id}"
         sql = f"""
         SELECT vector::similarity::cosine(embedding, {emb_str}) AS similarity
         FROM event
@@ -277,7 +357,26 @@ class EntropyGate:
         return 1.0 - max(0.0, min(1.0, avg_similarity))
 
     def _count_events(self) -> int:
-        """Count total stored events (for adaptive threshold)."""
+        """Count total stored events (for adaptive threshold).
+
+        Cached with a short TTL: the adaptive ramp (0.30 -> 0.55 over 150
+        events) is insensitive to slightly stale counts, and uncached this
+        costs one HTTP roundtrip per call -- should_extract used to pay it
+        three times per store (min_novelty ramp, threshold, log threshold).
+        """
+        import time as _time
+
+        now = _time.monotonic()
+        cached = getattr(self, "_event_count_cache", None)
+        if cached is not None:
+            value, ts = cached
+            if now - ts < 60.0:
+                return value
+        value = self._count_events_uncached()
+        self._event_count_cache = (value, now)
+        return value
+
+    def _count_events_uncached(self) -> int:
         try:
             sql = "SELECT count() AS c FROM event WHERE forgotten = false LIMIT 1;"
             result = self._query_surreal(sql)
@@ -287,6 +386,10 @@ class EntropyGate:
         except Exception:
             pass
         return 0
+
+    def invalidate_count_cache(self) -> None:
+        """Drop the cached event count (e.g. after bulk imports in tests)."""
+        self._event_count_cache = None
 
     def _get_adaptive_threshold(self) -> float:
         """Threshold steigt linear von base_threshold → max_threshold mit der Event-Anzahl."""
@@ -312,12 +415,35 @@ class EntropyGate:
         return len(set(words)) / len(words)
 
     def should_extract(
-        self, text: str, exclude_id: Optional[str] = None
+        self,
+        text: str,
+        exclude_id: Optional[str] = None,
+        embedding: Optional[List[float]] = None,
     ) -> Dict[str, Any]:
         """
         Entscheidet basierend auf Composite-Score ob Text in KG extrahiert werden soll
         exclude_id: event_id, die von der Novelty-Berechnung ausgeschlossen wird (Self-Match)
+        embedding: optional precomputed storage embedding (saves one model call)
+
+        Logging-Konvention (Kalibrierung): Guardrail-Skips loggen die echten
+        billigen Scores (entropy, compression), aber novelty=0.0/gate_score=0.0
+        weil kein Composite existiert. Filter in Analysen: decision='skip'
+        (Guardrail, reason=too_short/too_long/too_repetitive) vs. 'ignore'
+        (echter Composite unter Threshold) vs. 'extract'.
+
+        DEPRECATED (2026-09-30): Der Composite-Score trennt auf echten Daten
+        nichts (Entropy ~konstant, Threshold bindet nie, Gewichte egal).
+        Guardrails bleiben; daneben wird pro Fact fact_salience()
+        (v1-heuristic) geloggt. Sobald beide Scores nebeneinander in gate_log
+        liegen, wird umgeschaltet. Bis dahin: Verhalten unveraendert.
         """
+        # Billige Scores zuerst: rein lokal, kein Embedding, kein DB-Zugriff.
+        # Sie werden auch bei Guardrail-Skips geloggt (P2), damit gate_log
+        # kalibrierbar bleibt statt 0.0-Zeilen zu enthalten.
+        text_entropy = self.calculate_char_entropy(text)
+        compression_ratio = self.calculate_compression_ratio(text)
+        normalized_entropy = min(text_entropy / 4.5, 1.0)
+
         if len(text) < self.config.min_length:
             result = {
                 "decision": "skip",
@@ -325,13 +451,14 @@ class EntropyGate:
                 "text_length": len(text),
                 "min_length": self.config.min_length,
             }
-            self._log_decision(
+            result["gate_log_id"] = self._log_decision(
                 text,
-                0.0,
+                normalized_entropy,
                 0.0,
                 0.0,
                 result["decision"],
                 reason_override=result["reason"],
+                compression_ratio=compression_ratio,
             )
             return result
         if len(text) > self.config.max_length:
@@ -341,13 +468,14 @@ class EntropyGate:
                 "text_length": len(text),
                 "max_length": self.config.max_length,
             }
-            self._log_decision(
+            result["gate_log_id"] = self._log_decision(
                 text,
-                0.0,
+                normalized_entropy,
                 0.0,
                 0.0,
                 result["decision"],
                 reason_override=result["reason"],
+                compression_ratio=compression_ratio,
             )
             return result
 
@@ -363,13 +491,14 @@ class EntropyGate:
                     "character_diversity": diversity,
                     "threshold": threshold,
                 }
-                self._log_decision(
+                result["gate_log_id"] = self._log_decision(
                     text,
-                    0.0,
+                    normalized_entropy,
                     0.0,
                     0.0,
                     result["decision"],
                     reason_override=result["reason"],
+                    compression_ratio=compression_ratio,
                 )
                 return result
         else:
@@ -382,20 +511,22 @@ class EntropyGate:
                     "word_diversity": diversity,
                     "threshold": threshold,
                 }
-                self._log_decision(
+                result["gate_log_id"] = self._log_decision(
                     text,
-                    0.0,
+                    normalized_entropy,
                     0.0,
                     0.0,
                     result["decision"],
                     reason_override=result["reason"],
+                    compression_ratio=compression_ratio,
                 )
                 return result
 
-        # Calculate individual scores
-        text_entropy = self.calculate_char_entropy(text)
-        compression_ratio = self.calculate_compression_ratio(text)
-        novelty = self.calculate_novelty(text, exclude_id=exclude_id)
+        # Teure Scores: Embedding-Novelty (Model-Call + Vector-Search).
+        # Erst hier, nachdem alle billigen Guardrails passiert sind.
+        novelty = self.calculate_novelty(
+            text, exclude_id=exclude_id, embedding=embedding
+        )
 
         # Near-duplicate guard (soft): falls novelty zu niedrig ist,
         # wird das trotzdem durch den Composite-Score bewertet (kein Hard-Skip mehr).
@@ -403,10 +534,8 @@ class EntropyGate:
         adaptive_min_novelty = self._get_adaptive_min_novelty()
         near_duplicate_warning = novelty < adaptive_min_novelty
 
-        # Normalize entropy to 0-1 range (assuming max entropy of ~4.5)
-        normalized_entropy = min(text_entropy / 4.5, 1.0)
-
         # Calculate composite score: Shannon + Kompressionsrate + Embedding-Novelty
+        # (normalized_entropy wurde oben bereits aus text_entropy berechnet)
         composite_score = (
             self.config.alpha * normalized_entropy
             + self.config.gamma * compression_ratio
@@ -420,10 +549,11 @@ class EntropyGate:
         decision = "extract" if composite_score >= threshold else "ignore"
 
         # Log decision to database
-        self._log_decision(text, normalized_entropy, novelty, composite_score, decision, compression_ratio=compression_ratio)
+        gate_log_id = self._log_decision(text, normalized_entropy, novelty, composite_score, decision, compression_ratio=compression_ratio, threshold=threshold)
 
         return {
             "decision": decision,
+            "gate_log_id": gate_log_id,
             "text_entropy": text_entropy,
             "normalized_entropy": normalized_entropy,
             "compression_ratio": compression_ratio,
@@ -447,12 +577,18 @@ class EntropyGate:
         decision: str,
         reason_override: Optional[str] = None,
         compression_ratio: float = 0.0,
-    ):
-        """Log the entropy gate decision to database"""
+        threshold: Optional[float] = None,
+    ) -> Optional[str]:
+        """Log the entropy gate decision to database. Returns the gate_log record id."""
         try:
             content_hash = self._hash_content(text)
             decision_escaped = self._escape_surrealql(decision)
-            threshold = self._get_adaptive_threshold()
+            # Reuse the caller's threshold when available: computing it here
+            # costs another COUNT query per store and can even disagree with
+            # the threshold the decision was made against.
+            threshold = (
+                threshold if threshold is not None else self._get_adaptive_threshold()
+            )
             if reason_override:
                 reason = reason_override
             else:
@@ -474,10 +610,16 @@ class EntropyGate:
                 import sys
 
                 sys.stderr.write(f"[Gate] _log_decision failed: {result}\n")
+                return None
+            rows = self._extract_result(result)
+            if rows and isinstance(rows[0], dict):
+                return rows[0].get("id")
+            return None
         except Exception as e:
             import sys
 
             sys.stderr.write(f"[Gate] _log_decision exception: {e}\n")
+            return None
 
     def _extract_candidate_entities(self, text: str) -> List[str]:
         """
@@ -931,6 +1073,32 @@ class EntropyGate:
             result.append(c)
         return result
 
+    @staticmethod
+    def fact_salience(
+        confidence: float, predicate: str, event_novelty: Optional[float] = None
+    ) -> float:
+        """Score one extracted fact 0..1 (v1 heuristic).
+
+        Inputs: the fact's extraction confidence, its predicate, and the
+        parent event's embedding novelty (None = neutral 0.5, e.g. dedup
+        retry where novelty was never computed). Specific SVO predicates
+        outrank generic co-occurrence predicates. Pure function, no I/O --
+        safe to unit-test without DB or model.
+        """
+        try:
+            conf = max(0.0, min(1.0, float(confidence or 0.0)))
+        except (TypeError, ValueError):
+            conf = 0.0
+        if event_novelty is None:
+            nov = 0.5
+        else:
+            try:
+                nov = max(0.0, min(1.0, float(event_novelty)))
+            except (TypeError, ValueError):
+                nov = 0.5
+        spec = _PREDICATE_SPECIFICITY.get((predicate or "").lower(), 1.0)
+        return round(min(1.0, 0.6 * conf + 0.25 * nov + 0.15 * spec), 4)
+
     def _active_fact_exists(self, subject_id: str, predicate: str, object_id: str) -> bool:
         """Check if an active fact already exists for (subject, predicate, object).
         Prevents duplicate fact creation in the KG."""
@@ -960,10 +1128,20 @@ class EntropyGate:
         existing = self._extract_result(result)
         return bool(existing)
 
-    def _extract_to_kg(self, text: str, event_id: str, debug: bool = False):
+    def _extract_to_kg(
+        self,
+        text: str,
+        event_id: str,
+        debug: bool = False,
+        event_novelty: Optional[float] = None,
+    ):
         """
         Extract entities and semantic relationships to the Knowledge Graph.
         Uses SVO extraction as primary method, with co-occurrence as fallback.
+
+        Salience (v1, parallel logging only): every created fact gets
+        fact_salience() stored on the fact row; the return dict carries the
+        average. NOTHING is filtered yet -- every fact is still created.
         """
         # First, try SVO extraction if spaCy is available
         entity_type_map = {}
@@ -998,13 +1176,16 @@ class EntropyGate:
         if not candidates:
             if debug:
                 print("  [KG] No candidate entities found in text")
-            return {"entities_created": 0, "facts_created": 0}
+            return {"entities_created": 0, "facts_created": 0, "tier_skipped": 0}
 
         if debug:
             print(f"  [KG] Found candidate entities: {candidates}")
 
         entities_created = 0
         facts_created = 0
+        tier_skipped = 0
+        tier_thr = tier_threshold()
+        saliences: List[float] = []
         entity_ids = []
         entity_names = []
 
@@ -1073,18 +1254,21 @@ class EntropyGate:
                             if debug:
                                 print(f"  [KG] SVO Fact already exists, skipping: {subject} -[{predicate}]-> {obj}")
                         else:
+                            sal = self.fact_salience(confidence, predicate, event_novelty)
                             relate_sql = f"""
                             RELATE {entity_ids[subject_idx]}->fact->{entity_ids[obj_idx]}
                             SET predicate = '{predicate_escaped}',
                                 source_event = {event_id},
-                                confidence = {confidence:.4f};
+                                confidence = {confidence:.4f},
+                                salience = {sal:.4f};
                             """
                             relate_result = self._query_surreal(relate_sql)
                             if self._extract_ok(relate_result):
                                 facts_created += 1
+                                saliences.append(sal)
                                 if debug:
                                     print(
-                                        f"  [KG] SVO Fact: {subject} -[{predicate} ({confidence:.2f})]-> {obj}"
+                                        f"  [KG] SVO Fact: {subject} -[{predicate} ({confidence:.2f}, sal {sal:.2f})]-> {obj}"
                                     )
                     except Exception as e:
                         if debug:
@@ -1191,18 +1375,31 @@ class EntropyGate:
                                         if debug:
                                             print(f"  [KG] Co-occurrence Fact already exists, skipping: {subset_names[idx_a]} -[{predicate}]-> {subset_names[idx_b]}")
                                     else:
+                                        sal = self.fact_salience(confidence, predicate, event_novelty)
+                                        # Tiering: low-salience co-occurrence facts are
+                                        # not created (mentions below preserve
+                                        # provenance). SVO facts never tiered.
+                                        if not tier_keep(sal, tier_thr):
+                                            tier_skipped += 1
+                                            if debug:
+                                                print(
+                                                    f"  [KG] Tier-skipped: {subset_names[idx_a]} -[{predicate} ({confidence:.2f}, sal {sal:.2f})]-> {subset_names[idx_b]}"
+                                                )
+                                            continue
                                         relate_sql = f"""
                                         RELATE {subset_ids[idx_a]}->fact->{subset_ids[idx_b]}
                                         SET predicate = '{predicate}',
                                             source_event = {event_id},
-                                            confidence = {confidence:.4f};
+                                            confidence = {confidence:.4f},
+                                            salience = {sal:.4f};
                                         """
                                         relate_result = self._query_surreal(relate_sql)
                                         if self._extract_ok(relate_result):
                                             facts_created += 1
+                                            saliences.append(sal)
                                             if debug:
                                                 print(
-                                                    f"  [KG] Co-occurrence Fact: {subset_names[idx_a]} -[{predicate} ({confidence:.2f})]-> {subset_names[idx_b]}"
+                                                    f"  [KG] Co-occurrence Fact: {subset_names[idx_a]} -[{predicate} ({confidence:.2f}, sal {sal:.2f})]-> {subset_names[idx_b]}"
                                                 )
                             except Exception as e:
                                 if debug:
@@ -1214,21 +1411,31 @@ class EntropyGate:
             try:
                 # UPSERT: skip if mention fact already exists
                 if not self._active_fact_exists(event_id, "mentions", eid):
+                    sal = self.fact_salience(0.8, "mentions", event_novelty)
                     relate_sql = f"""
                     RELATE {event_id}->fact->{eid}
                     SET predicate = 'mentions',
-                        confidence = 0.8;
+                        confidence = 0.8,
+                        salience = {sal:.4f};
                     """
                     relate_result = self._query_surreal(relate_sql)
                     if self._extract_ok(relate_result):
                         facts_created += 1
+                        saliences.append(sal)
                 else:
                     if debug:
                         print(f"  [KG] Mention fact already exists, skipping: {event_id} -> {eid}")
             except Exception as e:
                 sys.stderr.write(f"[EntropyGate] Error creating mention fact for {event_id} -> {eid}: {e}\n")
 
-        return {"entities_created": entities_created, "facts_created": facts_created}
+        avg_sal = round(sum(saliences) / len(saliences), 4) if saliences else None
+        return {
+            "entities_created": entities_created,
+            "facts_created": facts_created,
+            "tier_skipped": tier_skipped,
+            "avg_fact_salience": avg_sal,
+            "salience_version": SALIENCE_VERSION if saliences else None,
+        }
 
     def _dict_to_surrealdb_object(self, d: dict) -> str:
         """Convert a Python dict to a SurrealDB object literal."""
@@ -1328,19 +1535,33 @@ class EntropyGate:
                 print(
                     f"  [Dedup] Found existing event {event_id} for identical content and source"
                 )
-            kg_result = None
-            gate_result = self.should_extract(text, exclude_id=event_id) if event_id else {"decision": "skip", "reason": "dedup_no_event_id"}
-            gate_decision = gate_result.get("decision", "ignore") if isinstance(gate_result, dict) else "ignore"
-            if gate_decision == "extract" and event_id:
-                # Dedup: Nur in KG extrahieren wenn der Event noch keine Facts hat
-                if self._event_has_kg_facts(event_id):
-                    if debug:
-                        print(f"  [Dedup] Event {event_id} already has KG facts, skipping extraction")
-                    gate_result["decision"] = "skip"
-                    gate_result["reason"] = "dedup_kg_exists"
-                    kg_result = {"entities_created": 0, "facts_created": 0}
-                else:
-                    kg_result = self._extract_to_kg(text, event_id, debug)
+            # P3: Exakte Content-Dupes laufen NICHT durchs Gate (kein Embedding,
+            # kein Vector-Search): Der identische Text wurde bereits bewertet.
+            # Falls das Original noch keine KG-Facts hat (z.B. damals ignoriert),
+            # wird die Extraction hier nachgeholt; sonst ehrlich skip/dedup.
+            if event_id and not self._event_has_kg_facts(event_id):
+                kg_result = self._extract_to_kg(text, event_id, debug)
+                gate_result = {
+                    "decision": "extract",
+                    "reason": "dedup_retry_kg_missing",
+                    "deduplicated_to": event_id,
+                }
+            else:
+                kg_result = {"entities_created": 0, "facts_created": 0}
+                gate_result = {
+                    "decision": "skip",
+                    "reason": "dedup_content_exists" if event_id else "dedup_no_event_id",
+                    "deduplicated_to": event_id,
+                }
+                self._log_decision(
+                    text,
+                    self.calculate_char_entropy(text) / 4.5,
+                    0.0,
+                    0.0,
+                    gate_result["decision"],
+                    reason_override=gate_result["reason"],
+                    compression_ratio=self.calculate_compression_ratio(text),
+                )
             return event_id, kg_result, gate_result
 
         # 1. IMMER in Raw Event Log speichern (ohne Gate!)
@@ -1384,8 +1605,11 @@ class EntropyGate:
             )
 
         # 2. Entropy Gate prüfen (mit event_id als exclude_id, um Self-Match zu vermeiden)
+        # Das Embedding aus Schritt 1 wird wiederverwendet (spart einen Model-Call).
         try:
-            gate_result = self.should_extract(text, exclude_id=event_id)
+            gate_result = self.should_extract(
+                text, exclude_id=event_id, embedding=embedding
+            )
         except Exception as e:
             sys.stderr.write(f"[EntropyGate] Gate decision error: {e}\n")
             gate_result = {"decision": "ignore", "reason": f"gate_error: {e}"}
@@ -1398,12 +1622,41 @@ class EntropyGate:
         gate_decision = gate_result.get("decision", "ignore") if isinstance(gate_result, dict) else "ignore"
         if gate_decision == "extract" and event_id:
             try:
-                kg_result = self._extract_to_kg(text, event_id, debug)
+                kg_result = self._extract_to_kg(
+                    text,
+                    event_id,
+                    debug,
+                    event_novelty=gate_result.get("novelty"),
+                )
             except Exception as e:
                 import sys
                 sys.stderr.write(f"[EntropyGate] KG extraction error: {e}\n")
                 kg_result = {"entities_created": 0, "facts_created": 0, "error": str(e)}
             if debug:
                 print(f"  [KG] Extraction complete: {kg_result}")
+            # 4. Salience parallel loggen (kein Verhaltenseffekt): avg fact
+            # salience auf die gate_log-Zeile dieser Entscheidung schreiben.
+            self._attach_salience(gate_result.get("gate_log_id"), kg_result)
 
         return event_id, kg_result, gate_result
+
+    def _attach_salience(
+        self, gate_log_id: Optional[str], kg_result: Optional[Dict[str, Any]]
+    ) -> None:
+        """Write avg fact salience onto the gate_log row (best effort, no throw)."""
+        try:
+            if not gate_log_id or not isinstance(kg_result, dict):
+                return
+            avg_sal = kg_result.get("avg_fact_salience")
+            version = kg_result.get("salience_version")
+            if avg_sal is None or not re.fullmatch(
+                r"[A-Za-z0-9_]+:[A-Za-z0-9_]+", gate_log_id
+            ):
+                return
+            version_escaped = self._escape_surrealql(version or SALIENCE_VERSION)
+            self._query_surreal(
+                f"UPDATE {gate_log_id} SET salience = {float(avg_sal):.4f}, "
+                f"salience_version = '{version_escaped}';"
+            )
+        except Exception as e:
+            sys.stderr.write(f"[Gate] _attach_salience failed: {e}\n")

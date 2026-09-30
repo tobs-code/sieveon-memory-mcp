@@ -183,6 +183,12 @@ def _register_builtin(engine: MigrationEngine):
         apply_fn=_m005_drop_retrieval_cache,
     ))
 
+    engine.register(Migration(
+        version=6,
+        description="gate_log salience columns (parallel composite/salience logging, no behavior change)",
+        apply_fn=_m006_gate_log_salience,
+    ))
+
 
 async def _m001_baseline(query):
     sql = r"""
@@ -346,3 +352,17 @@ async def _m005_drop_retrieval_cache(query):
     it, so it only accumulated an unused table and index.
     """
     await query("REMOVE TABLE IF EXISTS retrieval_cache;")
+
+
+async def _m006_gate_log_salience(query):
+    """Additive salience columns on gate_log.
+
+    Both fields are optional (none | ...) so existing rows stay valid.
+    Rows written before this migration simply have salience = NONE.
+    """
+    statements = [
+        "DEFINE FIELD IF NOT EXISTS salience ON gate_log TYPE none | float;",
+        "DEFINE FIELD IF NOT EXISTS salience_version ON gate_log TYPE none | string;",
+    ]
+    for stmt in statements:
+        await query(stmt)

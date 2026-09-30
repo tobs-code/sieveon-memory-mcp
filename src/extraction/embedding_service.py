@@ -4,9 +4,26 @@ Provides text embedding capabilities for storage and query operations
 """
 
 import os
+from pathlib import Path
 from typing import List, Optional
 
 from dotenv import load_dotenv
+
+
+def _load_project_env() -> None:
+    """Load sieveon/.env independent of the caller's cwd.
+
+    Bare load_dotenv() resolves the .env relative to the calling file, so
+    helper scripts outside the repo silently picked up C:/Users/tobs/.env
+    (no GROQ_API_KEY) and fell back to spaCy without a word. The project
+    root file always wins here (no override of already-set variables).
+    """
+    root_env = Path(__file__).resolve().parents[2] / ".env"
+    if root_env.exists():
+        load_dotenv(dotenv_path=root_env)
+
+
+_load_project_env()
 
 
 class BaseEmbeddingService:
