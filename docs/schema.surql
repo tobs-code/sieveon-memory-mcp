@@ -23,6 +23,9 @@ DEFINE FIELD IF NOT EXISTS metadata ON event TYPE none | object;
 DEFINE FIELD IF NOT EXISTS forgotten ON event TYPE bool DEFAULT false;
 DEFINE FIELD IF NOT EXISTS forget_reason ON event TYPE none | string;
 DEFINE FIELD IF NOT EXISTS content_hash ON event TYPE none | string;
+-- trust: direct (user_input) | untrusted (imports/web) | explicit override.
+-- Event table is SCHEMALESS; old rows without trust read as derived value.
+DEFINE FIELD IF NOT EXISTS trust ON event TYPE none | string;
 DEFINE INDEX IF NOT EXISTS event_timestamp ON event COLUMNS timestamp;
 DEFINE INDEX IF NOT EXISTS event_source ON event COLUMNS source;
 DEFINE INDEX IF NOT EXISTS event_content_hash_idx ON event COLUMNS content_hash;

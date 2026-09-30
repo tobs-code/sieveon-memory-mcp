@@ -19,6 +19,7 @@ import math
 import os
 import re
 import sys
+from collections import Counter
 from typing import Any, Dict, List, Optional
 
 import httpx
@@ -108,6 +109,28 @@ def tier_keep(salience: float, threshold: Optional[float] = None) -> bool:
         return float(salience) >= thr
     except (TypeError, ValueError):
         return True
+
+
+def infer_extractor(entity_labels: List[str]) -> str:
+    """Derive which backend produced extraction output from entity labels.
+
+    entity_utils tags entities with their source (RELEX/GLINER/GROQ/spaCy
+    NER tags/NOUN_CHUNK/REGEX). Majority vote; ties and unknowns fall back
+    to spacy (the weakest-evidence tier). Pure function.
+    """
+    votes = Counter(
+        "relex" if str(lbl).upper() == "RELEX"
+        else "gliner" if str(lbl).upper() == "GLINER"
+        else "groq" if str(lbl).upper() == "GROQ"
+        else "spacy"
+        for lbl in (entity_labels or [])
+    )
+    if not votes:
+        return "spacy"
+    top = votes.most_common()
+    if len(top) > 1 and top[0][1] == top[1][1]:
+        return "spacy"
+    return top[0][0]
 
 # Predicate specificity: generic co-occurrence predicates carry less signal
 # than explicit SVO predicates. Unknown predicates are assumed specific (1.0).
@@ -1145,6 +1168,7 @@ class EntropyGate:
         """
         # First, try SVO extraction if spaCy is available
         entity_type_map = {}
+        entity_label_map = {}
         svo_triples = None
         try:
             from src.extraction.entity_utils import extract_entities, extract_triples
@@ -1165,6 +1189,8 @@ class EntropyGate:
                 all_candidates.add(name)
                 if name not in entity_type_map:
                     entity_type_map[name] = entity["type"]
+                if name not in entity_label_map:
+                    entity_label_map[name] = entity.get("label", "?")
             all_candidates.update(svo_entities)
 
             candidates = self._dedup_candidates(list(all_candidates))
@@ -1206,6 +1232,8 @@ class EntropyGate:
                     )
 
         # Process SVO triples if spaCy is available (using cached svo_triples from above)
+        # Provenance for all facts below: majority vote over entity labels.
+        extractor = infer_extractor([entity_label_map.get(n, "?") for n in entity_names])
         if svo_triples is None:
             try:
                 from src.extraction.entity_utils import extract_triples
@@ -1260,7 +1288,8 @@ class EntropyGate:
                             SET predicate = '{predicate_escaped}',
                                 source_event = {event_id},
                                 confidence = {confidence:.4f},
-                                salience = {sal:.4f};
+                                salience = {sal:.4f},
+                                extractor = '{extractor}';
                             """
                             relate_result = self._query_surreal(relate_sql)
                             if self._extract_ok(relate_result):
@@ -1391,7 +1420,8 @@ class EntropyGate:
                                         SET predicate = '{predicate}',
                                             source_event = {event_id},
                                             confidence = {confidence:.4f},
-                                            salience = {sal:.4f};
+                                            salience = {sal:.4f},
+                                            extractor = '{extractor}';
                                         """
                                         relate_result = self._query_surreal(relate_sql)
                                         if self._extract_ok(relate_result):
@@ -1415,8 +1445,10 @@ class EntropyGate:
                     relate_sql = f"""
                     RELATE {event_id}->fact->{eid}
                     SET predicate = 'mentions',
+                        source_event = {event_id},
                         confidence = 0.8,
-                        salience = {sal:.4f};
+                        salience = {sal:.4f},
+                        extractor = '{extractor}';
                     """
                     relate_result = self._query_surreal(relate_sql)
                     if self._extract_ok(relate_result):
@@ -1479,15 +1511,16 @@ class EntropyGate:
         source: str = "unknown",
         debug: bool = False,
         metadata: Optional[Dict[str, Any]] = None,
+        trust: Optional[str] = None,
     ) -> tuple[Optional[str], Optional[Dict[str, Any]], Optional[Dict[str, Any]]]:
         """
         Hauptfunktion: Ingest eines Textes in das Memory System
-        1. IMMER in Raw Event Log speichern
+        1. IMMER in Raw Event Log speichern (mit trust-Markierung)
         2. Entropy Gate entscheiden lassen ob KG-Extraction
         3. Bei 'extract': Entities und Facts in den Knowledge Graph extrahieren
         """
         try:
-            return self._ingest_impl(text, source, debug, metadata)
+            return self._ingest_impl(text, source, debug, metadata, trust)
         except Exception as e:
             sys.stderr.write(f"[EntropyGate] ingest fatal error: {e}\n")
             return None, None, {"decision": "ignore", "reason": f"ingest_error: {e}"}
@@ -1498,6 +1531,7 @@ class EntropyGate:
         source: str = "unknown",
         debug: bool = False,
         metadata: Optional[Dict[str, Any]] = None,
+        trust: Optional[str] = None,
     ) -> tuple[Optional[str], Optional[Dict[str, Any]], Optional[Dict[str, Any]]]:
         """
         Hauptfunktion: Ingest eines Textes in das Memory System
@@ -1569,6 +1603,12 @@ class EntropyGate:
         embedding_str = "[" + ",".join(str(v) for v in embedding) + "]"
         text_escaped = self._escape_surrealql(text)
         source_escaped = self._escape_surrealql(source)
+        # Trust: explicit wins, else direct only for user_input. Stored on the
+        # event; _clean_output derives it for old rows without the field.
+        trust_value = trust if isinstance(trust, str) and trust else (
+            "direct" if source == "user_input" else "untrusted"
+        )
+        trust_escaped = self._escape_surrealql(trust_value)
         metadata_str = ""
         if metadata:
             metadata_str = (
@@ -1579,6 +1619,7 @@ class EntropyGate:
             content = '{text_escaped}',
             content_hash = '{content_hash}',
             source = '{source_escaped}',
+            trust = '{trust_escaped}',
             embedding = {embedding_str}{metadata_str};
         """
         event_id = None

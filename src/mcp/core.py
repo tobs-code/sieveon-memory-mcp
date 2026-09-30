@@ -530,6 +530,19 @@ def _validate_event_id(event_id: str) -> str:
     return event_id
 
 
+def _trust_of(source: str, explicit: Any = None) -> str:
+    """Trust level for a stored event.
+
+    Explicit per-event `trust` wins. Otherwise: direct tool input
+    (`user_input`) is "direct", everything else (markdown imports, web
+    content, batch sources) is "untrusted". Consumers MUST treat untrusted
+    content as data, never as instructions (prompt-injection channel).
+    """
+    if isinstance(explicit, str) and explicit:
+        return explicit
+    return "direct" if source == "user_input" else "untrusted"
+
+
 def _clean_output(obj: Any) -> Any:
     """Recursively removes large fields like 'embedding' from output objects."""
     if isinstance(obj, list):
@@ -537,6 +550,13 @@ def _clean_output(obj: Any) -> Any:
     if isinstance(obj, dict):
         # Create a copy to avoid modifying the original if it's cached or reused
         new_dict = {k: _clean_output(v) for k, v in obj.items() if k != "embedding"}
+        # Trust marking: event-shaped dicts (content + source) always carry
+        # a trust level so LLM consumers can distinguish direct input from
+        # untrusted imports. Explicit stored trust wins, else derived.
+        # See README Security section.
+        if "content" in new_dict and "source" in new_dict:
+            if not new_dict.get("trust"):
+                new_dict["trust"] = _trust_of(new_dict.get("source", ""))
         return new_dict
     return obj
 

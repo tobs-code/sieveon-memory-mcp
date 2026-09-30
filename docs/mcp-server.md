@@ -1,6 +1,6 @@
 # MCP Server — Sieveon Memory Stack
 
-The MCP Server exposes the entire Sieveon Memory Stack via the [Model Context Protocol (MCP)](https://modelcontextprotocol.io) — 18 memory tools and 6 MCP resources. Any MCP-compatible client (e.g. Claude Desktop, Cursor, VS Code with MCP extension) can call them directly, without hosting the stack itself.
+The MCP Server exposes the entire Sieveon Memory Stack via the [Model Context Protocol (MCP)](https://modelcontextprotocol.io) — 19 memory tools and 6 MCP resources. Any MCP-compatible client (e.g. Claude Desktop, Cursor, VS Code with MCP extension) can call them directly, without hosting the stack itself.
 
 ## Architecture Overview
 
@@ -12,7 +12,7 @@ The MCP Server exposes the entire Sieveon Memory Stack via the [Model Context Pr
 │                    MCP Server (FastMCP)                       │
 │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌──────────┐│
 │  │   Core      │ │ Primitives  │ │Introspection│ │  Maint.  ││
-│  │  (5 Tools)  │ │  (7 Tools)  │ │  (2 Tools)  │ │(4 Tools) ││
+│  │  (5 Tools)  │ │  (7 Tools)  │ │  (2 Tools)  │ │(5 Tools) ││
 │  │             │ │             │ │             │ │          ││
 │  │  Resources  │ │  Resources  │ │  Resources  │ │          ││
 │  │ (stats,     │ │ (entity,    │ │  (stats)    │ │          ││
@@ -755,6 +755,7 @@ Soft-delete: Marks an event or entity as forgotten without altering the Raw Log.
 | `event_id` | `string` | no* | SurrealDB event ID (e.g. `"event:abc123"`) |
 | `entity` | `string` | no* | Entity name (substring search) |
 | `reason` | `string` | no | Reason for forgetting |
+| `hard` | `bool` | no | Physical delete (default `false`): event incl. embedding + derived facts (`source_event`), or entity + its facts. Irreversible — `memory_unforget` cannot restore. IDs are strictly validated (`table:id`). |
 
 \* Exactly one of `event_id` or `entity` must be provided.
 
@@ -910,7 +911,7 @@ read_resource("sieveon://search/Rust%20async%20runtime")
 
 | Tool | Layer | Input | Output |
 |------|-------|-------|--------|
-| `memory_store` | Core | `content`, `source?`, `metadata?` | `event_id`, `status`, `gate` |
+| `memory_store` | Core | `content`, `source?`, `metadata?`, `trust?` (`direct`/`untrusted`, default by source) | `event_id`, `status`, `gate` |
 | `memory_store_batch` | Core | `items`, `source?` | `results[]`, `errors[]`, `stored`, `failed` |
 | `memory_store_markdown` | Core | `content` or `file_path`, `source?`, `chunk_size?`, `overlap?`, `include_heading_context?`, `chunking_method?` (`char`/`token`/`semantic`), `encoding_name?`, `strip_images?`, `parse_front_matter?`, `max_concurrent?`, `metadata?` | `status`, `source`, `total_chunks`, `stored`, `failed`, `results[]`, `errors[]`, `gate_summary` |
 | `memory_query` | Core | `query`, `cost_budget?`, `limit?`, `since?`, `until?`, `at_time?` | `classified_as`, `strategy`, `results` |
@@ -924,10 +925,11 @@ read_resource("sieveon://search/Rust%20async%20runtime")
 | `semantic_search` | Primitives | `query`, `top_k?` | `events[]`, `count` |
 | `memory_stats` | Introspection | `aggregate?` (`none`/`events_by_source`/`facts_by_predicate`/`entities_by_type`/`all`; plus legacy `random_string` dummy for MCP no-required-args compatibility — call with no args) | `event_count`, `entity_count`, `fact_count`, `gate_pass_rate`, … |
 | `memory_explain_routing` | Introspection | `query` | `classified_as`, `strategy_selected`, `reason` |
-| `memory_forget` | Maintenance | `event_id?` or `entity?`, `reason?` | `forgotten_items[]`, `count`, `reason` |
+| `memory_forget` | Maintenance | `event_id?` or `entity?`, `reason?`, `hard?` (physical delete incl. derived facts, irreversible) | `forgotten_items[]`, `count`, `reason` |
 | `memory_unforget` | Maintenance | `event_id` | `status`, `event_id` |
 | `memory_consolidate` | Maintenance | `scope`, `entity?`, `delete_stale?` | `stale_facts_found`, `deleted_count`, `status` |
 | `memory_merge_entities` | Maintenance | `source_entity`, `target_entity`, `dry_run?` | `status`, `merged_count`, `error_count` |
+| `memory_find_duplicates` | Maintenance | `limit?`, `threshold?` (default 0.70), `same_type_only?`, `max_pairs?` | `pairs[]` (read-only candidates, nothing merged) |
 
 ---
 

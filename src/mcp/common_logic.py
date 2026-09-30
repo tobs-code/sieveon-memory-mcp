@@ -35,7 +35,7 @@ def _get_entropy_gate():
     return _entropy_gate_instance
 
 
-async def _store_content(content: str, source: str = "user_input", debug: bool = False, metadata: Optional[Dict[str, Any]] = None) -> dict:
+async def _store_content(content: str, source: str = "user_input", debug: bool = False, metadata: Optional[Dict[str, Any]] = None, trust: Optional[str] = None) -> dict:
     """Einzige Store-Implementierung: validiert → EntropyGate → Event + ggf. KG."""
     if not content or not content.strip():
         return {"event_id": None, "status": "error", "source": source,
@@ -49,7 +49,7 @@ async def _store_content(content: str, source: str = "user_input", debug: bool =
 
     gate = _get_entropy_gate()
     try:
-        event_id, kg_result, gate_result = await asyncio.to_thread(gate.ingest, content, source, debug=debug, metadata=metadata)
+        event_id, kg_result, gate_result = await asyncio.to_thread(gate.ingest, content, source, debug=debug, metadata=metadata, trust=trust)
     except Exception as e:
         return {"event_id": None, "status": "error", "source": source,
                 "message": f"storage failed – unexpected error: {e}"}
@@ -73,6 +73,7 @@ async def _store_content(content: str, source: str = "user_input", debug: bool =
                             "tier_skipped": kg_result.get("tier_skipped", 0)}
 
     return {"event_id": event_id, "status": "stored", "source": source,
+            "trust": trust if isinstance(trust, str) and trust else ("direct" if source == "user_input" else "untrusted"),
             "gate": gate_info}
 
 

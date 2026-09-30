@@ -249,8 +249,40 @@ class TestTiering(unittest.TestCase):
                 os.environ["TIER_DROP_THRESHOLD"] = prev
 
 
+class TestTrustAndRecordIds(unittest.TestCase):
+    """Pure-function tests for trust marking and record-id validation."""
+
+    def test_trust_defaults(self):
+        from src.mcp.core import _trust_of
+        self.assertEqual(_trust_of("user_input"), "direct")
+        self.assertEqual(_trust_of("markdown_import"), "untrusted")
+        self.assertEqual(_trust_of("web", "direct"), "direct")
+
+    def test_clean_output_marks_events(self):
+        from src.mcp.core import _clean_output
+        ev = _clean_output({"content": "x", "source": "web"})
+        self.assertEqual(ev["trust"], "untrusted")
+        ent = _clean_output({"name": "Alice", "type": "person"})
+        self.assertNotIn("trust", ent)
+
+    def test_record_id_validation(self):
+        from src.mcp.tools import _is_record_id
+        self.assertTrue(_is_record_id("event:abc123"))
+        self.assertTrue(_is_record_id("entity:x_y_z"))
+        self.assertFalse(_is_record_id("event:abc123; DELETE event"))
+        self.assertFalse(_is_record_id("event:"))
+        self.assertFalse(_is_record_id(""))
+
+
 class TestRelationLabelMapping(unittest.TestCase):
     """Pure-function tests for the relex/gliner predicate normalization."""
+    def test_infer_extractor_majority(self):
+        from src.extraction.entropy_gate import infer_extractor
+        self.assertEqual(infer_extractor(["RELEX", "RELEX", "GROQ"]), "relex")
+        self.assertEqual(infer_extractor(["PERSON", "NOUN_CHUNK"]), "spacy")
+        self.assertEqual(infer_extractor([]), "spacy")
+        # Ties fall back to the weakest-evidence tier (fail-closed)
+        self.assertEqual(infer_extractor(["RELEX", "GLINER"]), "spacy")
 
     def test_normalizes_phrases(self):
         from src.extraction.entity_utils import _normalize_relation_label
