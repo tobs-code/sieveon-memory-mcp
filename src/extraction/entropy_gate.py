@@ -68,6 +68,58 @@ def escape_surrealql(value: str) -> str:
     return value
 
 
+def sanitize_fts_query(value: str) -> str:
+    """Prepare plain text for SurrealDB FTX matching (@@ operator).
+
+    FTS query syntax treats characters like ? ! : + - " * ( ) as operators;
+    a natural question ("When did X?") then silently matches NOTHING.
+    Verified 2026-09-30: full question with ? -> 0 rows, same text without
+    ? -> rows. The analyzer tokenizes anyway, so replacing everything but
+    alphanumerics/whitespace with spaces cannot hurt matching. Use ONLY for
+    plain-text search; explicit 'fts'/'exact' modes keep user syntax.
+    """
+    import re
+
+    cleaned = "".join(ch if (ch.isalnum() or ch == " ") else " " for ch in (value or ""))
+    return re.sub(r"[ ]+", " ", cleaned).strip()
+
+
+_FTS_STOPWORDS = frozenset(
+    # Question words + articles/prepositions/conjunctions: they carry no
+    # retrieval signal and (with SurrealDB's AND-like @@ matching) actively
+    # kill result sets. Content terms do the matching; BM25 ranks them.
+    "when did do does is are was were what which where who whom whose how why"
+    " can could would should will shall may the a an to of in on and or for with"
+    " from by at as is are be been being this that these those it its it’s its"
+    " der die das und ist sind war waren wird werden hat haben hatte hatten nicht"
+    " ein eine einer einem einen denn oder aber für von zum zur im am an auf aus"
+    " bei mit nach seit von vom wer was welche welcher welches wo wohin wie warum"
+    " wann wen wem wessen denn doch nur schon sehr".split()
+)
+
+
+def fts_keywords(value: str, min_len: int = 3) -> str:
+    """Reduce a natural query to content-bearing keywords for FTX matching.
+
+    SurrealDB's @@ is strict AND over analyzed terms (verified 2026-09-30
+    live: `caroline zzzznotaword` -> 0 rows while `caroline` alone -> all).
+    Callers therefore match with @OR@ and rank by BM25; this helper just
+    drops the terms that would only add noise to that ranking.
+    Falls back to the sanitized full text when nothing survives.
+    """
+    words = [
+        w for w in sanitize_fts_query(value).lower().split()
+        if w not in _FTS_STOPWORDS and len(w) >= min_len
+    ]
+    # De-duplicate while preserving order (repeated terms add no signal).
+    seen, unique = set(), []
+    for w in words:
+        if w not in seen:
+            seen.add(w)
+            unique.append(w)
+    return " ".join(unique) or sanitize_fts_query(value)
+
+
 def _debug_print(*args, **kwargs):
     """Print to stderr to avoid breaking MCP JSON-RPC on stdout."""
     print(*args, file=sys.stderr, **kwargs)
@@ -178,6 +230,8 @@ class EntropyGate:
         self,
         embedding_service: Optional[BaseEmbeddingService] = None,
         config: Optional[EntropyGateConfig] = None,
+        ns: Optional[str] = None,
+        db: Optional[str] = None,
     ):
         self.config = config or EntropyGateConfig()
         self.min_length = self.config.min_length
@@ -187,8 +241,12 @@ class EntropyGate:
             os.getenv("SURREALDB_USER", "root"),
             os.getenv("SURREALDB_PASS", "root"),
         )
-        self.surreal_ns = os.getenv("SURREALDB_NS", "sieveon")
-        self.surreal_db = os.getenv("SURREALDB_DB", "sieveon")
+        # Explicit ns/db win (namespace isolation for eval harnesses);
+        # otherwise env, otherwise the sieveon default. NOTE: this snapshots
+        # at construction -- callers that switch namespaces must construct a
+        # new gate (see common_logic._get_entropy_gate).
+        self.surreal_ns = ns or os.getenv("SURREALDB_NS", "sieveon")
+        self.surreal_db = db or os.getenv("SURREALDB_DB", "sieveon")
         self.embedding_service = embedding_service or get_embedding_service()
 
     def _query_surreal(self, sql: str) -> List[Dict]:

@@ -16,7 +16,7 @@ from typing import Any, Dict, List, Optional
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from ..extraction.entropy_gate import escape_surrealql
+from ..extraction.entropy_gate import escape_surrealql, fts_keywords, sanitize_fts_query
 from ..mcp.core import _clean_output, _extract_result, _query_surreal
 from ..router.cost_awareness import cost_tracker
 from ..router.budget import BudgetLevel, BudgetTracker
@@ -28,6 +28,63 @@ class BudgetExceeded(Exception):
 
 RRF_K = 60
 MAX_EXPANSION_QUERIES = 5
+PPR_DAMPING = 0.5
+PPR_ITERS = 50
+PPR_MAX_NODES = 300
+
+
+def personalized_pagerank(
+    adjacency: Dict[str, Dict[str, float]],
+    seeds: Dict[str, float],
+    damping: float = PPR_DAMPING,
+    iters: int = PPR_ITERS,
+) -> Dict[str, float]:
+    """Personalized PageRank over an undirected weighted graph (pure function).
+
+    adjacency: node -> {neighbor: weight}. Seeds get the personalization mass
+    (IDF-penalized upstream: weight / (1 + degree) so hub nodes don't dominate
+    the diffusion -- HippoRAG-style). No numpy needed: power iteration over
+    dicts is plenty fast below PPR_MAX_NODES.
+    """
+    nodes = [n for n in adjacency if adjacency[n]] or list(adjacency)
+    if not nodes:
+        return {}
+    total_seed = sum(max(0.0, seeds.get(n, 0.0)) for n in nodes) or 1.0
+    rank = {n: max(0.0, seeds.get(n, 0.0)) / total_seed for n in nodes}
+    # Column-stochastic transition (undirected: normalize by neighbor degree mass)
+    out_mass = {}
+    for n in nodes:
+        out_mass[n] = sum(max(0.0, w) for w in adjacency[n].values()) or 1.0
+    for _ in range(max(1, iters)):
+        new_rank: Dict[str, float] = {}
+        for n in nodes:
+            inflow = 0.0
+            for m in nodes:
+                w = adjacency[m].get(n, 0.0)
+                if w > 0:
+                    inflow += rank[m] * (w / out_mass[m])
+            teleport = max(0.0, seeds.get(n, 0.0)) / total_seed
+            new_rank[n] = damping * inflow + (1.0 - damping) * teleport
+        rank = new_rank
+    return rank
+
+
+_COORD_SPLIT_RE = re.compile(r"\s+and\s+", re.IGNORECASE)
+
+
+def split_multihop_query(query: str) -> List[str]:
+    """Split a coordinated multi-hop query into sub-queries (no LLM).
+
+    "Who founded Acme and where is it based" -> ["Who founded Acme",
+    "where is it based"]. Entity carryover is implicit: each part is searched
+    independently and fused via RRF downstream. Returns [query] when no
+    coordination is found or parts are too short to stand alone.
+    """
+    parts = [p.strip(" ,.!?;:") for p in _COORD_SPLIT_RE.split(query or "")]
+    parts = [p for p in parts if len(p.split()) >= 2]
+    if len(parts) < 2:
+        return [query]
+    return parts
 
 # A logically invalidated fact is only current while its validity window is open.
 # Every read path in tools.py / core.py already applies this filter; the retrieval
@@ -61,6 +118,8 @@ class RetrievalStrategy(Enum):
     HYBRID_BM25_VECTOR_TEMPORAL = "hybrid_bm25_vector_temporal"
     HYBRID_FALLBACK = "hybrid_fallback"
     SEMANTIC_HYBRID = "semantic_hybrid"
+    GRAPH_PPR_RERANK = "graph_ppr_rerank"
+    DECOMPOSED_MULTIHOP = "decomposed_multihop"
 
 
 class RetrievalExecutor:
@@ -173,6 +232,14 @@ class RetrievalExecutor:
                 )
             elif strategy == RetrievalStrategy.SEMANTIC_HYBRID:
                 result = await self._execute_semantic_hybrid(
+                    query, budget_tracker, **kwargs
+                )
+            elif strategy == RetrievalStrategy.GRAPH_PPR_RERANK:
+                result = await self._execute_graph_ppr_rerank(
+                    query, budget_tracker, **kwargs
+                )
+            elif strategy == RetrievalStrategy.DECOMPOSED_MULTIHOP:
+                result = await self._execute_decomposed_multihop(
                     query, budget_tracker, **kwargs
                 )
             else:
@@ -305,15 +372,22 @@ class RetrievalExecutor:
     ) -> List[Dict]:
         """Lexical search via FTX index."""
         self._charge_db()
-        query_escaped = escape_surrealql(query)
+        # Keywords, not the raw question: @@ is strict AND over analyzed terms
+        # (verified 2026-09-30 live), so a single rare term empties the result
+        # set. @OR@ + BM25 ranking keeps recall: measured on LoCoMo-light
+        # (20 questions) evidence-hit 9/20 (AND) vs 18/20 (OR + BM25 top-5).
+        # search::score(0) requires BM25 on the index and must be aliased --
+        # SurrealDB 3 rejects function calls directly in ORDER BY.
+        query_escaped = escape_surrealql(fts_keywords(query))
         forgotten_filter = "forgotten = false"
         temporal = self._temporal_clause(since, until)
         sql = f"""
-        SELECT id, content, timestamp, source, metadata
+        SELECT id, content, timestamp, source, metadata, search::score(0) AS bm25
         FROM event
-        WHERE content @@ '{query_escaped}'
+        WHERE content @OR@ '{query_escaped}'
           AND {forgotten_filter}
           {temporal}
+        ORDER BY bm25 DESC
         LIMIT {limit * 4};
         """
         result = await _query_surreal(sql)
@@ -427,7 +501,7 @@ class RetrievalExecutor:
         branches instead of binding to the last one only.
         """
         self._charge_db()
-        text_escaped = escape_surrealql(text)
+        text_escaped = escape_surrealql(fts_keywords(text))
         validity = (
             ""
             if include_invalidated and not at_time
@@ -452,11 +526,12 @@ class RetrievalExecutor:
     async def _search_entities_by_name(self, name: str) -> List[Dict]:
         """Search entities by name (fulltext via FTX index)."""
         self._charge_db()
-        name_escaped = escape_surrealql(name)
+        name_escaped = escape_surrealql(fts_keywords(name))
         sql = f"""
-        SELECT id, name, type
+        SELECT id, name, type, search::score(0) AS bm25
         FROM entity
-        WHERE name @@ '{name_escaped}'
+        WHERE name @OR@ '{name_escaped}'
+        ORDER BY bm25 DESC
         LIMIT 20;
         """
         result = await _query_surreal(sql)
@@ -904,6 +979,233 @@ class RetrievalExecutor:
             "entities": _clean_output(entities),
             "facts": _clean_output(kg_facts),
             "query": query,
+        }
+
+    async def _execute_graph_ppr_rerank(
+        self, query: str, budget_tracker: BudgetTracker, **kwargs
+    ) -> Dict[str, Any]:
+        """PPR rerank (HippoRAG-lite): seed entities from the query, diffuse
+        relevance over the 2-hop KG neighborhood, rank facts by endpoint mass.
+
+        No hop-depth/direction tuning: association is a property of the
+        diffusion, not of a traversal policy. Damping 0.5 keeps relevance
+        query-local; seeds are IDF-penalized (weight / (1 + degree)) so hub
+        entities don't dominate.
+        """
+        budget_tracker.increment_tokens(len(query) // 3)
+        since = kwargs.get("since")
+        until = kwargs.get("until")
+        at_time = kwargs.get("at_time")
+
+        seeds = await self._seed_entity_names(query)
+        if not seeds:
+            # No linkable seeds: degrade to lexical+recent like event_log_first.
+            ftx_events, temporal_events = await self._gather_bounded(
+                [
+                    self._search_events_ftx(query, 10, since=since, until=until),
+                    self._search_recent_events(5, since=since, until=until),
+                ]
+            )
+            fused = self._rrf_fuse(ftx_events or [], temporal_events or [])[:10]
+            return {
+                "strategy": "graph_ppr_rerank",
+                "events": _clean_output(fused),
+                "entities": [],
+                "facts": [],
+                "query": query,
+                "ppr_fallback": "no_seeds",
+            }
+
+        # 2-hop subgraph around seeds (bounded fan-out, budget-tolerant).
+        adjacency: Dict[str, Dict[str, float]] = {}
+        fact_index: Dict[str, Dict] = {}
+
+        async def _expand(names: List[str]) -> List[str]:
+            results = await self._gather_bounded(
+                [self._search_kg_by_subject(n, at_time=at_time) for n in names]
+            )
+            frontier: List[str] = []
+            for more_facts in results:
+                for f in more_facts or []:
+                    fid = f.get("id")
+                    a, b = f.get("in_id"), f.get("out_id")
+                    if not a or not b:
+                        continue
+                    w = max(0.05, float(f.get("confidence") or 0.5))
+                    adjacency.setdefault(a, {}).setdefault(b, 0.0)
+                    adjacency[a][b] = max(adjacency[a][b], w)
+                    adjacency.setdefault(b, {}).setdefault(a, 0.0)
+                    adjacency[b][a] = max(adjacency[b][a], w)
+                    if fid and fid not in fact_index:
+                        fact_index[fid] = f
+                    for nb in (a, b):
+                        if nb not in frontier:
+                            frontier.append(nb)
+            return frontier
+
+        level1 = await _expand(seeds[:MAX_EXPANSION_QUERIES])
+        if len(adjacency) < PPR_MAX_NODES:
+            await _expand(level1[: MAX_EXPANSION_QUERIES * 2])
+
+        if not adjacency:
+            return {
+                "strategy": "graph_ppr_rerank",
+                "events": [],
+                "entities": [],
+                "facts": [],
+                "query": query,
+                "ppr_fallback": "empty_graph",
+            }
+
+        # Seed masses: resolved seed entities get IDF-penalized weight.
+        name_to_id: Dict[str, str] = {}
+        ent_rows = await self._gather_bounded(
+            [self._search_entities_by_name(s) for s in seeds[:MAX_EXPANSION_QUERIES]]
+        )
+        for found in ent_rows:
+            for e in found or []:
+                if e.get("name") and e.get("id"):
+                    name_to_id[e["name"].lower()] = e["id"]
+        personalization: Dict[str, float] = {}
+        for s in seeds:
+            eid = name_to_id.get(s.lower())
+            if eid and eid in adjacency:
+                degree = len(adjacency[eid])
+                personalization[eid] = 1.0 / (1.0 + degree)
+        if not personalization:
+            # Seeds named entities that resolve to nothing: fall back to the
+            # strongest graph hubs is wrong; degrade to lexical instead.
+            ftx_events = await self._search_events_ftx(query, 10, since=since, until=until) or []
+            return {
+                "strategy": "graph_ppr_rerank",
+                "events": _clean_output(ftx_events[:10]),
+                "entities": [],
+                "facts": [],
+                "query": query,
+                "ppr_fallback": "seeds_unresolved",
+            }
+
+        scores = personalized_pagerank(adjacency, personalization)
+
+        ranked_facts = sorted(
+            fact_index.values(),
+            key=lambda f: max(
+                scores.get(f.get("in_id", ""), 0.0),
+                scores.get(f.get("out_id", ""), 0.0),
+            ),
+            reverse=True,
+        )[:50]
+        for f in ranked_facts:
+            f["ppr_score"] = round(
+                max(
+                    scores.get(f.get("in_id", ""), 0.0),
+                    scores.get(f.get("out_id", ""), 0.0),
+                ),
+                4,
+            )
+        ranked_entities = sorted(
+            ({"id": nid, "name": "", "ppr_score": round(sc, 4)} for nid, sc in scores.items()),
+            key=lambda e: e["ppr_score"],
+            reverse=True,
+        )[:20]
+
+        ftx_events, temporal_events = await self._gather_bounded(
+            [
+                self._search_events_ftx(query, 10, since=since, until=until),
+                self._search_recent_events(5, since=since, until=until),
+            ]
+        )
+        fused = self._rrf_fuse(ftx_events or [], temporal_events or [])[:10]
+
+        return {
+            "strategy": "graph_ppr_rerank",
+            "events": _clean_output(fused),
+            "entities": _clean_output(ranked_entities),
+            "facts": _clean_output(ranked_facts),
+            "query": query,
+        }
+
+    async def _seed_entity_names(self, query: str) -> List[str]:
+        """Candidate entity names from a query: capitalized words first, then
+        proper nouns mined from top lexical hits (bounded)."""
+        candidates: List[str] = []
+        for w in query.split():
+            w_clean = w.strip(",.!?;:")
+            if w_clean and not w_clean[0].islower() and len(w_clean) >= 2:
+                candidates.append(w_clean)
+        try:
+            ftx = await self._search_events_ftx(query, 5) or []
+        except BudgetExceeded:
+            ftx = []
+        for ev in ftx:
+            for match in re.finditer(
+                r"\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\b", ev.get("content", "")
+            ):
+                name = match.group(1).strip()
+                if len(name) >= 2:
+                    candidates.append(name)
+        deduped, seen = [], set()
+        for name in candidates:
+            key = name.lower()
+            if key not in seen:
+                seen.add(key)
+                deduped.append(name)
+        return deduped[:MAX_EXPANSION_QUERIES]
+
+    async def _execute_decomposed_multihop(
+        self, query: str, budget_tracker: BudgetTracker, **kwargs
+    ) -> Dict[str, Any]:
+        """Split coordinated multi-hop queries into sub-queries (no LLM),
+        retrieve per part (lexical + KG text), RRF-fuse across parts.
+
+        Falls back to a single part (= plain hybrid) when no coordination is
+        found, so this strategy is safe as a general multi-hop default.
+        """
+        budget_tracker.increment_tokens(len(query) // 3)
+        since = kwargs.get("since")
+        until = kwargs.get("until")
+        at_time = kwargs.get("at_time")
+
+        parts = split_multihop_query(query)
+
+        searches = []
+        for part in parts[:MAX_EXPANSION_QUERIES]:
+            searches.append(self._search_events_ftx(part, 10, since=since, until=until))
+            searches.append(self._search_kg_by_text(part, at_time=at_time))
+        all_results = await self._gather_bounded(searches)
+
+        event_lists, fact_lists = [], []
+        for i, r in enumerate(all_results):
+            (event_lists if i % 2 == 0 else fact_lists).append(r or [])
+        fused_events = self._rrf_fuse(*event_lists)[:10] if event_lists else []
+
+        seen_fids, facts = set(), []
+        for fl in fact_lists:
+            for f in fl:
+                fid = f.get("id")
+                if fid and fid not in seen_fids:
+                    seen_fids.add(fid)
+                    facts.append(f)
+
+        entities: List[Dict] = []
+        seen_eids = set()
+        ent_rows = await self._gather_bounded(
+            [self._search_entities_by_name(p) for p in parts[:MAX_EXPANSION_QUERIES]]
+        )
+        for found in ent_rows:
+            for e in found or []:
+                eid = e.get("id")
+                if eid and eid not in seen_eids:
+                    seen_eids.add(eid)
+                    entities.append(e)
+
+        return {
+            "strategy": "decomposed_multihop",
+            "events": _clean_output(fused_events),
+            "entities": _clean_output(entities),
+            "facts": _clean_output(facts),
+            "query": query,
+            "sub_queries": parts,
         }
 
 

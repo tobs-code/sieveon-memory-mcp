@@ -39,14 +39,14 @@ DEFINE FUNCTION OVERWRITE fn::temporal_context($entity: record, $window: duratio
 
 -- 4. fn::invalidate_fact($fact_id)
 -- Logische Invalidierung eines Facts (statt Löschen)
-DEFINE FUNCTION OVERWRITE fn::invalidate_fact($fact_id: record(fact)) {
+DEFINE FUNCTION OVERWRITE fn::invalidate_fact($fact_id: record) {
     UPDATE $fact_id SET valid_until = time::now();
     RETURN "Fact invalidated successfully";
 };
 
 -- 5. fn::append_event($source, $content, $embedding, $metadata)
 -- Hilfsfunktion zum Append eines neuen Events (garantiert immutable)
-DEFINE FUNCTION OVERWRITE fn::append_event($source: string, $content: string, $embedding: option<vector>, $metadata: option<object>) {
+DEFINE FUNCTION OVERWRITE fn::append_event($source: string, $content: string, $embedding: any, $metadata: any) {
     RETURN CREATE event SET
         source = $source,
         content = $content,
@@ -57,7 +57,7 @@ DEFINE FUNCTION OVERWRITE fn::append_event($source: string, $content: string, $e
 -- 6. fn::events_at($from, $to)
 -- Events in einem Zeitfenster (B1 Temporal-Pfad: "was wusste der Agent zu Zeitpunkt T").
 -- $from/$to sind optionale datetimes (NONE = offen). Nutzt den event_timestamp-Index.
-DEFINE FUNCTION OVERWRITE fn::events_at($from: option<datetime>, $to: option<datetime>) {
+DEFINE FUNCTION OVERWRITE fn::events_at($from: any, $to: any) {
     RETURN SELECT id, content, timestamp, source, metadata
     FROM event
     WHERE forgotten = false

@@ -249,9 +249,39 @@ class TestTiering(unittest.TestCase):
                 os.environ["TIER_DROP_THRESHOLD"] = prev
 
 
+class TestFtsSanitize(unittest.TestCase):
+    """FTS query sanitization: natural questions must survive @@ matching."""
+
+    def test_question_mark_removed(self):
+        from src.extraction.entropy_gate import sanitize_fts_query
+        out = sanitize_fts_query("When did Caroline go to the LGBTQ support group?")
+        self.assertNotIn("?", out)
+        self.assertIn("Caroline", out)
+        self.assertIn("LGBTQ", out)
+
+    def test_operators_stripped(self):
+        from src.extraction.entropy_gate import sanitize_fts_query
+        out = sanitize_fts_query('a+b -c "d" (e)*f:g!')
+        self.assertEqual(out, "a b c d e f g")
+
+    def test_empty_safe(self):
+        from src.extraction.entropy_gate import sanitize_fts_query
+        self.assertEqual(sanitize_fts_query(""), "")
+        self.assertEqual(sanitize_fts_query("???"), "")
+
+    def test_keywords_drop_stopwords(self):
+        from src.extraction.entropy_gate import fts_keywords
+        self.assertEqual(
+            fts_keywords("When did Caroline go to the LGBTQ support group?"),
+            "caroline lgbtq support group",
+        )
+        # Nothing but stopwords -> falls back to sanitized text, never empty
+        self.assertTrue(fts_keywords("When is it?"))
+        self.assertEqual(fts_keywords("Alice?"), "alice")
+
+
 class TestTrustAndRecordIds(unittest.TestCase):
     """Pure-function tests for trust marking and record-id validation."""
-
     def test_trust_defaults(self):
         from src.mcp.core import _trust_of
         self.assertEqual(_trust_of("user_input"), "direct")
@@ -274,8 +304,37 @@ class TestTrustAndRecordIds(unittest.TestCase):
         self.assertFalse(_is_record_id(""))
 
 
+class TestPPRAndSplitting(unittest.TestCase):
+    """Pure-function tests for PPR diffusion and query splitting (no DB)."""
+
+    def test_ppr_stays_near_seeds(self):
+        from src.planner.executor import personalized_pagerank
+        adj = {"a": {"b": 1.0}, "b": {"a": 1.0, "c": 1.0}, "c": {"b": 1.0, "hub": 1.0}, "hub": {"c": 1.0}}
+        scores = personalized_pagerank(adj, {"a": 1.0})
+        self.assertGreater(scores["a"], scores["hub"])
+        self.assertGreater(scores["b"], scores["hub"])
+        self.assertAlmostEqual(sum(scores.values()), 1.0, places=4)
+
+    def test_ppr_empty_graph(self):
+        from src.planner.executor import personalized_pagerank
+        self.assertEqual(personalized_pagerank({}, {"a": 1.0}), {})
+
+    def test_split_coordination(self):
+        from src.planner.executor import split_multihop_query
+        parts = split_multihop_query("Who founded Acme and where is it based")
+        self.assertEqual(len(parts), 2)
+        self.assertIn("Acme", parts[0])
+
+    def test_split_no_coordination(self):
+        from src.planner.executor import split_multihop_query
+        q = "Where does Alice work?"
+        self.assertEqual(split_multihop_query(q), [q])
+        self.assertEqual(split_multihop_query(""), [""])
+
+
 class TestRelationLabelMapping(unittest.TestCase):
     """Pure-function tests for the relex/gliner predicate normalization."""
+
     def test_infer_extractor_majority(self):
         from src.extraction.entropy_gate import infer_extractor
         self.assertEqual(infer_extractor(["RELEX", "RELEX", "GROQ"]), "relex")

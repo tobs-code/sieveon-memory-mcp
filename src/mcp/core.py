@@ -179,10 +179,11 @@ async def search_resource(query: str) -> str:
         LIMIT {fetch_k};
         """
         ftx_sql = f"""
-        SELECT id, content, timestamp, source, metadata
+        SELECT id, content, timestamp, source, metadata, search::score(0) AS bm25
         FROM event
-        WHERE content @@ '{query_escaped}'
+        WHERE content @OR@ '{query_escaped}'
           AND {forgotten_filter}
+        ORDER BY bm25 DESC
         LIMIT {fetch_k};
         """
 
@@ -675,10 +676,15 @@ def load_schema_file(file_path: str) -> List[str]:
     if current.strip():
         statements.append(current.strip())
 
-    # Add IF NOT EXISTS to table/index definitions to handle existing schema
+    # Add IF NOT EXISTS to table/index definitions to handle existing schema.
+    # Statements already carrying OVERWRITE are idempotent by themselves and
+    # must be left alone (IF NOT EXISTS + OVERWRITE is a syntax error).
     safe_statements = []
     for stmt in statements:
-        if "DEFINE TABLE" in stmt and "IF NOT EXISTS" not in stmt:
+        upper = stmt.upper()
+        if "OVERWRITE" in upper:
+            safe_statements.append(stmt)
+        elif "DEFINE TABLE" in stmt and "IF NOT EXISTS" not in stmt:
             stmt = stmt.replace("DEFINE TABLE", "DEFINE TABLE IF NOT EXISTS")
         elif "DEFINE INDEX" in stmt and "IF NOT EXISTS" not in stmt:
             stmt = stmt.replace("DEFINE INDEX", "DEFINE INDEX IF NOT EXISTS")

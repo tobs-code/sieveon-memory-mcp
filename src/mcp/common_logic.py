@@ -29,9 +29,19 @@ _entropy_gate_instance = None
 
 def _get_entropy_gate():
     global _entropy_gate_instance
-    if _entropy_gate_instance is None:
+    # The gate snapshots its namespace at construction: rebuild whenever the
+    # core namespace changed (eval harnesses switch NS/DB per run). Without
+    # this, stores silently land in the default namespace (found via an empty
+    # LoCoMo spike namespace in 2026-09-30).
+    from .core import SURREAL_DB, SURREAL_NS
+
+    if (
+        _entropy_gate_instance is None
+        or getattr(_entropy_gate_instance, "surreal_ns", None) != SURREAL_NS
+        or getattr(_entropy_gate_instance, "surreal_db", None) != SURREAL_DB
+    ):
         from src.extraction.entropy_gate import EntropyGate
-        _entropy_gate_instance = EntropyGate()
+        _entropy_gate_instance = EntropyGate(ns=SURREAL_NS, db=SURREAL_DB)
     return _entropy_gate_instance
 
 

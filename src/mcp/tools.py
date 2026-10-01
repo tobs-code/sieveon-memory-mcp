@@ -36,7 +36,12 @@ def _prepare_fts_query(query: str, syntax: str = "auto") -> str:
         value = value.replace("}", "\\}")
         value = re.sub(r"[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]", "", value)
         return value
-    return escape_surrealql(query)
+    # auto: plain text -- keywords, not raw questions: @@ is strict AND over
+    # analyzed terms, so stopwords shrink result sets to zero (verified
+    # 2026-09-30). Falls back to sanitized full text when nothing survives.
+    from src.extraction.entropy_gate import fts_keywords, sanitize_fts_query
+
+    return escape_surrealql(fts_keywords(query))
 
 
 @mcp.tool()
@@ -494,11 +499,12 @@ async def event_log_search(
 
     # 1) Lexical search via FTX index
     ftx_sql = f"""
-    SELECT id, content, timestamp, source, metadata, forgotten, forgotten_reason, 'lexical' AS search_type
+    SELECT id, content, timestamp, source, metadata, forgotten, forgotten_reason, 'lexical' AS search_type, search::score(0) AS bm25
     FROM event
-    WHERE content @@ '{query_escaped}'
+    WHERE content @OR@ '{query_escaped}'
       AND {forgotten_filter}
       {time_filter}
+    ORDER BY bm25 DESC
     LIMIT {fetch_limit};
     """
 
@@ -725,10 +731,11 @@ async def semantic_search(
     ftx_task = None
     if query.strip():
         ftx_sql = f"""
-        SELECT id, content, timestamp, source, metadata, content_hash
+        SELECT id, content, timestamp, source, metadata, content_hash, search::score(0) AS bm25
         FROM event
-        WHERE content @@ '{query_escaped}'
+        WHERE content @OR@ '{query_escaped}'
           AND {forgotten_filter}
+        ORDER BY bm25 DESC
         LIMIT {fetch_k};
         """
         ftx_task = asyncio.create_task(_query_surreal(ftx_sql))

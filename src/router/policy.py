@@ -165,7 +165,7 @@ class RoutingPolicy:
         compatible_strategies = {
             QueryType.TEMPORAL: ['event_log_first', 'hybrid_bm25_vector_temporal', 'semantic_hybrid'],
             QueryType.FACTUAL: ['semantic_hybrid', 'knowledge_graph_first', 'hybrid_with_graph_expansion'],
-            QueryType.MULTI_HOP: ['semantic_hybrid', 'hybrid_with_graph_expansion', 'knowledge_graph_with_invalidation'],
+            QueryType.MULTI_HOP: ['semantic_hybrid', 'hybrid_with_graph_expansion', 'knowledge_graph_with_invalidation', 'graph_ppr_rerank', 'decomposed_multihop'],
             QueryType.CONVERSATIONAL: ['semantic_hybrid', 'hybrid_bm25_vector_temporal', 'composite_kg_vector'],
             QueryType.UPDATE: ['knowledge_graph_with_invalidation', 'knowledge_graph_first']
         }
