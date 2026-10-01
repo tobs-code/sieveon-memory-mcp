@@ -3,12 +3,22 @@ LoCoMo spike: ablation BM25+vector (Arm A) vs full routed pipeline (Arm B).
 
 Ingests LoCoMo dialog turns as events (isolated namespace, synthetic ordered
 timestamps -- question dates live in the TEXT, e.g. "7 May 2023"), then runs
-a capped set of QA pairs through both arms and scores word-F1 vs answers.
+a capped set of QA pairs through both arms.
+
+Primary metrics:
+  evidence_hit   did we retrieve the session(s) the gold answer lives in
+  containment    fraction of gold answer tokens present in the evidence
+
+Containment, not F1: both arms return evidence chunks (~220 tokens) rather
+than a generated short answer, so symmetric F1 is capped at
+len(gold)/len(chunk) and a perfect hit scores ~0.02. Measured on the same
+runs: f1=0.013 vs containment=0.54. Word-F1 is still reported (mean_f1_*)
+for comparability with earlier runs only.
 
 Category map (LoCoMo paper order, assumption -- verify against repo docs):
   1 single-hop, 2 multi-hop, 3 temporal, 4 commonsense, 5 adversarial.
 Adversarial expects "unanswerable": reported separately (abstention rate),
-both arms always answer, so F1 there is informative, not decisive.
+both arms always answer, so containment there is informative, not decisive.
 
 Usage:
     python scripts/eval_locomo.py --data C:/path/locomo10.json --convos 2 --per-cat 12
@@ -43,6 +53,13 @@ def norm(text) -> list:
 
 
 def f1(pred: str, gold: str) -> float:
+    """Symmetric word F1.
+
+    NOT a valid retrieval metric here: the pipeline returns evidence chunks
+    (~220 tokens) while gold answers are 1-5 tokens, so precision is capped at
+    len(gold)/len(chunk) -- a perfect hit scores ~0.02. Kept only for
+    comparability with earlier runs; use containment instead.
+    """
     p, g = norm(pred), norm(gold)
     if not p or not g:
         return 0.0
@@ -60,18 +77,45 @@ def f1(pred: str, gold: str) -> float:
     return 2 * prec * rec / (prec + rec)
 
 
+def containment(unit: str, gold: str) -> float:
+    """Fraction of distinct gold tokens present in the unit.
+
+    Length-independent, so it measures the thing retrieval is actually
+    responsible for: does the retrieved evidence actually contain the answer?
+    Verified on LoCoMo-light: same runs score f1=0.013 vs containment=0.54.
+    """
+    g = set(norm(gold))
+    if not g:
+        return 0.0
+    u = set(norm(unit))
+    return sum(1 for w in g if w in u) / len(g)
+
+
 def answer_text(response: dict) -> str:
     s = response.get("summary") or {}
     return s.get("answer", "") if isinstance(s, dict) else ""
 
 
 def best_unit_f1(units: list, gold: str) -> float:
-    """Max F1 of any single retrieved unit vs gold (recall-oriented retrieval
-    metric). Scoring whole concatenated blobs would dilute F1 by blob length
-    and punish larger (better-covering) result sets."""
+    """Max F1 of any single retrieved unit vs gold (see f1() for why this is
+    only comparable across runs, not an absolute quality signal)."""
     best = 0.0
     for u in units:
         best = max(best, f1(u, gold))
+    return best
+
+
+def best_unit_containment(units: list, gold: str) -> float:
+    """Max containment of any single retrieved unit vs gold.
+
+    Primary quality metric: retrieval returns evidence, not a generated short
+    answer, so "does the evidence contain the answer" is the meaningful
+    question. Combined with evidence_hit (did we get the right session) this
+    separates retrieval failure from metric artefact.
+    """
+    best = 0.0
+    for u in units:
+        best = max(best, containment(u, gold))
     return best
 
 
@@ -204,8 +248,10 @@ async def main() -> int:
                 a_units = [(e.get("content", "") or "") for e in a_events]
                 a_f1 = best_unit_f1(a_units, gold)
                 a_sess = {s for s in (session_of(e.get("metadata")) for e in a_events) if s is not None}
+                a_cont = best_unit_containment(a_units, gold)
             except Exception as e:
                 a_f1 = 0.0
+                a_cont = 0.0
                 a_sess = set()
                 print(f"arm A error: {e}", flush=True)
             ms_a = (time.perf_counter() - t0) * 1000
@@ -236,9 +282,11 @@ async def main() -> int:
                         if isinstance(it, dict):
                             b_units.append(item_text(it))
                 b_f1 = best_unit_f1(b_units, gold)
+                b_cont = best_unit_containment(b_units, gold)
                 b_sess = {s for s in (session_of(e.get("metadata")) for e in b_evs) if s is not None}
             except Exception as e:
                 b_f1 = 0.0
+                b_cont = 0.0
                 b_sess = set()
                 print(f"arm B error: {e}", flush=True)
             ms_b = (time.perf_counter() - t0) * 1000
@@ -248,13 +296,17 @@ async def main() -> int:
                 "question": question, "answer": gold,
                 "f1_a": round(a_f1, 4),
                 "f1_b": round(b_f1, 4),
+                "containment_a": round(a_cont, 4),
+                "containment_b": round(b_cont, 4),
                 "ms_a": round(ms_a, 1),
                 "ms_b": round(ms_b, 1),
                 "hit_a": bool(ev_sess and (ev_sess & a_sess)),
                 "hit_b": bool(ev_sess and (ev_sess & b_sess)),
                 "strategy_b": (b_res.get("strategy") if "b_res" in dir() else None),
             })
-            print(f"[{ts()}] [{cat:13s}] A={a_f1:.2f}/{ms_a:.0f}ms B={b_f1:.2f}/{ms_b:.0f}ms :: {question[:60]}", flush=True)
+            print(f"[{ts()}] [{cat:13s}] A: hit={int(bool(ev_sess and (ev_sess & a_sess)))} "
+                  f"cont={a_cont:.2f}/{ms_a:.0f}ms  B: hit={int(bool(ev_sess and (ev_sess & b_sess)))} "
+                  f"cont={b_cont:.2f}/{ms_b:.0f}ms :: {question[:52]}", flush=True)
 
     by_cat = defaultdict(list)
     for r in results:
@@ -263,6 +315,8 @@ async def main() -> int:
     for cat, rows in sorted(by_cat.items()):
         summary[cat] = {
             "n": len(rows),
+            "mean_containment_a": round(sum(r["containment_a"] for r in rows) / len(rows), 4),
+            "mean_containment_b": round(sum(r["containment_b"] for r in rows) / len(rows), 4),
             "mean_f1_a": round(sum(r["f1_a"] for r in rows) / len(rows), 4),
             "mean_f1_b": round(sum(r["f1_b"] for r in rows) / len(rows), 4),
             "mean_ms_a": round(sum(r["ms_a"] for r in rows) / len(rows), 1),
@@ -272,6 +326,8 @@ async def main() -> int:
         }
     summary["_overall"] = {
         "n": len(results),
+        "mean_containment_a": round(sum(r["containment_a"] for r in results) / len(results), 4),
+        "mean_containment_b": round(sum(r["containment_b"] for r in results) / len(results), 4),
         "mean_f1_a": round(sum(r["f1_a"] for r in results) / len(results), 4),
         "mean_f1_b": round(sum(r["f1_b"] for r in results) / len(results), 4),
         "mean_ms_a": round(sum(r["ms_a"] for r in results) / len(results), 1),
