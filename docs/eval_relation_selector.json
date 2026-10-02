@@ -1,0 +1,1230 @@
+{
+  "task": "relation selection over the model's own candidates",
+  "cases": 26,
+  "target_reachable": 24,
+  "top1": 20,
+  "top3": 24,
+  "top1_accuracy": 0.7692,
+  "baseline_shipped": "0/27",
+  "thresholds": {
+    "ent": 0.2,
+    "rel": 0.2
+  },
+  "results": [
+    {
+      "id": "conv-48/session_23_observation/Deborah/D23:22",
+      "s": "Deborah",
+      "o": "quote",
+      "text": "Deborah received a quote from a friend that says \"Let go of what no longer serves you.\"",
+      "target": "received",
+      "candidates": [
+        "gifted",
+        "received",
+        "recommended",
+        "sent",
+        "shared",
+        "wrote"
+      ],
+      "family": "acquisition_passive",
+      "target_in_candidates": true,
+      "target_templated": false,
+      "fallback_candidates": [
+        "gifted",
+        "received",
+        "recommended",
+        "sent",
+        "shared"
+      ],
+      "ranked": [
+        {
+          "predicate": "received",
+          "hypothesis": "Deborah received quote.",
+          "margin": 6.1387
+        },
+        {
+          "predicate": "shared",
+          "hypothesis": "Deborah shared quote.",
+          "margin": 2.0874
+        },
+        {
+          "predicate": "gifted",
+          "hypothesis": "Deborah gifted quote.",
+          "margin": 0.0905
+        },
+        {
+          "predicate": "sent",
+          "hypothesis": "Deborah sent quote.",
+          "margin": -0.4546
+        },
+        {
+          "predicate": "recommended",
+          "hypothesis": "Deborah recommended quote.",
+          "margin": -1.9664
+        },
+        {
+          "predicate": "wrote",
+          "hypothesis": "Deborah wrote quote.",
+          "margin": -3.1777
+        }
+      ],
+      "top1": "received",
+      "top1_margin": 6.1387,
+      "target_rank": 1,
+      "top1_margin_gap": 4.0513
+    },
+    {
+      "id": "conv-44/session_19_observation/Audrey/D19:22",
+      "s": "Peruvian Lilies",
+      "o": "watering",
+      "text": "Audrey's Peruvian Lilies are easy to care for, requiring watering and enough sunlight.",
+      "target": "requires",
+      "candidates": [
+        "provides",
+        "requires",
+        "uses"
+      ],
+      "family": "attribute_need",
+      "target_in_candidates": true,
+      "target_templated": false,
+      "fallback_candidates": [
+        "requires"
+      ],
+      "ranked": [
+        {
+          "predicate": "requires",
+          "hypothesis": "Peruvian Lilies requires watering.",
+          "margin": 5.918
+        },
+        {
+          "predicate": "uses",
+          "hypothesis": "Peruvian Lilies uses watering.",
+          "margin": 5.2754
+        },
+        {
+          "predicate": "provides",
+          "hypothesis": "Peruvian Lilies provides watering.",
+          "margin": 4.7578
+        }
+      ],
+      "top1": "requires",
+      "top1_margin": 5.918,
+      "target_rank": 1,
+      "top1_margin_gap": 0.6426
+    },
+    {
+      "id": "conv-44/session_19_observation/Audrey/D19:22",
+      "s": "Peruvian Lilies",
+      "o": "sunlight",
+      "text": "Audrey's Peruvian Lilies are easy to care for, requiring watering and enough sunlight.",
+      "target": "requires",
+      "candidates": [
+        "provides",
+        "requires"
+      ],
+      "family": "attribute_need",
+      "target_in_candidates": true,
+      "target_templated": false,
+      "fallback_candidates": [
+        "requires"
+      ],
+      "ranked": [
+        {
+          "predicate": "requires",
+          "hypothesis": "Peruvian Lilies requires sunlight.",
+          "margin": 5.1172
+        },
+        {
+          "predicate": "provides",
+          "hypothesis": "Peruvian Lilies provides sunlight.",
+          "margin": 2.9893
+        }
+      ],
+      "top1": "requires",
+      "top1_margin": 5.1172,
+      "target_rank": 1,
+      "top1_margin_gap": 2.1279
+    },
+    {
+      "id": "conv-43/session_17_observation/John/D17:11",
+      "s": "John",
+      "o": "That",
+      "text": "John has watched the fantasy show 'That' and finds it a great way to escape reality.",
+      "target": "watched",
+      "candidates": [
+        "attended",
+        "created",
+        "discovered",
+        "recommended",
+        "watched",
+        "wrote"
+      ],
+      "family": "perception_media",
+      "target_in_candidates": true,
+      "target_templated": false,
+      "fallback_candidates": [
+        "attended",
+        "recommended",
+        "watched"
+      ],
+      "ranked": [
+        {
+          "predicate": "watched",
+          "hypothesis": "John watched That.",
+          "margin": 6.6113
+        },
+        {
+          "predicate": "attended",
+          "hypothesis": "John attended That.",
+          "margin": 4.7168
+        },
+        {
+          "predicate": "recommended",
+          "hypothesis": "John recommended That.",
+          "margin": 4.3457
+        },
+        {
+          "predicate": "discovered",
+          "hypothesis": "John discovered That.",
+          "margin": 1.9536
+        },
+        {
+          "predicate": "wrote",
+          "hypothesis": "John wrote That.",
+          "margin": -3.957
+        },
+        {
+          "predicate": "created",
+          "hypothesis": "John created That.",
+          "margin": -4.9844
+        }
+      ],
+      "top1": "watched",
+      "top1_margin": 6.6113,
+      "target_rank": 1,
+      "top1_margin_gap": 1.8945
+    },
+    {
+      "id": "conv-26/session_7_observation/Caroline/D7:1",
+      "s": "Caroline",
+      "o": "LGBTQ conference",
+      "text": "Caroline attended an LGBTQ conference recently and felt accepted and supported, emphasizing the importance of fighting for trans rights and spreading awareness.",
+      "target": "attended",
+      "candidates": [
+        "attended",
+        "joined",
+        "started"
+      ],
+      "family": "event_participation",
+      "target_in_candidates": true,
+      "target_templated": false,
+      "fallback_candidates": [
+        "attended",
+        "started"
+      ],
+      "ranked": [
+        {
+          "predicate": "attended",
+          "hypothesis": "Caroline attended LGBTQ conference.",
+          "margin": 7.1367
+        },
+        {
+          "predicate": "joined",
+          "hypothesis": "Caroline joined LGBTQ conference.",
+          "margin": 2.54
+        },
+        {
+          "predicate": "started",
+          "hypothesis": "Caroline started LGBTQ conference.",
+          "margin": -2.5488
+        }
+      ],
+      "top1": "attended",
+      "top1_margin": 7.1367,
+      "target_rank": 1,
+      "top1_margin_gap": 4.5967
+    },
+    {
+      "id": "conv-42/session_19_observation/Joanna/D19:6",
+      "s": "Joanna",
+      "o": "feedback",
+      "text": "Joanna shared her book with her writers group and received great feedback, indicating that her hard work is paying off.",
+      "target": "received",
+      "candidates": [
+        "earned",
+        "gifted",
+        "received"
+      ],
+      "family": "acquisition_passive",
+      "target_in_candidates": true,
+      "target_templated": false,
+      "fallback_candidates": [
+        "earned",
+        "gifted",
+        "received"
+      ],
+      "ranked": [
+        {
+          "predicate": "received",
+          "hypothesis": "Joanna received feedback.",
+          "margin": 6.834
+        },
+        {
+          "predicate": "earned",
+          "hypothesis": "Joanna earned feedback.",
+          "margin": 5.8203
+        },
+        {
+          "predicate": "gifted",
+          "hypothesis": "Joanna gifted feedback.",
+          "margin": 5.7969
+        }
+      ],
+      "top1": "received",
+      "top1_margin": 6.834,
+      "target_rank": 1,
+      "top1_margin_gap": 1.0137
+    },
+    {
+      "id": "conv-26/session_1_observation/Caroline/D1:3",
+      "s": "Caroline",
+      "o": "LGBTQ support group",
+      "text": "Caroline attended an LGBTQ support group recently and found the transgender stories inspiring.",
+      "target": "attended",
+      "candidates": [
+        "attended",
+        "founded",
+        "joined"
+      ],
+      "family": "event_participation",
+      "target_in_candidates": true,
+      "target_templated": false,
+      "fallback_candidates": [
+        "attended"
+      ],
+      "ranked": [
+        {
+          "predicate": "attended",
+          "hypothesis": "Caroline attended LGBTQ support group.",
+          "margin": 7.1426
+        },
+        {
+          "predicate": "joined",
+          "hypothesis": "Caroline joined LGBTQ support group.",
+          "margin": 2.377
+        },
+        {
+          "predicate": "founded",
+          "hypothesis": "Caroline founded LGBTQ support group.",
+          "margin": -5.2031
+        }
+      ],
+      "top1": "attended",
+      "top1_margin": 7.1426,
+      "target_rank": 1,
+      "top1_margin_gap": 4.7656
+    },
+    {
+      "id": "conv-26/session_17_observation/Caroline/D17:19",
+      "s": "Caroline",
+      "o": "transgender poetry reading event",
+      "text": "Caroline recently went to a transgender poetry reading event that was empowering and celebrated self-expression.",
+      "target": "attended",
+      "candidates": [
+        "attended",
+        "finished",
+        "joined",
+        "watched",
+        "wrote"
+      ],
+      "family": "event_participation",
+      "target_in_candidates": true,
+      "target_templated": false,
+      "fallback_candidates": [
+        "attended",
+        "finished",
+        "watched"
+      ],
+      "ranked": [
+        {
+          "predicate": "attended",
+          "hypothesis": "Caroline attended transgender poetry reading event.",
+          "margin": 6.9668
+        },
+        {
+          "predicate": "watched",
+          "hypothesis": "Caroline watched transgender poetry reading event.",
+          "margin": 4.208
+        },
+        {
+          "predicate": "joined",
+          "hypothesis": "Caroline joined transgender poetry reading event.",
+          "margin": 3.9844
+        },
+        {
+          "predicate": "wrote",
+          "hypothesis": "Caroline wrote transgender poetry reading event.",
+          "margin": -0.533
+        },
+        {
+          "predicate": "finished",
+          "hypothesis": "Caroline finished transgender poetry reading event.",
+          "margin": -5.2754
+        }
+      ],
+      "top1": "attended",
+      "top1_margin": 6.9668,
+      "target_rank": 1,
+      "top1_margin_gap": 2.7588
+    },
+    {
+      "id": "conv-30/session_5_observation/Gina/D5:1",
+      "s": "Gina",
+      "o": "store",
+      "text": "Gina owns a store where she sells fashion pieces.",
+      "target": "owns",
+      "candidates": [
+        "acquired",
+        "owns",
+        "works_at"
+      ],
+      "family": "possession",
+      "target_in_candidates": true,
+      "target_templated": false,
+      "fallback_candidates": [
+        "owns"
+      ],
+      "ranked": [
+        {
+          "predicate": "owns",
+          "hypothesis": "Gina owns store.",
+          "margin": 7.1562
+        },
+        {
+          "predicate": "works_at",
+          "hypothesis": "Gina works at store.",
+          "margin": 5.584
+        },
+        {
+          "predicate": "acquired",
+          "hypothesis": "Gina acquired store.",
+          "margin": 3.7568
+        }
+      ],
+      "top1": "owns",
+      "top1_margin": 7.1562,
+      "target_rank": 1,
+      "top1_margin_gap": 1.5723
+    },
+    {
+      "id": "conv-41/session_7_observation/Maria/D7:1",
+      "s": "Maria",
+      "o": "creative writing class",
+      "text": "Maria recently took a creative writing class.",
+      "target": "attended",
+      "candidates": [
+        "attended",
+        "finished",
+        "wrote"
+      ],
+      "family": "event_participation",
+      "target_in_candidates": true,
+      "target_templated": false,
+      "fallback_candidates": [
+        "attended",
+        "finished"
+      ],
+      "ranked": [
+        {
+          "predicate": "attended",
+          "hypothesis": "Maria attended creative writing class.",
+          "margin": 7.168
+        },
+        {
+          "predicate": "wrote",
+          "hypothesis": "Maria wrote creative writing class.",
+          "margin": 2.5723
+        },
+        {
+          "predicate": "finished",
+          "hypothesis": "Maria finished creative writing class.",
+          "margin": -4.5137
+        }
+      ],
+      "top1": "attended",
+      "top1_margin": 7.168,
+      "target_rank": 1,
+      "top1_margin_gap": 4.5957
+    },
+    {
+      "id": "conv-41/session_10_observation/John/D10:1",
+      "s": "John",
+      "o": "weekend yoga class",
+      "text": "John started a weekend yoga class with a colleague and finds it awesome for his mental and physical wellbeing.",
+      "target": "attended",
+      "candidates": [
+        "attended",
+        "finished",
+        "founded",
+        "started"
+      ],
+      "family": "event_participation",
+      "target_in_candidates": true,
+      "target_templated": false,
+      "fallback_candidates": [
+        "attended",
+        "finished",
+        "started"
+      ],
+      "ranked": [
+        {
+          "predicate": "started",
+          "hypothesis": "John started weekend yoga class.",
+          "margin": 6.7578
+        },
+        {
+          "predicate": "attended",
+          "hypothesis": "John attended weekend yoga class.",
+          "margin": 6.2383
+        },
+        {
+          "predicate": "founded",
+          "hypothesis": "John founded weekend yoga class.",
+          "margin": 4.9062
+        },
+        {
+          "predicate": "finished",
+          "hypothesis": "John finished weekend yoga class.",
+          "margin": -4.7715
+        }
+      ],
+      "top1": "started",
+      "top1_margin": 6.7578,
+      "target_rank": 2,
+      "top1_margin_gap": 0.5195
+    },
+    {
+      "id": "conv-41/session_19_observation/Maria/D19:1",
+      "s": "Maria",
+      "o": "gym",
+      "text": "Maria recently joined a gym and is sticking to her workout routine, enjoying the positive environment and supportive people there.",
+      "target": "joined",
+      "candidates": [
+        "attended",
+        "joined",
+        "owns",
+        "visited",
+        "works_at"
+      ],
+      "family": "event_participation",
+      "target_in_candidates": true,
+      "target_templated": true,
+      "fallback_candidates": [
+        "attended",
+        "owns",
+        "visited"
+      ],
+      "ranked": [
+        {
+          "predicate": "joined",
+          "hypothesis": "Maria joined gym.",
+          "margin": 7.0254
+        },
+        {
+          "predicate": "attended",
+          "hypothesis": "Maria attended gym.",
+          "margin": 6.9199
+        },
+        {
+          "predicate": "works_at",
+          "hypothesis": "Maria works at gym.",
+          "margin": 6.6484
+        },
+        {
+          "predicate": "visited",
+          "hypothesis": "Maria visited gym.",
+          "margin": 5.9121
+        },
+        {
+          "predicate": "owns",
+          "hypothesis": "Maria owns gym.",
+          "margin": 2.6284
+        }
+      ],
+      "top1": "joined",
+      "top1_margin": 7.0254,
+      "target_rank": 1,
+      "top1_margin_gap": 0.1055
+    },
+    {
+      "id": "conv-42/session_1_observation/Joanna/D1:10",
+      "s": "Joanna",
+      "o": "movies",
+      "text": "Besides writing, Joanna also enjoys reading, watching movies, and exploring nature as hobbies.",
+      "target": "watched",
+      "candidates": [
+        "watched"
+      ],
+      "family": "perception_media",
+      "target_in_candidates": true,
+      "target_templated": false,
+      "fallback_candidates": [
+        "watched"
+      ],
+      "ranked": [
+        {
+          "predicate": "watched",
+          "hypothesis": "Joanna watched movies.",
+          "margin": 6.6191
+        }
+      ],
+      "top1": "watched",
+      "top1_margin": 6.6191,
+      "target_rank": 1,
+      "top1_margin_gap": null
+    },
+    {
+      "id": "conv-43/session_6_observation/John/D6:13",
+      "s": "John",
+      "o": "scholarship",
+      "text": "John's childhood dream was to play on the big courts, which became a reality through hard work, earning a scholarship, and being drafted by a team.",
+      "target": "earned",
+      "candidates": [
+        "asked_for",
+        "earned",
+        "funded",
+        "gifted",
+        "received"
+      ],
+      "family": "achievement",
+      "target_in_candidates": true,
+      "target_templated": false,
+      "fallback_candidates": [
+        "asked_for",
+        "earned",
+        "gifted",
+        "received"
+      ],
+      "ranked": [
+        {
+          "predicate": "received",
+          "hypothesis": "John received scholarship.",
+          "margin": 5.5566
+        },
+        {
+          "predicate": "earned",
+          "hypothesis": "John earned scholarship.",
+          "margin": 5.5312
+        },
+        {
+          "predicate": "funded",
+          "hypothesis": "John funded scholarship.",
+          "margin": 4.8398
+        },
+        {
+          "predicate": "gifted",
+          "hypothesis": "John gifted scholarship.",
+          "margin": 4.1836
+        },
+        {
+          "predicate": "asked_for",
+          "hypothesis": "John asked for scholarship.",
+          "margin": 0.6591
+        }
+      ],
+      "top1": "received",
+      "top1_margin": 5.5566,
+      "target_rank": 2,
+      "top1_margin_gap": 0.0254
+    },
+    {
+      "id": "conv-43/session_17_observation/John/D17:9",
+      "s": "John",
+      "o": "fantasy series",
+      "text": "John recently finished an amazing fantasy series and loves getting lost in fantasy worlds.",
+      "target": "finished",
+      "candidates": [
+        "created",
+        "developed",
+        "finished",
+        "started",
+        "wrote"
+      ],
+      "family": "achievement",
+      "target_in_candidates": true,
+      "target_templated": false,
+      "fallback_candidates": [
+        "finished",
+        "started"
+      ],
+      "ranked": [
+        {
+          "predicate": "finished",
+          "hypothesis": "John finished fantasy series.",
+          "margin": 6.9043
+        },
+        {
+          "predicate": "wrote",
+          "hypothesis": "John wrote fantasy series.",
+          "margin": 6.082
+        },
+        {
+          "predicate": "created",
+          "hypothesis": "John created fantasy series.",
+          "margin": 5.3281
+        },
+        {
+          "predicate": "developed",
+          "hypothesis": "John developed fantasy series.",
+          "margin": 4.748
+        },
+        {
+          "predicate": "started",
+          "hypothesis": "John started fantasy series.",
+          "margin": -2.4688
+        }
+      ],
+      "top1": "finished",
+      "top1_margin": 6.9043,
+      "target_rank": 1,
+      "top1_margin_gap": 0.8223
+    },
+    {
+      "id": "conv-48/session_9_observation/Deborah/D9:3",
+      "s": "Deborah",
+      "o": "yoga class",
+      "text": "Deborah started a yoga class in the neighborhood to share the exercise with her neighbors.",
+      "target": "started",
+      "candidates": [
+        "attended",
+        "created",
+        "founded",
+        "started"
+      ],
+      "family": "achievement",
+      "target_in_candidates": true,
+      "target_templated": false,
+      "fallback_candidates": [
+        "attended",
+        "started"
+      ],
+      "ranked": [
+        {
+          "predicate": "started",
+          "hypothesis": "Deborah started yoga class.",
+          "margin": 7.1504
+        },
+        {
+          "predicate": "created",
+          "hypothesis": "Deborah created yoga class.",
+          "margin": 6.9062
+        },
+        {
+          "predicate": "founded",
+          "hypothesis": "Deborah founded yoga class.",
+          "margin": 6.8848
+        },
+        {
+          "predicate": "attended",
+          "hypothesis": "Deborah attended yoga class.",
+          "margin": 5.248
+        }
+      ],
+      "top1": "started",
+      "top1_margin": 7.1504,
+      "target_rank": 1,
+      "top1_margin_gap": 0.2441
+    },
+    {
+      "id": "conv-48/session_14_observation/Deborah/D14:3",
+      "s": "Deborah",
+      "o": "Dancer Pose",
+      "text": "Deborah tried a new yoga pose called Dancer Pose (Natarajasana) and asked for feedback from Jolene.",
+      "target": "tried",
+      "candidates": [
+        "created",
+        "designed",
+        "received",
+        "recommended",
+        "tried"
+      ],
+      "family": "attempted",
+      "target_in_candidates": true,
+      "target_templated": false,
+      "fallback_candidates": [
+        "received",
+        "recommended",
+        "tried"
+      ],
+      "ranked": [
+        {
+          "predicate": "tried",
+          "hypothesis": "Deborah tried Dancer Pose.",
+          "margin": 6.0508
+        },
+        {
+          "predicate": "designed",
+          "hypothesis": "Deborah designed Dancer Pose.",
+          "margin": 3.4033
+        },
+        {
+          "predicate": "created",
+          "hypothesis": "Deborah created Dancer Pose.",
+          "margin": 3.2852
+        },
+        {
+          "predicate": "received",
+          "hypothesis": "Deborah received Dancer Pose.",
+          "margin": 3.0566
+        },
+        {
+          "predicate": "recommended",
+          "hypothesis": "Deborah recommended Dancer Pose.",
+          "margin": 1.0127
+        }
+      ],
+      "top1": "tried",
+      "top1_margin": 6.0508,
+      "target_rank": 1,
+      "top1_margin_gap": 2.6475
+    },
+    {
+      "id": "conv-48/session_21_observation/Deborah/D21:1",
+      "s": "Deborah",
+      "o": "yoga retreat",
+      "text": "Deborah attended a yoga retreat near her mom's place last week and found it life-changing.",
+      "target": "attended",
+      "candidates": [
+        "attended",
+        "finished",
+        "joined",
+        "took_on_trip",
+        "tried"
+      ],
+      "family": "event_participation",
+      "target_in_candidates": true,
+      "target_templated": false,
+      "fallback_candidates": [
+        "attended",
+        "finished",
+        "took_on_trip",
+        "tried"
+      ],
+      "ranked": [
+        {
+          "predicate": "attended",
+          "hypothesis": "Deborah attended yoga retreat.",
+          "margin": 7.0547
+        },
+        {
+          "predicate": "took_on_trip",
+          "hypothesis": "Deborah took on trip yoga retreat.",
+          "margin": 6.3438
+        },
+        {
+          "predicate": "tried",
+          "hypothesis": "Deborah tried yoga retreat.",
+          "margin": 5.8105
+        },
+        {
+          "predicate": "joined",
+          "hypothesis": "Deborah joined yoga retreat.",
+          "margin": 5.0742
+        },
+        {
+          "predicate": "finished",
+          "hypothesis": "Deborah finished yoga retreat.",
+          "margin": -4.2266
+        }
+      ],
+      "top1": "attended",
+      "top1_margin": 7.0547,
+      "target_rank": 1,
+      "top1_margin_gap": 0.7109
+    },
+    {
+      "id": "conv-48/session_29_observation/Deborah/D29:5",
+      "s": "Deborah",
+      "o": "old house",
+      "text": "Deborah spent time remembering her mom by visiting her old house and sitting on a bench last Sunday.",
+      "target": "visited",
+      "candidates": [
+        "acquired",
+        "attended",
+        "built",
+        "owns",
+        "restored",
+        "visited"
+      ],
+      "family": "location_motion",
+      "target_in_candidates": true,
+      "target_templated": false,
+      "fallback_candidates": [
+        "attended",
+        "owns",
+        "restored",
+        "visited"
+      ],
+      "ranked": [
+        {
+          "predicate": "attended",
+          "hypothesis": "Deborah attended old house.",
+          "margin": 7.1016
+        },
+        {
+          "predicate": "visited",
+          "hypothesis": "Deborah visited old house.",
+          "margin": 7.0547
+        },
+        {
+          "predicate": "owns",
+          "hypothesis": "Deborah owns old house.",
+          "margin": 3.106
+        },
+        {
+          "predicate": "restored",
+          "hypothesis": "Deborah restored old house.",
+          "margin": 0.2295
+        },
+        {
+          "predicate": "built",
+          "hypothesis": "Deborah built old house.",
+          "margin": -0.2256
+        },
+        {
+          "predicate": "acquired",
+          "hypothesis": "Deborah acquired old house.",
+          "margin": -2.6289
+        }
+      ],
+      "top1": "attended",
+      "top1_margin": 7.1016,
+      "target_rank": 2,
+      "top1_margin_gap": 0.0469
+    },
+    {
+      "id": "conv-49/session_1_observation/Evan/D1:14",
+      "s": "Evan",
+      "o": "watercolor painting",
+      "text": "Evan enjoys watercolor painting as a hobby, which he started a few years back.",
+      "target": "started",
+      "candidates": [
+        "created"
+      ],
+      "family": "achievement",
+      "target_in_candidates": false,
+      "target_templated": false,
+      "fallback_candidates": [],
+      "ranked": [
+        {
+          "predicate": "created",
+          "hypothesis": "Evan created watercolor painting.",
+          "margin": 5.7109
+        }
+      ],
+      "top1": "created",
+      "top1_margin": 5.7109,
+      "target_rank": null,
+      "top1_margin_gap": null
+    },
+    {
+      "id": "conv-49/session_4_observation/Evan/D4:8",
+      "s": "Evan",
+      "o": "flavored seltzer water",
+      "text": "Evan suggests flavored seltzer water as a healthier alternative to soda.",
+      "target": "suggests",
+      "candidates": [
+        "created",
+        "recommended",
+        "suggests"
+      ],
+      "family": "conversation_interest",
+      "target_in_candidates": true,
+      "target_templated": false,
+      "fallback_candidates": [
+        "recommended",
+        "suggests"
+      ],
+      "ranked": [
+        {
+          "predicate": "suggests",
+          "hypothesis": "Evan suggests flavored seltzer water.",
+          "margin": 6.873
+        },
+        {
+          "predicate": "recommended",
+          "hypothesis": "Evan recommended flavored seltzer water.",
+          "margin": 6.752
+        },
+        {
+          "predicate": "created",
+          "hypothesis": "Evan created flavored seltzer water.",
+          "margin": 4.0215
+        }
+      ],
+      "top1": "suggests",
+      "top1_margin": 6.873,
+      "target_rank": 1,
+      "top1_margin_gap": 0.1211
+    },
+    {
+      "id": "conv-49/session_9_observation/Evan/D9:14",
+      "s": "Evan",
+      "o": "lake",
+      "text": "Evan recommended a nearby lake for Sam to explore with many trails nearby.",
+      "target": "recommended",
+      "candidates": [
+        "near",
+        "traveled_to",
+        "visited"
+      ],
+      "family": "location_motion",
+      "target_in_candidates": false,
+      "target_templated": false,
+      "fallback_candidates": [
+        "near",
+        "traveled_to",
+        "visited"
+      ],
+      "ranked": [
+        {
+          "predicate": "near",
+          "hypothesis": "Evan near lake.",
+          "margin": 6.0703
+        },
+        {
+          "predicate": "visited",
+          "hypothesis": "Evan visited lake.",
+          "margin": 5.7129
+        },
+        {
+          "predicate": "traveled_to",
+          "hypothesis": "Evan traveled to lake.",
+          "margin": 4.6562
+        }
+      ],
+      "top1": "near",
+      "top1_margin": 6.0703,
+      "target_rank": null,
+      "top1_margin_gap": 0.3574
+    },
+    {
+      "id": "conv-50/session_4_observation/Calvin/D4:24",
+      "s": "Calvin",
+      "o": "necklace",
+      "text": "Calvin gifted a necklace with a diamond pendant as a reminder of his passion for music.",
+      "target": "gifted",
+      "candidates": [
+        "acquired",
+        "created",
+        "earned",
+        "gifted",
+        "received",
+        "sent",
+        "shared"
+      ],
+      "family": "interaction_communication",
+      "target_in_candidates": true,
+      "target_templated": false,
+      "fallback_candidates": [
+        "earned",
+        "gifted",
+        "received",
+        "sent",
+        "shared"
+      ],
+      "ranked": [
+        {
+          "predicate": "gifted",
+          "hypothesis": "Calvin gifted necklace.",
+          "margin": 6.6172
+        },
+        {
+          "predicate": "received",
+          "hypothesis": "Calvin received necklace.",
+          "margin": 6.0879
+        },
+        {
+          "predicate": "created",
+          "hypothesis": "Calvin created necklace.",
+          "margin": 5.0312
+        },
+        {
+          "predicate": "sent",
+          "hypothesis": "Calvin sent necklace.",
+          "margin": 4.8574
+        },
+        {
+          "predicate": "acquired",
+          "hypothesis": "Calvin acquired necklace.",
+          "margin": 4.7275
+        },
+        {
+          "predicate": "earned",
+          "hypothesis": "Calvin earned necklace.",
+          "margin": 3.1152
+        },
+        {
+          "predicate": "shared",
+          "hypothesis": "Calvin shared necklace.",
+          "margin": 2.2881
+        }
+      ],
+      "top1": "gifted",
+      "top1_margin": 6.6172,
+      "target_rank": 1,
+      "top1_margin_gap": 0.5293
+    },
+    {
+      "id": "conv-50/session_20_observation/Calvin/D20:2",
+      "s": "Calvin",
+      "o": "picture",
+      "text": "Calvin shared a picture that symbolizes his hard work and dedication, reminding him of his progress.",
+      "target": "shared",
+      "candidates": [
+        "created",
+        "received",
+        "shared",
+        "wrote"
+      ],
+      "family": "interaction_communication",
+      "target_in_candidates": true,
+      "target_templated": false,
+      "fallback_candidates": [
+        "received",
+        "shared"
+      ],
+      "ranked": [
+        {
+          "predicate": "shared",
+          "hypothesis": "Calvin shared picture.",
+          "margin": 6.918
+        },
+        {
+          "predicate": "wrote",
+          "hypothesis": "Calvin wrote picture.",
+          "margin": 6.0312
+        },
+        {
+          "predicate": "received",
+          "hypothesis": "Calvin received picture.",
+          "margin": 4.625
+        },
+        {
+          "predicate": "created",
+          "hypothesis": "Calvin created picture.",
+          "margin": 3.4062
+        }
+      ],
+      "top1": "shared",
+      "top1_margin": 6.918,
+      "target_rank": 1,
+      "top1_margin_gap": 0.8867
+    },
+    {
+      "id": "conv-50/session_22_observation/Dave/D22:3",
+      "s": "Dave",
+      "o": "car",
+      "text": "Dave restored and modified a car himself, adding a custom exhaust and performance upgrades.",
+      "target": "restored",
+      "candidates": [
+        "acquired",
+        "built",
+        "modified",
+        "owns",
+        "restored"
+      ],
+      "family": "attribute_need",
+      "target_in_candidates": true,
+      "target_templated": false,
+      "fallback_candidates": [
+        "modified",
+        "owns",
+        "restored"
+      ],
+      "ranked": [
+        {
+          "predicate": "modified",
+          "hypothesis": "Dave modified car.",
+          "margin": 7.2227
+        },
+        {
+          "predicate": "restored",
+          "hypothesis": "Dave restored car.",
+          "margin": 7.1914
+        },
+        {
+          "predicate": "built",
+          "hypothesis": "Dave built car.",
+          "margin": 5.0488
+        },
+        {
+          "predicate": "owns",
+          "hypothesis": "Dave owns car.",
+          "margin": 4.4434
+        },
+        {
+          "predicate": "acquired",
+          "hypothesis": "Dave acquired car.",
+          "margin": -0.1335
+        }
+      ],
+      "top1": "modified",
+      "top1_margin": 7.2227,
+      "target_rank": 2,
+      "top1_margin_gap": 0.0312
+    },
+    {
+      "id": "conv-50/session_22_observation/Dave/D22:3",
+      "s": "Dave",
+      "o": "car",
+      "text": "Dave restored and modified a car himself, adding a custom exhaust and performance upgrades.",
+      "target": "modified",
+      "candidates": [
+        "acquired",
+        "built",
+        "modified",
+        "owns",
+        "restored"
+      ],
+      "family": "attribute_need",
+      "target_in_candidates": true,
+      "target_templated": false,
+      "fallback_candidates": [
+        "modified",
+        "owns",
+        "restored"
+      ],
+      "ranked": [
+        {
+          "predicate": "modified",
+          "hypothesis": "Dave modified car.",
+          "margin": 7.2227
+        },
+        {
+          "predicate": "restored",
+          "hypothesis": "Dave restored car.",
+          "margin": 7.1914
+        },
+        {
+          "predicate": "built",
+          "hypothesis": "Dave built car.",
+          "margin": 5.0488
+        },
+        {
+          "predicate": "owns",
+          "hypothesis": "Dave owns car.",
+          "margin": 4.4434
+        },
+        {
+          "predicate": "acquired",
+          "hypothesis": "Dave acquired car.",
+          "margin": -0.1335
+        }
+      ],
+      "top1": "modified",
+      "top1_margin": 7.2227,
+      "target_rank": 1,
+      "top1_margin_gap": 0.0312
+    }
+  ]
+}
