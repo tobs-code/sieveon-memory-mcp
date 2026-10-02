@@ -1299,6 +1299,7 @@ class EntropyGate:
         facts_created = 0
         tier_skipped = 0
         structurally_dropped = 0
+        verifier_dropped = 0
         tier_thr = tier_threshold()
         saliences: List[float] = []
         entity_ids = []
@@ -1352,6 +1353,36 @@ class EntropyGate:
                 if not _copular_event_rejected(text, t.get("predicate", ""))
             ]
             structurally_dropped = before_filter - len(svo_triples)
+
+            # NLI verifier. The extractor answers "which label fits this pair",
+            # never "does this sentence entail the relation", so high
+            # confidence survives on the wrong verb. The verifier asks exactly
+            # that question, but only for the band where the confidence cannot
+            # decide. Above the band auto-accepts, below it drops; the model
+            # never sees either. Fails closed: a verifier error drops the
+            # triple rather than risking a wrong fact in the graph.
+            from src.extraction.verifier import BAND_HI as _BAND_HI
+            from src.extraction.verifier import BAND_LO as _BAND_LO
+            from src.extraction.verifier import verify_triples as _verify
+
+            def _in_band(t):
+                try:
+                    c = float(t.get("confidence") or 0.0)
+                except (TypeError, ValueError):
+                    return False
+                return _BAND_LO <= c <= _BAND_HI
+
+            band = [t for t in svo_triples if _in_band(t)]
+            svo_triples = [t for t in svo_triples if not _in_band(t)]
+            verifier_dropped = 0
+            if band:
+                try:
+                    accepted_band, verifier_dropped = _verify(text, band)
+                    svo_triples.extend(accepted_band)
+                except Exception as e:
+                    sys.stderr.write(f"[Verifier] failed, dropping band: {e}\n")
+                    verifier_dropped = len(band)
+
             for triple in svo_triples:
                 subject = triple["subject"]
                 predicate = triple["predicate"]
@@ -1392,12 +1423,20 @@ class EntropyGate:
                                 print(f"  [KG] SVO Fact already exists, skipping: {subject} -[{predicate}]-> {obj}")
                         else:
                             sal = self.fact_salience(confidence, predicate, event_novelty)
+                            # The verifier margin travels on the fact so the
+                            # accept threshold can move without re-ingesting.
+                            margin = triple.get("verifier_margin")
+                            margin_sql = (
+                                f"verifier_margin = {margin:.4f},"
+                                if isinstance(margin, (int, float)) else ""
+                            )
                             relate_sql = f"""
                             RELATE {entity_ids[subject_idx]}->fact->{entity_ids[obj_idx]}
                             SET predicate = '{predicate_escaped}',
                                 source_event = {event_id},
                                 confidence = {confidence:.4f},
                                 salience = {sal:.4f},
+                                {margin_sql}
                                 extractor = '{extractor}';
                             """
                             relate_result = self._query_surreal(relate_sql)
@@ -1577,6 +1616,8 @@ class EntropyGate:
             # Narrow structural pre-filter (copular + event predicate).
             # Reported so a change in stored-fact volume is attributable.
             "structurally_dropped": structurally_dropped,
+            # NLI verifier on the ambiguous band, same reasoning.
+            "verifier_dropped": verifier_dropped,
             "avg_fact_salience": avg_sal,
             "salience_version": SALIENCE_VERSION if saliences else None,
         }

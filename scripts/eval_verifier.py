@@ -37,38 +37,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 ROOT = Path(__file__).resolve().parents[1]
 DRAFT = ROOT / "docs" / "eval_triples_gold_locomo_draft_model.jsonl"
 
-# Predicate -> claim template. The template must preserve the semantic claim:
-# "Andrew -built-> apartment" is wrong only if the claim reads as a building
-# event, so "built the" is the verbatim relation, not a paraphrase.
-CLAIM: Dict[str, str] = {
-    "acquired": "{s} acquired {o}.",
-    "built": "{s} built {o}.",
-    "created": "{s} created {o}.",
-    "designed": "{s} designed {o}.",
-    "developed": "{s} developed {o}.",
-    "discovered": "{s} discovered {o}.",
-    "founded": "{s} founded {o}.",
-    "funded": "{s} funded {o}.",
-    "integrated": "{s} integrated {o}.",
-    "joined": "{s} joined {o}.",
-    "leads": "{s} leads {o}.",
-    "located_in": "{s} is located in {o}.",
-    "part_of": "{s} is part of {o}.",
-    "provides": "{s} provides {o}.",
-    "uses": "{s} uses {o}.",
-    "works_at": "{s} works at {o}.",
-    "wrote": "{s} wrote {o}.",
-}
+from src.extraction.verbalise import CLAIM, verbalise  # noqa: E402
 
 BAND_LO, BAND_HI = 0.70, 0.95
-
-
-def verbalise(subject: str, predicate: str, obj: str) -> str:
-    """Turn (s, p, o) into the natural-language claim the verifier judges."""
-    template = CLAIM.get(predicate)
-    if template is None:
-        template = "{s} " + predicate.replace("_", " ") + " {o}."
-    return template.format(s=subject, o=obj)
 
 
 def bootstrap_auc(

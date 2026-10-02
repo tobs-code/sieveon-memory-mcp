@@ -80,7 +80,11 @@ async def _store_content(content: str, source: str = "user_input", debug: bool =
     if kg_result:
         gate_info["kg"] = {"entities_created": kg_result.get("entities_created", 0),
                             "facts_created": kg_result.get("facts_created", 0),
-                            "tier_skipped": kg_result.get("tier_skipped", 0)}
+                            "tier_skipped": kg_result.get("tier_skipped", 0),
+                            # Which pre-write filters fired, and how often. Without
+                            # these a drop in stored-fact volume is silent.
+                            "structurally_dropped": kg_result.get("structurally_dropped", 0),
+                            "verifier_dropped": kg_result.get("verifier_dropped", 0)}
 
     return {"event_id": event_id, "status": "stored", "source": source,
             "trust": trust if isinstance(trust, str) and trust else ("direct" if source == "user_input" else "untrusted"),

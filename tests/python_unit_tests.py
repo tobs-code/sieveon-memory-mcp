@@ -822,6 +822,123 @@ class TestCopularEventGate(unittest.TestCase):
         self.assertFalse(_copular_event_rejected("", "built"))
 
 
+class TestVerifierIntegration(unittest.TestCase):
+    """The verifier sits between extraction and the DB write, and only the
+    ambiguous band goes to the model. Above auto-accepts, below drops. The
+    decision record fixes the band at 0.70-0.95 with an accept margin of
+    6.2617, measured, not rounded."""
+
+    def test_verbalise_is_shared_not_duplicated(self):
+        """Eval and production must judge the same claims.
+
+        If scripts/eval_verifier.py carried its own CLAIM dict, a template
+        change in one without the other would measure one thing and deploy
+        another. Both import from src.extraction.verbalise.
+        """
+        import ast
+        from pathlib import Path
+        root = Path(__file__).resolve().parents[1]
+        src = (root / "scripts" / "eval_verifier.py").read_text(encoding="utf-8")
+        tree = ast.parse(src)
+        defined = {n.targets[0].id for n in ast.walk(tree)
+                   if isinstance(n, ast.Assign)
+                   and isinstance(n.targets[0], ast.Name)}
+        self.assertNotIn(
+            "CLAIM", defined,
+            "scripts/eval_verifier.py must import CLAIM from "
+            "src.extraction.verbalise, not redefine it")
+
+    def test_verbalise_covers_every_inference_label(self):
+        from src.extraction.entity_utils import _SIEVEON_RELATION_LABELS
+        from scripts.audit_relation_labels import slug
+        from src.extraction.verbalise import CLAIM
+        for label in _SIEVEON_RELATION_LABELS:
+            self.assertIn(slug(label), CLAIM,
+                          f"no claim template for {label!r}: the verifier "
+                          f"would fall back to de-sugging")
+
+    def test_band_boundaries_match_eval(self):
+        from src.extraction import verbalise as v
+        import ast
+        from pathlib import Path
+        root = Path(__file__).resolve().parents[1]
+        src = (root / "scripts" / "eval_verifier.py").read_text(encoding="utf-8")
+        tree = ast.parse(src)
+        for node in ast.walk(tree):
+            if (isinstance(node, ast.Assign)
+                    and isinstance(node.targets[0], ast.Name)
+                    and node.targets[0].id in ("BAND_LO", "BAND_HI")):
+                val = ast.literal_eval(node.value)
+                if node.targets[0].id == "BAND_LO":
+                    self.assertEqual(val, v.BAND_LO)
+                else:
+                    self.assertEqual(val, v.BAND_HI)
+        self.assertEqual((v.BAND_LO, v.BAND_HI), (0.70, 0.95))
+
+    def test_verify_splits_by_band_without_a_model(self):
+        """Band routing must work even when the model is unreachable.
+
+        Triples above the band pass with margin None, triples below drop,
+        and only the band reaches the model. A model failure must drop the
+        band rather than let unjudged triples into the graph.
+        """
+        import src.extraction.verifier as vf
+
+        calls = []
+
+        class _Fake:
+            pass
+
+        async def _fake(*a, **kw):
+            calls.append(a)
+
+        orig = vf._get_verifier
+        vf._get_verifier = lambda: (_Fake(), 0, 1)
+
+        class _Model:
+            def predict(self, pairs, convert_to_numpy=True):
+                import numpy as np
+                # entailment 7.0, contradiction 0.0 -> margin 7.0, accepts
+                return np.array([[0.0, 7.0, 0.0] for _ in pairs])
+
+        vf._get_verifier = lambda: (_Model(), 1, 0)
+        try:
+            accepted, dropped = vf.verify_triples("Andrew is a person.", [
+                {"subject": "A", "predicate": "built", "object": "B",
+                 "confidence": 0.99},
+                {"subject": "C", "predicate": "uses", "object": "D",
+                 "confidence": 0.80},
+                {"subject": "E", "predicate": "leads", "object": "F",
+                 "confidence": 0.50},
+            ])
+            self.assertEqual(len(accepted), 2)
+            self.assertEqual(dropped, 1)
+            self.assertIsNone(
+                [t for t in accepted if t["subject"] == "A"][0]
+                ["verifier_margin"])
+            self.assertAlmostEqual(
+                [t for t in accepted if t["subject"] == "C"][0]
+                ["verifier_margin"], 7.0)
+        finally:
+            vf._get_verifier = orig
+
+    def test_verifier_failure_drops_the_band(self):
+        import src.extraction.verifier as vf
+        orig = vf._get_verifier
+
+        def _boom():
+            raise RuntimeError("no GPU today")
+
+        vf._get_verifier = _boom
+        try:
+            with self.assertRaises(RuntimeError):
+                vf.verify_triples("x", [{
+                    "subject": "A", "predicate": "built", "object": "B",
+                    "confidence": 0.80}])
+        finally:
+            vf._get_verifier = orig
+
+
 class TestRelationLabelCoverage(unittest.TestCase):
     """The inference label list is the model's entire output space.
 
