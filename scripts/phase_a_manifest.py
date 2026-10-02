@@ -182,6 +182,17 @@ def validate_constructed(entries: List[Dict[str, Any]],
             if len(e["target_relation"]) != 1:
                 problems.append(f"{frame}/{e['class']}: more than one target "
                                 f"relation: {e['target_relation']}")
+        # nominal_relation_scope: epistemic family asserts vs mentions.
+        fams = {e.get("construction_family_id", frame) for e in group}
+        if "nominal_possessive:epistemic" in fams:
+            if a["cue_phrase"] not in EPISTEMIC_CLEAN:
+                problems.append(f"{pair_id}: epistemic clean cue not allowlisted")
+            if b["cue_phrase"] not in EPISTEMIC_HARD:
+                problems.append(f"{pair_id}: epistemic hard cue not allowlisted")
+            if a.get("nominal_relation_scope") != "asserted" or \
+                    b.get("nominal_relation_scope") != "mentioned":
+                problems.append(f"{pair_id}: nominal_relation_scope must be "
+                                f"asserted/mentioned")
         for t in corpus:
             if a["sentence"].strip().lower() == t or \
                     b["sentence"].strip().lower() == t:
@@ -319,8 +330,16 @@ CUE_VARIANTS = {
         ("cheered on", "spoke of cheering on"),
         ("urged", "talked about urging"),
     ],
-    "nominal_possessive": [
+    # Two independent construction families share frame_id nominal_possessive
+    # but never share construction_family_id. Splits must use family+pair.
+    "nominal_possessive:instrumental": [
         ("'s support for", "'s support was instrumental for"),
+    ],
+    "nominal_possessive:epistemic": [
+        ("unwavering", "alleged"),
+        ("substantial", "rumored"),
+        ("consistent", "reported"),
+        ("sustained", "claimed"),
     ],
     "assistance_performed_vs_mentioned": [
         ("helped", "spoke of helping"),
@@ -339,10 +358,15 @@ CUE_VARIANTS = {
 SHELLS = {
     "active_assistance": "{X} {cue} {Y} with the fundraiser.",
     "active_encouragement": "{X} {cue} {Y} to keep going.",
-    "nominal_possessive": "{X} {cue} {Y} was steady.",
+    "nominal_possessive:instrumental": "{X} {cue} {Y} was steady.",
+    "nominal_possessive:epistemic": "{X}'s support for {Y} was {cue}.",
     "assistance_performed_vs_mentioned": "{X} {cue} {Y} move the boxes.",
     "intentional": "{X} {cue} {Y} after she asked.",
 }
+# Controlled epistemic cue allowlist: hard cues are mention/attribution
+# markers, not negations. Do not extend without manual semantic vetting.
+EPISTEMIC_CLEAN = {"unwavering", "substantial", "consistent", "sustained"}
+EPISTEMIC_HARD = {"alleged", "rumored", "reported", "claimed"}
 
 ENTITY_SLOTS = [
     (["Maria", "Tim"], ["person", "person"]),
@@ -358,32 +382,51 @@ ENTITY_SLOTS = [
 def build_pairs() -> List[Dict[str, Any]]:
     """Matched pairs across all five frames, keyed for pair-level splitting."""
     out: List[Dict[str, Any]] = []
+    # frame -> list of construction families; nominal_possessive has two.
+    frame_families = {
+        "active_assistance": ["active_assistance"],
+        "active_encouragement": ["active_encouragement"],
+        "nominal_possessive": ["nominal_possessive:instrumental",
+                               "nominal_possessive:epistemic"],
+        "assistance_performed_vs_mentioned": ["assistance_performed_vs_mentioned"],
+        "intentional": ["intentional"],
+    }
     for fi, f in enumerate(CONTROLLED_FRAMES):
         frame = f["frame"]
-        shell = SHELLS[frame]
-        variants = CUE_VARIANTS[frame]
-        for vi, (pos_cue, neg_cue) in enumerate(variants):
-            # One axis moves at a time across pairs: the cue variant advances
-            # fastest, the entity slot advances slowest, so consecutive pairs
-            # differ in exactly one dimension.
-            ents, types = ENTITY_SLOTS[(fi * len(variants) + vi) % len(ENTITY_SLOTS)]
-            surface = "" if vi % 2 == 0 else "the "
-            pid = f"{frame}--{vi:02d}"
-            for cls, cue in (("clean_positive", pos_cue),
-                             ("hard_negative", neg_cue)):
-                out.append({
-                    "pair_id": pid, "frame_id": frame, "frame_index": fi,
-                    "variant_index": vi, "cue": f["cue"],
-                    "class": cls, "cue_phrase": cue,
-                    "entities": list(ents), "entity_types": list(types),
-                    "surface": surface,
-                    "sentence": shell.format(X=ents[0], Y=ents[1], cue=cue),
-                    "target_relation": ["provides"],
-                    "provenance": ("controlled_clean_positive" if cls ==
-                                   "clean_positive" else
-                                   "controlled_hard_negative"),
-                    "split_key": pid,
-                })
+        for fam in frame_families[frame]:
+            shell = SHELLS[fam]
+            variants = CUE_VARIANTS[fam]
+            for vi, (pos_cue, neg_cue) in enumerate(variants):
+                # One axis moves at a time across pairs: the cue variant advances
+                # fastest, the entity slot advances slowest, so consecutive pairs
+                # differ in exactly one dimension.
+                ents, types = ENTITY_SLOTS[(fi * len(variants) + vi) % len(ENTITY_SLOTS)]
+                surface = "" if vi % 2 == 0 else "the "
+                pid = f"{fam}--{vi:02d}"
+                for cls, cue in (("clean_positive", pos_cue),
+                                 ("hard_negative", neg_cue)):
+                    out.append({
+                        "pair_id": pid, "frame_id": frame,
+                        "construction_family_id": fam, "frame_index": fi,
+                        "variant_index": vi, "cue": f["cue"],
+                        "class": cls, "cue_phrase": cue,
+                        "entities": list(ents), "entity_types": list(types),
+                        "surface": surface,
+                        "sentence": shell.format(X=ents[0], Y=ents[1], cue=cue),
+                        "target_relation": ["provides"],
+                        "provenance": ("controlled_clean_positive" if cls ==
+                                       "clean_positive" else
+                                       "controlled_hard_negative"),
+                        # Split key is family+pair: epistemic pairs must never
+                        # land in the same split as their clean counterparts
+                        # via family leakage, nor split within a pair.
+                        "split_key": pid,
+                        "nominal_relation_scope": (
+                            "asserted" if cls == "clean_positive"
+                            and fam == "nominal_possessive:epistemic"
+                            else "mentioned" if fam == "nominal_possessive:epistemic"
+                            else "n/a"),
+                    })
     return out
 
 
@@ -394,7 +437,7 @@ def _render(entry: Dict[str, Any], shell: str, tail: str) -> str:
     return f'{x} {entry["cue_phrase"]}{tail}'
 
 
-MANIFEST_VERSION = "controlled_seed_expanded_v1"
+MANIFEST_VERSION = "controlled_seed_expanded_v2"
 
 # Per-frame status, recorded rather than inferred. A frame with fewer pairs
 # than its siblings is a construction gap and is labelled as one here, so a
@@ -410,15 +453,13 @@ FRAME_STATUS = {
     "intentional": {"status": "sufficient_for_seed_variation",
                     "note": "3 cue variants"},
     "nominal_possessive": {
-        "status": "documented_construction_gap",
-        "note": "1 pair. Every cue that makes the negative grammatical and "
-                "non-supportive lengthens it, so honouring matched_local_syntax "
-                "at a 4-token tolerance leaves only one variant. The frame is "
-                "the one closest to the 18 possessive seed facts, so the gap "
-                "matters; it is closed either by a second shell family whose "
-                "two variants share their syntax, or by leaving it open. It is "
-                "not closed by relaxing the length rule, which would admit "
-                "the 'hard negatives are longer' shortcut.",
+        "status": "gap_closed_by_second_family",
+        "note": "5 pairs: 1 instrumental + 4 epistemic/mention "
+                "(asserted vs alleged/rumored/reported/claimed). v1 digest "
+                "217cd7961023f696a128dee450a3af96 retained in git history; "
+                "v2 adds only the epistemic family. Splits on "
+                "construction_family_id + pair_id. Length diff is 0 tokens "
+                "within every epistemic pair; cue allowlist is controlled.",
     },
 }
 
