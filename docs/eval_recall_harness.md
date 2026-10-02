@@ -214,3 +214,38 @@ in that table is available to a reader and unavailable to the store.
 ## Scaling
 
 Ten high-yield sentences yielded 7 gold facts, 6 of them scorable. Extrapolating over the 27 remaining uniform sentences gives roughly 40 to 50 facts in total, so ~100 gold facts needs roughly three to four times the corpus, not more annotation of what is there. The bottleneck is the corpus, and that is a finding rather than an obstacle.
+
+## Expanded corpus, sampling rule fixed before any gold
+
+`scripts/select_expanded_corpus.py`. The rule exists in the script header and
+was written before a single expanded sentence was annotated.
+
+    pool after exclusions   2397   (2541 LoCoMo observation sentences, minus
+                                    the 57 uniform and the annotated draft set)
+    conversations           10
+    stride within each      12
+    selected                100
+    stratum                 expanded
+
+| | |
+| --- | --- |
+| source | the same 10 LoCoMo conversations, observation sentences only |
+| exclusion | every sentence id already present in any file under `docs/` |
+| order | sorted by conversation, then session number, then id -- no reference to content |
+| draw | every 12th sentence WITHIN each conversation |
+| provenance | no randomness, so removing one sentence never reshuffles the rest |
+
+The stride is within each conversation rather than across the pooled list.
+Pooling first looks simpler and is wrong: ids sort by conversation name as a
+string, so conv-26 supplies the first 15 slots and 100 slots run out inside
+conv-44. Four conversations would have contributed nothing, and any recall
+measured on that would have been a statement about two speakers. Striding
+within each conversation keeps all ten present, 7 to 12 sentences each.
+
+Two populations, reported side by side and never pooled:
+
+    uniform recall     the 57-sentence population, 20 gold facts so far
+    expanded recall    the 100-sentence stratum above, its own figures
+
+They have different sampling rules and different sizes. A combined figure
+would describe neither.
