@@ -143,3 +143,74 @@ questions.
 
 Never average a number from one file into a sentence about the other. Where
 a figure could be read either way, quote both with their source.
+
+## Batch 2 and the three axes, 2026-10-02
+
+Ten further sentences annotated gold-first, selected by text features only
+(`scripts/select_recall_batch.py`), then scored against the extractor.
+
+    30 sentences, 21 gold facts (20 scorable, 1 vocabulary gap)
+
+    found 6   imprecise 10   missed 5
+    below_threshold 19   discipline 3   spurious 5
+
+    scorable recall   0.800  (16/20)   pilot said 1.000 (13/13)
+    scorable clean    0.300  (6/20)
+    precision         0.372  (16/43)
+
+The pilot's 1.000 was a small-sample effect and is now superseded. The four
+new misses are one defect type, and a new one: the sentence is there, the
+relation exists in the vocabulary, and nothing was asserted at all.
+
+    Maria  -provides-> support         Audrey -provides-> support
+    Maria  -provides-> encouragement   Audrey -provides-> assistance
+
+This is an extraction dropout, not a predicate error and not a discipline
+error. It cannot show up in any precision figure, because a missing claim
+never appears as a wrong claim. `check_gold_consistency.py` counts these
+five as `never claimed`, which is exactly the missed count -- an independent
+confirmation that the harness detects the absence rather than filing it
+under some other bucket.
+
+### Three axes that must not be summed
+
+| axis | measure | value |
+| ---- | ------- | ----- |
+| extractor coverage | scorable recall | 16/20 = 0.800 |
+| predicate quality | scorable clean recall | 6/20 = 0.300 |
+| schema expressiveness | gold facts outside the vocabulary | 10 |
+
+There is deliberately no combined quality number. A store can be perfectly
+covered by a schema too poor to express what it read, and a good schema
+cannot compensate for a model that asserts nothing.
+
+### Schema gaps by family
+
+`summarise_schema_gaps.py`. Note the count is 10, not 9: the harness's
+`schema_gap_facts` counter covers only the 9 facts the annotator held out on
+scope grounds. `Deborah -received-> quote` was accepted as gold and is also
+outside the vocabulary, so the total of facts the chain cannot store is 10.
+
+| family | facts | predicates |
+| ------ | ----: | ---------- |
+| event / interaction | 4 | attended, received, sent |
+| attribute / requirement | 2 | requires |
+| conversation / interest | 2 | asked_about |
+| perception / media | 1 | watched |
+| location / motion | 1 | traveled_to |
+
+    requires          2   Peruvian Lilies -> watering, sunlight
+    asked_about       2   John -> Tim's book collection, picture
+    received          2   Joanna -> feedback, Deborah -> quote
+    watched           1   John -> That
+    attended          1   Caroline -> LGBTQ conference
+    traveled_to       1   Deborah -> Bali
+    sent              1   Tim -> picture
+
+The inventory is heavy on creator and employment relations and thin on
+relations describing events between people, movement and needs. Every fact
+in that table is available to a reader and unavailable to the store.
+
+## Scaling
+
+Ten high-yield sentences yielded 7 gold facts, 6 of them scorable. Extrapolating over the 27 remaining uniform sentences gives roughly 40 to 50 facts in total, so ~100 gold facts needs roughly three to four times the corpus, not more annotation of what is there. The bottleneck is the corpus, and that is a finding rather than an obstacle.

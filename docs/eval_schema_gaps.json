@@ -1,0 +1,94 @@
+{
+  "annotator_scope_gaps": [
+    {
+      "s": "Peruvian Lilies",
+      "p": "requires",
+      "o": "watering",
+      "reason": "no requires relation in schema"
+    },
+    {
+      "s": "Peruvian Lilies",
+      "p": "requires",
+      "o": "sunlight",
+      "reason": "no requires relation in schema"
+    },
+    {
+      "s": "John",
+      "p": "watched",
+      "o": "That",
+      "reason": "no watched relation in schema"
+    },
+    {
+      "s": "John",
+      "p": "asked_about",
+      "o": "Tim's book collection",
+      "reason": "asked_about not in production vocabulary"
+    },
+    {
+      "s": "John",
+      "p": "asked_about",
+      "o": "picture from MinaLima",
+      "reason": "asked_about not in production vocabulary"
+    },
+    {
+      "s": "Caroline",
+      "p": "attended",
+      "o": "LGBTQ conference",
+      "reason": "attended not in production vocabulary"
+    },
+    {
+      "s": "Deborah",
+      "p": "traveled_to",
+      "o": "Bali",
+      "reason": "traveled_to not in production vocabulary"
+    },
+    {
+      "s": "Tim",
+      "p": "sent",
+      "o": "picture",
+      "reason": "sent not in production vocabulary"
+    },
+    {
+      "s": "Joanna",
+      "p": "received",
+      "o": "feedback",
+      "reason": "received not in production vocabulary"
+    }
+  ],
+  "unexpressible_gold": [
+    {
+      "s": "Deborah",
+      "p": "received",
+      "o": "quote",
+      "source": "accepted as gold"
+    }
+  ],
+  "predicate_counts": {
+    "requires": 2,
+    "watched": 1,
+    "asked_about": 2,
+    "attended": 1,
+    "traveled_to": 1,
+    "sent": 1,
+    "received": 2
+  },
+  "families": {
+    "attribute / requirement": [
+      "requires"
+    ],
+    "perception / media": [
+      "watched"
+    ],
+    "conversation / interest": [
+      "asked_about"
+    ],
+    "event / interaction": [
+      "attended",
+      "received",
+      "sent"
+    ],
+    "location / motion": [
+      "traveled_to"
+    ]
+  }
+}
