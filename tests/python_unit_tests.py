@@ -603,6 +603,82 @@ class TestSurrealStatementBuilding(unittest.TestCase):
                 f"{assigned.get(name)!r}")
 
 
+class TestLoCoMoGoldBuilder(unittest.TestCase):
+    """The production gold must come from third-party text, stratified.
+
+    The 20 hand-written adversarial sentences estimated worst case, not
+    typical case, and every error found in them turned out to be mine --
+    a comitative "with" phrase scored as a model error, and span boundaries
+    scored as wrong triples when they were an annotation convention. A gold
+    set I wrote cannot fix that, so the replacement is LoCoMo's own
+    observations plus a uniform draw for the production rate.
+    """
+
+    def test_strata_are_detected(self):
+        from scripts.build_triples_gold_locomo import classify
+        cases = {
+            "Elon Musk founded SpaceX in 2002.": "active-verb",
+            "The Analytical Engine was designed by Charles Babbage.": "passive",
+            "QuantumDB is a database engine.": "copular",
+            "Her manager is Rachel Cohen.": "nominal",
+        }
+        for text, expected in cases.items():
+            self.assertIn(expected, classify(text),
+                          f"{text!r} was not tagged {expected}: "
+                          f"got {classify(text)}")
+
+    def test_uniform_draw_is_separate_from_stratified(self):
+        """A stratified set over-weights hard cases on purpose.
+
+        Its aggregate precision is a worst-case-weighted figure, so a uniform
+        draw is needed for the production rate and the two must not be
+        averaged.
+        """
+        import json
+        from pathlib import Path
+        root = Path(__file__).resolve().parents[1] / "docs"
+        strat = [json.loads(l) for l in
+                 (root / "eval_triples_gold_locomo_draft.jsonl")
+                 .read_text(encoding="utf-8").splitlines() if l.strip()]
+        unif = [json.loads(l) for l in
+                (root / "eval_triples_gold_locomo_uniform.jsonl")
+                 .read_text(encoding="utf-8").splitlines() if l.strip()]
+
+        self.assertTrue(all(r["stratum"] != "uniform" for r in strat))
+        self.assertTrue(all(r["stratum"] == "uniform" for r in unif))
+
+        strat_ids = {r["id"] for r in strat}
+        unif_ids = {r["id"] for r in unif}
+        self.assertEqual(strat_ids & unif_ids, set(),
+                         "a sentence cannot be in both draws")
+
+        # And the uniform draw must look like the corpus, not like the strata.
+        from collections import Counter
+        self.assertGreater(len(unif), 40)
+        self.assertEqual(
+            len({r["speaker"] for r in unif}), len({r["speaker"] for r in strat}) + 2,
+            "expect roughly comparable speaker diversity")
+
+    def test_drafts_are_unlabelled_until_a_human_fills_them(self):
+        """triples must be null, never an LLM guess.
+
+        An ACL 2025 study found LLM judges on biomedical RE below 50% accuracy
+        before output-format constraints, so auto-filling would rebuild the
+        trust problem the gold set exists to fix.
+        """
+        import json
+        from pathlib import Path
+        root = Path(__file__).resolve().parents[1] / "docs"
+        for name in ("eval_triples_gold_locomo_draft.jsonl",
+                     "eval_triples_gold_locomo_uniform.jsonl"):
+            rows = [json.loads(l) for l in
+                    (root / name).read_text(encoding="utf-8").splitlines() if l.strip()]
+            self.assertTrue(rows, f"{name} is empty")
+            self.assertTrue(
+                all(r["triples"] is None for r in rows),
+                f"{name}: triples must stay null until hand-annotated")
+
+
 class TestRelationLabelCoverage(unittest.TestCase):
     """The inference label list is the model's entire output space.
 
