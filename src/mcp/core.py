@@ -334,13 +334,22 @@ def _budget_aware_should_retry(sql: str) -> bool:
 
 
 async def _query_surreal(sql: str, params: Optional[Dict[str, Any]] = None) -> Any:
-    """Execute SurrealQL — with optional parameters (like prepared statements).
-    
-    When params is provided, uses JSON body with SurrealDB's parameterized query API:
+    """Execute SurrealQL — with optional bind parameters.
+
+    Parameters are bound with SurrealQL LET declarations prepended to the
+    statement, NOT via a JSON request body:
         sql = "CREATE entity SET name = $name"
         params = {"name": "Tobias"}
-    
-    This avoids string injection and escaping issues.
+
+    A JSON body ({"sql": ..., "params": ...}) does NOT work against
+    SurrealDB 3.3: POST /sql is documented to expect the raw body to be
+    "a set of SurrealQL statements", so a JSON object is parsed as an inert
+    object literal. The server then returns that literal as the result --
+    status OK, but nothing was executed. Verified against 3.3.0.
+
+    Values are serialised as JSON literals, which are valid SurrealQL values,
+    so no SurrealQL string escaping is needed. json.dumps emits only
+    double-quoted strings; SurrealQL accepts both quote styles.
     """
     global \
         _surreal_failure_count, \
@@ -356,21 +365,16 @@ async def _query_surreal(sql: str, params: Optional[Dict[str, Any]] = None) -> A
                 asyncio.create_task(_background_reconnect_task())
                 _reconnect_task_started = True
 
+    headers = {
+        "Accept": "application/json",
+        "Content-Type": "text/plain",
+    }
+    statements = [f"USE NS {SURREAL_NS} DB {SURREAL_DB};"]
     if params:
-        headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-        }
-        body_dict: Dict[str, Any] = {"sql": sql}
-        # Inject namespace + db via params (SurrealDB 2.x supports $ns, $db)
-        body_dict["params"] = dict(params)
-        body = json.dumps(body_dict)
-    else:
-        headers = {
-            "Accept": "application/json",
-            "Content-Type": "text/plain",
-        }
-        body = f"USE NS {SURREAL_NS} DB {SURREAL_DB};\n{sql}"
+        for key, value in params.items():
+            statements.append(f"LET ${key} = {json.dumps(value)};")
+    statements.append(sql)
+    body = "\n".join(statements)
 
     # Read circuit state without holding lock while query runs
     async with _surreal_lock:
@@ -395,22 +399,13 @@ async def _query_surreal(sql: str, params: Optional[Dict[str, Any]] = None) -> A
     client = await _get_client()
     for attempt in range(max_retries):
         try:
-            if isinstance(body, str):
-                response = await client.post(
-                    SURREAL_URL,
-                    content=body,
-                    headers=headers,
-                    auth=SURREAL_AUTH,
-                    timeout=30.0,
-                )
-            else:
-                response = await client.post(
-                    SURREAL_URL,
-                    json=json.loads(body) if isinstance(body, str) else None,
-                    headers=headers,
-                    auth=SURREAL_AUTH,
-                    timeout=30.0,
-                )
+            response = await client.post(
+                SURREAL_URL,
+                content=body,
+                headers=headers,
+                auth=SURREAL_AUTH,
+                timeout=30.0,
+            )
             if response.status_code >= 400:
                 error_msg = response.text
                 print(
@@ -784,3 +779,56 @@ async def ensure_schema_loaded():
             print(f"[MIGRATION] {line}")
     except Exception as e:
         print(f"   [WARN] Migration check failed (non-fatal): {e}")
+
+    # ── Router learned costs ──────────────────────────────────────────
+    # Restore per-context strategy effectiveness from the last run.
+    # Fail-open: a missing row or an unreachable DB starts unlearned.
+    await load_router_costs()
+
+
+async def load_router_costs() -> bool:
+    """Restore CostTracker state from the router_costs table.
+
+    Returns True when state was restored, False otherwise. Never raises:
+    routing must work with empty metrics.
+    """
+    try:
+        from src.router.cost_awareness import cost_tracker
+        rows = _extract_result(await _query_surreal(
+            "SELECT state FROM router_costs:state;"
+        ), 1)
+        if not rows:
+            return False
+        state = rows[0].get("state") if isinstance(rows[0], dict) else None
+        if not isinstance(state, dict):
+            return False
+        cost_tracker.import_state(state)
+        return True
+    except Exception as e:
+        print(f"   [WARN] Router cost restore failed (non-fatal): {e}")
+        return False
+
+
+async def save_router_costs() -> bool:
+    """Snapshot CostTracker state to the router_costs table (single row).
+
+    Fail-open: a failed save only loses learning since the last snapshot.
+    """
+    try:
+        from src.router.cost_awareness import cost_tracker
+        # UPSERT, not UPDATE. Since SurrealDB 2.0 an UPDATE against a record ID
+        # that does not exist is a no-op: it will not create the row, so the
+        # very first snapshot would be silently dropped. UPSERT is documented
+        # as "insert, otherwise update" and is the only single-statement
+        # create-or-replace primitive (INSERT ... ON DUPLICATE KEY UPDATE is
+        # the other). State goes in as a bound parameter, not interpolated
+        # JSON, so SurrealQL never has to parse it.
+        await _query_surreal(
+            "UPSERT router_costs:state CONTENT { state: $state, "
+            "updated_at: time::now() } RETURN NONE;",
+            {"state": cost_tracker.export_state()},
+        )
+        return True
+    except Exception as e:
+        print(f"   [WARN] Router cost snapshot failed (non-fatal): {e}")
+        return False

@@ -189,6 +189,12 @@ def _register_builtin(engine: MigrationEngine):
         apply_fn=_m006_gate_log_salience,
     ))
 
+    engine.register(Migration(
+        version=7,
+        description="router_costs table for persisted per-context strategy effectiveness",
+        apply_fn=_m007_router_costs,
+    ))
+
 
 async def _m001_baseline(query):
     sql = r"""
@@ -363,6 +369,28 @@ async def _m006_gate_log_salience(query):
     statements = [
         "DEFINE FIELD IF NOT EXISTS salience ON gate_log TYPE none | float;",
         "DEFINE FIELD IF NOT EXISTS salience_version ON gate_log TYPE none | string;",
+    ]
+    for stmt in statements:
+        await query(stmt)
+
+
+async def _m007_router_costs(query):
+    """router_costs table: one row ('state') holding the CostTracker export.
+
+    Two SurrealDB 3.x details drive this definition:
+
+    * UPSERT, not UPDATE. Since 2.0 an UPDATE against a record ID that does
+      not exist is a no-op, so a bare UPDATE would drop the first snapshot.
+    * FLEXIBLE. On a SCHEMAFULL table, `TYPE object` is schemafull by
+      default: without FLEXIBLE, writing `state: {metrics: {...}}` fails
+      with "Found field 'state.metrics', but no such field exists".
+
+    An absent row simply means routing starts unlearned.
+    """
+    statements = [
+        "DEFINE TABLE IF NOT EXISTS router_costs SCHEMAFULL;",
+        "DEFINE FIELD IF NOT EXISTS state ON router_costs TYPE option<object> FLEXIBLE;",
+        "DEFINE FIELD IF NOT EXISTS updated_at ON router_costs TYPE none | datetime;",
     ]
     for stmt in statements:
         await query(stmt)

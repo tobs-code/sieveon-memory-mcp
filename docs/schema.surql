@@ -85,6 +85,15 @@ DEFINE INDEX IF NOT EXISTS gate_log_ts ON gate_log COLUMNS ts;
 DEFINE INDEX IF NOT EXISTS gate_log_decision ON gate_log COLUMNS decision;
 DEFINE INDEX IF NOT EXISTS gate_log_count ON gate_log COUNT;
 
+-- Router learned costs: single row (id 'state') holding the CostTracker
+-- export (per-query-type strategy effectiveness). Fail-open: missing row
+-- means routing starts unlearned. See migration v7.
+-- FLEXIBLE is required: on SCHEMAFULL, TYPE object is schemafull by
+-- default and nested keys are rejected without it.
+DEFINE TABLE IF NOT EXISTS router_costs SCHEMAFULL;
+DEFINE FIELD IF NOT EXISTS state ON router_costs TYPE option<object> FLEXIBLE;
+DEFINE FIELD IF NOT EXISTS updated_at ON router_costs TYPE option<datetime>;
+
 -- ========================================
 -- ④ Schema Migration Tracking
 -- ========================================
