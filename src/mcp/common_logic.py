@@ -166,7 +166,10 @@ async def _execute_query(
         results = []
 
     entities, facts, events = _categorize_results(results)
-    summary = _synthesize_answer(query, entities, facts, events)
+    summary = _synthesize_answer(
+        query, entities, facts, events,
+        retrieval_relevance=results_raw.get("relevance_score"),
+    )
 
     # Enrich events with matched terms and ranking info
     import re
@@ -214,10 +217,17 @@ async def _execute_query(
         "error": execution_error,
         "summary": {
             "found": summary["found"],
+            # verdict is one of found / weak_match / nothing_found. An agent
+            # needs this to tell "no answer in the store" apart from "here is
+            # something loosely related", which a populated result list alone
+            # does not convey.
+            "verdict": summary["verdict"],
+            "confidence": summary["confidence"],
             "answer": summary["answer"],
             "total_facts": summary["total_facts"],
             "total_entities": summary["total_entities"],
             "total_events": summary["total_events"],
+            "near_misses": summary["near_misses"],
         },
         "budget": {
             "level": budget_enum.value,
@@ -362,7 +372,49 @@ def _categorize_results(results: List[Any]) -> Tuple[List[Dict], List[Dict], Lis
     return entities, facts, events
 
 
-def _synthesize_answer(query: str, entities: List[Dict], facts: List[Dict], events: List[Dict]) -> Dict[str, Any]:
+# Words that must never count as evidence that an event answers the question.
+# They appear in almost any sentence, so matching them produces confident
+# nonsense: "What is the capital of France?" matched "is"/"the" and returned
+# a note about Charles Babbage.
+_SUMMARY_STOPWORDS = frozenset({
+    "who", "what", "which", "where", "when", "why", "how",
+    "is", "are", "was", "were", "be", "been", "being",
+    "do", "does", "did", "have", "has", "had",
+    "the", "a", "an", "and", "or", "of", "to", "in", "on", "for",
+    "with", "by", "from", "at", "as", "it", "its", "this", "that",
+    "first", "made", "make", "makes", "get", "get", "any", "all",
+    "can", "could", "should", "would", "will", "shall", "may", "might",
+    "there", "here", "about", "into", "than", "then", "some", "such",
+    "not", "no", "yes", "if", "but", "so", "because", "when", "while",
+})
+
+
+_SUMMARY_FOUND_THRESHOLD = 0.6
+
+
+# Above this, retrieval results may be trusted for facts and entities that
+# have no lexical overlap with the query. Measured on the retrieval gold set:
+# paraphrase queries the router gets right score ~0.8, while no-answer
+# probes sit at ~0.3. Gating on it keeps paraphrased answers while still
+# rejecting an unrelated query.
+_SUMMARY_TRUST_RETRIEVAL_ABOVE = 0.7
+
+
+def _is_confident_retrieval(relevance: Optional[float]) -> bool:
+    """Whether the retriever looked confident enough to trust a paraphrase."""
+    return (
+        relevance is not None
+        and relevance >= _SUMMARY_TRUST_RETRIEVAL_ABOVE
+    )
+
+
+def _synthesize_answer(
+    query: str,
+    entities: List[Dict],
+    facts: List[Dict],
+    events: List[Dict],
+    retrieval_relevance: Optional[float] = None,
+) -> Dict[str, Any]:
     """Synthesize a structured answer from entities, facts, and events."""
     answer_parts = []
     key_facts = []
@@ -371,7 +423,11 @@ def _synthesize_answer(query: str, entities: List[Dict], facts: List[Dict], even
 
     import re
     query_lower = query.lower()
-    query_words = {w for w in re.findall(r'\b\w+\b', query_lower) if len(w) > 2}
+    query_words = {
+        w
+        for w in re.findall(r"\b\w+\b", query_lower)
+        if len(w) > 2 and w not in _SUMMARY_STOPWORDS
+    }
 
     fact_entity_names = set()
     for f in facts:
@@ -392,6 +448,17 @@ def _synthesize_answer(query: str, entities: List[Dict], facts: List[Dict], even
             subj_words = {w for w in re.findall(r'\b\w+\b', subj.lower()) if len(w) > 2}
             obj_words = {w for w in re.findall(r'\b\w+\b', obj.lower()) if len(w) > 2}
             if not (subj_words & query_words or obj_words & query_words):
+                # No lexical overlap. The retriever may have matched this
+                # semantically ("The streaming service's cloud provider?" shares
+                # no content word with "Netflix uses Amazon Web Services"), so
+                # do not drop it outright -- but only when the retriever
+                # actually looks confident. Without that gate every fact came
+                # back for every query, because the strategies return their
+                # top-k regardless of the query.
+                if not _is_confident_retrieval(retrieval_relevance):
+                    continue
+                key_facts.append(f"{subj} {pred} {obj}")
+                fact_entity_names.update([subj.lower(), obj.lower()])
                 continue
             key_facts.append(f"{subj} {pred} {obj}")
             fact_entity_names.update([subj.lower(), obj.lower()])
@@ -405,26 +472,50 @@ def _synthesize_answer(query: str, entities: List[Dict], facts: List[Dict], even
         name_lower = name.lower()
         name_words = {w for w in re.findall(r'\b\w+\b', name_lower) if len(w) > 2}
         if not (name_words & query_words or name_lower in fact_entity_names):
+            # Same reasoning as facts above: keep the entity when the
+            # retriever is confident, drop it otherwise.
+            if not _is_confident_retrieval(retrieval_relevance):
+                continue
+            etype = e.get("type", "")
+            key_entities.append(f"{name} ({etype})" if etype else name)
+            if len(key_entities) >= 5:
+                break
             continue
         etype = e.get("type", "")
         key_entities.append(f"{name} ({etype})" if etype else name)
         if len(key_entities) >= 5:
             break
 
-    query_words_list = [w for w in re.findall(r'\b\w+\b', query_lower) if len(w) > 2]
+    query_words_list = [
+        w for w in re.findall(r"\b\w+\b", query_lower) if len(w) > 2 and w not in _SUMMARY_STOPWORDS
+    ]
     for ev in events[:5]:
         content = ev.get("content", "")
         if content:
-            score = 0
-            matched = set()
-            for word in query_words_list:
-                if word.lower() in content.lower():
-                    score += 1
-                    matched.add(word)
-            if score > 0:
+            content_words = {w.lower() for w in re.findall(r"\b\w+\b", content.lower())}
+            # Whole-word matching on content terms. Substring matching scored
+            # "design" inside "designed" and counted question words like "is"
+            # and "was" as hits, so a query with nothing to do with the store
+            # ("What is the capital of France?") still reported a best match
+            # and found=True. That is worse than returning nothing: the
+            # agent reads a populated answer as a real one.
+            matched = [w for w in query_words_list if w in content_words]
+            score = len(matched)
+            # Score by share of the query covered, not by raw count. A longer
+            # query has more words to miss, so a raw count punished it:
+            # "Where is Munich's Acme Corp based?" matched acme/corp/munich --
+            # three real content words including the entity and the place --
+            # yet scored no better than a two-word overlap, and fell below the
+            # bar. Coverage keeps paraphrases honest without letting an
+            # unrelated long sentence in.
+            coverage = score / len(query_words_list) if query_words_list else 0.0
+            # Require more than a single incidental overlap, and enough of the
+            # query to be more than coincidence.
+            if score >= 2 and coverage >= 0.5:
                 event_snippets.append({
                     "content": content[:400],
                     "relevance_hits": score,
+                    "query_coverage": round(coverage, 4),
                     "matched_terms": sorted(matched),
                     "source": ev.get("source", ""),
                     "timestamp": ev.get("timestamp", ""),
@@ -441,6 +532,36 @@ def _synthesize_answer(query: str, entities: List[Dict], facts: List[Dict], even
 
     has_content = bool(key_facts or key_entities or event_snippets)
 
+    # An agent needs to tell "the store has nothing on this" apart from
+    # "here are some loosely related rows". A populated result list with no
+    # statement of confidence invites the agent to answer from noise, and a
+    # bare empty list is ambiguous -- it looks like a broken query. So report
+    # a verdict plus the evidence behind it.
+    #
+    # Confidence is deliberately conservative: a structured fact is strong
+    # evidence, an entity name match is weak on its own, and an event needs
+    # two content-word overlaps. Anything below `found_threshold` is reported
+    # as "nothing_found" while still returning the near misses, so the caller
+    # can see what was considered without treating it as an answer.
+    evidence = 0.0
+    if key_facts:
+        evidence += 0.6
+    if event_snippets:
+        # Scale by how much of the query the best event actually covers, so a
+        # thin overlap cannot reach the bar on strength of raw word count.
+        best_coverage = event_snippets[0].get("query_coverage", 0.0)
+        evidence += min(0.4, 0.4 * best_coverage)
+    if key_entities:
+        evidence += 0.2
+
+    confidence = min(1.0, round(evidence, 4))
+    if not has_content:
+        verdict = "nothing_found"
+    elif confidence >= _SUMMARY_FOUND_THRESHOLD:
+        verdict = "found"
+    else:
+        verdict = "weak_match"
+
     # Build a concise natural-language summary
     text_parts = []
     if key_facts:
@@ -453,13 +574,38 @@ def _synthesize_answer(query: str, entities: List[Dict], facts: List[Dict], even
 
     answer_text = ". ".join(text_parts) if text_parts else ""
 
+    if verdict == "nothing_found":
+        answer_text = (
+            "Nothing in the store matches this query. No facts, entities or "
+            "events were found that relate to it."
+        )
+    elif verdict == "weak_match":
+        answer_text = (
+            "No direct match found. These are the closest related items and may "
+            "not answer the question: " + answer_text
+        )
+
     return {
-        "found": has_content,
+        # Backwards compatible: a caller checking `found` still behaves the
+        # same, but `found` is now false unless the evidence cleared the bar.
+        "found": verdict == "found",
+        "verdict": verdict,
+        "confidence": confidence,
         "answer": answer_text,
         "parts": answer_parts,
         "total_facts": len(facts),
         "total_entities": len(entities),
         "total_events": len(events),
+        # What was considered and why it was not enough. Lets an agent decide
+        # whether to widen the search itself instead of guessing.
+        "near_misses": {
+            "facts": key_facts[:3],
+            "entities": key_entities[:5],
+            "events": [
+                {"content": e["content"][:120], "matched_terms": e["matched_terms"]}
+                for e in event_snippets[:2]
+            ],
+        },
     }
 
 

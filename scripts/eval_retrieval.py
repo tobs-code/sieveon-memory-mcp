@@ -170,16 +170,23 @@ async def evaluate(cases: List[Dict[str, Any]], strategy: Optional[str]) -> Dict
         blob = " ".join(_item_text(i) for i in items).lower()
 
         if not case["gold"]:
-            # No-answer probe. Returning nothing is correct. Returning
-            # something is a false positive, which is the worse failure:
-            # it looks like an answer.
-            answered = len(items) > 0
+            # No-answer probe. Returning items is only a failure if the system
+            # also claims it found something: the verdict is what an agent
+            # acts on. A response that returns near misses while reporting
+            # nothing_found is doing the right thing -- it shows what was
+            # considered without dressing it up as an answer.
+            summary = response.get("summary") or {}
+            verdict = summary.get("verdict")
+            claims_found = bool(summary.get("found")) or verdict == "found"
             rows.append(
                 {
                     "query": case["query"],
                     "kind": "no_answer",
                     "paraphrase": case["paraphrase"],
-                    "false_positive": answered,
+                    # Only a claim of "found" counts as a false positive.
+                    "false_positive": claims_found,
+                    "verdict": verdict,
+                    "confidence": summary.get("confidence"),
                     "items": len(items),
                     "rank": None,
                     "classified_as": response.get("classified_as"),
@@ -207,6 +214,10 @@ async def evaluate(cases: List[Dict[str, Any]], strategy: Optional[str]) -> Dict
                 "kind": "answerable",
                 "paraphrase": case["paraphrase"],
                 "hit": hit,
+                # A retrieval hit that the system then declines to call an
+                # answer is a miss for the agent's purposes: the data was
+                # there and the verdict did not use it.
+                "verdict_found": bool((response.get("summary") or {}).get("found")),
                 "terms_found": hits,
                 "terms_missing": [t for t in gold_terms if t not in hits],
                 "rank": rank,
@@ -229,7 +240,13 @@ async def evaluate(cases: List[Dict[str, Any]], strategy: Optional[str]) -> Dict
         "strategy": strategy or "router",
         "answerable": len(answerable),
         "no_answer": len(no_answer),
-        "hit_rate": _rate(answerable, "hit"),
+        # The number that matters to an agent: the answer was in the response
+        # and the system said so. Retrieval alone is not enough -- returning
+        # the right fact while reporting nothing_found is still a miss.
+        "hit_rate": _rate(
+            [r for r in answerable if r["hit"] and r["verdict_found"]], "hit"
+        ),
+        "retrieval_hit_rate": _rate(answerable, "hit"),
         "literal_hit_rate": _rate(
             [r for r in answerable if not r["paraphrase"]], "hit"
         ),
@@ -247,20 +264,27 @@ def print_report(report: Dict[str, Any]) -> None:
     strat = report["strategy"]
     print(f"\n=== strategy: {strat} ===")
     print(
-        f"  hit rate           {report['hit_rate']:.3f}  "
+        f"  answerable hit rate   {report['hit_rate']:.3f}  "
         f"({report['answerable']} answerable)"
     )
-    print(f"    literal          {report['literal_hit_rate']:.3f}")
-    print(f"    paraphrase       {report['paraphrase_hit_rate']:.3f}")
+    print(f"    retrieval only      {report['retrieval_hit_rate']:.3f}")
+    print(f"    literal             {report['literal_hit_rate']:.3f}")
+    print(f"    paraphrase          {report['paraphrase_hit_rate']:.3f}")
     print(
-        f"  false positives    {report['false_positive_rate']:.3f}  "
-        f"({report['no_answer']} no-answer probes)"
+        f"  false positives       {report['false_positive_rate']:.3f}  "
+        f"({report['no_answer']} no-answer probes; counts a claimed answer)"
     )
-    print(f"  empty responses    {report['empty_rate']:.3f}")
-    print(f"  mean items/answer  {report['mean_items']:.1f}")
+    print(f"  mean items/answer     {report['mean_items']:.1f}")
 
     misses = [r for r in report["rows"] if r["kind"] == "answerable" and not r["hit"]]
-    fps = [r for r in report["rows"] if r["kind"] == "no_answer" and r["false_positive"]]
+    declined = [
+        r for r in report["rows"]
+        if r["kind"] == "answerable" and r["hit"] and not r["verdict_found"]
+    ]
+    if declined:
+        print("\n  retrieved but not reported as an answer:")
+        for r in declined:
+            print(f"    {r['query']}")
     if misses:
         print("\n  misses:")
         for r in misses:
@@ -273,10 +297,14 @@ def print_report(report: Dict[str, Any]) -> None:
                 f"as={r['classified_as']} items={r['items']} "
                 f"rel={r['relevance_score']}"
             )
+    fps = [r for r in report["rows"] if r["kind"] == "no_answer" and r["false_positive"]]
     if fps:
-        print("\n  false positives (should have returned nothing):")
+        print("\n  false positives (claimed an answer it does not have):")
         for r in fps:
-            print(f"    {r['query']}  -> {r['items']} items")
+            print(
+                f"    {r['query']}  -> verdict={r['verdict']} "
+                f"conf={r['confidence']} items={r['items']}"
+            )
 
 
 async def main() -> int:
@@ -307,10 +335,14 @@ async def main() -> int:
 
     if len(reports) > 1:
         print("\n=== comparison ===")
-        print(f"{'strategy':22} {'hit':>6} {'lit':>6} {'para':>6} {'FP':>6} {'items':>7}")
+        print(
+            f"{'strategy':22} {'hit':>6} {'retr':>6} {'lit':>6} {'para':>6} "
+            f"{'FP':>6} {'items':>7}"
+        )
         for r in reports:
             print(
                 f"{r['strategy']:22} {r['hit_rate']:6.3f} "
+                f"{r['retrieval_hit_rate']:6.3f} "
                 f"{r['literal_hit_rate']:6.3f} {r['paraphrase_hit_rate']:6.3f} "
                 f"{r['false_positive_rate']:6.3f} {r['mean_items']:7.1f}"
             )
