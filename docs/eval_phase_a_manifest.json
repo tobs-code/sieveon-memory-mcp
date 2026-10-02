@@ -1,5 +1,40 @@
 {
   "purpose": "phase-A training data, split by provenance",
+  "manifest_version": "controlled_seed_expanded_v1",
+  "frozen_at": "2026-10-02",
+  "controlled_pairs_digest": "217cd7961023f696a128dee450a3af964bdb221e4c3d4c9701a9211aa783e441",
+  "frame_status": [
+    {
+      "frame": "active_assistance",
+      "pairs": 3,
+      "status": "sufficient_for_seed_variation",
+      "note": "3 cue variants"
+    },
+    {
+      "frame": "active_encouragement",
+      "pairs": 3,
+      "status": "sufficient_for_seed_variation",
+      "note": "3 cue variants"
+    },
+    {
+      "frame": "nominal_possessive",
+      "pairs": 1,
+      "status": "documented_construction_gap",
+      "note": "1 pair. Every cue that makes the negative grammatical and non-supportive lengthens it, so honouring matched_local_syntax at a 4-token tolerance leaves only one variant. The frame is the one closest to the 18 possessive seed facts, so the gap matters; it is closed either by a second shell family whose two variants share their syntax, or by leaving it open. It is not closed by relaxing the length rule, which would admit the 'hard negatives are longer' shortcut."
+    },
+    {
+      "frame": "assistance_performed_vs_mentioned",
+      "pairs": 3,
+      "status": "sufficient_for_seed_variation",
+      "note": "3 cue variants"
+    },
+    {
+      "frame": "intentional",
+      "pairs": 3,
+      "status": "sufficient_for_seed_variation",
+      "note": "3 cue variants"
+    }
+  ],
   "natural": [
     {
       "id": "conv-41/session_12_observation/Maria/D12:18",

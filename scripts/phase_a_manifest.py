@@ -394,6 +394,61 @@ def _render(entry: Dict[str, Any], shell: str, tail: str) -> str:
     return f'{x} {entry["cue_phrase"]}{tail}'
 
 
+MANIFEST_VERSION = "controlled_seed_expanded_v1"
+
+# Per-frame status, recorded rather than inferred. A frame with fewer pairs
+# than its siblings is a construction gap and is labelled as one here, so a
+# later reader does not read it as a design choice or quietly relax the
+# matching rule to even the numbers out.
+FRAME_STATUS = {
+    "active_assistance": {"status": "sufficient_for_seed_variation",
+                          "note": "3 cue variants"},
+    "active_encouragement": {"status": "sufficient_for_seed_variation",
+                             "note": "3 cue variants"},
+    "assistance_performed_vs_mentioned": {"status": "sufficient_for_seed_variation",
+                                          "note": "3 cue variants"},
+    "intentional": {"status": "sufficient_for_seed_variation",
+                    "note": "3 cue variants"},
+    "nominal_possessive": {
+        "status": "documented_construction_gap",
+        "note": "1 pair. Every cue that makes the negative grammatical and "
+                "non-supportive lengthens it, so honouring matched_local_syntax "
+                "at a 4-token tolerance leaves only one variant. The frame is "
+                "the one closest to the 18 possessive seed facts, so the gap "
+                "matters; it is closed either by a second shell family whose "
+                "two variants share their syntax, or by leaving it open. It is "
+                "not closed by relaxing the length rule, which would admit "
+                "the 'hard negatives are longer' shortcut.",
+    },
+}
+
+FROZEN_AT = "2026-10-02"
+
+
+def frame_status_report(pairs: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    out = []
+    for f in CONTROLLED_FRAMES:
+        n = len({p["pair_id"] for p in pairs
+                 if p["frame_id"] == f["frame"]})
+        info = FRAME_STATUS.get(f["frame"], {})
+        out.append({"frame": f["frame"], "pairs": n,
+                    "status": info.get("status", "unstated"),
+                    "note": info.get("note", "")})
+    return out
+
+
+def pairs_digest(pairs: List[Dict[str, Any]]) -> str:
+    """Hash over the generated pairs so later drift is detectable.
+
+    The seed set is frozen. Regenerating it must produce the same sentences,
+    or something in the generator changed without anyone deciding it should.
+    """
+    import hashlib
+    blob = "\n".join(f'{p["pair_id"]}|{p["class"]}|{p["sentence"]}'
+                     for p in pairs)
+    return hashlib.sha256(blob.encode("utf-8")).hexdigest()
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--out", default="")
@@ -441,6 +496,18 @@ def main() -> int:
               f"{len(same)} entries, cue '{p['cue'][:28]}'")
     print(f"\n  distinct pair_ids: {len(seen_pair)}  "
           f"(train/val/test must split on pair_id, never on rows)")
+
+    print(f"\n=== {MANIFEST_VERSION} (frozen {FROZEN_AT}) ===\n")
+    print(f"  {'frame':34} {'pairs':>5}  status")
+    for s in frame_status_report(pairs):
+        print(f"  {s['frame']:34} {s['pairs']:5}  {s['status']}")
+    gap = [s for s in frame_status_report(pairs)
+           if s["status"] == "documented_construction_gap"]
+    for s in gap:
+        print(f"\n  gap in {s['frame']}: {s['note']}")
+    print(f"\n  frozen digest: {pairs_digest(pairs)[:32]}")
+    print("  Expansion beyond this set must add new independent construction")
+    print("  families per frame, not more sentences of the same cues.")
     print()
     for p in pairs[:12]:
         print(f"    {p['class']:16} {p['sentence']}")
@@ -467,6 +534,10 @@ def main() -> int:
     if args.out:
         Path(args.out).write_text(json.dumps({
             "purpose": "phase-A training data, split by provenance",
+            "manifest_version": MANIFEST_VERSION,
+            "frozen_at": FROZEN_AT,
+            "controlled_pairs_digest": pairs_digest(pairs),
+            "frame_status": frame_status_report(pairs),
             "natural": nat,
             "controlled_frames": CONTROLLED_FRAMES,
             "construction_rules": CONSTRUCTION_RULES,
