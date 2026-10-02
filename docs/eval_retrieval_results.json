@@ -1,0 +1,387 @@
+{
+  "reports": [
+    {
+      "strategy": "router",
+      "answerable": 30,
+      "no_answer": 4,
+      "hit_rate": 0.2,
+      "literal_hit_rate": 0.21739130434782608,
+      "paraphrase_hit_rate": 0.14285714285714285,
+      "false_positive_rate": 1.0,
+      "empty_rate": 0.0,
+      "mean_items": 17.058823529411764,
+      "rows": [
+        {
+          "query": "Who discovered radium?",
+          "kind": "answerable",
+          "paraphrase": false,
+          "hit": true,
+          "rank": 0,
+          "items": 18,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.605
+        },
+        {
+          "query": "Who founded SpaceX?",
+          "kind": "answerable",
+          "paraphrase": false,
+          "hit": true,
+          "rank": 1,
+          "items": 13,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.3319
+        },
+        {
+          "query": "Who founded Microsoft?",
+          "kind": "answerable",
+          "paraphrase": false,
+          "hit": false,
+          "rank": null,
+          "items": 13,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.3514
+        },
+        {
+          "query": "Who acquired GitHub?",
+          "kind": "answerable",
+          "paraphrase": false,
+          "hit": true,
+          "rank": 0,
+          "items": 13,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.3975
+        },
+        {
+          "query": "Who acquired WhatsApp?",
+          "kind": "answerable",
+          "paraphrase": false,
+          "hit": false,
+          "rank": null,
+          "items": 13,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.3802
+        },
+        {
+          "query": "Which company uses QuantumDB?",
+          "kind": "answerable",
+          "paraphrase": false,
+          "hit": false,
+          "rank": null,
+          "items": 25,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.5643
+        },
+        {
+          "query": "Who developed the QuantumDB engine?",
+          "kind": "answerable",
+          "paraphrase": false,
+          "hit": false,
+          "rank": null,
+          "items": 24,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.4649
+        },
+        {
+          "query": "Who leads Nova Systems?",
+          "kind": "answerable",
+          "paraphrase": false,
+          "hit": false,
+          "rank": null,
+          "items": 14,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.3137
+        },
+        {
+          "query": "Who acquired Atlas Freight?",
+          "kind": "answerable",
+          "paraphrase": false,
+          "hit": true,
+          "rank": 6,
+          "items": 23,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.3272
+        },
+        {
+          "query": "Who wrote the first algorithm?",
+          "kind": "answerable",
+          "paraphrase": false,
+          "hit": false,
+          "rank": null,
+          "items": 13,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.4078
+        },
+        {
+          "query": "Who discovered penicillin?",
+          "kind": "answerable",
+          "paraphrase": false,
+          "hit": false,
+          "rank": null,
+          "items": 16,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.5015
+        },
+        {
+          "query": "Who discovered X-rays?",
+          "kind": "answerable",
+          "paraphrase": false,
+          "hit": false,
+          "rank": null,
+          "items": 15,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.5513
+        },
+        {
+          "query": "What engines does SpaceX use?",
+          "kind": "answerable",
+          "paraphrase": false,
+          "hit": false,
+          "rank": null,
+          "items": 24,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.3205
+        },
+        {
+          "query": "Who is the CEO of Microsoft?",
+          "kind": "answerable",
+          "paraphrase": false,
+          "hit": true,
+          "rank": 2,
+          "items": 12,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.2656
+        },
+        {
+          "query": "Where is Orion Labs headquartered?",
+          "kind": "answerable",
+          "paraphrase": false,
+          "hit": false,
+          "rank": null,
+          "items": 21,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.2928
+        },
+        {
+          "query": "Who founded Amazon?",
+          "kind": "answerable",
+          "paraphrase": false,
+          "hit": false,
+          "rank": null,
+          "items": 13,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.3402
+        },
+        {
+          "query": "Who founded Apple?",
+          "kind": "answerable",
+          "paraphrase": false,
+          "hit": false,
+          "rank": null,
+          "items": 13,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.3494
+        },
+        {
+          "query": "What did Nature publish in 2001?",
+          "kind": "answerable",
+          "paraphrase": false,
+          "hit": false,
+          "rank": null,
+          "items": 27,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.3555
+        },
+        {
+          "query": "Who founded eBay?",
+          "kind": "answerable",
+          "paraphrase": false,
+          "hit": false,
+          "rank": null,
+          "items": 13,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.3451
+        },
+        {
+          "query": "Who works at Acme Corp?",
+          "kind": "answerable",
+          "paraphrase": false,
+          "hit": false,
+          "rank": null,
+          "items": 27,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.4235
+        },
+        {
+          "query": "Which companies made acquisitions in 2014?",
+          "kind": "answerable",
+          "paraphrase": false,
+          "hit": false,
+          "rank": null,
+          "items": 25,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.3006
+        },
+        {
+          "query": "What did Ada Lovelace write?",
+          "kind": "answerable",
+          "paraphrase": false,
+          "hit": false,
+          "rank": null,
+          "items": 12,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.3143
+        },
+        {
+          "query": "Who founded a company in the 1990s?",
+          "kind": "answerable",
+          "paraphrase": false,
+          "hit": false,
+          "rank": null,
+          "items": 21,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.3802
+        },
+        {
+          "query": "The person in charge of Nova Systems?",
+          "kind": "answerable",
+          "paraphrase": true,
+          "hit": false,
+          "rank": null,
+          "items": 14,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.3201
+        },
+        {
+          "query": "Which firm purchased YouTube?",
+          "kind": "answerable",
+          "paraphrase": true,
+          "hit": false,
+          "rank": null,
+          "items": 11,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.2771
+        },
+        {
+          "query": "Who first saw the moons of Jupiter?",
+          "kind": "answerable",
+          "paraphrase": true,
+          "hit": false,
+          "rank": null,
+          "items": 13,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.3784
+        },
+        {
+          "query": "The streaming service's cloud provider?",
+          "kind": "answerable",
+          "paraphrase": true,
+          "hit": false,
+          "rank": null,
+          "items": 27,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.333
+        },
+        {
+          "query": "Where is Munich's Acme Corp based?",
+          "kind": "answerable",
+          "paraphrase": true,
+          "hit": false,
+          "rank": null,
+          "items": 12,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.3235
+        },
+        {
+          "query": "The outfit that built the A320neo's powerplants?",
+          "kind": "answerable",
+          "paraphrase": true,
+          "hit": false,
+          "rank": null,
+          "items": 18,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.3107
+        },
+        {
+          "query": "Who runs Microsoft as chief executive?",
+          "kind": "answerable",
+          "paraphrase": true,
+          "hit": true,
+          "rank": 2,
+          "items": 15,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid",
+          "relevance_score": 0.2616
+        },
+        {
+          "query": "What is the capital of France?",
+          "kind": "no_answer",
+          "paraphrase": false,
+          "false_positive": true,
+          "items": 13,
+          "rank": null,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid"
+        },
+        {
+          "query": "Who won the 2024 presidential election?",
+          "kind": "no_answer",
+          "paraphrase": false,
+          "false_positive": true,
+          "items": 13,
+          "rank": null,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid"
+        },
+        {
+          "query": "What is the speed of light in vacuum?",
+          "kind": "no_answer",
+          "paraphrase": false,
+          "false_positive": true,
+          "items": 25,
+          "rank": null,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid"
+        },
+        {
+          "query": "How do black holes form?",
+          "kind": "no_answer",
+          "paraphrase": false,
+          "false_positive": true,
+          "items": 11,
+          "rank": null,
+          "classified_as": "factual",
+          "strategy": "semantic_hybrid"
+        }
+      ]
+    }
+  ]
+}
