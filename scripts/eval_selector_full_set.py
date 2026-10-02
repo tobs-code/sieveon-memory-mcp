@@ -88,11 +88,18 @@ def main() -> int:
     ap.add_argument("--out", default="")
     ap.add_argument("--ent-threshold", type=float, default=0.2)
     ap.add_argument("--rel-threshold", type=float, default=0.2)
+    ap.add_argument("--gate", choices=["off", "abstraction"], default="off",
+                    help="off: the unrestricted selector that scored 21/44. "
+                         "abstraction: the selector may only choose between "
+                         "relations the frozen gate classes as comparable, "
+                         "and abstains otherwise. This is the regression "
+                         "protection, not a coverage intervention.")
     args = ap.parse_args()
 
     from scripts.counterfactual_templates import (
         COUNTERFACTUAL_CLAIM, check_templates,
     )
+    from scripts.selector_gate import level as gate_level, verdict as gate_verdict
     bad = check_templates()
     if bad:
         print(f"  {len(bad)} templates failed validation")
@@ -209,6 +216,19 @@ def main() -> int:
             ms = [float(row[v_entail]) - float(row[v_contra])
                   for row in np.atleast_2d(logits)]
             top = cands[max(range(len(cands)), key=lambda i: ms[i])]
+            # The gate compares the winner against the relation the pipeline
+            # actually shipped for this pair, not against the gold. An
+            # abstention keeps the shipped relation whatever the score says.
+            shipped_rels = {c["p"] for c in base}
+            gate_decision = "n/a"
+            if args.gate == "abstraction":
+                rivals = [p for p in cands if p in shipped_rels]
+                if not rivals:
+                    gate_decision = "no shipped rival"
+                else:
+                    gate_decision = gate_verdict(top, sorted(rivals)[0])
+                    if gate_decision == "abstain":
+                        top = sorted(rivals)[0]
             top_key = (h, top, t)
             if top_key in gold_keys:
                 sel_found += 1
