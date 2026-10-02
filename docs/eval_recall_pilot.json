@@ -1,0 +1,511 @@
+{
+  "gold": 5,
+  "claims": 51,
+  "claims_on_gold_bearing_sentences": 8,
+  "found": 2,
+  "imprecise": 3,
+  "missed": 0,
+  "spurious": 3,
+  "claims_on_empty_gold_sentences": 43,
+  "recall": 0.4,
+  "recall_incl_implied": 1.0,
+  "precision": 0.25,
+  "precision_incl_implied": 0.625,
+  "precision_naive_all_claims": 0.098,
+  "f1": 0.308,
+  "detail": {
+    "found": [
+      {
+        "id": "conv-41/session_18_observation/Maria/D18:15",
+        "gold": [
+          "Maria",
+          "uses",
+          "favorite tunes"
+        ],
+        "matched": {
+          "s": "Maria",
+          "p": "uses",
+          "o": "favorite tunes"
+        },
+        "via_predicate": "uses"
+      },
+      {
+        "id": "conv-26/session_11_observation/Melanie/D11:7",
+        "gold": [
+          "Melanie",
+          "developed",
+          "environment"
+        ],
+        "matched": {
+          "s": "Melanie",
+          "p": "developed",
+          "o": "environment"
+        },
+        "via_predicate": "developed"
+      }
+    ],
+    "imprecise": [
+      {
+        "id": "conv-41/session_31_observation/Maria/D31:14",
+        "gold": [
+          "animals",
+          "provides",
+          "comfort"
+        ],
+        "matched": {
+          "s": "animals",
+          "p": "provides",
+          "o": "comfort"
+        },
+        "via_predicate": "provides"
+      },
+      {
+        "id": "conv-41/session_31_observation/Maria/D31:14",
+        "gold": [
+          "animals",
+          "provides",
+          "understanding"
+        ],
+        "matched": {
+          "s": "animals",
+          "p": "provides",
+          "o": "understanding"
+        },
+        "via_predicate": "provides"
+      },
+      {
+        "id": "conv-41/session_31_observation/Maria/D31:14",
+        "gold": [
+          "animals",
+          "provides",
+          "happiness"
+        ],
+        "matched": {
+          "s": "animals",
+          "p": "provides",
+          "o": "happiness"
+        },
+        "via_predicate": "provides"
+      }
+    ],
+    "missed": [],
+    "spurious": [
+      {
+        "id": "conv-41/session_18_observation/Maria/D18:15",
+        "claim": {
+          "s": "Maria",
+          "p": "discovered",
+          "o": "peaceful moments"
+        },
+        "on_gold_bearing": true
+      },
+      {
+        "id": "conv-26/session_11_observation/Melanie/D11:7",
+        "claim": {
+          "s": "Melanie",
+          "p": "created",
+          "o": "environment"
+        },
+        "on_gold_bearing": true
+      },
+      {
+        "id": "conv-26/session_11_observation/Melanie/D11:7",
+        "claim": {
+          "s": "Melanie",
+          "p": "built",
+          "o": "environment"
+        },
+        "on_gold_bearing": true
+      }
+    ],
+    "off_gold_sentences": [
+      {
+        "id": "conv-44/session_20_observation/Audrey/D20:40",
+        "claim": {
+          "s": "Audrey",
+          "p": "discovered",
+          "o": "bike routes"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-44/session_20_observation/Audrey/D20:40",
+        "claim": {
+          "s": "Audrey",
+          "p": "built",
+          "o": "bike routes"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-44/session_20_observation/Audrey/D20:40",
+        "claim": {
+          "s": "bike routes",
+          "p": "located_in",
+          "o": "river"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-41/session_15_observation/John/D15:1",
+        "claim": {
+          "s": "John",
+          "p": "works_at",
+          "o": "project"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-41/session_15_observation/John/D15:1",
+        "claim": {
+          "s": "John",
+          "p": "created",
+          "o": "petition"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-30/session_6_observation/Jon/D6:4",
+        "claim": {
+          "s": "Jon",
+          "p": "works_at",
+          "o": "Door Dash"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-41/session_31_observation/John/D31:19",
+        "claim": {
+          "s": "John",
+          "p": "provides",
+          "o": "picnics"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-41/session_31_observation/John/D31:19",
+        "claim": {
+          "s": "John",
+          "p": "provides",
+          "o": "board games"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-41/session_2_observation/John/D2:16",
+        "claim": {
+          "s": "John",
+          "p": "works_at",
+          "o": "playground"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-41/session_2_observation/John/D2:16",
+        "claim": {
+          "s": "John",
+          "p": "built",
+          "o": "playground"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-49/session_5_observation/Sam/D5:4",
+        "claim": {
+          "s": "Sam",
+          "p": "provides",
+          "o": "enjoyable experiences"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-41/session_1_observation/Maria/D1:3",
+        "claim": {
+          "s": "Maria",
+          "p": "works_at",
+          "o": "homeless shelter"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-41/session_1_observation/Maria/D1:3",
+        "claim": {
+          "s": "Maria",
+          "p": "developed",
+          "o": "aerial yoga"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-41/session_1_observation/Maria/D1:3",
+        "claim": {
+          "s": "Maria",
+          "p": "founded",
+          "o": "aerial yoga"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-26/session_8_observation/Melanie/D8:28",
+        "claim": {
+          "s": "Melanie",
+          "p": "created",
+          "o": "creativity"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-26/session_8_observation/Melanie/D8:28",
+        "claim": {
+          "s": "Melanie",
+          "p": "developed",
+          "o": "creativity"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-48/session_18_observation/Jolene/D18:5",
+        "claim": {
+          "s": "Jolene",
+          "p": "uses",
+          "o": "bullet journal"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-48/session_18_observation/Jolene/D18:5",
+        "claim": {
+          "s": "Jolene",
+          "p": "wrote",
+          "o": "bullet journal"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-42/session_27_observation/Joanna/D27:2",
+        "claim": {
+          "s": "Joanna",
+          "p": "created",
+          "o": "presentation"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-48/session_23_observation/Deborah/D23:22",
+        "claim": {
+          "s": "Deborah",
+          "p": "created",
+          "o": "quote"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-48/session_23_observation/Deborah/D23:22",
+        "claim": {
+          "s": "Deborah",
+          "p": "wrote",
+          "o": "quote"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-48/session_23_observation/Deborah/D23:22",
+        "claim": {
+          "s": "friend",
+          "p": "wrote",
+          "o": "quote"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-48/session_28_observation/Jolene/D28:26",
+        "claim": {
+          "s": "Jolene",
+          "p": "provides",
+          "o": "comfort"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-48/session_28_observation/Jolene/D28:26",
+        "claim": {
+          "s": "Susie",
+          "p": "provides",
+          "o": "comfort"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-48/session_28_observation/Jolene/D28:26",
+        "claim": {
+          "s": "Susie",
+          "p": "provides",
+          "o": "peace"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-42/session_10_observation/Joanna/D10:9",
+        "claim": {
+          "s": "Joanna",
+          "p": "developed",
+          "o": "projects"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-42/session_10_observation/Joanna/D10:9",
+        "claim": {
+          "s": "Joanna",
+          "p": "created",
+          "o": "dairy-free dessert recipes"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-42/session_10_observation/Joanna/D10:9",
+        "claim": {
+          "s": "Joanna",
+          "p": "developed",
+          "o": "dairy-free dessert recipes"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-42/session_10_observation/Joanna/D10:9",
+        "claim": {
+          "s": "Joanna",
+          "p": "wrote",
+          "o": "dairy-free dessert recipes"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-44/session_19_observation/Audrey/D19:22",
+        "claim": {
+          "s": "Audrey",
+          "p": "created",
+          "o": "Peruvian Lilies"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-44/session_19_observation/Audrey/D19:22",
+        "claim": {
+          "s": "Audrey",
+          "p": "developed",
+          "o": "Peruvian Lilies"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-44/session_19_observation/Audrey/D19:22",
+        "claim": {
+          "s": "Audrey",
+          "p": "designed",
+          "o": "Peruvian Lilies"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-44/session_19_observation/Audrey/D19:22",
+        "claim": {
+          "s": "Peruvian Lilies",
+          "p": "provides",
+          "o": "watering"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-44/session_19_observation/Audrey/D19:22",
+        "claim": {
+          "s": "Peruvian Lilies",
+          "p": "provides",
+          "o": "sunlight"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-43/session_17_observation/John/D17:11",
+        "claim": {
+          "s": "John",
+          "p": "created",
+          "o": "fantasy show"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-43/session_17_observation/John/D17:11",
+        "claim": {
+          "s": "John",
+          "p": "created",
+          "o": "That"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-43/session_17_observation/John/D17:11",
+        "claim": {
+          "s": "John",
+          "p": "wrote",
+          "o": "That"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-43/session_17_observation/John/D17:11",
+        "claim": {
+          "s": "John",
+          "p": "discovered",
+          "o": "reality"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-41/session_25_observation/John/D25:13",
+        "claim": {
+          "s": "yoga studio",
+          "p": "provides",
+          "o": "kickboxing"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-41/session_25_observation/John/D25:13",
+        "claim": {
+          "s": "yoga studio",
+          "p": "provides",
+          "o": "circuit training"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-41/session_25_observation/John/D25:13",
+        "claim": {
+          "s": "John",
+          "p": "works_at",
+          "o": "yoga studio"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-41/session_20_observation/Maria/D20:3",
+        "claim": {
+          "s": "Maria",
+          "p": "part_of",
+          "o": "family"
+        },
+        "on_gold_bearing": false
+      },
+      {
+        "id": "conv-41/session_20_observation/Maria/D20:3",
+        "claim": {
+          "s": "Maria",
+          "p": "provides",
+          "o": "words of encouragement"
+        },
+        "on_gold_bearing": false
+      }
+    ]
+  }
+}
