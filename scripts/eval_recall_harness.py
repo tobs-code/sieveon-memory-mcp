@@ -137,7 +137,9 @@ def match(gold: Tuple[str, str, str],
 
 def score(gold_rows: List[Dict[str, Any]],
           claims_by_id: Dict[str, List[Dict[str, Any]]],
+          rows_by_id: Dict[str, Dict[str, Any]] | None = None,
           ) -> Dict[str, Any]:
+    rows_by_id = rows_by_id or {r["id"]: r for r in gold_rows}
     found: List[Dict[str, Any]] = []
     missed: List[Dict[str, Any]] = []
     imprecise: List[Dict[str, Any]] = []
@@ -241,6 +243,17 @@ def score(gold_rows: List[Dict[str, Any]],
 
     n_schema_gap = sum(len(r.get("schema_gap") or []) for r in gold_rows)
 
+    # Sentence-level dropout and fact-level recall are different quantities.
+    # A claimless sentence costs recall only if it carries gold facts; a
+    # claimless `graphable: no` sentence is neutral for recall and only
+    # inflates the sentence-level rate. Reporting them together invites
+    # reading one as evidence for the other.
+    claimless = [r["id"] for r in gold_rows if not claims_by_id.get(r["id"])]
+    claimless_with_gold = [i for i in claimless
+                           if any(
+                               norm(t[0]) for t in
+                               (rows_by_id[i].get("triples") or []))]
+
     return {
         "gold": n_gold, "claims": n_all_claims,
         "claims_on_graphable_sentences": scored_claims,
@@ -256,6 +269,8 @@ def score(gold_rows: List[Dict[str, Any]],
         "non_graphable_claims": len(non_graphable),
         "schema_gap_facts": n_schema_gap,
         "schema_gap_claims": len(gap_claims),
+        "sentence_dropout": len(claimless),
+        "sentence_dropout_carrying_gold": len(claimless_with_gold),
         "precision_if_gap_counted": round(alt_precision, 3),
         "recall": round(recall, 3),
         "recall_incl_implied": round(strict_recall, 3),
@@ -458,7 +473,7 @@ def main() -> int:
               f"annotated subset, not the frozen sample: {len(gold_rows)} of "
               f"{len(gold_rows) + len(unlabelled)} rows.")
 
-    r = score(gold_rows, claims_by_id)
+    r = score(gold_rows, claims_by_id, rows_by_id)
     audit = audit_vocabulary(gold_rows)
 
     # Two denominators, both reported. Semantic coverage counts every gold
@@ -535,6 +550,14 @@ def main() -> int:
     print()
     print(f"  vocabulary-gap facts in gold: {r['schema_gap_facts']} "
           f"(no relation exists, so no claim could match)")
+    print()
+    print(f"  sentence-level dropout    {r['sentence_dropout']} of "
+          f"{len(gold_rows)} annotated sentences produced no claim")
+    print(f"    of which carrying gold  {r['sentence_dropout_carrying_gold']}")
+    print(f"    A claimless sentence lowers recall only if it carries gold "
+          f"facts. The\n    rest is a sentence-level extraction rate, not "
+          f"evidence about recall, and\n    the two must not be added or "
+          f"quoted as one number.")
     print()
     print("  Buckets, and what each one would need:")
     print("    found/imprecise  the gold fact was extracted")
