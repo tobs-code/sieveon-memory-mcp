@@ -81,7 +81,7 @@
       ],
       "family": "attribute_need",
       "target_in_candidates": true,
-      "target_templated": true,
+      "target_templated": false,
       "fallback_candidates": [],
       "ranked": [
         {
@@ -117,7 +117,7 @@
       ],
       "family": "attribute_need",
       "target_in_candidates": true,
-      "target_templated": true,
+      "target_templated": false,
       "fallback_candidates": [],
       "ranked": [
         {
@@ -152,7 +152,7 @@
       ],
       "family": "perception_media",
       "target_in_candidates": true,
-      "target_templated": true,
+      "target_templated": false,
       "fallback_candidates": [],
       "ranked": [
         {
@@ -204,7 +204,7 @@
       ],
       "family": "event_participation",
       "target_in_candidates": true,
-      "target_templated": true,
+      "target_templated": false,
       "fallback_candidates": [],
       "ranked": [
         {
@@ -280,7 +280,7 @@
       ],
       "family": "event_participation",
       "target_in_candidates": true,
-      "target_templated": true,
+      "target_templated": false,
       "fallback_candidates": [],
       "ranked": [
         {
@@ -319,7 +319,7 @@
       ],
       "family": "event_participation",
       "target_in_candidates": true,
-      "target_templated": true,
+      "target_templated": false,
       "fallback_candidates": [],
       "ranked": [
         {
@@ -366,7 +366,7 @@
       ],
       "family": "possession",
       "target_in_candidates": true,
-      "target_templated": true,
+      "target_templated": false,
       "fallback_candidates": [],
       "ranked": [
         {
@@ -403,7 +403,7 @@
       ],
       "family": "event_participation",
       "target_in_candidates": true,
-      "target_templated": true,
+      "target_templated": false,
       "fallback_candidates": [],
       "ranked": [
         {
@@ -441,7 +441,7 @@
       ],
       "family": "event_participation",
       "target_in_candidates": true,
-      "target_templated": true,
+      "target_templated": false,
       "fallback_candidates": [],
       "ranked": [
         {
@@ -530,7 +530,7 @@
       ],
       "family": "perception_media",
       "target_in_candidates": true,
-      "target_templated": true,
+      "target_templated": false,
       "fallback_candidates": [],
       "ranked": [
         {
@@ -559,7 +559,7 @@
       ],
       "family": "achievement",
       "target_in_candidates": true,
-      "target_templated": true,
+      "target_templated": false,
       "fallback_candidates": [
         "received"
       ],
@@ -586,8 +586,8 @@
         },
         {
           "predicate": "asked_for",
-          "hypothesis": "John asked scholarship for it.",
-          "margin": -1.3977
+          "hypothesis": "John asked for scholarship.",
+          "margin": 0.6591
         }
       ],
       "top1": "received",
@@ -610,7 +610,7 @@
       ],
       "family": "achievement",
       "target_in_candidates": true,
-      "target_templated": true,
+      "target_templated": false,
       "fallback_candidates": [],
       "ranked": [
         {
@@ -658,7 +658,7 @@
       ],
       "family": "achievement",
       "target_in_candidates": true,
-      "target_templated": true,
+      "target_templated": false,
       "fallback_candidates": [],
       "ranked": [
         {
@@ -702,7 +702,7 @@
       ],
       "family": "attempted",
       "target_in_candidates": true,
-      "target_templated": true,
+      "target_templated": false,
       "fallback_candidates": [
         "received"
       ],
@@ -753,13 +753,18 @@
       ],
       "family": "event_participation",
       "target_in_candidates": true,
-      "target_templated": true,
+      "target_templated": false,
       "fallback_candidates": [],
       "ranked": [
         {
           "predicate": "attended",
           "hypothesis": "Deborah attended yoga retreat.",
           "margin": 7.0547
+        },
+        {
+          "predicate": "took_on_trip",
+          "hypothesis": "Deborah took on trip yoga retreat.",
+          "margin": 6.3438
         },
         {
           "predicate": "tried",
@@ -772,11 +777,6 @@
           "margin": 5.0742
         },
         {
-          "predicate": "took_on_trip",
-          "hypothesis": "Deborah took yoga retreat on a trip.",
-          "margin": 4.353
-        },
-        {
           "predicate": "finished",
           "hypothesis": "Deborah finished yoga retreat.",
           "margin": -4.2266
@@ -785,7 +785,7 @@
       "top1": "attended",
       "top1_margin": 7.0547,
       "target_rank": 1,
-      "top1_margin_gap": 1.2441
+      "top1_margin_gap": 0.7109
     },
     {
       "id": "conv-48/session_29_observation/Deborah/D29:5",
@@ -803,7 +803,7 @@
       ],
       "family": "location_motion",
       "target_in_candidates": true,
-      "target_templated": true,
+      "target_templated": false,
       "fallback_candidates": [],
       "ranked": [
         {
@@ -853,7 +853,7 @@
       ],
       "family": "achievement",
       "target_in_candidates": false,
-      "target_templated": true,
+      "target_templated": false,
       "fallback_candidates": [],
       "ranked": [
         {
@@ -880,7 +880,7 @@
       ],
       "family": "conversation_interest",
       "target_in_candidates": true,
-      "target_templated": true,
+      "target_templated": false,
       "fallback_candidates": [],
       "ranked": [
         {
@@ -917,18 +917,18 @@
       ],
       "family": "location_motion",
       "target_in_candidates": false,
-      "target_templated": true,
+      "target_templated": false,
       "fallback_candidates": [],
       "ranked": [
+        {
+          "predicate": "near",
+          "hypothesis": "Evan near lake.",
+          "margin": 6.0703
+        },
         {
           "predicate": "visited",
           "hypothesis": "Evan visited lake.",
           "margin": 5.7129
-        },
-        {
-          "predicate": "near",
-          "hypothesis": "Evan is near lake.",
-          "margin": 5.6797
         },
         {
           "predicate": "traveled_to",
@@ -936,10 +936,10 @@
           "margin": 4.6562
         }
       ],
-      "top1": "visited",
-      "top1_margin": 5.7129,
+      "top1": "near",
+      "top1_margin": 6.0703,
       "target_rank": null,
-      "top1_margin_gap": 0.0332
+      "top1_margin_gap": 0.3574
     },
     {
       "id": "conv-50/session_4_observation/Calvin/D4:24",
@@ -958,7 +958,7 @@
       ],
       "family": "interaction_communication",
       "target_in_candidates": true,
-      "target_templated": true,
+      "target_templated": false,
       "fallback_candidates": [
         "received"
       ],
@@ -1018,7 +1018,7 @@
       ],
       "family": "interaction_communication",
       "target_in_candidates": true,
-      "target_templated": true,
+      "target_templated": false,
       "fallback_candidates": [
         "received"
       ],
@@ -1064,7 +1064,7 @@
       ],
       "family": "attribute_need",
       "target_in_candidates": true,
-      "target_templated": true,
+      "target_templated": false,
       "fallback_candidates": [],
       "ranked": [
         {
@@ -1113,7 +1113,7 @@
       ],
       "family": "attribute_need",
       "target_in_candidates": true,
-      "target_templated": true,
+      "target_templated": false,
       "fallback_candidates": [],
       "ranked": [
         {

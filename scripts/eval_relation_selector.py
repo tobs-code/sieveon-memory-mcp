@@ -75,12 +75,38 @@ def main() -> int:
     ap.add_argument("--out", default="")
     ap.add_argument("--ent-threshold", type=float, default=0.2)
     ap.add_argument("--rel-threshold", type=float, default=0.2)
+    ap.add_argument("--mode", choices=["legacy", "templated"], default="templated",
+                    help="legacy: verbalise() fallback for relations without a "
+                         "template, which is what the first selector run used. "
+                         "templated: counterfactual_templates for every "
+                         "candidate relation, so no hypothesis is judged on "
+                         "phrasing quality alone. Compare the two, do not "
+                         "overwrite one with the other.")
     args = ap.parse_args()
+
+    from scripts.counterfactual_templates import (
+        COUNTERFACTUAL_CLAIM, check_templates,
+    )
+    from src.extraction.verbalise import CLAIM
+
+    if args.mode == "templated":
+        bad = check_templates()
+        if bad:
+            print(f"  {len(bad)} counterfactual templates failed validation; "
+                  f"refusing to run a controlled comparison on bad ones:")
+            for rel, issues in bad.items():
+                print(f"    {rel}: {', '.join(issues)}")
+            return 2
 
     from src.extraction.entity_utils import (
         _SIEVEON_ENTITY_LABELS, _SIEVEON_RELATION_LABELS, _get_relex,
     )
-    from src.extraction.verbalise import CLAIM, verbalise
+    from src.extraction.verbalise import verbalise
+
+    def claim_for(rel, s, o):
+        if args.mode == "templated" and rel in COUNTERFACTUAL_CLAIM:
+            return COUNTERFACTUAL_CLAIM[rel].format(s=s, o=o)
+        return verbalise(s, rel, o)
 
     stages = json.loads(STAGES.read_text(encoding="utf-8"))
     cases = [r for r in stages["results"] if r["class"] == SELECTION]
@@ -118,8 +144,12 @@ def main() -> int:
             "target": c["p"], "candidates": cands,
             "family": c["family"],
             "target_in_candidates": c["p"] in cands,
-            "target_templated": c["p"] in CLAIM,
-            "fallback_candidates": [x for x in cands if x not in CLAIM],
+            "target_templated": c["p"] in CLAIM
+            or (args.mode == "templated"
+                and c["p"] in COUNTERFACTUAL_CLAIM),
+            "fallback_candidates": [x for x in cands
+                                   if x not in CLAIM
+                                   and x not in COUNTERFACTUAL_CLAIM],
         })
         if i % 10 == 0:
             print(f"  prepared {i}/{len(cases)}")
@@ -138,7 +168,7 @@ def main() -> int:
 
     scored: List[Dict[str, Any]] = []
     for r in prepared:
-        hyps = [verbalise(r["s"], p, r["o"]) for p in r["candidates"]]
+        hyps = [claim_for(p, r["s"], r["o"]) for p in r["candidates"]]
         prem = [r["text"]] * len(hyps)
         ms = margins(list(zip(prem, hyps)))
         rank = sorted(zip(r["candidates"], hyps, ms),
@@ -161,13 +191,19 @@ def main() -> int:
                if r["target_rank"] and r["target_rank"] <= 3)
     reachable = sum(1 for r in scored if r["target_in_candidates"])
 
-    print(f"\n=== relation selector: shadow ranking over the model's own "
-          f"candidates ===\n")
+    print(f"\n=== relation selector [{args.mode}] : shadow ranking over the "
+          f"model's own candidates ===\n")
+    print(f"  mode                     {args.mode}")
+    print(f"    legacy uses verbalise()'s de-sugared fallback for relations "
+          f"without a\n    template; templated uses a hand-written template "
+          f"for every candidate relation,\n    target and distractor alike, so "
+          f"no hypothesis is judged on phrasing quality.")
+    print()
     print(f"  selection-failure cases audited   {len(cases)}")
     print(f"  with a non-empty candidate set    {n}")
     print(f"  target present among candidates   {reachable}")
-    print(f"  target on a hand-written template "
-          f"{sum(1 for r in scored if r['target_templated'])}")
+    print(f"  every candidate templated         "
+          f"{sum(1 for r in scored if not r['fallback_candidates'])}/{n}")
     print()
     print(f"  top-1 accuracy     {top1 / n:.3f}   ({top1}/{n})" if n else "")
     print(f"  top-3 accuracy     {top3 / n:.3f}   ({top3}/{n})" if n else "")
@@ -177,10 +213,13 @@ def main() -> int:
     print()
     print("  Baseline for the same cases is 0/27: the shipped output chose the")
     print("  wrong relation for every one of them.")
-    print()
-    print("  Fallback verbalisation is reported apart. A candidate without a")
-    print("  CLAIM template is de-sugared into 'X attended Y', which is an")
-    print("  awkward hypothesis and not evidence that the relation is wrong.")
+    if args.mode == "legacy":
+        print("  Comparison value: legacy top-1 0.769 (20/26). Do not overwrite "
+              "it.")
+    else:
+        print("  Comparison value: legacy top-1 0.769 (20/26). If this run "
+              "differs,\n  the difference is the cost of phrasing quality in "
+              "the hypotheses.")
 
     if n:
         templ = [r for r in scored if r["target_templated"]]
