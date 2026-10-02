@@ -172,15 +172,83 @@ five as `never claimed`, which is exactly the missed count -- an independent
 confirmation that the harness detects the absence rather than filing it
 under some other bucket.
 
-### Three axes that must not be summed
+### Expanded sample, batches 1 to 4 (40 of 100 annotated)
+
+| | batch 1 | batch 2 | batch 3 | batch 4 |
+| --- | --- | --- | --- | --- |
+| graphable | 3/10 | 6/10 | 4/10 | 5/10 |
+| gold facts | 1 | 6 | 1 | 3 |
+| schema-gap facts | 3 | 3 | 3 | 5 |
+
+Cumulative over all annotated rows (uniform and expanded together, 70 of130):
+
+| | |
+| --- | --- |
+| scorable recall | 0.700 (21/30) |
+| scorable clean | 0.267 (8/30) |
+| precision | 0.368 (21/57) |
+| vocabulary-gap facts | 25 |
+| sentence-level dropout | 16 of 70, 2 carrying gold |
+
+The numerator moved once in four batches. Batch 3 added three gold facts and
+found none of them; batch 4 added three and found one. The estimate drifts
+down because the denominator grows faster than the hits, not because the
+extractor degrades.
+
+### Two error classes, empirically separated in one population
+
+| class | count | example |
+| --- | ---: | --- |
+| schema gap | 25 facts, 9 predicates | `Tim owns book collection` |
+| extractor miss | 9 facts | `Nate acquired Max` |
+
+`Nate -acquired-> Max` is the clearest proof they are not the same thing: the
+predicate exists in the vocabulary, the object is named outright, the sentence
+states the adoption, and no claim was produced. Extending the vocabulary would
+not have prevented it.
+
+Vocabulary gaps in the expanded sample, by predicate:
+
+    owns 5   attended 4   noticed_by 1   joined 1   watched 1
+    auditioned_for 1   pitched_to 1   earned 1   drafted_by 1
+
+`owns` and `attended` account for 9 of the 16 annotated gaps. `owns` in
+particular is a possession relation the corpus uses constantly -- "his
+recipe", "has a recipe", "has a book collection" -- and the production chain
+cannot state it. That is a dominant observed gap, not an exotic case.
+
+### A rule that held, and what it prevented
+
+"Possession says neither acquisition nor authorship." Applied unchanged
+across batch 4, it blocked `Joanna created chocolate and raspberry cake
+recipe` from `has a recipe`. Three of the four `created`/`acquired` errors in
+the gold would otherwise have been annotation artefacts rather than extractor
+defects, and the extractor would have been measured against facts it was
+never asked for. The same rule blocked `Nate created cork board` (from
+"his own") and `Nate created dairy-free dessert recipe` (from "his").
+
+### Two limits on the current reading
+
+The `provides` misses share a shape -- `support`, `encouragement`,
+`assistance`, `creativity`, `mentoring`, all abstract or service-like
+objects -- but that is a reproduced pattern, not a causal finding. Argument
+structure, nominal complementation, verb form and candidate generation are
+all still open explanations.
+
+And the cumulative series mixes two populations: 30 annotated uniform
+sentences and 40 annotated expanded ones. It is the right size for the
+question "is coverage around 0.7", but it is not a time series over one
+growing sample, and it should not be read as one.
 
 | axis | measure | value |
 | ---- | ------- | ----- |
-| extractor coverage | scorable recall | 16/20 = 0.800 |
-| predicate quality | scorable clean recall | 6/20 = 0.300 |
-| schema expressiveness | gold facts outside the vocabulary | 10 |
+| extractor coverage | scorable recall | 0.700 (21/30) |
+| predicate quality | scorable clean recall | 0.267 (8/30) |
+| schema expressiveness | gold facts outside the vocabulary | 25 |
 
-There is deliberately no combined quality number. A store can be perfectly
+Superseded interim values, kept for the trail: scorable recall was 0.800
+(16/20) at 40 annotated rows and 0.762 (16/21) at 50; the schema count was
+10 then. There is deliberately no combined quality number. A store can be perfectly
 covered by a schema too poor to express what it read, and a good schema
 cannot compensate for a model that asserts nothing.
 
