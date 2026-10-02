@@ -249,3 +249,41 @@ Two populations, reported side by side and never pooled:
 
 They have different sampling rules and different sizes. A combined figure
 would describe neither.
+
+### The frozen sample, and a correction
+
+The 100 ids are frozen in `docs/eval_recall_expanded_manifest.json` together
+with the rule parameters and a sha256 over the ids. `--verify` re-derives the
+rule and fails if it no longer reproduces the manifest. Later batches are
+annotated against the manifest and never recomputed from the pool, so new
+gold files appearing under `docs/` cannot retroactively change the
+population.
+
+This corrects an earlier claim in this file. It said the stride meant that
+removing one sentence never reshuffles the rest of the sample. That was
+wrong: with a stride over a list, removing one earlier sentence shifts every
+later position, so a sentence can drop out while its successor takes the
+slot. The rule is easy to re-derive; the id list is what is stable.
+
+### Uncertainty, and why the interval is wide
+
+    scorable recall   0.800  (16/20)
+    approx 95% CI     [0.200, 0.692]
+
+The interval is computed by resampling whole conversations and then
+sentences within them, because several facts come from one sentence and
+sentences come from ten conversations, so the effective sample size is well
+below 20. It is labelled approximate: the draw is deterministic, so the
+interval describes the variability of a comparable draw, not a population
+this one represents.
+
+**The interval does not contain the point estimate.** That is a real symptom
+and not a rounding artefact. At this size the result moves further when
+whole conversations change than the fact count suggests, so 0.800 is
+unstable and must be quoted with that caveat until more conversations carry
+annotated gold facts. A naive binomial interval over 20 facts would have
+been narrower and would have hidden exactly this.
+
+The pilot's `1.000` and the current `0.800` with its interval are both
+consistent with a true coverage somewhere in that wide range. The expanded
+sample exists to narrow it.

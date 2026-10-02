@@ -18,9 +18,20 @@ So the rule here is mechanical and stated in full:
   3. Take a contiguous window: every k-th sentence from the ordered pool,
      with k fixed here and not adjusted afterwards.
 
-A regular stride rather than a random draw, so that adding or removing one
-sentence never reshuffles the rest of the sample. It is reproducible from
-this file alone: re-running it yields the same 100 sentences.
+A regular stride rather than a random draw, so the sample is easy to
+re-derive by hand. It does NOT make the selection stable under edits,
+though: with a stride over a list, removing one earlier sentence shifts
+every later position, and a sentence that was in can drop out while the
+next one takes its place. Earlier this file claimed otherwise and was
+wrong about it.
+
+The stable thing is therefore the ID list, not the rule. `--freeze` writes
+the selected ids to a manifest and the scaffold is generated FROM that
+manifest. Later batches are annotated against the frozen ids and are never
+recomputed from the pool, so additional gold files appearing under docs/
+cannot retroactively change the population. `--verify` re-derives the rule
+and fails loudly if it no longer reproduces the manifest, which is the
+signal that the pool moved under us and the manifest is now the truth.
 
 The stride is applied WITHIN each conversation, not across the pooled list.
 Pooling and then taking every k-th looks simpler but is wrong here: ids sort
@@ -54,6 +65,7 @@ OUT = ROOT / "docs" / "eval_recall_gold_expanded.jsonl"
 
 DEFAULT_STRIDE = 12
 DEFAULT_COUNT = 100
+MANIFEST = ROOT / "docs" / "eval_recall_expanded_manifest.json"
 
 # Any sentence already present in these files is excluded, whatever file it
 # lives in, so the expansion cannot quietly reuse pilot material.
@@ -105,6 +117,12 @@ def main() -> int:
     ap.add_argument("--count", type=int, default=DEFAULT_COUNT)
     ap.add_argument("--write", action="store_true",
                     help="write the annotation scaffold")
+    ap.add_argument("--freeze", action="store_true",
+                    help="write the id manifest; do this once, before the "
+                         "first expanded sentence is annotated")
+    ap.add_argument("--verify", action="store_true",
+                    help="re-derive the rule and fail if it no longer "
+                         "reproduces the frozen manifest")
     ap.add_argument("--out", default="")
     args = ap.parse_args()
 
@@ -146,6 +164,49 @@ def main() -> int:
     for n, r in enumerate(picked[:10], start=1):
         print(f"    [{n:2}] {r['id']}")
         print(f"         {r['text'][:92]}")
+
+    if args.freeze:
+        import hashlib
+        ids = [r["id"] for r in picked]
+        MANIFEST.write_text(json.dumps({
+            "rule": {"source": str(LOCOMO.relative_to(ROOT)),
+                     "exclude": EXCLUDE_SOURCES,
+                     "order": "conversation, session number, id",
+                     "stride_within_conversation": args.stride,
+                     "count": args.count},
+            "count": len(ids),
+            "sha256_of_ids": hashlib.sha256(
+                "\n".join(ids).encode("utf-8")).hexdigest(),
+            "ids": ids,
+        }, indent=2, ensure_ascii=False), encoding="utf-8")
+        print(f"\nfroze {len(ids)} ids -> {MANIFEST.relative_to(ROOT)}")
+        print("  The manifest, not the rule, is now the population. Later "
+              "batches are\n  annotated against it and are never recomputed.")
+        return 0
+
+    if args.verify:
+        if not MANIFEST.exists():
+            print(f"no manifest at {MANIFEST}; run --freeze first")
+            return 2
+        man = json.loads(MANIFEST.read_text(encoding="utf-8"))
+        frozen = man["ids"]
+        print(f"  manifest   {len(frozen)} ids")
+        print(f"  re-derived {len(picked)} ids")
+        if frozen != [r["id"] for r in picked]:
+            missing = set(frozen) - {r["id"] for r in picked}
+            added = {r["id"] for r in picked} - set(frozen)
+            print("  MISMATCH: the pool moved under the manifest.")
+            if missing:
+                print(f"    no longer derivable: {len(missing)} "
+                      f"(e.g. {sorted(missing)[0]})")
+            if added:
+                print(f"    newly derivable: {len(added)} "
+                      f"(e.g. {sorted(added)[0]})")
+            print("  The manifest is authoritative. Do not regenerate the "
+                  "scaffold from the rule.")
+            return 1
+        print("  OK: the rule still reproduces the frozen sample")
+        return 0
 
     if args.write:
         out = Path(args.out) if args.out else OUT

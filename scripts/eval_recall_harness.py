@@ -287,6 +287,9 @@ def production_vocabulary() -> set:
     return set(CLAIM)
 
 
+VOCAB = production_vocabulary()
+
+
 def audit_vocabulary(gold_rows: List[Dict[str, Any]]) -> Dict[str, Any]:
     """Which gold facts are expressible in the production vocabulary.
 
@@ -315,6 +318,60 @@ def audit_vocabulary(gold_rows: List[Dict[str, Any]]) -> Dict[str, Any]:
         "unscorable_gold_facts": len(unscorable),
         "scorable_ids": sorted({r["id"] for r in scorable}),
     }
+
+
+def clustered_recall_ci(rows: List[Dict[str, Any]],
+                        ids_per_fact: Dict[Tuple[str, str, str], str],
+                        found: List[Dict[str, Any]],
+                        imprecise: List[Dict[str, Any]],
+                        reps: int = 2000, seed: int = 23) -> Tuple[float, float]:
+    """Approximate CI that resamples whole conversations, then sentences.
+
+    A binomial CI over gold facts would treat every fact as independent.
+    They are not: several facts come from one sentence, and sentences come
+    from ten conversations, so the effective sample size is far below the
+    fact count. Resampling the highest level of clustering first widens the
+    interval to reflect that.
+
+    This is still approximate. The draw is deterministic rather than random,
+    so the interval describes the sampling variability of a comparable draw,
+    not a confidence statement about a population the draw does not
+    represent. It is labelled as approximate everywhere it is printed.
+    """
+    import random
+
+    by_conv: Dict[str, List[Dict[str, Any]]] = {}
+    for r in rows:
+        by_conv.setdefault(r["id"].split("/")[0], []).append(r)
+    convs = sorted(by_conv)
+    if len(convs) < 2:
+        return float("nan"), float("nan")
+
+    rng = random.Random(seed)
+    vals: List[float] = []
+    for _ in range(reps):
+        hit = tot = 0
+        for _ in range(len(convs)):
+            r = rng.choice(convs)
+            take = by_conv[r]
+            if len(take) > 1 and rng.random() < 0.5:
+                take = [rng.choice(take)]
+            for row in take:
+                gold = [(t[0], t[1], t[2]) for t in (row.get("triples") or [])]
+                gold += [(e["s"], e["p"], e["o"])
+                         for e in (row.get("excluded") or [])]
+                got = {tuple(d["gold"]) for d in found + imprecise
+                       if d["id"] == row["id"]}
+                for g in gold:
+                    if g[1] not in VOCAB:
+                        continue  # unscorable, excluded from the denominator
+                    tot += 1
+                    if g in got:
+                        hit += 1
+        if tot:
+            vals.append(hit / tot)
+    vals.sort()
+    return vals[int(0.025 * reps)], vals[int(0.975 * reps)]
 
 
 def main() -> int:
@@ -408,6 +465,22 @@ def main() -> int:
           f"({r['found'] + r['imprecise']}/{r['gold']}, semantic gold)")
     print(f"  scorable recall   {recall_scorable:.3f}   "
           f"({r['found'] + r['imprecise']}/{n_scorable}, vocabulary gap excluded)")
+    lo, hi = clustered_recall_ci(gold_rows, {}, r["detail"]["found"],
+                                 r["detail"]["imprecise"])
+    if lo == lo:  # not NaN
+        print(f"    approx 95% CI [{lo:.3f}, {hi:.3f}]  "
+              f"(clustered: {len({x['id'].split('/')[0] for x in gold_rows})} "
+              f"conversations resampled, then sentences)")
+        print(f"    approximate only -- the draw is deterministic, so this "
+              f"describes sampling\n    variability of a comparable draw, "
+              f"not a population this draw represents")
+        if not (lo <= recall_scorable <= hi):
+            print(f"    NOTE the interval does not contain the point estimate "
+                  f"{recall_scorable:.3f}. That is a real\n    symptom, not a "
+                  f"rounding artefact: at this sample size the result moves "
+                  f"more when\n    whole conversations change than the fact "
+                  f"count suggests. Treat the point estimate as\n    unstable "
+                  f"until more conversations carry annotated gold facts.")
     print(f"  scorable clean    {recall_scorable_clean:.3f}   "
           f"({r['found']}/{n_scorable})")
     print(f"  precision         {r['precision']:.3f}   "
