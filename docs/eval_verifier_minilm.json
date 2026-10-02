@@ -1,0 +1,33 @@
+{
+  "reports": [
+    {
+      "model": "cross-encoder/nli-MiniLM2-L6-H768",
+      "params_m": 82.1,
+      "load_s": 44.9,
+      "gpu_mem_mb": 164.9,
+      "cases": 118,
+      "in_band": 103,
+      "latency_ms": {
+        "p50": 1.6,
+        "p95": 1.9,
+        "mean": 1.6
+      },
+      "auc_in_band": {
+        "verifier": 0.84,
+        "lo": 0.754,
+        "hi": 0.915
+      },
+      "auc_base_in_band": {
+        "extract": 0.578,
+        "lo": 0.465,
+        "hi": 0.689
+      },
+      "precision_at_recall_0.60": {
+        "verifier": 0.844,
+        "verifier_thresh": 6.2617,
+        "extract": 0.482,
+        "extract_thresh": 0.7857
+      }
+    }
+  ]
+}

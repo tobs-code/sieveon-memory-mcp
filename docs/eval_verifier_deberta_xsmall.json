@@ -1,0 +1,33 @@
+{
+  "reports": [
+    {
+      "model": "cross-encoder/nli-deberta-v3-xsmall",
+      "params_m": 70.8,
+      "load_s": 12.8,
+      "gpu_mem_mb": 137.9,
+      "cases": 118,
+      "in_band": 103,
+      "latency_ms": {
+        "p50": 5.9,
+        "p95": 66.2,
+        "mean": 12.6
+      },
+      "auc_in_band": {
+        "verifier": 0.905,
+        "lo": 0.842,
+        "hi": 0.958
+      },
+      "auc_base_in_band": {
+        "extract": 0.578,
+        "lo": 0.465,
+        "hi": 0.689
+      },
+      "precision_at_recall_0.60": {
+        "verifier": 0.818,
+        "verifier_thresh": 6.5254,
+        "extract": 0.482,
+        "extract_thresh": 0.7857
+      }
+    }
+  ]
+}
