@@ -322,7 +322,11 @@ the relevant one for filtering triples. Do not use the old claim as
 counter-evidence.
 
 The 95% CI on that AUC is roughly 0.81-1.0 at 13 correct vs 19 wrong, so it
-is directionally useful and nowhere near settled.
+is directionally useful and nowhere near settled. It is also computed only on
+triples that survived the model's internal `RELEX_REL_THRESHOLD=0.7` floor,
+with the lowest-scoring wrong triple sitting at 0.703 — right at that floor.
+The measurement is therefore censored and the AUC flattered by an unknown
+amount.
 
 ## Reproducing
 

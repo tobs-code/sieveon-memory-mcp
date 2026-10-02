@@ -432,9 +432,26 @@ _GLINER_MODEL = None
 
 _SIEVEON_ENTITY_LABELS = ["person", "organization", "location", "technology", "concept", "event"]
 
+# Relation labels offered to the relex model at inference.
+#
+# This list is the label space: a predicate absent from it cannot be emitted
+# at any confidence, so a gold set containing such predicates measures this
+# configuration rather than the model. Six verbs were missing here
+# (wrote, designed, built, funded, integrated, provides), which capped recall
+# at 0.714 on docs/eval_triples_gold.jsonl and made `developed` look like a
+# catch-all when it was mostly the nearest available broad label.
+#
+# Run scripts/audit_relation_labels.py after changing this. It is pure set
+# arithmetic and takes a second.
+#
+# Kept as natural-language phrases because that is the format the model card
+# documents; _normalize_relation_label slugs them for storage.
 _SIEVEON_RELATION_LABELS = [
+    # existing
     "works at", "located in", "created", "developed", "discovered",
     "uses", "leads", "acquired", "founded", "part of",
+    # added 2026-10-02: were unreachable, see scripts/audit_relation_labels.py
+    "wrote", "designed", "built", "funded", "integrated", "provides",
 ]
 
 

@@ -603,6 +603,52 @@ class TestSurrealStatementBuilding(unittest.TestCase):
                 f"{assigned.get(name)!r}")
 
 
+class TestRelationLabelCoverage(unittest.TestCase):
+    """The inference label list is the model's entire output space.
+
+    relex classifies an entity pair into one of the labels supplied at
+    inference. A gold predicate missing from that list cannot be emitted at
+    any confidence, so recall measured against it scores the configuration,
+    not the model. Six verbs were missing here, which capped recall at 0.714
+    and made `developed` look like a catch-all when it was mostly just the
+    nearest available broad label. Adding them moved recall 0.667 -> 0.762
+    and precision 0.438 -> 0.485 at no cost.
+    """
+
+    def test_every_gold_predicate_is_reachable(self):
+        from src.extraction.entity_utils import _SIEVEON_RELATION_LABELS
+        from scripts.eval_triples import load_gold
+        from scripts.audit_relation_labels import slug
+
+        labels = {slug(l) for l in _SIEVEON_RELATION_LABELS}
+        gold = set()
+        for row in load_gold():
+            for t in row["triples"]:
+                gold.add(slug(t[1]))
+
+        unreachable = gold - labels
+        self.assertEqual(
+            unreachable, set(),
+            "gold predicates absent from the inference label list; they are "
+            f"unreachable at any confidence: {sorted(unreachable)}")
+
+    def test_label_list_has_no_duplicates_after_normalisation(self):
+        from src.extraction.entity_utils import _SIEVEON_RELATION_LABELS
+        from scripts.audit_relation_labels import slug
+
+        slugs = [slug(l) for l in _SIEVEON_RELATION_LABELS]
+        self.assertEqual(
+            len(slugs), len(set(slugs)),
+            "two labels normalise to the same slug, so one silently wins")
+
+    def test_labels_are_natural_language_phrases(self):
+        """The model card documents labels as text, not slugs."""
+        from src.extraction.entity_utils import _SIEVEON_RELATION_LABELS
+        for label in _SIEVEON_RELATION_LABELS:
+            self.assertNotIn("_", label,
+                             f"{label!r} looks like a slug, not a phrase")
+
+
 class TestTripleEvalMatching(unittest.TestCase):
     """Pure helpers of scripts/eval_triples.py.
 

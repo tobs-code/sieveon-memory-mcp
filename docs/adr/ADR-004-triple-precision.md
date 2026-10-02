@@ -1,6 +1,41 @@
-# ADR-004: Triple precision is a label-coverage problem, not a confidence problem
+# ADR-004: Triple precision was a label-configuration problem
 
-## What was measured
+## Root cause: the label list was too small
+
+relex is a zero-shot joint NER+RE model. It does not know what a predicate
+means -- it classifies an entity pair into one of the labels **supplied at
+inference**, as natural-language text. Six verbs used by the gold set were
+absent from `_SIEVEON_RELATION_LABELS`:
+
+    wrote  designed  built  funded  integrated  provides
+
+None of them could ever be emitted, at any confidence. That capped recall at
+**0.714** and explained the apparent catch-all behaviour of `developed`: with
+`designed` unavailable, `Charles Babbage -designed-> Analytical Engine` could
+only land on `created` or `developed`. The six "never produced" predicates and
+the wrong-verb confusions were one problem, not two.
+
+`scripts/audit_relation_labels.py` is the check: pure set arithmetic over the
+label list and the gold set, no model required. Adding the six labels:
+
+|                | before | after  |
+|----------------|--------|--------|
+| recall         | 0.667  | 0.762  |
+| precision      | 0.438  | 0.485  |
+| wrong-predicate| 8      | 4      |
+| `developed` asserted | 9 | 6  |
+| confidence AUC | 0.919  | 0.879  |
+
+At threshold 0.90, precision 0.800 (12 correct) became 0.824 (14 correct) --
+strictly better. The AUC dip is expected and not a regression in quality: the
+newly reachable verbs are predicted with lower confidence (correct-triple
+confidence range widened downward from 0.842 to 0.711), so the distributions
+overlap more while both actual precision and recall rise.
+
+A test now asserts every gold predicate is reachable, so this cannot regress
+silently.
+
+## What was measured, before the label repair
 
 `docs/eval_triples_gold.jsonl` is 20 sentences / 21 gold triples, built to
 be adversarial: passive voice, coordination, relative clauses, possessives,
@@ -12,32 +47,20 @@ copular definitions and questions. `scripts/eval_triples.py` scores every
     hallucinated 0      (every asserted subject/object occurs in the source)
     by kind     10 mis-parse, 8 wrong-predicate
 
-Confidence separation is real but modest: correct 0.842-0.993, wrong
-0.703-0.968, pairwise AUC **0.919**. Threshold sweep:
+Confidence separation was real but modest: correct 0.842-0.993, wrong
+0.703-0.968, pairwise AUC **0.919**.
 
-| threshold | kept | correct | wrong | precision |
-|-----------|-----:|--------:|------:|----------:|
-| 0.70      |   32 |      13 |    19 |   0.406   |
-| 0.90      |   15 |      12 |     3 |   0.800   |
-| 0.95      |    8 |       7 |     1 |   0.875   |
-
-Calibration cannot improve the AUC: temperature and Platt scaling are
+Calibration cannot improve that AUC: temperature and Platt scaling are
 monotone, so they change what a number means, not which triples rank first.
 
-## The finding that changed the diagnosis
+## A bookkeeping bug that hid the root cause
 
-The first version of the predicate table listed only predicates that were
-*asserted*. That hid six gold predicates the model never emits at all:
+The predicate table originally listed only predicates that were *asserted*.
+That made all six unreachable gold predicates invisible, which inverted the
+diagnosis from "a catch-all verb" to "a third of recall is out of reach". A
+test now asserts the gold column sums to the gold triple count.
 
-    wrote  designed  built  funded  integrated  provides
-
-Six of 21 gold triples, unreachable at **any** confidence threshold because
-the model does not produce those labels. The reported table made the problem
-look like over-production of `developed`; it was in part a label-coverage
-gap. A test now asserts the gold column sums to the gold triple count, so
-the table cannot silently drop gold-only predicates again.
-
-## Where the errors actually are
+## Where the errors were, before the repair
 
 Wrong-verb confusion, same entities, gold -> predicted:
 
@@ -48,9 +71,11 @@ Wrong-verb confusion, same entities, gold -> predicted:
     founded    -> works_at    x2
     acquired   -> developed   x1
 
-`developed` behaves as a catch-all: 9 asserted against 2 gold. The errors
-are predicate and argument-role selection, not entity selection -- nothing is
-hallucinated.
+`developed` was asserted 9 times against 2 gold. The errors were predicate
+and argument-role selection, not entity selection -- nothing was
+hallucinated. After the label repair `developed` dropped to 6 and
+wrong-predicate confusions halved to 4, with `designed -> created` and
+`designed -> developed` the survivors.
 
 ## Two gold errors of my own, found in review
 
@@ -64,21 +89,42 @@ hallucinated.
 
 ## What the numbers do not support
 
-* Precision 0.438 is agreement with a 21-triple gold, not precision against
+* Precision 0.485 is agreement with a 21-triple gold, not precision against
   truth. Incomplete gold is the normal state of RE datasets.
-* Clopper-Pearson 95% CI: precision at 0.70 is 0.24-0.59, at 0.90 is
-  0.52-0.96. Indistinguishable at this size.
-* The thresholds were chosen on the same 20 sentences, so the sweep is
-  optimistic by construction.
+* The gold set is adversarial and 20 sentences wide. It stress-tests the
+  model; it does not estimate production precision.
+* The confidence AUC is computed only on triples that survived the
+  `RELEX_REL_THRESHOLD=0.7` floor, which the model applies internally. The
+  lowest-scoring wrong triple sits at 0.703, right at that floor, so the
+  measurement is censored and the AUC is flattered by an unknown amount.
+* Thresholds were chosen on the same sentences, so the sweep is optimistic.
 * The zero-hallucination check only proves the strings occur in the sentence.
   It cannot see boundary or role errors.
 * Per-predicate counts with support 1 or 2 are anecdotes.
 
+## Deliberately not done: pruning the unused labels
+
+Five labels appear in `_SIEVEON_RELATION_LABELS` that this gold set never
+expects: `created`, `leads`, `located_in`, `part_of`, `works_at`. They are
+plausible noise sources -- `created` was asserted twice with no gold support.
+
+They were **not** removed, because absence from 21 hand-written triples is
+not evidence a predicate is wrong. `located_in` is obviously legitimate
+("Orion Labs is headquartered in Vienna"), and pruning the label list on the
+strength of a 20-sentence gold is the same mistake as tuning a threshold
+in-sample. Deciding this needs production text.
+
 ## Next measurement, before any architecture change
 
-A confusion matrix over all assertions (done above, now in the script), then
-a gold-spans ablation to separate the entity, argument and predicate layers.
-Only then a structural gate: reject semantically impossible relation/entity
-type combinations, and per-predicate thresholds. A verifier comes after that,
-and an LLM judge last -- an ACL 2025 study found LLM judges on biomedical RE
-below 50% accuracy before output-format constraints.
+Label more production text (roughly 150-300 sentences, per a paired-power
+estimate for detecting a 10-point precision difference), then a confusion
+matrix over all assertions and a gold-spans ablation to separate the entity,
+argument and predicate layers. Only then a structural gate: reject
+semantically impossible relation/entity-type combinations, and per-predicate
+thresholds. A verifier comes after that, and an LLM judge last -- an ACL 2025
+study found LLM judges on biomedical RE below 50% accuracy before
+output-format constraints.
+
+If a verifier is built, judge it by its AUC **within the ambiguous confidence
+band**, not overall: the base confidence already ranks well globally, and only
+the band between the floor and the accept threshold is undecided.
