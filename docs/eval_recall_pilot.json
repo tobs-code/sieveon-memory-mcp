@@ -1,28 +1,28 @@
 {
-  "gold": 40,
-  "claims": 203,
-  "claims_on_graphable_sentences": 73,
+  "gold": 41,
+  "claims": 207,
+  "claims_on_graphable_sentences": 74,
   "found": 9,
-  "imprecise": 16,
+  "imprecise": 17,
   "missed": 15,
   "below_threshold": 19,
   "predicate_discipline": 10,
-  "predicate_discipline_rate": 0.137,
+  "predicate_discipline_rate": 0.135,
   "spurious": 19,
-  "non_graphable_sentences": 46,
-  "non_graphable_claims": 79,
-  "schema_gap_facts": 39,
-  "schema_gap_claims": 51,
-  "sentence_dropout": 27,
+  "non_graphable_sentences": 50,
+  "non_graphable_claims": 80,
+  "schema_gap_facts": 46,
+  "schema_gap_claims": 53,
+  "sentence_dropout": 33,
   "sentence_dropout_carrying_gold": 3,
-  "precision_if_gap_counted": 0.202,
-  "recall": 0.225,
-  "recall_incl_implied": 0.625,
-  "precision": 0.342,
-  "precision_strict": 0.123,
-  "precision_incl_implied": 0.342,
-  "precision_naive_all_claims": 0.123,
-  "f1": 0.272,
+  "precision_if_gap_counted": 0.205,
+  "recall": 0.22,
+  "recall_incl_implied": 0.634,
+  "precision": 0.351,
+  "precision_strict": 0.122,
+  "precision_incl_implied": 0.351,
+  "precision_naive_all_claims": 0.126,
+  "f1": 0.27,
   "detail": {
     "found": [
       {
@@ -376,6 +376,20 @@
           "o": "photo"
         },
         "via_predicate": "created"
+      },
+      {
+        "id": "conv-49/session_12_observation/Evan/D12:16",
+        "gold": [
+          "Evan",
+          "provides",
+          "support"
+        ],
+        "matched": {
+          "s": "Evan",
+          "p": "provides",
+          "o": "support"
+        },
+        "via_predicate": "provides"
       }
     ],
     "missed": [
@@ -1541,6 +1555,14 @@
           "p": "provides",
           "o": "clarity"
         }
+      },
+      {
+        "id": "conv-49/session_16_observation/Sam/D16:3",
+        "claim": {
+          "s": "Sam",
+          "p": "works_at",
+          "o": "Weight Watchers"
+        }
       }
     ],
     "schema_gap_claims": [
@@ -1951,6 +1973,22 @@
           "p": "built",
           "o": "bench"
         }
+      },
+      {
+        "id": "conv-49/session_1_observation/Evan/D1:14",
+        "claim": {
+          "s": "Evan",
+          "p": "created",
+          "o": "watercolor painting"
+        }
+      },
+      {
+        "id": "conv-49/session_4_observation/Evan/D4:8",
+        "claim": {
+          "s": "Evan",
+          "p": "created",
+          "o": "flavored seltzer water"
+        }
       }
     ]
   },
@@ -1992,7 +2030,7 @@
       "developed": 4,
       "founded": 1,
       "part_of": 3,
-      "provides": 21,
+      "provides": 22,
       "received": 1,
       "uses": 3,
       "works_at": 2
@@ -2010,7 +2048,7 @@
     "unscorable_predicates": [
       "received"
     ],
-    "scorable_gold_facts": 39,
+    "scorable_gold_facts": 40,
     "unscorable_gold_facts": 1,
     "scorable_ids": [
       "conv-26/session_11_observation/Melanie/D11:7",
@@ -2040,13 +2078,14 @@
       "conv-47/session_4_observation/James/D4:16",
       "conv-48/session_18_observation/Jolene/D18:5",
       "conv-48/session_28_observation/Jolene/D28:26",
-      "conv-48/session_3_observation/Jolene/D3:3"
+      "conv-48/session_3_observation/Jolene/D3:3",
+      "conv-49/session_12_observation/Evan/D12:16"
     ]
   },
   "cluster_sensitivity": {
-    "pooled": 0.641,
-    "total_scorable": 39,
-    "total_found": 25,
+    "pooled": 0.65,
+    "total_scorable": 40,
+    "total_found": 26,
     "per_conversation": {
       "conv-26": {
         "scorable": 1,
@@ -2087,24 +2126,30 @@
         "scorable": 4,
         "found": 3,
         "recall": 0.75
+      },
+      "conv-49": {
+        "scorable": 1,
+        "found": 1,
+        "recall": 1.0
       }
     },
     "delete_one_conversation": {
-      "conv-26": 0.632,
-      "conv-30": 0.625,
-      "conv-41": 0.607,
-      "conv-42": 0.636,
-      "conv-43": 0.667,
-      "conv-44": 0.657,
-      "conv-47": 0.667,
-      "conv-48": 0.629
+      "conv-26": 0.641,
+      "conv-30": 0.636,
+      "conv-41": 0.621,
+      "conv-42": 0.647,
+      "conv-43": 0.676,
+      "conv-44": 0.667,
+      "conv-47": 0.676,
+      "conv-48": 0.639,
+      "conv-49": 0.641
     },
     "influence_span": [
-      0.607,
-      0.667
+      0.621,
+      0.676
     ],
-    "conversations": 8
+    "conversations": 9
   },
-  "scorable_recall": 0.641,
-  "scorable_recall_clean": 0.231
+  "scorable_recall": 0.65,
+  "scorable_recall_clean": 0.225
 }
