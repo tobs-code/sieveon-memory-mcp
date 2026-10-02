@@ -252,8 +252,11 @@ The uniform population is two files, not one: the 20-sentence pilot plus the
 | population | scorable | found | recall |
 | --- | ---: | ---: | ---: |
 | uniform (pilot + batch 2) | 20 | 16 | 0.800 |
-| expanded | 19 | 9 | 0.474 |
-| total | 39 | 25 | 0.641 |
+| expanded | 24 | 10 | 0.417 |
+| total | 44 | 26 | 0.591 |
+
+Expanded misses by predicate: provides 8, developed 3, acquired 1, uses 1,
+discovered 1. Uniform misses are all provides (4).
 
 Two corrections that were wrong in earlier notes of this file, both caught by
 recomputation rather than by inspection. The uniform side is 20 scorable

@@ -1,28 +1,28 @@
 {
-  "gold": 41,
-  "claims": 207,
-  "claims_on_graphable_sentences": 74,
+  "gold": 45,
+  "claims": 228,
+  "claims_on_graphable_sentences": 77,
   "found": 9,
   "imprecise": 17,
-  "missed": 15,
+  "missed": 19,
   "below_threshold": 19,
-  "predicate_discipline": 10,
-  "predicate_discipline_rate": 0.135,
-  "spurious": 19,
-  "non_graphable_sentences": 50,
-  "non_graphable_claims": 80,
-  "schema_gap_facts": 46,
-  "schema_gap_claims": 53,
-  "sentence_dropout": 33,
-  "sentence_dropout_carrying_gold": 3,
-  "precision_if_gap_counted": 0.205,
-  "recall": 0.22,
-  "recall_incl_implied": 0.634,
-  "precision": 0.351,
-  "precision_strict": 0.122,
-  "precision_incl_implied": 0.351,
-  "precision_naive_all_claims": 0.126,
-  "f1": 0.27,
+  "predicate_discipline": 11,
+  "predicate_discipline_rate": 0.143,
+  "spurious": 21,
+  "non_graphable_sentences": 52,
+  "non_graphable_claims": 89,
+  "schema_gap_facts": 52,
+  "schema_gap_claims": 62,
+  "sentence_dropout": 36,
+  "sentence_dropout_carrying_gold": 5,
+  "precision_if_gap_counted": 0.187,
+  "recall": 0.2,
+  "recall_incl_implied": 0.578,
+  "precision": 0.338,
+  "precision_strict": 0.117,
+  "precision_incl_implied": 0.338,
+  "precision_naive_all_claims": 0.114,
+  "f1": 0.251,
   "detail": {
     "found": [
       {
@@ -512,6 +512,38 @@
           "developed",
           "project"
         ]
+      },
+      {
+        "id": "conv-50/session_1_observation/Calvin/D1:11",
+        "gold": [
+          "Calvin's agent",
+          "discovered",
+          "place"
+        ]
+      },
+      {
+        "id": "conv-50/session_10_observation/Calvin/D10:12",
+        "gold": [
+          "Calvin",
+          "developed",
+          "music collaborations"
+        ]
+      },
+      {
+        "id": "conv-50/session_13_observation/Calvin/D13:18",
+        "gold": [
+          "Dave",
+          "provides",
+          "encouragement"
+        ]
+      },
+      {
+        "id": "conv-50/session_26_observation/Dave/D26:7",
+        "gold": [
+          "Dave",
+          "provides",
+          "support"
+        ]
       }
     ],
     "spurious": [
@@ -683,6 +715,24 @@
           "s": "Jolene",
           "p": "designed",
           "o": "robot"
+        },
+        "on_gold_bearing": true
+      },
+      {
+        "id": "conv-50/session_13_observation/Calvin/D13:18",
+        "claim": {
+          "s": "Calvin",
+          "p": "created",
+          "o": "music"
+        },
+        "on_gold_bearing": true
+      },
+      {
+        "id": "conv-50/session_13_observation/Calvin/D13:18",
+        "claim": {
+          "s": "Dave",
+          "p": "created",
+          "o": "music"
         },
         "on_gold_bearing": true
       }
@@ -920,6 +970,14 @@
           "s": "Jolene",
           "p": "works_at",
           "o": "project"
+        }
+      },
+      {
+        "id": "conv-50/session_10_observation/Calvin/D10:12",
+        "claim": {
+          "s": "Calvin",
+          "p": "created",
+          "o": "music collaborations"
         }
       }
     ],
@@ -1563,6 +1621,78 @@
           "p": "works_at",
           "o": "Weight Watchers"
         }
+      },
+      {
+        "id": "conv-50/session_16_observation/Calvin/D16:24",
+        "claim": {
+          "s": "Calvin",
+          "p": "created",
+          "o": "music"
+        }
+      },
+      {
+        "id": "conv-50/session_16_observation/Calvin/D16:24",
+        "claim": {
+          "s": "Calvin",
+          "p": "developed",
+          "o": "music"
+        }
+      },
+      {
+        "id": "conv-50/session_16_observation/Calvin/D16:24",
+        "claim": {
+          "s": "Calvin",
+          "p": "wrote",
+          "o": "music"
+        }
+      },
+      {
+        "id": "conv-50/session_24_observation/Dave/D24:14",
+        "claim": {
+          "s": "Dave",
+          "p": "discovered",
+          "o": "people"
+        }
+      },
+      {
+        "id": "conv-50/session_24_observation/Dave/D24:14",
+        "claim": {
+          "s": "Dave",
+          "p": "discovered",
+          "o": "culture"
+        }
+      },
+      {
+        "id": "conv-50/session_24_observation/Dave/D24:14",
+        "claim": {
+          "s": "Dave",
+          "p": "discovered",
+          "o": "food"
+        }
+      },
+      {
+        "id": "conv-50/session_24_observation/Dave/D24:14",
+        "claim": {
+          "s": "Dave",
+          "p": "discovered",
+          "o": "vibrant city life"
+        }
+      },
+      {
+        "id": "conv-50/session_24_observation/Dave/D24:14",
+        "claim": {
+          "s": "Dave",
+          "p": "located_in",
+          "o": "Tokyo"
+        }
+      },
+      {
+        "id": "conv-50/session_24_observation/Dave/D24:14",
+        "claim": {
+          "s": "Dave",
+          "p": "discovered",
+          "o": "Tokyo"
+        }
       }
     ],
     "schema_gap_claims": [
@@ -1989,6 +2119,78 @@
           "p": "created",
           "o": "flavored seltzer water"
         }
+      },
+      {
+        "id": "conv-50/session_4_observation/Calvin/D4:24",
+        "claim": {
+          "s": "Calvin",
+          "p": "created",
+          "o": "necklace"
+        }
+      },
+      {
+        "id": "conv-50/session_4_observation/Calvin/D4:24",
+        "claim": {
+          "s": "Calvin",
+          "p": "acquired",
+          "o": "necklace"
+        }
+      },
+      {
+        "id": "conv-50/session_4_observation/Calvin/D4:24",
+        "claim": {
+          "s": "Calvin",
+          "p": "designed",
+          "o": "necklace"
+        }
+      },
+      {
+        "id": "conv-50/session_4_observation/Calvin/D4:24",
+        "claim": {
+          "s": "Calvin",
+          "p": "created",
+          "o": "diamond pendant"
+        }
+      },
+      {
+        "id": "conv-50/session_4_observation/Calvin/D4:24",
+        "claim": {
+          "s": "Calvin",
+          "p": "acquired",
+          "o": "diamond pendant"
+        }
+      },
+      {
+        "id": "conv-50/session_20_observation/Calvin/D20:2",
+        "claim": {
+          "s": "Calvin",
+          "p": "created",
+          "o": "picture"
+        }
+      },
+      {
+        "id": "conv-50/session_20_observation/Calvin/D20:2",
+        "claim": {
+          "s": "Calvin",
+          "p": "wrote",
+          "o": "picture"
+        }
+      },
+      {
+        "id": "conv-50/session_20_observation/Calvin/D20:2",
+        "claim": {
+          "s": "Calvin",
+          "p": "created",
+          "o": "dedication"
+        }
+      },
+      {
+        "id": "conv-50/session_22_observation/Dave/D22:3",
+        "claim": {
+          "s": "Dave",
+          "p": "integrated",
+          "o": "custom exhaust"
+        }
       }
     ]
   },
@@ -2017,6 +2219,7 @@
       "acquired",
       "created",
       "developed",
+      "discovered",
       "founded",
       "part_of",
       "provides",
@@ -2027,10 +2230,11 @@
     "gold_predicate_counts": {
       "acquired": 1,
       "created": 4,
-      "developed": 4,
+      "developed": 5,
+      "discovered": 1,
       "founded": 1,
       "part_of": 3,
-      "provides": 22,
+      "provides": 24,
       "received": 1,
       "uses": 3,
       "works_at": 2
@@ -2039,6 +2243,7 @@
       "acquired",
       "created",
       "developed",
+      "discovered",
       "founded",
       "part_of",
       "provides",
@@ -2048,7 +2253,7 @@
     "unscorable_predicates": [
       "received"
     ],
-    "scorable_gold_facts": 40,
+    "scorable_gold_facts": 44,
     "unscorable_gold_facts": 1,
     "scorable_ids": [
       "conv-26/session_11_observation/Melanie/D11:7",
@@ -2079,12 +2284,16 @@
       "conv-48/session_18_observation/Jolene/D18:5",
       "conv-48/session_28_observation/Jolene/D28:26",
       "conv-48/session_3_observation/Jolene/D3:3",
-      "conv-49/session_12_observation/Evan/D12:16"
+      "conv-49/session_12_observation/Evan/D12:16",
+      "conv-50/session_10_observation/Calvin/D10:12",
+      "conv-50/session_13_observation/Calvin/D13:18",
+      "conv-50/session_1_observation/Calvin/D1:11",
+      "conv-50/session_26_observation/Dave/D26:7"
     ]
   },
   "cluster_sensitivity": {
-    "pooled": 0.65,
-    "total_scorable": 40,
+    "pooled": 0.591,
+    "total_scorable": 44,
     "total_found": 26,
     "per_conversation": {
       "conv-26": {
@@ -2131,25 +2340,31 @@
         "scorable": 1,
         "found": 1,
         "recall": 1.0
+      },
+      "conv-50": {
+        "scorable": 4,
+        "found": 0,
+        "recall": 0.0
       }
     },
     "delete_one_conversation": {
-      "conv-26": 0.641,
-      "conv-30": 0.636,
-      "conv-41": 0.621,
-      "conv-42": 0.647,
-      "conv-43": 0.676,
-      "conv-44": 0.667,
-      "conv-47": 0.676,
-      "conv-48": 0.639,
-      "conv-49": 0.641
+      "conv-26": 0.581,
+      "conv-30": 0.568,
+      "conv-41": 0.545,
+      "conv-42": 0.579,
+      "conv-43": 0.61,
+      "conv-44": 0.6,
+      "conv-47": 0.61,
+      "conv-48": 0.575,
+      "conv-49": 0.581,
+      "conv-50": 0.65
     },
     "influence_span": [
-      0.621,
-      0.676
+      0.545,
+      0.65
     ],
-    "conversations": 9
+    "conversations": 10
   },
-  "scorable_recall": 0.65,
-  "scorable_recall_clean": 0.225
+  "scorable_recall": 0.591,
+  "scorable_recall_clean": 0.205
 }
