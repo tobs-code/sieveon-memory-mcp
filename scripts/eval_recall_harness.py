@@ -385,8 +385,15 @@ def main() -> int:
                          "how many were skipped. Batch-wise annotation makes "
                          "this necessary, and it changes the denominator, so "
                          "the skipped count is printed on every run.")
+    ap.add_argument("--claims", type=Path, action="append", default=None,
+                    help="claims file; repeat alongside repeated --gold. "
+                         "Required for every gold file that the matching "
+                         "claims file does not cover, otherwise the sentences "
+                         "look like a model that asserted nothing rather than "
+                         "an extraction that was never run.")
     args = ap.parse_args()
     gold_files = args.gold or [GOLD]
+    claim_files = args.claims or [CLAIMS]
 
     rows_by_id: Dict[str, Dict[str, Any]] = {}
     for gf in gold_files:
@@ -403,11 +410,26 @@ def main() -> int:
             rows_by_id[r["id"]] = r
     gold_rows = list(rows_by_id.values())
     claims_by_id: Dict[str, List[Dict[str, Any]]] = {}
-    for line in CLAIMS.read_text(encoding="utf-8").splitlines():
-        if not line.strip():
-            continue
-        r = json.loads(line)
-        claims_by_id[r["id"]] = r.get("asserted", [])
+    for cf in claim_files:
+        if not cf.exists():
+            print(f"  claims file missing: {cf}")
+            return 2
+        for line in cf.read_text(encoding="utf-8").splitlines():
+            if line.strip():
+                r = json.loads(line)
+                claims_by_id[r["id"]] = r.get("asserted", [])
+
+    # A gold sentence with no claims entry was never extracted. Reporting it
+    # as a miss would blame the model for our omission.
+    uncovered = [r["id"] for r in gold_rows if r["id"] not in claims_by_id]
+    if uncovered:
+        print(f"  {len(uncovered)} gold sentences have no entry in any claims "
+              f"file, so their facts cannot be\n  scored. They are counted as "
+              f"missed by default, which is wrong: the extractor was never "
+              f"run on them.")
+        print(f"  first: {uncovered[0]}")
+        print(f"  run scripts/annotate_recall_expanded.py, or pass --claims")
+        return 2
 
     # A gold row with no triples[] key at all is unannotated, not empty.
     unannotated = [r["id"] for r in gold_rows if r.get("triples") is None]
