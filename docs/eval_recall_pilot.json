@@ -1,28 +1,28 @@
 {
-  "gold": 37,
-  "claims": 162,
-  "claims_on_graphable_sentences": 68,
+  "gold": 40,
+  "claims": 203,
+  "claims_on_graphable_sentences": 73,
   "found": 9,
-  "imprecise": 15,
-  "missed": 13,
+  "imprecise": 16,
+  "missed": 15,
   "below_threshold": 19,
-  "predicate_discipline": 9,
-  "predicate_discipline_rate": 0.132,
-  "spurious": 16,
-  "non_graphable_sentences": 36,
-  "non_graphable_claims": 58,
-  "schema_gap_facts": 29,
-  "schema_gap_claims": 36,
-  "sentence_dropout": 20,
-  "sentence_dropout_carrying_gold": 2,
-  "precision_if_gap_counted": 0.231,
-  "recall": 0.243,
-  "recall_incl_implied": 0.649,
-  "precision": 0.353,
-  "precision_strict": 0.132,
-  "precision_incl_implied": 0.353,
-  "precision_naive_all_claims": 0.148,
-  "f1": 0.288,
+  "predicate_discipline": 10,
+  "predicate_discipline_rate": 0.137,
+  "spurious": 19,
+  "non_graphable_sentences": 46,
+  "non_graphable_claims": 79,
+  "schema_gap_facts": 39,
+  "schema_gap_claims": 51,
+  "sentence_dropout": 27,
+  "sentence_dropout_carrying_gold": 3,
+  "precision_if_gap_counted": 0.202,
+  "recall": 0.225,
+  "recall_incl_implied": 0.625,
+  "precision": 0.342,
+  "precision_strict": 0.123,
+  "precision_incl_implied": 0.342,
+  "precision_naive_all_claims": 0.123,
+  "f1": 0.272,
   "detail": {
     "found": [
       {
@@ -362,6 +362,20 @@
           "o": "tips"
         },
         "via_predicate": "provides"
+      },
+      {
+        "id": "conv-47/session_15_observation/James/D15:3",
+        "gold": [
+          "James",
+          "created",
+          "photo"
+        ],
+        "matched": {
+          "s": "James",
+          "p": "created",
+          "o": "photo"
+        },
+        "via_predicate": "created"
       }
     ],
     "missed": [
@@ -467,6 +481,22 @@
           "James",
           "uses",
           "Apex Legends"
+        ]
+      },
+      {
+        "id": "conv-47/session_27_observation/James/D27:12",
+        "gold": [
+          "John",
+          "provides",
+          "support"
+        ]
+      },
+      {
+        "id": "conv-48/session_3_observation/Jolene/D3:3",
+        "gold": [
+          "Jolene",
+          "developed",
+          "project"
         ]
       }
     ],
@@ -612,6 +642,33 @@
           "s": "Apex Legends",
           "p": "provides",
           "o": "fast-paced gameplay"
+        },
+        "on_gold_bearing": true
+      },
+      {
+        "id": "conv-48/session_3_observation/Jolene/D3:3",
+        "claim": {
+          "s": "Jolene",
+          "p": "created",
+          "o": "robot"
+        },
+        "on_gold_bearing": true
+      },
+      {
+        "id": "conv-48/session_3_observation/Jolene/D3:3",
+        "claim": {
+          "s": "Jolene",
+          "p": "developed",
+          "o": "robot"
+        },
+        "on_gold_bearing": true
+      },
+      {
+        "id": "conv-48/session_3_observation/Jolene/D3:3",
+        "claim": {
+          "s": "Jolene",
+          "p": "designed",
+          "o": "robot"
         },
         "on_gold_bearing": true
       }
@@ -841,6 +898,14 @@
           "s": "James",
           "p": "developed",
           "o": "Apex Legends"
+        }
+      },
+      {
+        "id": "conv-48/session_3_observation/Jolene/D3:3",
+        "claim": {
+          "s": "Jolene",
+          "p": "works_at",
+          "o": "project"
         }
       }
     ],
@@ -1308,6 +1373,174 @@
           "p": "provides",
           "o": "pet care"
         }
+      },
+      {
+        "id": "conv-47/session_7_observation/James/D7:6",
+        "claim": {
+          "s": "James",
+          "p": "discovered",
+          "o": "lush greenery"
+        }
+      },
+      {
+        "id": "conv-47/session_7_observation/James/D7:6",
+        "claim": {
+          "s": "James",
+          "p": "uses",
+          "o": "lush greenery"
+        }
+      },
+      {
+        "id": "conv-47/session_7_observation/James/D7:6",
+        "claim": {
+          "s": "James",
+          "p": "discovered",
+          "o": "clean air"
+        }
+      },
+      {
+        "id": "conv-47/session_7_observation/James/D7:6",
+        "claim": {
+          "s": "James",
+          "p": "uses",
+          "o": "clean air"
+        }
+      },
+      {
+        "id": "conv-47/session_7_observation/James/D7:6",
+        "claim": {
+          "s": "James",
+          "p": "discovered",
+          "o": "comforting"
+        }
+      },
+      {
+        "id": "conv-47/session_9_observation/John/D9:19",
+        "claim": {
+          "s": "John",
+          "p": "created",
+          "o": "Hawaiian pizza"
+        }
+      },
+      {
+        "id": "conv-47/session_9_observation/John/D9:19",
+        "claim": {
+          "s": "John",
+          "p": "designed",
+          "o": "Hawaiian pizza"
+        }
+      },
+      {
+        "id": "conv-47/session_17_observation/John/D17:21",
+        "claim": {
+          "s": "John",
+          "p": "created",
+          "o": "friendship"
+        }
+      },
+      {
+        "id": "conv-47/session_17_observation/John/D17:21",
+        "claim": {
+          "s": "John",
+          "p": "acquired",
+          "o": "pets"
+        }
+      },
+      {
+        "id": "conv-47/session_17_observation/John/D17:21",
+        "claim": {
+          "s": "John",
+          "p": "acquired",
+          "o": "one"
+        }
+      },
+      {
+        "id": "conv-47/session_24_observation/James/D24:14",
+        "claim": {
+          "s": "James",
+          "p": "uses",
+          "o": "guitar"
+        }
+      },
+      {
+        "id": "conv-48/session_1_observation/Deborah/D1:13",
+        "claim": {
+          "s": "Deborah",
+          "p": "works_at",
+          "o": "community"
+        }
+      },
+      {
+        "id": "conv-48/session_11_observation/Jolene/D11:5",
+        "claim": {
+          "s": "Jolene",
+          "p": "created",
+          "o": "serene space"
+        }
+      },
+      {
+        "id": "conv-48/session_11_observation/Jolene/D11:5",
+        "claim": {
+          "s": "Jolene",
+          "p": "built",
+          "o": "serene space"
+        }
+      },
+      {
+        "id": "conv-48/session_11_observation/Jolene/D11:5",
+        "claim": {
+          "s": "Jolene",
+          "p": "created",
+          "o": "soothing scents"
+        }
+      },
+      {
+        "id": "conv-48/session_11_observation/Jolene/D11:5",
+        "claim": {
+          "s": "Jolene",
+          "p": "uses",
+          "o": "soothing scents"
+        }
+      },
+      {
+        "id": "conv-48/session_11_observation/Jolene/D11:5",
+        "claim": {
+          "s": "Jolene",
+          "p": "uses",
+          "o": "lavender"
+        }
+      },
+      {
+        "id": "conv-48/session_11_observation/Jolene/D11:5",
+        "claim": {
+          "s": "Jolene",
+          "p": "uses",
+          "o": "rosemary"
+        }
+      },
+      {
+        "id": "conv-48/session_17_observation/Jolene/D17:2",
+        "claim": {
+          "s": "Jolene",
+          "p": "discovered",
+          "o": "meditation"
+        }
+      },
+      {
+        "id": "conv-48/session_17_observation/Jolene/D17:2",
+        "claim": {
+          "s": "Jolene",
+          "p": "discovered",
+          "o": "clarity"
+        }
+      },
+      {
+        "id": "conv-48/session_17_observation/Jolene/D17:2",
+        "claim": {
+          "s": "meditation",
+          "p": "provides",
+          "o": "clarity"
+        }
       }
     ],
     "schema_gap_claims": [
@@ -1598,6 +1831,126 @@
           "p": "works_at",
           "o": "tattoo parlor"
         }
+      },
+      {
+        "id": "conv-47/session_21_observation/James/D21:13",
+        "claim": {
+          "s": "James",
+          "p": "works_at",
+          "o": "Starbucks"
+        }
+      },
+      {
+        "id": "conv-47/session_21_observation/James/D21:13",
+        "claim": {
+          "s": "Starbucks",
+          "p": "provides",
+          "o": "coffee"
+        }
+      },
+      {
+        "id": "conv-47/session_21_observation/James/D21:13",
+        "claim": {
+          "s": "John",
+          "p": "works_at",
+          "o": "Starbucks"
+        }
+      },
+      {
+        "id": "conv-48/session_9_observation/Deborah/D9:3",
+        "claim": {
+          "s": "Deborah",
+          "p": "created",
+          "o": "yoga class"
+        }
+      },
+      {
+        "id": "conv-48/session_9_observation/Deborah/D9:3",
+        "claim": {
+          "s": "Deborah",
+          "p": "founded",
+          "o": "yoga class"
+        }
+      },
+      {
+        "id": "conv-48/session_9_observation/Deborah/D9:3",
+        "claim": {
+          "s": "yoga class",
+          "p": "located_in",
+          "o": "neighborhood"
+        }
+      },
+      {
+        "id": "conv-48/session_14_observation/Deborah/D14:3",
+        "claim": {
+          "s": "Deborah",
+          "p": "created",
+          "o": "yoga pose"
+        }
+      },
+      {
+        "id": "conv-48/session_14_observation/Deborah/D14:3",
+        "claim": {
+          "s": "Deborah",
+          "p": "designed",
+          "o": "yoga pose"
+        }
+      },
+      {
+        "id": "conv-48/session_14_observation/Deborah/D14:3",
+        "claim": {
+          "s": "Deborah",
+          "p": "created",
+          "o": "Dancer Pose"
+        }
+      },
+      {
+        "id": "conv-48/session_14_observation/Deborah/D14:3",
+        "claim": {
+          "s": "Deborah",
+          "p": "designed",
+          "o": "Dancer Pose"
+        }
+      },
+      {
+        "id": "conv-48/session_14_observation/Deborah/D14:3",
+        "claim": {
+          "s": "Jolene",
+          "p": "created",
+          "o": "Dancer Pose"
+        }
+      },
+      {
+        "id": "conv-48/session_14_observation/Deborah/D14:3",
+        "claim": {
+          "s": "Jolene",
+          "p": "designed",
+          "o": "Dancer Pose"
+        }
+      },
+      {
+        "id": "conv-48/session_29_observation/Deborah/D29:5",
+        "claim": {
+          "s": "Deborah",
+          "p": "acquired",
+          "o": "old house"
+        }
+      },
+      {
+        "id": "conv-48/session_29_observation/Deborah/D29:5",
+        "claim": {
+          "s": "Deborah",
+          "p": "built",
+          "o": "old house"
+        }
+      },
+      {
+        "id": "conv-48/session_29_observation/Deborah/D29:5",
+        "claim": {
+          "s": "Deborah",
+          "p": "built",
+          "o": "bench"
+        }
       }
     ]
   },
@@ -1635,11 +1988,11 @@
     ],
     "gold_predicate_counts": {
       "acquired": 1,
-      "created": 3,
-      "developed": 3,
+      "created": 4,
+      "developed": 4,
       "founded": 1,
       "part_of": 3,
-      "provides": 20,
+      "provides": 21,
       "received": 1,
       "uses": 3,
       "works_at": 2
@@ -1657,7 +2010,7 @@
     "unscorable_predicates": [
       "received"
     ],
-    "scorable_gold_facts": 36,
+    "scorable_gold_facts": 39,
     "unscorable_gold_facts": 1,
     "scorable_ids": [
       "conv-26/session_11_observation/Melanie/D11:7",
@@ -1682,15 +2035,18 @@
       "conv-44/session_12_observation/Audrey/D12:10",
       "conv-44/session_6_observation/Audrey/D6:8",
       "conv-44/session_7_observation/Andrew/D7:12",
+      "conv-47/session_15_observation/James/D15:3",
+      "conv-47/session_27_observation/James/D27:12",
       "conv-47/session_4_observation/James/D4:16",
       "conv-48/session_18_observation/Jolene/D18:5",
-      "conv-48/session_28_observation/Jolene/D28:26"
+      "conv-48/session_28_observation/Jolene/D28:26",
+      "conv-48/session_3_observation/Jolene/D3:3"
     ]
   },
   "cluster_sensitivity": {
-    "pooled": 0.667,
-    "total_scorable": 36,
-    "total_found": 24,
+    "pooled": 0.641,
+    "total_scorable": 39,
+    "total_found": 25,
     "per_conversation": {
       "conv-26": {
         "scorable": 1,
@@ -1723,32 +2079,32 @@
         "recall": 0.5
       },
       "conv-47": {
-        "scorable": 1,
-        "found": 0,
-        "recall": 0.0
+        "scorable": 3,
+        "found": 1,
+        "recall": 0.333
       },
       "conv-48": {
-        "scorable": 3,
+        "scorable": 4,
         "found": 3,
-        "recall": 1.0
+        "recall": 0.75
       }
     },
     "delete_one_conversation": {
-      "conv-26": 0.657,
-      "conv-30": 0.655,
-      "conv-41": 0.64,
-      "conv-42": 0.667,
-      "conv-43": 0.697,
-      "conv-44": 0.688,
-      "conv-47": 0.686,
-      "conv-48": 0.636
+      "conv-26": 0.632,
+      "conv-30": 0.625,
+      "conv-41": 0.607,
+      "conv-42": 0.636,
+      "conv-43": 0.667,
+      "conv-44": 0.657,
+      "conv-47": 0.667,
+      "conv-48": 0.629
     },
     "influence_span": [
-      0.636,
-      0.697
+      0.607,
+      0.667
     ],
     "conversations": 8
   },
-  "scorable_recall": 0.667,
-  "scorable_recall_clean": 0.25
+  "scorable_recall": 0.641,
+  "scorable_recall_clean": 0.231
 }
