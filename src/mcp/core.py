@@ -281,6 +281,30 @@ _CIRCUIT_RESET_AFTER = 10.0  # seconds before half-open retry
 _MAX_BACKOFF = 8.0  # cap jittered backoff
 _RECONNECT_INTERVAL = 30.0  # background check every 30s
 
+# Test escape hatch. The breaker is module-global, so a test that expects a
+# query to fail -- or a suite that runs against an unavailable server -- leaves
+# it open and makes every later DB test fail with "circuit open" for 10s,
+# regardless of the database being perfectly healthy. Set
+# SURREALDB_DISABLE_CIRCUIT_BREAKER=1 to short-circuit both the open check and
+# the failure accounting.
+_CIRCUIT_BREAKER_DISABLED = os.getenv(
+    "SURREALDB_DISABLE_CIRCUIT_BREAKER", "").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+def reset_surreal_circuit() -> None:
+    """Clear the SurrealDB circuit breaker.
+
+    For tests that exercise failure handling and then need a working
+    database again in the same process.
+    """
+    global _surreal_failure_count, _surreal_circuit_open
+    global _surreal_last_failure, _surreal_backoff_level
+    _surreal_failure_count = 0
+    _surreal_circuit_open = False
+    _surreal_last_failure = 0.0
+    _surreal_backoff_level = 0
+
 
 async def _get_client() -> httpx.AsyncClient:
     global _shared_client
@@ -333,7 +357,12 @@ def _budget_aware_should_retry(sql: str) -> bool:
     return 2 if heavy else 3
 
 
-async def _query_surreal(sql: str, params: Optional[Dict[str, Any]] = None) -> Any:
+async def _query_surreal(
+    sql: str,
+    params: Optional[Dict[str, Any]] = None,
+    ns: Optional[str] = None,
+    db: Optional[str] = None,
+) -> Any:
     """Execute SurrealQL — with optional bind parameters.
 
     Parameters are bound with SurrealQL LET declarations prepended to the
@@ -350,6 +379,11 @@ async def _query_surreal(sql: str, params: Optional[Dict[str, Any]] = None) -> A
     Values are serialised as JSON literals, which are valid SurrealQL values,
     so no SurrealQL string escaping is needed. json.dumps emits only
     double-quoted strings; SurrealQL accepts both quote styles.
+
+    ns/db override the configured namespace for this call. SURREAL_NS and
+    SURREAL_DB are bound at import time, so a caller that needs a different
+    database cannot set the environment variable afterwards -- it has to
+    pass them explicitly.
     """
     global \
         _surreal_failure_count, \
@@ -369,7 +403,7 @@ async def _query_surreal(sql: str, params: Optional[Dict[str, Any]] = None) -> A
         "Accept": "application/json",
         "Content-Type": "text/plain",
     }
-    statements = [f"USE NS {SURREAL_NS} DB {SURREAL_DB};"]
+    statements = [f"USE NS {ns or SURREAL_NS} DB {db or SURREAL_DB};"]
     if params:
         for key, value in params.items():
             statements.append(f"LET ${key} = {json.dumps(value)};")
@@ -382,7 +416,7 @@ async def _query_surreal(sql: str, params: Optional[Dict[str, Any]] = None) -> A
         failure_count = _surreal_failure_count
         last_failure = _surreal_last_failure
 
-    if circuit_open:
+    if circuit_open and not _CIRCUIT_BREAKER_DISABLED:
         # Half-open probe after quiet period
         if (time.time() - last_failure) >= _CIRCUIT_RESET_AFTER:
             async with _surreal_lock:
@@ -449,7 +483,9 @@ async def _query_surreal(sql: str, params: Optional[Dict[str, Any]] = None) -> A
 
     # All retries failed -> possibly open circuit
     async with _surreal_lock:
-        _surreal_circuit_open = _surreal_failure_count >= _CIRCUIT_OPEN_THRESHOLD
+        _surreal_circuit_open = (
+            _surreal_failure_count >= _CIRCUIT_OPEN_THRESHOLD
+            and not _CIRCUIT_BREAKER_DISABLED)
         opened = _surreal_circuit_open
         current_failures = _surreal_failure_count
 
