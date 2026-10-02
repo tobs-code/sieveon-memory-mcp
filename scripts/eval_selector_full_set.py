@@ -208,6 +208,7 @@ def main() -> int:
                     if norm(c["s"]) == h and norm(c["o"]) == t]
             if not base:
                 continue
+            shipped_rels = {c["p"] for c in base}
             cands = sorted(set(cands))
             h_raw, t_raw = surface[(h, t)]
             hyps = [claim(p, h_raw, t_raw) for p in cands]
@@ -216,19 +217,27 @@ def main() -> int:
             ms = [float(row[v_entail]) - float(row[v_contra])
                   for row in np.atleast_2d(logits)]
             top = cands[max(range(len(cands)), key=lambda i: ms[i])]
-            # The gate compares the winner against the relation the pipeline
-            # actually shipped for this pair, not against the gold. An
-            # abstention keeps the shipped relation whatever the score says.
-            shipped_rels = {c["p"] for c in base}
+            # The gate compares the winner against every relation the
+            # pipeline shipped for this pair, NOT against the intersection
+            # of candidates and shipped relations. An earlier version
+            # intersected the two lists first, and whenever the shipped
+            # relation was absent from the candidate set the comparison
+            # list came out empty and the gate silently did nothing. That
+            # is how `created -> finished` survived a verdict of `abstain`:
+            # the shipped relation was never in the probe output at all.
+            #
+            # Gate against the shipped relation always. If the winner is not
+            # comparable with what we shipped, we keep what we shipped.
+            # Under-protection is the worse error here.
             gate_decision = "n/a"
-            if args.gate == "abstraction":
-                rivals = [p for p in cands if p in shipped_rels]
-                if not rivals:
-                    gate_decision = "no shipped rival"
+            if args.gate == "abstraction" and shipped_rels:
+                for rival in sorted(shipped_rels):
+                    if gate_verdict(top, rival) == "abstain":
+                        gate_decision = f"abstain against {rival}"
+                        top = rival
+                        break
                 else:
-                    gate_decision = gate_verdict(top, sorted(rivals)[0])
-                    if gate_decision == "abstain":
-                        top = sorted(rivals)[0]
+                    gate_decision = "rankable against every shipped relation"
             top_key = (h, top, t)
             if top_key in gold_keys:
                 sel_found += 1

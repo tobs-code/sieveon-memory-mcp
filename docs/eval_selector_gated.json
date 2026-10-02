@@ -8,7 +8,7 @@
   "selector": {
     "recall": 0.5227,
     "found": 23,
-    "clean": 9
+    "clean": 10
   },
   "corrected": 1,
   "regressed": 2,
@@ -606,23 +606,11 @@
       "gold": 1,
       "shipped_found": 1,
       "shipped_wrong": 0,
-      "selected_found": 0,
-      "selected_clean": 0,
+      "selected_found": 1,
+      "selected_clean": 1,
       "corrected": 0,
-      "regressed": 1,
-      "details": [
-        {
-          "kind": "regression",
-          "pair": [
-            "joanna",
-            "presentation"
-          ],
-          "was": [
-            "created"
-          ],
-          "now": "finished"
-        }
-      ]
+      "regressed": 0,
+      "details": []
     },
     {
       "id": "conv-42/session_28_observation/Joanna/D28:8",
@@ -1115,11 +1103,23 @@
       "gold": 1,
       "shipped_found": 1,
       "shipped_wrong": 1,
-      "selected_found": 1,
+      "selected_found": 0,
       "selected_clean": 0,
       "corrected": 0,
-      "regressed": 0,
-      "details": []
+      "regressed": 1,
+      "details": [
+        {
+          "kind": "regression",
+          "pair": [
+            "jolene",
+            "bullet journal"
+          ],
+          "was": [
+            "uses"
+          ],
+          "now": "wrote"
+        }
+      ]
     },
     {
       "id": "conv-48/session_1_observation/Deborah/D1:13",
