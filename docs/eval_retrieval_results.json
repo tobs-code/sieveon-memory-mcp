@@ -10,7 +10,7 @@
       "paraphrase_hit_rate": 1.0,
       "false_positive_rate": 0.0,
       "empty_rate": 0.0,
-      "mean_items": 19.88235294117647,
+      "mean_items": 19.794117647058822,
       "rows": [
         {
           "query": "Who discovered radium?",
@@ -29,7 +29,7 @@
           "items": 23,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.554
+          "relevance_score": 0.9205
         },
         {
           "query": "Who founded SpaceX?",
@@ -43,10 +43,10 @@
           ],
           "terms_missing": [],
           "rank": 0,
-          "items": 16,
+          "items": 17,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.6206
+          "relevance_score": 0.9105
         },
         {
           "query": "Who founded Microsoft?",
@@ -60,10 +60,10 @@
           ],
           "terms_missing": [],
           "rank": 0,
-          "items": 24,
+          "items": 22,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.5808
+          "relevance_score": 0.8998
         },
         {
           "query": "Who acquired GitHub?",
@@ -80,7 +80,7 @@
           "items": 22,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.5915
+          "relevance_score": 0.9071
         },
         {
           "query": "Who acquired WhatsApp?",
@@ -94,10 +94,10 @@
           ],
           "terms_missing": [],
           "rank": 0,
-          "items": 21,
+          "items": 22,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.5956
+          "relevance_score": 0.8738
         },
         {
           "query": "Which company uses QuantumDB?",
@@ -110,11 +110,11 @@
             "QuantumDB"
           ],
           "terms_missing": [],
-          "rank": 1,
+          "rank": 0,
           "items": 23,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.6012
+          "relevance_score": 0.7745
         },
         {
           "query": "Who developed the QuantumDB engine?",
@@ -131,7 +131,7 @@
           "items": 28,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.6054
+          "relevance_score": 0.9168
         },
         {
           "query": "Who leads Nova Systems?",
@@ -148,7 +148,7 @@
           "items": 23,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.4423
+          "relevance_score": 0.8985
         },
         {
           "query": "Who acquired Atlas Freight?",
@@ -165,7 +165,7 @@
           "items": 19,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.5915
+          "relevance_score": 0.9139
         },
         {
           "query": "Who wrote the first algorithm?",
@@ -182,7 +182,7 @@
           "items": 21,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.441
+          "relevance_score": 0.8353
         },
         {
           "query": "Who discovered penicillin?",
@@ -199,7 +199,7 @@
           "items": 21,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.531
+          "relevance_score": 0.948
         },
         {
           "query": "Who discovered X-rays?",
@@ -213,10 +213,10 @@
           ],
           "terms_missing": [],
           "rank": 0,
-          "items": 22,
+          "items": 21,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.5174
+          "relevance_score": 0.9539
         },
         {
           "query": "What engines does SpaceX use?",
@@ -233,7 +233,7 @@
           "items": 24,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.4523
+          "relevance_score": 0.8513
         },
         {
           "query": "Who is the CEO of Microsoft?",
@@ -250,7 +250,7 @@
           "items": 23,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.4704
+          "relevance_score": 0.8799
         },
         {
           "query": "Where is Orion Labs headquartered?",
@@ -267,7 +267,7 @@
           "items": 11,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.4766
+          "relevance_score": 0.8872
         },
         {
           "query": "Who founded Amazon?",
@@ -281,10 +281,10 @@
           ],
           "terms_missing": [],
           "rank": 0,
-          "items": 19,
+          "items": 18,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.6276
+          "relevance_score": 0.9102
         },
         {
           "query": "Who founded Apple?",
@@ -298,17 +298,17 @@
           ],
           "terms_missing": [],
           "rank": 0,
-          "items": 20,
+          "items": 21,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.6255
+          "relevance_score": 0.9122
         },
         {
           "query": "What did Nature publish in 2001?",
           "kind": "answerable",
           "paraphrase": false,
           "hit": true,
-          "verdict_found": false,
+          "verdict_found": true,
           "terms_found": [
             "Nature",
             "human genome sequence"
@@ -318,7 +318,7 @@
           "items": 21,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.3495
+          "relevance_score": 0.674
         },
         {
           "query": "Who founded eBay?",
@@ -332,10 +332,10 @@
           ],
           "terms_missing": [],
           "rank": 0,
-          "items": 20,
+          "items": 17,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.5861
+          "relevance_score": 0.9675
         },
         {
           "query": "Who works at Acme Corp?",
@@ -355,14 +355,14 @@
           "items": 23,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.4772
+          "relevance_score": 0.7625
         },
         {
           "query": "Which companies made acquisitions in 2014?",
           "kind": "answerable",
           "paraphrase": false,
           "hit": true,
-          "verdict_found": false,
+          "verdict_found": true,
           "terms_found": [
             "Facebook",
             "WhatsApp",
@@ -374,14 +374,14 @@
           "items": 15,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.4404
+          "relevance_score": 0.5972
         },
         {
           "query": "What did Ada Lovelace write?",
           "kind": "answerable",
           "paraphrase": false,
           "hit": true,
-          "verdict_found": false,
+          "verdict_found": true,
           "terms_found": [
             "Ada Lovelace",
             "Analytical Engine",
@@ -393,14 +393,14 @@
           "items": 15,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.4047
+          "relevance_score": 0.8689
         },
         {
           "query": "Who founded a company in the 1990s?",
           "kind": "answerable",
           "paraphrase": false,
           "hit": true,
-          "verdict_found": false,
+          "verdict_found": true,
           "terms_found": [
             "Pierre Omidyar",
             "eBay",
@@ -412,7 +412,7 @@
           "items": 17,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.6085
+          "relevance_score": 0.5923
         },
         {
           "query": "The person in charge of Nova Systems?",
@@ -429,7 +429,7 @@
           "items": 23,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.44
+          "relevance_score": 0.9037
         },
         {
           "query": "Which firm purchased YouTube?",
@@ -446,7 +446,7 @@
           "items": 20,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.4444
+          "relevance_score": 0.9072
         },
         {
           "query": "Who first saw the moons of Jupiter?",
@@ -463,14 +463,14 @@
           "items": 23,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.3859
+          "relevance_score": 0.8416
         },
         {
           "query": "The streaming service's cloud provider?",
           "kind": "answerable",
           "paraphrase": true,
           "hit": true,
-          "verdict_found": false,
+          "verdict_found": true,
           "terms_found": [
             "Netflix",
             "Amazon Web Services"
@@ -480,14 +480,14 @@
           "items": 19,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.3642
+          "relevance_score": 0.8222
         },
         {
           "query": "Where is Munich's Acme Corp based?",
           "kind": "answerable",
           "paraphrase": true,
           "hit": true,
-          "verdict_found": false,
+          "verdict_found": true,
           "terms_found": [
             "Acme Corp",
             "Munich"
@@ -497,24 +497,24 @@
           "items": 11,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.4938
+          "relevance_score": 0.8988
         },
         {
           "query": "The outfit that built the A320neo's powerplants?",
           "kind": "answerable",
           "paraphrase": true,
           "hit": true,
-          "verdict_found": false,
+          "verdict_found": true,
           "terms_found": [
             "Airbus",
             "CFM LEAP engines"
           ],
           "terms_missing": [],
           "rank": 0,
-          "items": 15,
+          "items": 16,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.361
+          "relevance_score": 0.7994
         },
         {
           "query": "Who runs Microsoft as chief executive?",
@@ -527,11 +527,11 @@
             "Microsoft"
           ],
           "terms_missing": [],
-          "rank": 0,
+          "rank": 2,
           "items": 24,
           "classified_as": "factual",
           "strategy": "semantic_hybrid",
-          "relevance_score": 0.4656
+          "relevance_score": 0.7377
         },
         {
           "query": "What is the capital of France?",

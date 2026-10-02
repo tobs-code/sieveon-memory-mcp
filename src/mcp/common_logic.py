@@ -389,15 +389,33 @@ _SUMMARY_STOPWORDS = frozenset({
 })
 
 
-_SUMMARY_FOUND_THRESHOLD = 0.6
+# A query is accepted as answered when the retriever's top vector similarity
+# clears this. Measured on docs/eval_retrieval_gold.jsonl: answerable queries
+# score 0.524-0.818 and no-answer probes 0.224-0.335, so this sits in the gap
+# rather than on a measured optimum -- four no-answer queries is too few to
+# place it precisely.
+#
+# This is an empirically calibrated value for one embedding model on one
+# corpus, not a universal constant: cosine scores from a ranking-trained
+# embedding are only comparable within a query, and this constant encodes
+# what they happen to mean here. Re-measure after changing the model or the
+# corpus, otherwise the verdict silently misbehaves.
+_SUMMARY_FOUND_THRESHOLD = 0.43
+
+# Minimum retrieval confidence before any evidence is trusted at all. Below
+# this the query is reported as having nothing, regardless of how many rows
+# came back -- the store always returns its nearest neighbours, so row count
+# says nothing about whether they are relevant.
+_SUMMARY_MIN_RETRIEVAL = 0.40
 
 
 # Above this, retrieval results may be trusted for facts and entities that
-# have no lexical overlap with the query. Measured on the retrieval gold set:
-# paraphrase queries the router gets right score ~0.8, while no-answer
-# probes sit at ~0.3. Gating on it keeps paraphrased answers while still
-# rejecting an unrelated query.
-_SUMMARY_TRUST_RETRIEVAL_ABOVE = 0.7
+# have no lexical overlap with the query -- the paraphrase case, where
+# "The streaming service's cloud provider?" shares no content word with
+# "Netflix uses Amazon Web Services". Set equal to the accept threshold
+# because both are read off the same measurement: a query whose top vector
+# similarity reaches the accept band is one whose results may be trusted.
+_SUMMARY_TRUST_RETRIEVAL_ABOVE = 0.43
 
 
 def _is_confident_retrieval(relevance: Optional[float]) -> bool:
@@ -561,6 +579,17 @@ def _synthesize_answer(
         verdict = "found"
     else:
         verdict = "weak_match"
+
+    # Retrieval confidence gates the verdict. Evidence built from rows the
+    # retriever already doubts is not evidence, and this is the layer that
+    # keeps an unrelated query from reading as answered: the store always
+    # returns its nearest neighbours, so "some facts matched a word" is not a
+    # reason to claim an answer.
+    if (
+        retrieval_relevance is not None
+        and retrieval_relevance < _SUMMARY_MIN_RETRIEVAL
+    ):
+        verdict = "nothing_found"
 
     # Build a concise natural-language summary
     text_parts = []

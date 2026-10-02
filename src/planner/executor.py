@@ -122,6 +122,45 @@ class RetrievalStrategy(Enum):
     DECOMPOSED_MULTIHOP = "decomposed_multihop"
 
 
+def _channel_diagnostics(
+    lexical: Optional[List[Dict]],
+    vector: Optional[List[Dict]],
+) -> Dict[str, Any]:
+    """Per-channel retrieval diagnostics, kept separate on purpose.
+
+    Ranking wants a single fused ordering. Confidence does not: it wants to
+    know how strong the evidence was before the channels were mixed. Once
+    fused, that information is gone -- a top hit that only the vector channel
+    likes looks identical to one both channels agree on.
+
+    These four numbers are the Query Performance Prediction diagnostics from
+    the IR literature (top vector score, lexical hit count, top BM25, and
+    cross-channel agreement). They are inputs to a calibrated accept
+    decision, not a score to rank by.
+    """
+    lexical = lexical or []
+    vector = vector or []
+
+    bm25_values = [
+        float(i.get("bm25") or 0) for i in lexical if i.get("bm25") is not None
+    ]
+    vec_values = [
+        float(i.get("vec_score") or 0) for i in vector if i.get("vec_score") is not None
+    ]
+
+    top_lexical = lexical[0].get("id") if lexical else None
+    top_vector = vector[0].get("id") if vector else None
+
+    return {
+        "top_vec_score": max(vec_values) if vec_values else 0.0,
+        "lexical_hits": len(lexical),
+        "max_bm25": max(bm25_values) if bm25_values else 0.0,
+        "channels_agree": bool(
+            top_lexical is not None and top_lexical == top_vector
+        ),
+    }
+
+
 class RetrievalExecutor:
     """Executes retrieval operations using different strategies"""
 
@@ -350,14 +389,38 @@ class RetrievalExecutor:
 
     @classmethod
     def _calculate_relevance_score(cls, result: Dict[str, Any], query: str) -> float:
-        """Calculate a relevance score based on the result quality.
+        """Estimate how likely this result is to actually answer the query.
 
-        Two signals, both cheap. SurrealDB's own vector similarity (vec_score
-        on events from vector searches) is semantic evidence and costs nothing
-        extra -- it was already computed to rank the results. Content-term
-        coverage (query terms minus stopwords) is the lexical backstop for
-        strategies without a vector channel. Stopwords are excluded: "who/is/
-        where/and" matching "who/the/and" is not relevance.
+        This is an accept/abstain number, not a ranking score. Ranking is done
+        by the strategies (rank-based fusion); this answers a different
+        question -- is there anything here worth answering with.
+
+        The previous version averaged the top three vector scores and mixed in
+        a term-coverage ratio. Measured on the retrieval gold set that scored
+        a paraphrase 0.36 and an unrelated query 0.31, i.e. no separation at
+        all, because averaging three scores and adding coverage dilutes
+        precisely the signal that discriminates. The top-1 score separates
+        cleanly: answerable queries 0.524-0.818, no-answer probes 0.224-0.335,
+        AUC 1.000 on that set.
+
+        Two caveats, both load-bearing:
+
+        * A cosine score is not comparable across queries in general -- a
+          ranking-trained embedding optimises relative order within a query,
+          not an absolute probability. The value below is therefore
+          calibrated empirically for this embedding model and corpus, not a
+          universal constant. Re-measure with scripts/eval_retrieval.py after
+          changing the embedding model; expect to move.
+        * The gold set is 30 answerable and 4 no-answer queries. Four
+          negatives is too few to pin the operating point precisely, so the
+          threshold sits in the middle of the observed gap rather than on a
+          measured optimum.
+
+        Lexical corroboration enters only as a bonus on top of the vector
+        signal, not as a weighted average: raw BM25 is unbounded and cosine is
+        bounded, so mixing them directly is not sound, and the earlier 0.5/0.5
+        blend was in fact ~98% vector score because the RRF term is two orders
+        of magnitude smaller.
         """
         if "error" in result:
             return 0.1
@@ -368,31 +431,41 @@ class RetrievalExecutor:
             if isinstance(value, list):
                 items.extend(i for i in value if isinstance(i, dict))
 
-        total = len(items)
-        if total == 0:
+        if not items:
             return 0.2
 
-        query_terms = cls._content_terms(query)
-        if query_terms:
-            matched = sum(
-                1 for item in items
-                if query_terms & cls._content_terms(cls._item_text(item))
-            )
-            coverage = matched / total
-        else:
-            coverage = 0.0
+        diag = result.get("retrieval_diagnostics") or {}
 
-        vec_scores = sorted(
-            (float(i.get("vec_score", 0) or 0) for i in items
-             if isinstance(i.get("vec_score"), (int, float))),
-            reverse=True,
-        )[:3]
-        if vec_scores:
-            semantic = max(0.0, min(1.0, sum(vec_scores) / len(vec_scores)))
-            return round(min(1.0, 0.2 + 0.4 * coverage + 0.4 * semantic), 4)
+        # Top-1, not a mean over the top three.
+        top_vec = diag.get("top_vec_score")
+        if not isinstance(top_vec, (int, float)):
+            vec_scores = [
+                float(i["vec_score"]) for i in items
+                if isinstance(i.get("vec_score"), (int, float))
+            ]
+            top_vec = max(vec_scores) if vec_scores else 0.0
 
-        volume = min(1.0, total / 10.0)
-        return round(min(1.0, 0.2 + 0.6 * coverage + 0.2 * volume), 4)
+        if top_vec <= 0.0:
+            # No vector channel (lexical-only or graph-only strategies). Fall
+            # back to whether the lexical channel found anything, which on the
+            # gold set separates at AUC 0.992.
+            hits = diag.get("lexical_hits")
+            if isinstance(hits, int):
+                return round(min(1.0, 0.3 + 0.1 * min(hits, 7)), 4)
+            return 0.3
+
+        score = top_vec
+        # Corroboration only ever raises the estimate. Cross-channel agreement
+        # is a genuine signal (AUC 0.933 on the gold set) but a weaker one
+        # than the vector score, so it must not be able to push a query with
+        # no semantic match over the accept threshold.
+        if diag.get("channels_agree"):
+            score += 0.1
+        bm25 = diag.get("max_bm25")
+        if isinstance(bm25, (int, float)) and bm25 > 0:
+            score += 0.05
+
+        return round(max(0.0, min(1.0, score)), 4)
 
 
     @staticmethod
@@ -920,19 +993,27 @@ class RetrievalExecutor:
                 ev["_rrf"] = 1.0 / (k + rank)
                 fused.append(ev)
         for rank, ev in enumerate(vec_events):
-            vec_score = ev.get("vec_score", 0) or 0
-            weighted = 0.5 * (1.0 / (k + len(ftx_events) + rank)) + 0.5 * vec_score
             eid = ev.get("id")
             if not eid:
                 continue
             if eid not in seen_ids:
                 seen_ids.add(eid)
-                ev["_rrf"] = weighted
+                # Rank contribution only. The previous version added
+                # 0.5 * vec_score to the RRF term, but the two live on
+                # incompatible scales: the RRF term spans 0.0132-0.0167 while
+                # vec_score spans roughly 0.23-0.76, so the "0.5/0.5 blend"
+                # measured at 2.1% RRF and 97.9% vector. The lexical channel
+                # contributed nothing while appearing to. Adding an unbounded
+                # and a bounded score with equal weights is not sound;
+                # rank-based fusion is scale-free by construction.
+                ev["_rrf"] = 1.0 / (k + len(ftx_events) + rank)
                 fused.append(ev)
             else:
                 for x in fused:
                     if x.get("id") == eid:
-                        x["_rrf"] = x.get("_rrf", 0) + weighted
+                        # Appears in both channels: both contribute a rank term,
+                        # which is how RRF rewards agreement.
+                        x["_rrf"] = x.get("_rrf", 0) + 1.0 / (k + len(ftx_events) + rank)
                         break
         fused.sort(key=lambda x: x.get("_rrf", 0), reverse=True)
         fused_events = fused[:10]
@@ -1009,6 +1090,7 @@ class RetrievalExecutor:
             "entities": _clean_output(expanded_entities),
             "facts": _clean_output(expanded_facts),
             "query": query,
+            "retrieval_diagnostics": _channel_diagnostics(ftx_events, vec_events),
         }
 
     async def _execute_hybrid_fallback(

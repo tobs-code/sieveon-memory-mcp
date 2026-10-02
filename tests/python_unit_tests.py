@@ -351,24 +351,34 @@ class TestPPRAndSplitting(unittest.TestCase):
 
 
 class TestRelevanceScore(unittest.TestCase):
-    """_calculate_relevance_score feeds the router's cost tracker, so its
-    quality decides what the router learns. Two properties are pinned:
-    stopwords must not inflate coverage, and SurrealDB's own vector
-    similarity (vec_score) must count as semantic evidence when present."""
+    """_calculate_relevance_score is an accept/abstain estimate, not a rank.
 
-    def test_stopwords_do_not_inflate_coverage(self):
+    Measured on docs/eval_retrieval_gold.jsonl: the top vector similarity
+    separates answerable queries (0.524-0.818) from no-answer probes
+    (0.224-0.335) at AUC 1.000, while lexical hit count gives 0.992, top
+    BM25 0.979 and cross-channel agreement 0.933. These tests pin that the
+    score tracks those signals -- in particular that the top-1 vector score
+    is used rather than an average over the top three, which diluted the
+    only signal that discriminated.
+    """
+
+    def test_top1_vec_score_beats_a_diluted_average(self):
         from src.planner.executor import RetrievalExecutor
-        result = {"events": [
-            {"content": "Who and the what where when why how is are was were"},
+        # One strong hit plus two weak ones. The top-1 is 0.80; the mean of
+        # the top three is 0.60, and mixing coverage in pushed that down to
+        # 0.36 -- inside the range of an unrelated query.
+        strong = {"events": [
+            {"content": "a", "vec_score": 0.80},
+            {"content": "b", "vec_score": 0.50},
+            {"content": "c", "vec_score": 0.50},
         ]}
-        low = RetrievalExecutor._calculate_relevance_score(
-            result, "Who is where and what?")
-        result2 = {"events": [
-            {"content": "Iris Chen leads Nova Systems as chief executive"},
+        weak_only = {"events": [
+            {"content": "x", "vec_score": 0.34},
         ]}
-        high = RetrievalExecutor._calculate_relevance_score(
-            result2, "Who leads Nova Systems?")
-        self.assertGreater(high, low)
+        self.assertGreater(
+            RetrievalExecutor._calculate_relevance_score(strong, "q"),
+            RetrievalExecutor._calculate_relevance_score(weak_only, "q"),
+        )
 
     def test_vec_score_counts_as_semantic_evidence(self):
         from src.planner.executor import RetrievalExecutor
@@ -380,6 +390,46 @@ class TestRelevanceScore(unittest.TestCase):
                          "vec_score": 0.85}]},
             "Who leads Nova Systems?")
         self.assertGreater(with_vec, plain)
+
+    def test_agreement_only_raises_never_lowers(self):
+        """A weak semantic match must not be rescued by channel agreement."""
+        from src.planner.executor import RetrievalExecutor
+        weak = {"events": [{"content": "a", "vec_score": 0.30}]}
+        agreed = {
+            "events": [{"content": "a", "vec_score": 0.30}],
+            "retrieval_diagnostics": {
+                "top_vec_score": 0.30, "lexical_hits": 9,
+                "max_bm25": 8.0, "channels_agree": True,
+            },
+        }
+        self.assertGreaterEqual(
+            RetrievalExecutor._calculate_relevance_score(agreed, "q"),
+            RetrievalExecutor._calculate_relevance_score(weak, "q"),
+        )
+
+    def test_diagnostics_take_precedence_over_result_rows(self):
+        """Channels must be measured before fusion, not read back from it.
+
+        A fused result list cannot say whether the top hit was found by one
+        channel or corroborated by both, so a strategy that gathers the
+        channels separately reports them in retrieval_diagnostics.
+        """
+        from src.planner.executor import RetrievalExecutor
+        result = {
+            "events": [{"content": "a"}],  # vec_score lost in fusion
+            "retrieval_diagnostics": {"top_vec_score": 0.77},
+        }
+        self.assertGreaterEqual(
+            RetrievalExecutor._calculate_relevance_score(result, "q"), 0.77)
+
+    def test_lexical_only_strategy_uses_hit_count(self):
+        from src.planner.executor import RetrievalExecutor
+        result = {
+            "events": [{"content": "a"}],
+            "retrieval_diagnostics": {"top_vec_score": 0.0, "lexical_hits": 5},
+        }
+        self.assertGreater(
+            RetrievalExecutor._calculate_relevance_score(result, "q"), 0.5)
 
     def test_empty_and_error_floors_unchanged(self):
         from src.planner.executor import RetrievalExecutor
@@ -398,6 +448,26 @@ class TestRelevanceScore(unittest.TestCase):
                 {"events": events}, "Who leads Nova Systems?")
             self.assertGreaterEqual(s, 0.0)
             self.assertLessEqual(s, 1.0)
+
+    def test_diagnostics_helper_separates_channels(self):
+        from src.planner.executor import _channel_diagnostics
+        diag = _channel_diagnostics(
+            [{"id": "event:a", "bm25": 4.2}, {"id": "event:b", "bm25": 1.1}],
+            [{"id": "event:a", "vec_score": 0.77},
+             {"id": "event:c", "vec_score": 0.30}],
+        )
+        self.assertEqual(diag["top_vec_score"], 0.77)
+        self.assertEqual(diag["lexical_hits"], 2)
+        self.assertEqual(diag["max_bm25"], 4.2)
+        # Both channels returned event:a first.
+        self.assertTrue(diag["channels_agree"])
+
+    def test_diagnostics_tolerate_missing_scores(self):
+        from src.planner.executor import _channel_diagnostics
+        diag = _channel_diagnostics([], [])
+        self.assertEqual(diag["top_vec_score"], 0.0)
+        self.assertEqual(diag["lexical_hits"], 0)
+        self.assertFalse(diag["channels_agree"])
 
 
 class TestSurrealStatementBuilding(unittest.TestCase):
