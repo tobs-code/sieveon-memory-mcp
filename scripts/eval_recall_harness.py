@@ -319,12 +319,27 @@ def audit_vocabulary(gold_rows: List[Dict[str, Any]]) -> Dict[str, Any]:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--gold", type=Path, default=GOLD)
+    ap.add_argument("--gold", type=Path, action="append", default=None,
+                    help="gold file; repeat to score the frozen pilot "
+                         "together with later batches")
     ap.add_argument("--out", default="")
     args = ap.parse_args()
+    gold_files = args.gold or [GOLD]
 
-    gold_rows = [json.loads(l) for l in
-                 args.gold.read_text(encoding="utf-8").splitlines() if l.strip()]
+    rows_by_id: Dict[str, Dict[str, Any]] = {}
+    for gf in gold_files:
+        for line in gf.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            r = json.loads(line)
+            prev = rows_by_id.get(r["id"])
+            if prev is not None and prev.get("triples") != r.get("triples"):
+                # Two files disagreeing about the same sentence would
+                # silently change the denominator, so refuse instead.
+                print(f"  conflicting gold for {r['id']} between files")
+                return 2
+            rows_by_id[r["id"]] = r
+    gold_rows = list(rows_by_id.values())
     claims_by_id: Dict[str, List[Dict[str, Any]]] = {}
     for line in CLAIMS.read_text(encoding="utf-8").splitlines():
         if not line.strip():

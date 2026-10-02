@@ -40,13 +40,17 @@ from typing import Any, Dict, List
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "docs" / "eval_triples_gold_locomo_uniform_model.jsonl"
 OUT = ROOT / "docs" / "eval_recall_gold_pilot.jsonl"
+BATCH2 = ROOT / "docs" / "eval_recall_gold_batch2.jsonl"
 
-# The pilot spread across the uniform sample on purpose: sentences where the
-# extractor claimed a lot, where it claimed one over-reaching creator triple,
-# and where it claimed nothing. A pilot drawn only from claimed sentences
-# would measure recall on the easy cases and precision on nothing.
+# The pilot's 20 sentences. Frozen: these are annotated and confirmed, and
+# scaling must not touch them.
 PILOT_INDICES = [1, 2, 3, 5, 8, 9, 11, 12, 13, 15, 18, 20, 26, 28, 38, 47,
                  50, 53, 54, 57]
+
+
+def remaining(rows: List[Dict[str, Any]]) -> List[int]:
+    """Uniform-sample indices not yet in the pilot, in order."""
+    return [i for i in range(1, len(rows) + 1) if i not in set(PILOT_INDICES)]
 
 
 def main() -> int:
@@ -54,22 +58,42 @@ def main() -> int:
     ap.add_argument("--count", type=int, default=len(PILOT_INDICES))
     ap.add_argument("--all", action="store_true",
                     help="show the whole uniform sample instead of the pilot")
+    ap.add_argument("--batch2", action="store_true",
+                    help="show the sentences not yet in the pilot, i.e. the "
+                         "scaling batch, and write the scaffold file")
+    ap.add_argument("--offset", type=int, default=0,
+                    help="skip the first N sentences of the selected batch")
     args = ap.parse_args()
 
     rows = [json.loads(l) for l in
             SOURCE.read_text(encoding="utf-8").splitlines() if l.strip()]
 
     if args.all:
-        picked: List[Dict[str, Any]] = list(enumerate(rows, start=1))
+        picked = list(enumerate(rows, start=1))
+        label = "full uniform sample"
+    elif args.batch2:
+        rest = remaining(rows)
+        picked = [(i, rows[i - 1]) for i in rest]
+        label = f"scaling batch: {len(picked)} remaining sentences"
+        BATCH2.write_text("\n".join(
+            json.dumps({"id": r["id"], "text": r["text"],
+                        "graphable": None, "triples": None,
+                        "excluded": [], "schema_gap": [],
+                        "by": "unannotated"},
+                       ensure_ascii=False) for _, r in picked) + "\n",
+            encoding="utf-8")
+        print(f"wrote scaffold {BATCH2.relative_to(ROOT)} "
+              f"({len(picked)} rows, extractor output withheld)\n")
     else:
         picked = [(i, rows[i - 1]) for i in PILOT_INDICES[:args.count]]
+        label = "frozen pilot"
 
-    print(f"{len(picked)} sentences for gold annotation "
-          f"(extractor output withheld)")
-    print("Note the position number below is a PILOT position, not the "
-          "sentence's index\nin the uniform sample. They coincide only for "
-          "the first entries. Quote the sentence\ntext when reporting gold "
-          "so the two cannot be confused again.\n")
+    picked = picked[args.offset:args.offset + args.count]
+
+    print(f"{label}: showing {len(picked)}\n")
+    print("Note the position number below is a position in this batch, not "
+          "the sentence's index\nin the uniform sample. Quote the sentence "
+          "text when reporting gold so the two\ncannot be confused again.\n")
     for n, (_, r) in enumerate(picked, start=1):
         print(f"[{n:2}] {r['id']}")
         print(f"     {r['text']}")
