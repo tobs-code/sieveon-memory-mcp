@@ -242,9 +242,26 @@ growing sample, and it should not be read as one.
 
 | axis | measure | value |
 | ---- | ------- | ----- |
-| extractor coverage | scorable recall | 0.700 (21/30) |
-| predicate quality | scorable clean recall | 0.267 (8/30) |
-| schema expressiveness | gold facts outside the vocabulary | 25 |
+| extractor coverage | scorable recall | 0.641 (25/39) |
+| predicate quality | scorable clean recall | 0.231 (9/39) |
+| schema expressiveness | gold facts outside the vocabulary | 39 |
+
+The uniform population is two files, not one: the 20-sentence pilot plus the
+10-sentence batch 2 of the uniform set. Splitting coverage by population:
+
+| population | scorable | found | recall |
+| --- | ---: | ---: | ---: |
+| uniform (pilot + batch 2) | 20 | 16 | 0.800 |
+| expanded | 19 | 9 | 0.474 |
+| total | 39 | 25 | 0.641 |
+
+Two corrections that were wrong in earlier notes of this file, both caught by
+recomputation rather than by inspection. The uniform side is 20 scorable
+facts, not 13 -- the 13 belong to the pilot alone, which is the population
+whose recall was 1.000. And the expanded side is 9/19, not 12/19. The
+decline from 1.000 to 0.641 therefore splits roughly evenly between uniform
+batch 2, where 4 of 10 scorable facts are missed, and the expanded sample,
+where 10 of 19 are.
 
 Superseded interim values, kept for the trail: scorable recall was 0.800
 (16/20) at 40 annotated rows and 0.762 (16/21) at 50; the schema count was
