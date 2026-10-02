@@ -1,39 +1,28 @@
 {
-  "gold": 13,
+  "gold": 14,
   "claims": 51,
   "claims_on_graphable_sentences": 39,
-  "found": 6,
-  "imprecise": 7,
-  "missed": 0,
-  "below_threshold": 16,
-  "predicate_discipline": 5,
-  "predicate_discipline_rate": 0.128,
+  "found": 4,
+  "imprecise": 9,
+  "missed": 1,
+  "below_threshold": 19,
+  "predicate_discipline": 2,
+  "predicate_discipline_rate": 0.051,
   "spurious": 5,
-  "non_graphable_sentences": 4,
-  "non_graphable_claims": 12,
-  "recall": 0.462,
-  "recall_incl_implied": 1.0,
+  "non_graphable_sentences": 2,
+  "non_graphable_claims": 3,
+  "schema_gap_facts": 3,
+  "schema_gap_claims": 9,
+  "precision_if_gap_counted": 0.271,
+  "recall": 0.286,
+  "recall_incl_implied": 0.929,
   "precision": 0.333,
-  "precision_strict": 0.154,
+  "precision_strict": 0.103,
   "precision_incl_implied": 0.333,
   "precision_naive_all_claims": 0.255,
-  "f1": 0.387,
+  "f1": 0.308,
   "detail": {
     "found": [
-      {
-        "id": "conv-41/session_18_observation/Maria/D18:15",
-        "gold": [
-          "Maria",
-          "uses",
-          "favorite tunes"
-        ],
-        "matched": {
-          "s": "Maria",
-          "p": "uses",
-          "o": "favorite tunes"
-        },
-        "via_predicate": "uses"
-      },
       {
         "id": "conv-26/session_11_observation/Melanie/D11:7",
         "gold": [
@@ -47,20 +36,6 @@
           "o": "environment"
         },
         "via_predicate": "developed"
-      },
-      {
-        "id": "conv-48/session_18_observation/Jolene/D18:5",
-        "gold": [
-          "Jolene",
-          "uses",
-          "bullet journal"
-        ],
-        "matched": {
-          "s": "Jolene",
-          "p": "uses",
-          "o": "bullet journal"
-        },
-        "via_predicate": "uses"
       },
       {
         "id": "conv-42/session_27_observation/Joanna/D27:2",
@@ -107,6 +82,20 @@
     ],
     "imprecise": [
       {
+        "id": "conv-41/session_18_observation/Maria/D18:15",
+        "gold": [
+          "Maria",
+          "uses",
+          "favorite tunes"
+        ],
+        "matched": {
+          "s": "Maria",
+          "p": "uses",
+          "o": "favorite tunes"
+        },
+        "via_predicate": "uses"
+      },
+      {
         "id": "conv-41/session_31_observation/Maria/D31:14",
         "gold": [
           "animals",
@@ -147,6 +136,20 @@
           "o": "happiness"
         },
         "via_predicate": "provides"
+      },
+      {
+        "id": "conv-48/session_18_observation/Jolene/D18:5",
+        "gold": [
+          "Jolene",
+          "uses",
+          "bullet journal"
+        ],
+        "matched": {
+          "s": "Jolene",
+          "p": "uses",
+          "o": "bullet journal"
+        },
+        "via_predicate": "uses"
       },
       {
         "id": "conv-48/session_28_observation/Jolene/D28:26",
@@ -205,7 +208,16 @@
         "via_predicate": "provides"
       }
     ],
-    "missed": [],
+    "missed": [
+      {
+        "id": "conv-48/session_23_observation/Deborah/D23:22",
+        "gold": [
+          "Deborah",
+          "received",
+          "quote"
+        ]
+      }
+    ],
     "spurious": [
       {
         "id": "conv-44/session_20_observation/Audrey/D20:40",
@@ -345,6 +357,22 @@
       {
         "id": "conv-48/session_23_observation/Deborah/D23:22",
         "claim": {
+          "s": "Deborah",
+          "p": "created",
+          "o": "quote"
+        }
+      },
+      {
+        "id": "conv-48/session_23_observation/Deborah/D23:22",
+        "claim": {
+          "s": "Deborah",
+          "p": "wrote",
+          "o": "quote"
+        }
+      },
+      {
+        "id": "conv-48/session_23_observation/Deborah/D23:22",
+        "claim": {
           "s": "friend",
           "p": "wrote",
           "o": "quote"
@@ -363,6 +391,14 @@
         "claim": {
           "s": "Joanna",
           "p": "created",
+          "o": "dairy-free dessert recipes"
+        }
+      },
+      {
+        "id": "conv-42/session_10_observation/Joanna/D10:9",
+        "claim": {
+          "s": "Joanna",
+          "p": "developed",
           "o": "dairy-free dessert recipes"
         }
       },
@@ -399,30 +435,6 @@
           "p": "built",
           "o": "environment"
         }
-      },
-      {
-        "id": "conv-48/session_23_observation/Deborah/D23:22",
-        "claim": {
-          "s": "Deborah",
-          "p": "created",
-          "o": "quote"
-        }
-      },
-      {
-        "id": "conv-48/session_23_observation/Deborah/D23:22",
-        "claim": {
-          "s": "Deborah",
-          "p": "wrote",
-          "o": "quote"
-        }
-      },
-      {
-        "id": "conv-42/session_10_observation/Joanna/D10:9",
-        "claim": {
-          "s": "Joanna",
-          "p": "developed",
-          "o": "dairy-free dessert recipes"
-        }
       }
     ],
     "non_graphable": [
@@ -449,7 +461,9 @@
           "p": "developed",
           "o": "creativity"
         }
-      },
+      }
+    ],
+    "schema_gap_claims": [
       {
         "id": "conv-44/session_19_observation/Audrey/D19:22",
         "claim": {

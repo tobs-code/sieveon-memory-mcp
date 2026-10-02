@@ -17,7 +17,27 @@ annotator's strictness. The two are now separated:
     graphable = "yes"    at least one graphable fact exists
                          -> triples[] holds the gold facts,
                             excluded[] holds graphable relations deliberately
-                            left out, each with a reason
+                            left out, each with a reason,
+                            schema_gap[] holds facts that are real but have
+                            no relation in the current vocabulary
+
+A gold triple may carry a fourth element, "imprecise", when the sentence
+supports the fact but the predicate is stronger than the wording licenses:
+`Jolene uses bullet journal` from "cross tasks off her list in the bullet
+journal", `Susie provides comfort` from "brings her comfort". This replaced
+a global predicate list, because the same predicate is clean in one
+sentence and imprecise in another -- `provides` is nearly literal for "the
+studio offers kickboxing" and an over-reading for "brings her comfort".
+
+A vocabulary gap is not a mistake by either side. `Peruvian Lilies require
+watering` is a fact the sentence carries, but `requires` is not a relation
+the schema has, so no extractor could have produced it. Those facts go in
+schema_gap[], and by default the claims on such a sentence are reported
+separately instead of being charged to precision. Set
+`schema_gap_claims: "spurious"` on a row to count them anyway; the report
+always shows both, because the honest reading is a judgement call and
+hiding one side of it would be the same error as the one this harness
+exists to catch.
 
 The pilot proved this is not a theoretical concern: `bike routes located_in
 river` was marked supported in the per-triple annotation and omitted from
@@ -125,9 +145,14 @@ def score(gold_rows: List[Dict[str, Any]],
     discipline: List[Dict[str, Any]] = []
     non_graphable: List[Dict[str, Any]] = []
     below: List[Dict[str, Any]] = []
+    gap_claims: List[Dict[str, Any]] = []
 
     for row in gold_rows:
-        gold = [tuple(t) for t in (row.get("triples") or [])]
+        raw = [list(t) for t in (row.get("triples") or [])]
+        # An optional fourth element marks a gold fact whose predicate is an
+        # over-reading of the wording. Absent means clean.
+        gold = [(t[0], t[1], t[2], t[3] if len(t) > 3 else "clean")
+                for t in raw]
         claims = claims_by_id.get(row["id"], [])
         used = set()
         for g in gold:
@@ -135,15 +160,15 @@ def score(gold_rows: List[Dict[str, Any]],
             for ci, c in enumerate(claims):
                 if ci in used:
                     continue
-                ok, precise, via = match(g, c)
+                ok, precise, via = match(g[:3], c)
                 if ok:
-                    hit = (ci, precise, via)
+                    hit = (ci, g[3] == "clean" and precise, via)
                     break
             if hit is None:
-                missed.append({"id": row["id"], "gold": list(g)})
+                missed.append({"id": row["id"], "gold": list(g[:3])})
             else:
                 used.add(hit[0])
-                rec = {"id": row["id"], "gold": list(g),
+                rec = {"id": row["id"], "gold": list(g[:3]),
                        "matched": {k: claims[hit[0]][k] for k in "spo"},
                        "via_predicate": hit[2]}
                 if hit[1]:
@@ -160,14 +185,23 @@ def score(gold_rows: List[Dict[str, Any]],
         graphable_pairs = {(norm(g[0]), norm(g[2])) for g in gold}
         graphable_pairs |= {(norm(e["s"]), norm(e["o"]))
                             for e in (row.get("excluded") or [])}
+        gap_pairs = {(norm(e["s"]), norm(e["o"]))
+                     for e in (row.get("schema_gap") or [])}
         excluded_triples = [(e["s"], e["p"], e["o"])
                             for e in (row.get("excluded") or [])]
+        # Default: claims on a sentence whose only graphable content is a
+        # vocabulary gap are reported apart, not charged to precision.
+        gap_counts_as = row.get("schema_gap_claims", "excluded")
         for ci, c in enumerate(claims):
             if ci in used:
                 continue
             entry = {"id": row["id"], "claim": {k: c[k] for k in "spo"}}
             if row.get("graphable") == "no":
                 non_graphable.append(entry)
+                continue
+            if (not gold and gap_pairs and gap_counts_as == "excluded"
+                    and (norm(c["s"]), norm(c["o"])) not in graphable_pairs):
+                gap_claims.append(entry)
                 continue
             # Three distinct failures, kept apart because they call for
             # different fixes. A claim that restates an excluded relation is
@@ -186,8 +220,9 @@ def score(gold_rows: List[Dict[str, Any]],
     # sentences are excluded from precision: they say nothing about the
     # extractor, only about what the annotator considered graphable.
     n_all_claims = (len(found) + len(imprecise) + len(below)
-                    + len(discipline) + len(spurious) + len(non_graphable))
-    scored_claims = n_all_claims - len(non_graphable)
+                    + len(discipline) + len(spurious)
+                    + len(non_graphable) + len(gap_claims))
+    scored_claims = n_all_claims - len(non_graphable) - len(gap_claims)
     recall = len(found) / n_gold if n_gold else float("nan")
     strict_recall = (len(found) + len(imprecise)) / n_gold if n_gold else float("nan")
     incl = len(found) + len(imprecise)
@@ -199,6 +234,12 @@ def score(gold_rows: List[Dict[str, Any]],
                        if n_all_claims else float("nan"))
     discipline_rate = (len(discipline) / scored_claims
                        if scored_claims else None)
+    # Same numbers with the vocabulary-gap claims charged to precision, so the
+    # effect of that judgement call is visible instead of assumed.
+    alt_denom = scored_claims + len(gap_claims)
+    alt_precision = (incl / alt_denom if alt_denom else float("nan"))
+
+    n_schema_gap = sum(len(r.get("schema_gap") or []) for r in gold_rows)
 
     return {
         "gold": n_gold, "claims": n_all_claims,
@@ -213,6 +254,9 @@ def score(gold_rows: List[Dict[str, Any]],
         "non_graphable_sentences": sum(
             1 for r in gold_rows if r.get("graphable") == "no"),
         "non_graphable_claims": len(non_graphable),
+        "schema_gap_facts": n_schema_gap,
+        "schema_gap_claims": len(gap_claims),
+        "precision_if_gap_counted": round(alt_precision, 3),
         "recall": round(recall, 3),
         "recall_incl_implied": round(strict_recall, 3),
         "precision": round(precision, 3),
@@ -224,7 +268,8 @@ def score(gold_rows: List[Dict[str, Any]],
                    "missed": missed, "spurious": spurious,
                    "below_threshold": below,
                    "predicate_discipline": discipline,
-                   "non_graphable": non_graphable},
+                   "non_graphable": non_graphable,
+                   "schema_gap_claims": gap_claims},
     }
 
 
@@ -267,7 +312,8 @@ def main() -> int:
     print()
     print(f"  {'bucket':30} {'n':>4}")
     for k in ("found", "imprecise", "missed", "below_threshold",
-              "predicate_discipline", "spurious", "non_graphable_claims"):
+              "predicate_discipline", "spurious", "non_graphable_claims",
+              "schema_gap_claims"):
         print(f"  {k:30} {r[k]:4}")
     print(f"  {'discipline rate':30} "
           f"{r['predicate_discipline_rate']:>4}")
@@ -283,7 +329,12 @@ def main() -> int:
           f"({r['found']}/{r['claims_on_graphable_sentences']})")
     print(f"  prec naive        {r['precision_naive_all_claims']:.3f}   "
           f"({r['found'] + r['imprecise']}/{r['claims']}, all claims)")
+    print(f"  prec if gap count {r['precision_if_gap_counted']:.3f}   "
+          f"(vocabulary-gap claims charged to precision instead of held apart)")
     print(f"  F1                {r['f1']:.3f}")
+    print()
+    print(f"  vocabulary-gap facts in gold: {r['schema_gap_facts']} "
+          f"(no relation exists, so no claim could match)")
     print()
     print("  Buckets, and what each one would need:")
     print("    found/imprecise  the gold fact was extracted")
