@@ -380,6 +380,11 @@ def main() -> int:
                     help="gold file; repeat to score the frozen pilot "
                          "together with later batches")
     ap.add_argument("--out", default="")
+    ap.add_argument("--annotated-only", action="store_true",
+                    help="score only the rows that are annotated, and report "
+                         "how many were skipped. Batch-wise annotation makes "
+                         "this necessary, and it changes the denominator, so "
+                         "the skipped count is printed on every run.")
     args = ap.parse_args()
     gold_files = args.gold or [GOLD]
 
@@ -407,17 +412,29 @@ def main() -> int:
     # A gold row with no triples[] key at all is unannotated, not empty.
     unannotated = [r["id"] for r in gold_rows if r.get("triples") is None]
     if unannotated:
-        print(f"  {len(unannotated)} of {len(gold_rows)} rows unannotated; "
-              f"scoring would silently treat them as having no gold facts.")
-        print(f"  first: {unannotated[0]}")
-        return 2
+        if not args.annotated_only:
+            print(f"  {len(unannotated)} of {len(gold_rows)} rows unannotated; "
+                  f"scoring would silently treat them as having no gold facts.")
+            print(f"  first: {unannotated[0]}")
+            return 2
+        gold_rows = [r for r in gold_rows if r.get("triples") is not None]
+        print(f"  {len(unannotated)} unannotated rows skipped by "
+              f"--annotated-only.\n  This figure describes the annotated "
+              f"subset, not the frozen sample: {len(gold_rows)} of "
+              f"{len(gold_rows) + len(unannotated)} rows.")
     unlabelled = [r["id"] for r in gold_rows if r.get("graphable") is None]
-    if unlabelled:
+    if unlabelled and not args.annotated_only:
         print(f"  {len(unlabelled)} rows have no `graphable` verdict. Without "
               f"it an empty\n  triples[] list is ambiguous and the precision "
               f"denominator is meaningless.")
         print(f"  first: {unlabelled[0]}")
         return 2
+    if unlabelled:
+        gold_rows = [r for r in gold_rows if r.get("graphable") is not None]
+        print(f"  {len(unlabelled)} unannotated rows skipped by "
+              f"--annotated-only. This figure therefore\n  describes the "
+              f"annotated subset, not the frozen sample: {len(gold_rows)} of "
+              f"{len(gold_rows) + len(unlabelled)} rows.")
 
     r = score(gold_rows, claims_by_id)
     audit = audit_vocabulary(gold_rows)
