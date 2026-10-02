@@ -739,6 +739,56 @@ class TestUnlabelledAnalysis(unittest.TestCase):
         self.assertEqual(a["per_sentence"], 0.5)
 
 
+class TestTripleAnnotationReconciliation(unittest.TestCase):
+    """The hand annotation of 118 asserted LoCoMo triples.
+
+    Three-way verdicts, because the middle one matters: a right proposition
+    on a slightly wrong predicate ("works_at -> assistant manager" for a job
+    title) is a fact the store can still use, and folding it into either
+    "correct" or "wrong" destroys the distinction between an imprecise
+    relation and a fabricated one. On this set the middle category is 17 of
+    118, so collapsing it would move precision by fourteen points.
+    """
+
+    def test_every_asserted_triple_is_labelled(self):
+        """An unlabelled triple would be counted as neither right nor wrong."""
+        from scripts.reconcile_triple_annotation import reconcile
+        r = reconcile()
+        self.assertEqual(
+            r["unannotated"], [],
+            f"asserted but not annotated: {r['unannotated']}")
+        self.assertEqual(r["annotated"], r["asserted"])
+        self.assertEqual(
+            r["supported"] + r["implied"] + r["wrong"], r["asserted"])
+
+    def test_verdicts_are_only_the_three_allowed_values(self):
+        from scripts.reconcile_triple_annotation import (
+            ANNOTATION, IMPLIED, SUPPORTED, WRONG)
+        allowed = {SUPPORTED, IMPLIED, WRONG}
+        bad = [a for a in ANNOTATION if a[5] not in allowed]
+        self.assertEqual(bad, [], f"unknown verdict in annotation: {bad}")
+
+    def test_implied_is_never_merged_into_supported(self):
+        from scripts.reconcile_triple_annotation import reconcile
+        r = reconcile()
+        self.assertGreater(r["implied"], 0,
+                           "the middle category vanished; it is load-bearing")
+        self.assertLess(r["precision_strict"], r["precision_incl_implied"])
+        self.assertAlmostEqual(
+            r["precision_incl_implied"] - r["precision_strict"],
+            r["implied"] / r["asserted"], places=9)
+
+    def test_recall_is_never_reported(self):
+        """This annotation cannot measure recall and must not pretend to."""
+        import inspect
+        from scripts import reconcile_triple_annotation as m
+        src = inspect.getsource(m)
+        # recall is discussed in prose but never computed or returned.
+        self.assertNotIn('"recall"', src)
+        self.assertNotIn("'recall'", src)
+        self.assertNotIn("recall", inspect.getsource(m.reconcile))
+
+
 class TestRelationLabelCoverage(unittest.TestCase):
     """The inference label list is the model's entire output space.
 
