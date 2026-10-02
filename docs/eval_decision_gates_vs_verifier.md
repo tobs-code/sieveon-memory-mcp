@@ -7,13 +7,21 @@ reported deltas: 0.844 - 0.362 and 0.818 - 0.336.
 
 | Measure              | Base               | Gates  | MiniLM2                 | DeBERTa-xsmall          |
 |----------------------|-------------------:|-------:|------------------------:|------------------------:|
-| Precision            | 0.441              | 0.479  | —                       | —                       |
-| Strict precision     | 0.297              | —      | —                       | —                       |
+| Precision            | 0.441              | 0.479  | **0.698 (30/43)**       | —                       |
+| Strict precision     | 0.297              | —      | **0.512 (22/43)**       | —                       |
 | In-band AUC          | 0.578 [0.465-0.689]| —      | **0.840 [0.754-0.915]** | **0.905 [0.842-0.958]** |
 | P@R=0.60             | **0.482**          | —      | **0.844 (+0.362)**      | **0.818 (+0.336)**      |
-| Removed FPs          | —                  | **16** | —                       | —                       |
+| Removed FPs          | —                  | **16** | **53 (of 75 total)**    | —                       |
+| Lost TPs             | —                  | **6**  | **22 (of 75 total)**    | —                       |
 | Latency p50 / p95    | —                  | —      | **1.6 / 1.9 ms**        | **5.9 / 66.2 ms**       |
 | Adoption             | —                  | —      | **yes**                 | **yes**                 |
+
+Pipeline end-to-end (gates + verifier, measured 2026-10-02 on the same 118):
+43 kept of 118 asserted; 22 gate-rejected, 28 verifier-accepted, 15
+auto-accepted (>0.95), 0 floor-dropped. Precision 0.698 vs baseline 0.441
+(+0.257), strict 0.512 vs 0.297 (+0.215). The MiniLM2 column above is this
+pipeline number: gates are already in the path, so a verifier-only column
+would measure a configuration that never ships.
 
 The base rows are numbers, not estimates:
 precision 52/118, strict 35/118, and the gate row is 36/96 after removing

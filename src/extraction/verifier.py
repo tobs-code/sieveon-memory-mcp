@@ -71,14 +71,18 @@ def verify_triples(
     with margin None, below BAND_LO they are dropped. Only the band goes to
     the model. Returns (accepted, dropped_count).
     """
-    model, entail_idx, contra_idx = _get_verifier()
-
     in_band: List[Dict[str, Any]] = []
     accepted: List[Dict[str, Any]] = []
     dropped = 0
 
     for t in triples:
-        conf = float(t.get("confidence") or 0.0)
+        try:
+            conf = float(t.get("confidence") or 0.0)
+        except (TypeError, ValueError):
+            # A triple whose confidence cannot be read must not sneak into
+            # any branch by accident. Dropping is the safe direction.
+            dropped += 1
+            continue
         if conf > BAND_HI:
             t["verifier_margin"] = None
             accepted.append(t)
@@ -88,7 +92,11 @@ def verify_triples(
             in_band.append(t)
 
     if not in_band:
+        # Nothing to judge, so the model is never touched. A dead verifier
+        # must not block triples that never needed it.
         return accepted, dropped
+
+    model, entail_idx, contra_idx = _get_verifier()
 
     import numpy as np
 
