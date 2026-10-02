@@ -1,5 +1,5 @@
 """
-Unit Tests for Strata
+Unit Tests for Sievon
 Testing individual Python components and their functions
 """
 import unittest
@@ -22,7 +22,9 @@ class TestRegexClassifier(unittest.TestCase):
         self.assertEqual(self.regex.classify("How does RAG work?")[0], "factual")
 
     def test_greetings_are_conversational(self):
-        for q in ("hi", "hello there", "hey, are you there?", "hallo", "good morning"):
+        # English only (2026-10-01): German greetings removed with all
+        # other German support.
+        for q in ("hi", "hello there", "hey, are you there?", "good morning"):
             self.assertEqual(self.regex.classify(q)[0], "conversational", q)
 
     def test_update_read_requests_suppressed(self):
@@ -30,7 +32,8 @@ class TestRegexClassifier(unittest.TestCase):
         self.assertNotEqual(q_type, "update")
 
     def test_memory_write_verbs_are_update(self):
-        for q in ("Don't forget the meeting", "Remind me to call", "Vergiss die Blumen nicht"):
+        # English only (2026-10-01)
+        for q in ("Don't forget the meeting", "Remind me to call"):
             self.assertEqual(self.regex.classify(q)[0], "update", q)
 
     def test_coordination_is_multi_hop(self):
@@ -38,13 +41,29 @@ class TestRegexClassifier(unittest.TestCase):
             self.regex.classify("Who runs Orion Labs and where are they?")[0], "multi-hop"
         )
 
-    def test_german_change_is_factual(self):
-        self.assertEqual(self.regex.classify("Was hat sich geaendert?")[0], "factual")
-
     def test_why_definition_not_multi_hop(self):
         # "why is/are" alone must not score multi-hop (lookup, not synthesis)
         q_type, _ = self.regex.classify("Why is the sky blue?")
         self.assertNotEqual(q_type, "multi-hop")
+
+    def test_english_was_is_not_a_question_word(self):
+        """'was' is an auxiliary verb in English, not a wh-word.
+
+        'Where was Acme Corp founded?' has ONE question word ('where');
+        counting 'was' faked a coordination and routed factual lookups to
+        multi-hop (and from there to the generic fallback).
+        """
+        for q in ("Where was Acme Corp founded?",
+                  "Who was the first president?",
+                  "What was the score?"):
+            q_type, _ = self.regex.classify(q)
+            self.assertEqual(q_type, "factual", q)
+
+    def test_genuine_two_wh_coordination_still_multi_hop(self):
+        """Two REAL question words still trigger coordination."""
+        for q in ("Who runs Orion Labs and where are they?",
+                  "What was the score and who scored?"):
+            self.assertEqual(self.regex.classify(q)[0], "multi-hop", q)
 
     def test_ml_vetoes(self):
         """Deterministic vetoes override confident ML verdicts."""
@@ -54,9 +73,6 @@ class TestRegexClassifier(unittest.TestCase):
             label, conf = clf._ml.classify("Update me on the project status")
             if label == "update" and conf >= 0.60:
                 self.assertNotEqual(clf.classify("Update me on the project status")[0], "update")
-            label, conf = clf._ml.classify("Was hat sich geaendert?")
-            if label == "conversational" and conf >= 0.60:
-                self.assertEqual(clf.classify("Was hat sich geaendert?")[0], "factual")
 
 
 class TestQueryClassifier(unittest.TestCase):
@@ -122,10 +138,11 @@ class TestRoutingPolicy(unittest.TestCase):
         self.assertIs(budget_level, BudgetLevel.HIGH)
 
     def test_multi_hop_policy(self):
-        """Test routing policy for multi-hop queries (min_confidence=0.8 → 0.7 triggers fallback)"""
+        """Test routing policy for multi-hop queries (min_confidence=0.6)"""
         strategy_name, budget_level, policy_applied = self.policy.get_strategy(QueryType.MULTI_HOP, 0.7)
-        self.assertEqual(strategy_name, "hybrid_fallback")
-        self.assertEqual(policy_applied, "fallback")
+        self.assertEqual(strategy_name, "hybrid_with_graph_expansion")
+        self.assertEqual(policy_applied, "strict")
+        self.assertIs(budget_level, BudgetLevel.HIGH)
 
     def test_conversational_policy(self):
         """Test routing policy for conversational queries (min_confidence=0.6)"""
@@ -134,16 +151,17 @@ class TestRoutingPolicy(unittest.TestCase):
         self.assertIs(budget_level, BudgetLevel.MEDIUM)
 
     def test_update_policy(self):
-        """Test routing policy for update queries (min_confidence=0.9 → 0.8 triggers fallback)"""
+        """Uncertain updates degrade to a read-only strategy, never writes"""
         strategy_name, budget_level, policy_applied = self.policy.get_strategy(QueryType.UPDATE, 0.8)
-        self.assertEqual(strategy_name, "hybrid_fallback")
-        self.assertEqual(policy_applied, "fallback")
+        self.assertEqual(strategy_name, "knowledge_graph_first")
+        self.assertEqual(policy_applied, "degraded")
 
-    def test_low_confidence_fallback(self):
-        """Test that low confidence triggers fallback strategy"""
+    def test_low_confidence_degrades(self):
+        """Low confidence keeps the type strategy at reduced budget"""
         strategy_name, budget_level, policy_applied = self.policy.get_strategy(QueryType.TEMPORAL, 0.3)
-        self.assertEqual(strategy_name, "hybrid_fallback")
-        self.assertEqual(policy_applied, "fallback")
+        self.assertEqual(strategy_name, "event_log_first")
+        self.assertEqual(policy_applied, "degraded")
+        self.assertIs(budget_level, BudgetLevel.LOW)
 
 
 class TestPlanExecutor(unittest.TestCase):
@@ -332,6 +350,129 @@ class TestPPRAndSplitting(unittest.TestCase):
         self.assertEqual(split_multihop_query(""), [""])
 
 
+class TestRelevanceScore(unittest.TestCase):
+    """_calculate_relevance_score feeds the router's cost tracker, so its
+    quality decides what the router learns. Two properties are pinned:
+    stopwords must not inflate coverage, and SurrealDB's own vector
+    similarity (vec_score) must count as semantic evidence when present."""
+
+    def test_stopwords_do_not_inflate_coverage(self):
+        from src.planner.executor import RetrievalExecutor
+        result = {"events": [
+            {"content": "Who and the what where when why how is are was were"},
+        ]}
+        low = RetrievalExecutor._calculate_relevance_score(
+            result, "Who is where and what?")
+        result2 = {"events": [
+            {"content": "Iris Chen leads Nova Systems as chief executive"},
+        ]}
+        high = RetrievalExecutor._calculate_relevance_score(
+            result2, "Who leads Nova Systems?")
+        self.assertGreater(high, low)
+
+    def test_vec_score_counts_as_semantic_evidence(self):
+        from src.planner.executor import RetrievalExecutor
+        base = {"events": [{"content": "Irrelevant text about nothing"}]}
+        plain = RetrievalExecutor._calculate_relevance_score(
+            base, "Who leads Nova Systems?")
+        with_vec = RetrievalExecutor._calculate_relevance_score(
+            {"events": [{"content": "Irrelevant text about nothing",
+                         "vec_score": 0.85}]},
+            "Who leads Nova Systems?")
+        self.assertGreater(with_vec, plain)
+
+    def test_empty_and_error_floors_unchanged(self):
+        from src.planner.executor import RetrievalExecutor
+        self.assertEqual(
+            RetrievalExecutor._calculate_relevance_score({"events": []}, "q"), 0.2)
+        self.assertEqual(
+            RetrievalExecutor._calculate_relevance_score({"error": "x"}, "q"), 0.1)
+
+    def test_score_stays_in_range(self):
+        from src.planner.executor import RetrievalExecutor
+        for events in (
+            [{"content": "a" * 500, "vec_score": 0.99}] * 20,
+            [{"content": "x"}],
+        ):
+            s = RetrievalExecutor._calculate_relevance_score(
+                {"events": events}, "Who leads Nova Systems?")
+            self.assertGreaterEqual(s, 0.0)
+            self.assertLessEqual(s, 1.0)
+
+
+class TestSurrealStatementBuilding(unittest.TestCase):
+    """Regression tests for SurrealQL 3 quirks in _query_surreal.
+
+    No DB required: the wire format is asserted directly, because the original
+    bugs were silent -- the server answered status OK without executing.
+    """
+
+    def _body(self, sql, params=None):
+        import json
+        import src.mcp.core as core
+
+        captured = {}
+
+        class _Resp:
+            status_code = 200
+
+            def json(self):
+                return [{"status": "OK", "result": None}]
+
+        class _Client:
+            async def post(self, url, content=None, headers=None, **kw):
+                captured["content"] = content
+                captured["headers"] = headers
+                return _Resp()
+
+        async def _run():
+            orig_client, orig_should = core._get_client, core._budget_aware_should_retry
+            async def _fake_client():
+                return _client
+            core._get_client = _fake_client
+            core._budget_aware_should_retry = lambda s: 1
+            try:
+                await core._query_surreal(sql, params)
+            finally:
+                core._get_client, core._budget_aware_should_retry = orig_client, orig_should
+
+        _client = _Client()
+        asyncio.run(_run())
+        self.assertIn("application/json", captured["headers"].values())
+        # A JSON request body makes SurrealDB 3 parse the object as an inert
+        # literal and return it without executing: sql must travel as raw text.
+        self.assertEqual(
+            captured["headers"].get("Content-Type"), "text/plain")
+        return captured["content"]
+
+    def test_sql_is_sent_as_raw_text_with_use_prefix(self):
+        body = self._body("SELECT * FROM entity;")
+        self.assertIn(f"USE NS {self._ns()} DB {self._db()};", body)
+        self.assertTrue(body.rstrip().endswith("SELECT * FROM entity;"))
+
+    @staticmethod
+    def _ns():
+        import src.mcp.core as core
+        return core.SURREAL_NS
+
+    @staticmethod
+    def _db():
+        import src.mcp.core as core
+        return core.SURREAL_DB
+
+    def test_params_become_let_bindings_not_a_json_body(self):
+        body = self._body("RETURN $one + 1;", {"one": 41})
+        self.assertIn("LET $one = 41;", body)
+        self.assertIn("RETURN $one + 1;", body)
+        # The failure mode that made this silently a no-op.
+        self.assertNotIn('"params"', body)
+
+    def test_param_values_are_escaped_as_json_literals(self):
+        body = self._body(
+            "RETURN $name;", {"name": "O'Brien \"quoted\""})
+        self.assertIn("\"O'Brien \\\"quoted\\\"\"", body)
+
+
 class TestRelationLabelMapping(unittest.TestCase):
     """Pure-function tests for the relex/gliner predicate normalization."""
 
@@ -354,10 +495,137 @@ class TestRelationLabelMapping(unittest.TestCase):
         self.assertEqual(_normalize_relation_label(""), "related_to")
         self.assertEqual(_normalize_relation_label(None), "related_to")
 
+    def test_discovered_is_a_valid_ontology_predicate(self):
+        """'discovered' was in the gold set while missing from the ontology,
+        so validate_predicate rejected exactly the facts we test for."""
+        from src.extraction.entity_utils import validate_predicate
+        self.assertTrue(validate_predicate("person", "discovered", "technology"))
+        self.assertTrue(validate_predicate("person", "discovered", "concept"))
+        self.assertTrue(validate_predicate("organization", "discovered", "technology"))
+        self.assertFalse(validate_predicate("person", "discovered", "location"))
+
+    def test_every_gold_predicate_validates(self):
+        """No gold triple may use a predicate the ontology rejects.
+
+        This is the regression guard: a predicate in the gold set but absent
+        from ONTOLOGY['predicate_types'] is silently filtered at ingest, so
+        triple recall for it can never exceed zero.
+        """
+        import json
+        import os
+        from src.extraction.entity_utils import validate_predicate
+        gold_path = os.path.join(os.path.dirname(__file__), "..", "docs",
+                                 "eval_extraction_gold.jsonl")
+        failures = []
+        with open(gold_path, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                row = json.loads(line)
+                types = {e["name"].lower(): e["type"] for e in row.get("entities", [])}
+                for t in row.get("triples", []):
+                    if not validate_predicate(types.get(t["s"].lower(), "?"),
+                                              t["p"], types.get(t["o"].lower(), "?")):
+                        failures.append(f"{t['s']} -{t['p']}-> {t['o']}")
+        self.assertEqual(failures, [])
+
     def test_chain_prefers_relex(self):
         """Default chain resolves without Groq (env default)."""
         import os
         self.assertEqual(os.getenv("EXTRACTION_METHOD", "auto"), "auto")
+
+
+class TestTripleExtractionChain(unittest.TestCase):
+    """Which backends may contribute triples to the KG.
+
+    Measured on docs/eval_extraction_gold.jsonl (ADR-002): spacy asserted 0
+    correct facts out of 15 (tripR 0.000) while relex reached 0.706 and gliner
+    0.941. spacy therefore stays available for *entities* (entR 0.981) but is
+    no longer part of the triple chain: a KG fact that is wrong with certainty is
+    worse than a missing fact, because retrieval can only fail to find a fact
+    that does not exist, not one that is false.
+    """
+
+    def _chain_for(self, method, monkeypatched):
+        """Resolve the chain for EXTRACTION_METHOD=method with fakes installed."""
+        from src.extraction import entity_utils as eu
+        originals = {n: getattr(eu, n) for n in monkeypatched}
+        for n, fn in monkeypatched.items():
+            setattr(eu, n, fn)
+        import os
+        old = os.environ.get("EXTRACTION_METHOD")
+        os.environ["EXTRACTION_METHOD"] = method
+        try:
+            return eu.extract_triples("Ada built the Engine.")
+        finally:
+            for n, fn in originals.items():
+                setattr(eu, n, fn)
+            if old is None:
+                os.environ.pop("EXTRACTION_METHOD", None)
+            else:
+                os.environ["EXTRACTION_METHOD"] = old
+
+    def _fakes(self, relex_out, gliner_out, spacy_out, groq_out):
+        return {
+            "extract_triples_with_relex": lambda t: relex_out,
+            "extract_triples_with_gliner": lambda t: gliner_out,
+            "extract_triples_with_spacy": lambda t: spacy_out,
+            "extract_triples_with_groq": lambda t: groq_out,
+        }
+
+    def test_auto_chain_returns_empty_when_local_backends_find_nothing(self):
+        """relex and gliner both empty -> no triples, NOT spacy garbage."""
+        got = self._chain_for("auto", self._fakes([], [], ["S-O junk"], []))
+        self.assertEqual(got, [])
+
+    def test_relex_result_wins(self):
+        r = [{"subject": "Ada", "predicate": "created", "object": "Engine"}]
+        got = self._chain_for("auto", self._fakes(r, [{"subject": "X"}], [], []))
+        self.assertEqual(got, r)
+
+    def test_gliner_used_when_relex_empty(self):
+        g = [{"subject": "Ada", "predicate": "created", "object": "Engine"}]
+        got = self._chain_for("auto", self._fakes([], g, [], []))
+        self.assertEqual(got, g)
+
+    def test_groq_opt_in_still_works(self):
+        q = [{"subject": "Ada", "predicate": "created", "object": "Engine"}]
+        got = self._chain_for("groq", self._fakes([], [], [], q))
+        self.assertEqual(got, q)
+
+    def test_explicit_backend_request_does_not_fall_through_to_another(self):
+        """EXTRACTION_METHOD=relex must not silently return gliner or spacy facts."""
+        got = self._chain_for("relex", self._fakes([], ["gliner junk"], ["spacy junk"], []))
+        self.assertEqual(got, [])
+
+    def test_groq_chain_does_not_call_local_backends(self):
+        q = [{"subject": "Ada", "predicate": "created", "object": "Engine"}]
+        got = self._chain_for("groq", self._fakes([], [], [], q))
+        self.assertEqual(got, q)
+
+    def test_entity_chain_still_falls_back_to_spacy(self):
+        """Only triples are gated. spacy entity extraction (entR 0.981) stays."""
+        from src.extraction import entity_utils as eu
+        originals = {
+            n: getattr(eu, n) for n in (
+                "extract_entities_with_relex", "extract_entities_with_gliner",
+                "extract_entities_with_spacy")
+        }
+        spacy_ents = [{"name": "Fallback", "type": "concept"}]
+        eu.extract_entities_with_relex = lambda t: []
+        eu.extract_entities_with_gliner = lambda t: []
+        eu.extract_entities_with_spacy = lambda t: spacy_ents
+        try:
+            self.assertEqual(eu.extract_entities("something"), spacy_ents)
+        finally:
+            for n, fn in originals.items():
+                setattr(eu, n, fn)
+
+    def test_empty_text_is_not_an_error(self):
+        """Empty input must not reach a backend that would invent relations."""
+        got = self._chain_for("auto", self._fakes([], [], [{"subject": "A"}], []))
+        self.assertEqual(got, [])
 
 
 class TestFactSalience(unittest.TestCase):
@@ -390,6 +658,263 @@ class TestFactSalience(unittest.TestCase):
 
     def test_bad_input_never_throws(self):
         self.assertGreaterEqual(EntropyGate.fact_salience("x", None, "y"), 0.0)
+
+
+class TestExtractionMetrics(unittest.TestCase):
+    """Per-fact labelling for the extraction eval (pure, no model, no DB).
+
+    The eval used to label *missed gold triples* and charge each miss the best
+    salience of the whole sentence, so a sentence with one correct and one wrong
+    fact counted as wrong twice. These tests pin the per-fact contract.
+    """
+
+    def test_fact_matching_gold_triple_is_correct(self):
+        from src.eval.extraction_metrics import label_facts
+        gold = [{"s": "Marie Curie", "p": "discovered", "o": "radium"}]
+        facts = [{"subject": "Marie Curie", "predicate": "discovered", "object": "radium",
+                  "confidence": 0.9}]
+        labelled = label_facts(facts, gold)
+        self.assertEqual(len(labelled), 1)
+        self.assertTrue(labelled[0]["correct"])
+
+    def test_fact_not_in_gold_is_wrong(self):
+        from src.eval.extraction_metrics import label_facts
+        gold = [{"s": "Marie Curie", "p": "discovered", "o": "radium"}]
+        facts = [{"subject": "Marie Curie", "predicate": "founded", "object": "radium",
+                  "confidence": 0.9}]
+        self.assertFalse(label_facts(facts, gold)[0]["correct"])
+
+    def test_each_fact_is_labelled_independently(self):
+        """One correct + one wrong fact in the same sentence: 1 correct, 1 wrong.
+
+        This is the case the old per-miss proxy got wrong.
+        """
+        from src.eval.extraction_metrics import label_facts
+        gold = [{"s": "Marie Curie", "p": "discovered", "o": "radium"}]
+        facts = [
+            {"subject": "Marie Curie", "predicate": "discovered", "object": "radium",
+             "confidence": 0.9},
+            {"subject": "Marie Curie", "predicate": "founded", "object": "radium",
+             "confidence": 0.8},
+        ]
+        labelled = label_facts(facts, gold)
+        self.assertEqual([f["correct"] for f in labelled], [True, False])
+
+    def test_predicate_synonyms_count_as_correct(self):
+        """Gold 'created', model said 'developed' -- synonym-tolerant by design."""
+        from src.eval.extraction_metrics import label_facts
+        gold = [{"s": "Ada", "p": "created", "o": "Engine"}]
+        facts = [{"subject": "Ada", "predicate": "developed", "object": "Engine",
+                  "confidence": 0.8}]
+        self.assertTrue(label_facts(facts, gold)[0]["correct"])
+
+    def test_sentence_without_gold_triples_labels_everything_wrong(self):
+        from src.eval.extraction_metrics import label_facts
+        facts = [{"subject": "Iceland", "predicate": "uses", "object": "geothermal",
+                  "confidence": 0.7}]
+        labelled = label_facts(facts, [])
+        self.assertFalse(labelled[0]["correct"])
+
+    def test_malformed_fact_is_skipped_not_crashing(self):
+        from src.eval.extraction_metrics import label_facts
+        gold = [{"s": "Ada", "p": "created", "o": "Engine"}]
+        facts = [{"predicate": "created"}, "not-a-dict", None]
+        self.assertEqual(label_facts(facts, gold), [])
+
+
+class TestExtractionMetricRanking(unittest.TestCase):
+    """AUC + bootstrap CI: does a fact score actually separate correct from wrong?
+
+    The old eval only printed two means, which cannot distinguish a weak signal
+    from no signal (v1 scored correct 0.843 vs wrong 0.844 -> "no separation",
+    while confidence alone really has AUC 0.63).
+    """
+
+    def test_auc_is_one_for_perfect_separation(self):
+        from src.eval.extraction_metrics import auc
+        self.assertEqual(auc([0.9, 0.8, 0.7], [0.1, 0.2, 0.3]), 1.0)
+
+    def test_auc_is_half_for_no_signal(self):
+        from src.eval.extraction_metrics import auc
+        self.assertEqual(auc([0.5, 0.5], [0.5, 0.5]), 0.5)
+
+    def test_auc_is_zero_for_inverted_separation(self):
+        from src.eval.extraction_metrics import auc
+        self.assertEqual(auc([0.1, 0.2], [0.9, 0.8]), 0.0)
+
+    def test_auc_counts_ties_as_half(self):
+        from src.eval.extraction_metrics import auc
+        self.assertEqual(auc([0.5], [0.5]), 0.5)
+
+    def test_auc_is_nan_without_both_classes(self):
+        from src.eval.extraction_metrics import auc
+        self.assertNotEqual(auc([0.5, 0.6], []), auc([0.5, 0.6], []))
+        import math
+        self.assertTrue(math.isnan(auc([0.5, 0.6], [])))
+        self.assertTrue(math.isnan(auc([], [0.5, 0.6])))
+
+    def test_bootstrap_ci_brackets_the_point_estimate(self):
+        from src.eval.extraction_metrics import auc, bootstrap_auc
+        correct = [0.9, 0.8, 0.85, 0.75, 0.95, 0.88, 0.92, 0.78]
+        wrong = [0.3, 0.4, 0.2, 0.5, 0.35, 0.28, 0.45, 0.32]
+        mean, lo, hi = bootstrap_auc(correct, wrong, n=200, seed=1)
+        self.assertLessEqual(lo, mean)
+        self.assertLessEqual(mean, hi)
+        self.assertGreaterEqual(lo, auc(correct, wrong) - 1e-9)
+
+    def test_bootstrap_is_deterministic_for_a_seed(self):
+        from src.eval.extraction_metrics import bootstrap_auc
+        c, w = [0.9, 0.8, 0.7], [0.2, 0.1, 0.3]
+        self.assertEqual(bootstrap_auc(c, w, n=100, seed=7),
+                         bootstrap_auc(c, w, n=100, seed=7))
+
+
+class TestExtractionTierOperatingPoint(unittest.TestCase):
+    """What the shipped TIER_DROP_THRESHOLD actually does to each class."""
+
+    def test_operating_point_splits_correct_from_wrong(self):
+        from src.eval.extraction_metrics import operating_point
+        correct = [0.9, 0.8, 0.4]
+        wrong = [0.6, 0.4, 0.2]
+        op = operating_point(correct, wrong, threshold=0.50)
+        self.assertEqual(op["correct_kept"], 2)   # 0.9, 0.8
+        self.assertEqual(op["wrong_dropped"], 2)  # 0.4, 0.2
+        self.assertEqual(op["correct_total"], 3)
+        self.assertEqual(op["wrong_total"], 3)
+
+    def test_precision_of_kept_set_is_reported(self):
+        from src.eval.extraction_metrics import operating_point
+        op = operating_point([0.9, 0.9], [0.9, 0.1], threshold=0.50)
+        # kept = 2 correct + 1 wrong at 0.9
+        self.assertAlmostEqual(op["kept_precision"], 2 / 3, places=3)
+
+    def test_threshold_of_zero_drops_nothing(self):
+        from src.eval.extraction_metrics import operating_point
+        op = operating_point([0.1], [0.1], threshold=0.0)
+        self.assertEqual(op["wrong_dropped"], 0)
+
+    def test_empty_input_reports_undefined_precision(self):
+        """No facts at all -> kept_precision is None (JSON null), not NaN."""
+        from src.eval.extraction_metrics import operating_point
+        op = operating_point([], [], threshold=0.50)
+        self.assertIsNone(op["kept_precision"])
+
+
+class TestExtractionEvalScoring(unittest.TestCase):
+    """score_backend's reporting core, exercised without loading a model.
+
+    This is where the old proxy lived: it iterated gold triples and charged each
+    miss the best salience of the sentence. These tests pin per-fact counting so
+    the numbers a maintainer reads cannot silently go back to that.
+    """
+
+    def _salience(self, confidence, predicate, novelty=None):
+        return float(confidence)
+
+    def test_one_correct_one_wrong_fact_gives_precision_one_half(self):
+        from scripts.eval_extraction import summarize_backend
+        rows = [{"text": "Ada built Engine.", "entities": [{"name": "Ada", "type": "person"}],
+                 "triples": [{"s": "Ada", "p": "created", "o": "Engine"}]}]
+        ents = [[{"name": "Ada", "type": "person"}]]
+        trips = [[{"subject": "Ada", "predicate": "created", "object": "Engine",
+                   "confidence": 0.9},
+                  {"subject": "Ada", "predicate": "founded", "object": "Engine",
+                   "confidence": 0.8}]]
+        out = summarize_backend("relex", rows, ents, trips, self._salience)
+        self.assertEqual(out["facts_total"], 2)
+        self.assertEqual(out["facts_correct"], 1)
+        self.assertEqual(out["facts_wrong"], 1)
+        self.assertAlmostEqual(out["fact_precision"], 0.5)
+
+    def test_wrong_facts_are_counted_per_fact_not_per_missed_gold_triple(self):
+        """Two gold triples missed, five junk facts produced -> 5 wrong facts."""
+        from scripts.eval_extraction import summarize_backend
+        rows = [{"text": "x", "entities": [], "triples": [
+            {"s": "A", "p": "created", "o": "B"}, {"s": "C", "p": "created", "o": "D"}]}]
+        junk = [{"subject": f"S{i}", "predicate": "uses", "object": f"O{i}",
+                 "confidence": 0.7} for i in range(5)]
+        out = summarize_backend("relex", rows, [[]], [junk], self._salience)
+        self.assertEqual(out["triple_recall"], 0.0)
+        self.assertEqual(out["facts_wrong"], 5)
+
+    def test_reports_auc_not_just_two_means(self):
+        from scripts.eval_extraction import summarize_backend
+        rows = [{"text": "x", "entities": [], "triples": [
+            {"s": "A", "p": "created", "o": "B"}]}]
+        trips = [[{"subject": "A", "predicate": "created", "object": "B", "confidence": 0.95},
+                  {"subject": "Z", "predicate": "uses", "object": "Y", "confidence": 0.10}]]
+        out = summarize_backend("relex", rows, [[]], trips, self._salience)
+        self.assertEqual(out["salience_auc"], 1.0)
+        self.assertIn("salience_auc_ci_lo", out)
+        self.assertIn("salience_auc_ci_hi", out)
+
+    def test_reports_tier_operating_point_against_shipped_threshold(self):
+        from scripts.eval_extraction import summarize_backend
+        rows = [{"text": "x", "entities": [], "triples": [
+            {"s": "A", "p": "created", "o": "B"}]}]
+        trips = [[{"subject": "A", "predicate": "created", "object": "B", "confidence": 0.95},
+                  {"subject": "Z", "predicate": "uses", "object": "Y", "confidence": 0.10}]]
+        out = summarize_backend("relex", rows, [[]], trips, self._salience)
+        self.assertIn("tier_threshold", out)
+        self.assertEqual(out["tier_correct_kept"], 1)
+        self.assertEqual(out["tier_wrong_dropped"], 1)
+
+    def test_triple_recall_still_gold_based(self):
+        from scripts.eval_extraction import summarize_backend
+        rows = [{"text": "x", "entities": [], "triples": [
+            {"s": "A", "p": "created", "o": "B"}, {"s": "C", "p": "created", "o": "D"}]}]
+        trips = [[{"subject": "A", "predicate": "created", "object": "B", "confidence": 0.9}]]
+        out = summarize_backend("relex", rows, [[]], trips, self._salience)
+        self.assertAlmostEqual(out["triple_recall"], 0.5)
+
+    def test_sentence_with_no_gold_triple_is_junk_not_scored(self):
+        from scripts.eval_extraction import summarize_backend
+        rows = [{"text": "nothing here", "entities": [], "triples": []}]
+        out = summarize_backend("relex", rows, [[]], [[]], self._salience)
+        self.assertEqual(out["junk_clean"], "1/1")
+        self.assertEqual(out["facts_total"], 0)
+
+    def test_facts_asserted_on_junk_sentences_are_surfaced_not_hidden(self):
+        """A sentence with no gold entities/triples should yield no facts.
+
+        If a backend does assert some, they are excluded from fact precision
+        (junk_clean measures that case) but must still be reported, otherwise
+        the fact count silently depends on this `continue`.
+        """
+        from scripts.eval_extraction import summarize_backend
+        rows = [{"text": "nothing here", "entities": [], "triples": []}]
+        junk_fact = [{"subject": "Iceland", "predicate": "uses", "object": "geothermal",
+                      "confidence": 0.7}]
+        out = summarize_backend("relex", rows, [[]], [junk_fact], self._salience)
+        self.assertEqual(out["junk_clean"], "0/1")
+        self.assertEqual(out["facts_total"], 0)
+        self.assertEqual(out["facts_from_junk_sentences"], 1)
+
+    def test_backend_with_zero_correct_facts_reports_undefined_auc(self):
+        """spacy produces only wrong facts; its AUC must not read as 1.0 or 0.5.
+
+        None (JSON null) rather than NaN: strict JSON has no NaN literal, and
+        None keeps "not computable" visibly distinct from a computed 0.5.
+        """
+        from scripts.eval_extraction import summarize_backend
+        rows = [{"text": "x", "entities": [], "triples": [
+            {"s": "A", "p": "created", "o": "B"}]}]
+        trips = [[{"subject": "Z", "predicate": "uses", "object": "Y", "confidence": 0.6}]]
+        out = summarize_backend("spacy", rows, [[]], trips, self._salience)
+        self.assertEqual(out["facts_correct"], 0)
+        self.assertIsNone(out["salience_auc"])
+        self.assertIsNone(out["salience_auc_ci_lo"])
+        self.assertIsNone(out["salience_auc_ci_hi"])
+        self.assertNotEqual(out["salience_auc"], 0.5)
+
+    def test_result_is_strict_json_serializable(self):
+        """Every backend result must survive json.dumps without allow_nan."""
+        import json
+        from scripts.eval_extraction import summarize_backend
+        rows = [{"text": "x", "entities": [], "triples": [
+            {"s": "A", "p": "created", "o": "B"}]}]
+        out = summarize_backend("spacy", rows, [[]], [[]], self._salience)
+        json.dumps(out, allow_nan=False)
 
 
 if __name__ == '__main__':

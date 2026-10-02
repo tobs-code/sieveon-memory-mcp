@@ -191,12 +191,19 @@ class RetrievalExecutor:
     ) -> Dict[str, Any]:
         """
         Execute a retrieval strategy with budget enforcement and cost tracking.
+
+        query_type (optional kwarg, e.g. "factual"): the classified query type.
+        Recorded alongside the outcome so the router learns per context, not
+        globally. Absent callers record under "unknown" (legacy behaviour).
         """
         start_time = time.time()
         success = True
         relevance_score = 0.5
         budget_token = self._budget.set(budget_tracker)
         start_db_calls = budget_tracker.db_calls
+        # Consumed here for cost tracking; must not leak into the strategy
+        # implementations below (they receive **kwargs).
+        query_type = kwargs.pop("query_type", None)
 
         try:
             if budget_tracker.is_over_budget():
@@ -271,7 +278,26 @@ class RetrievalExecutor:
                 success=success,
                 num_queries=num_queries,
                 relevance=relevance_score,
+                query_type=query_type,
             )
+
+            # Persist learned costs periodically (every 25 requests). Best
+            # effort and detached: a failed snapshot only loses recent
+            # learning, and it must never block or break retrieval.
+            try:
+                if cost_tracker.total_records() % 25 == 0:
+                    from src.mcp.core import save_router_costs
+
+                    async def _snapshot():
+                        try:
+                            await save_router_costs()
+                        except Exception:
+                            pass
+
+                    task = asyncio.create_task(_snapshot())
+                    task.add_done_callback(lambda t: t.exception() if not t.cancelled() else None)
+            except Exception:
+                pass
 
         # Surfaced so callers can see the score that was fed into the router's
         # cost tracking instead of having to reconstruct it.
@@ -280,6 +306,28 @@ class RetrievalExecutor:
         return result
 
     _TERM_RE = re.compile(r"\w{3,}")
+
+    # Stopwords for coverage: question words, auxiliaries, articles and glue.
+    # Without these, "Who is where and what?" matches any sentence containing
+    # "who/the/and" and scores as high as a real answer. Content terms only.
+    _STOPWORDS = frozenset({
+        "who", "what", "which", "where", "when", "why", "how",
+        "is", "are", "was", "were", "be", "been", "being",
+        "do", "does", "did", "have", "has", "had", "having",
+        "the", "a", "an", "and", "or", "of", "to", "in", "on",
+        "for", "with", "by", "from", "at", "as", "it", "its",
+        "this", "that", "these", "those",
+        "i", "you", "he", "she", "we", "they", "them", "his", "her",
+        "not", "no", "yes", "if", "then", "than", "so", "such",
+        "only", "also", "just", "about", "into", "over", "after",
+        "before", "between", "through", "during", "there", "here",
+    })
+
+    @classmethod
+    def _content_terms(cls, text: str) -> set:
+        """Terms that carry meaning: length >= 3 and not a stopword."""
+        return {t for t in cls._TERM_RE.findall((text or "").lower())
+                if t not in cls._STOPWORDS}
 
     @classmethod
     def _item_text(cls, item: Dict[str, Any]) -> str:
@@ -304,16 +352,17 @@ class RetrievalExecutor:
     def _calculate_relevance_score(cls, result: Dict[str, Any], query: str) -> float:
         """Calculate a relevance score based on the result quality.
 
-        Volume alone is not relevance: returning 50 unrelated rows scored higher
-        than returning 3 exact matches, and that score feeds cost_tracker, which
-        made the router prefer high-volume strategies regardless of quality.
-        The score now weights coverage (share of items containing a query term)
-        first and uses result volume only as a secondary signal.
+        Two signals, both cheap. SurrealDB's own vector similarity (vec_score
+        on events from vector searches) is semantic evidence and costs nothing
+        extra -- it was already computed to rank the results. Content-term
+        coverage (query terms minus stopwords) is the lexical backstop for
+        strategies without a vector channel. Stopwords are excluded: "who/is/
+        where/and" matching "who/the/and" is not relevance.
         """
         if "error" in result:
             return 0.1
 
-        items: List[Dict[str, Any]] = []
+        items: List[Dict] = []
         for key in ("events", "entities", "facts"):
             value = result.get(key, [])
             if isinstance(value, list):
@@ -323,14 +372,24 @@ class RetrievalExecutor:
         if total == 0:
             return 0.2
 
-        terms = set(cls._TERM_RE.findall(query.lower()))
-        if terms:
+        query_terms = cls._content_terms(query)
+        if query_terms:
             matched = sum(
-                1 for item in items if terms & set(cls._TERM_RE.findall(cls._item_text(item)))
+                1 for item in items
+                if query_terms & cls._content_terms(cls._item_text(item))
             )
             coverage = matched / total
         else:
             coverage = 0.0
+
+        vec_scores = sorted(
+            (float(i.get("vec_score", 0) or 0) for i in items
+             if isinstance(i.get("vec_score"), (int, float))),
+            reverse=True,
+        )[:3]
+        if vec_scores:
+            semantic = max(0.0, min(1.0, sum(vec_scores) / len(vec_scores)))
+            return round(min(1.0, 0.2 + 0.4 * coverage + 0.4 * semantic), 4)
 
         volume = min(1.0, total / 10.0)
         return round(min(1.0, 0.2 + 0.6 * coverage + 0.2 * volume), 4)

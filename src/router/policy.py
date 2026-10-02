@@ -26,7 +26,39 @@ class QueryType(Enum):
     UPDATE = "update"
 
 
+# Budget step-down for degraded (low-confidence) queries: spend less when
+# uncertain, but keep spending on the right strategy. Never below LOW.
+_DEGRADED_BUDGET = {
+    BudgetLevel.HIGH: BudgetLevel.MEDIUM,
+    BudgetLevel.MEDIUM: BudgetLevel.LOW,
+    BudgetLevel.LOW: BudgetLevel.LOW,
+}
+
+# Degraded UPDATE must be read-only. knowledge_graph_with_invalidation triggers
+# writes (logical invalidation), so an uncertain update degrades to the plain
+# KG read instead -- never to the write path, never to a generic fallback.
+_UPDATE_DEGRADED_STRATEGY = "knowledge_graph_first"
+
+
 _SEPARATOR_RE = re.compile(r"[\s\-]+")
+
+
+def _is_known_query_type(value) -> bool:
+    """True iff value denotes a real QueryType (enum member or exact string).
+
+    resolve_query_type() silently maps garbage to FACTUAL; this distinguishes
+    "caller said factual" from "caller said nonsense", so only the latter
+    gets the generic fallback policy.
+    """
+    if isinstance(value, QueryType):
+        return True
+    if not isinstance(value, str):
+        return False
+    try:
+        QueryType(_SEPARATOR_RE.sub("_", value.strip().lower()))
+        return True
+    except ValueError:
+        return False
 
 
 def resolve_query_type(query_type) -> QueryType:
@@ -76,7 +108,12 @@ class RoutingPolicy:
             QueryType.MULTI_HOP: {
                 'strategy': 'hybrid_with_graph_expansion',
                 'budget': BudgetLevel.HIGH,
-                'min_confidence': 0.8,
+                # Was 0.8, which sat above the classifier's operating range:
+                # genuine multi-hop queries score 0.68/0.71 and were sent to
+                # the generic fallback -- exactly the queries needing graph
+                # expansion. Aligned with the 0.6 ML confidence gate: anything
+                # the classifier calls multi-hop gets the multi-hop strategy.
+                'min_confidence': 0.6,
                 'max_latency_threshold': 2.0
             },
             QueryType.CONVERSATIONAL: {
@@ -127,7 +164,10 @@ class RoutingPolicy:
     def _get_adapted_strategy(self, query_type: QueryType) -> str:
         """
         Get the most effective strategy for a query type based on learned metrics.
-        Falls back to config default if no learning data available.
+        Ranks within this query type's context first: a strategy that proved
+        itself on factual queries must not hijack temporal routing on the
+        strength of a global average. Falls back to the global ranking and
+        then to the configured default when the context is still cold.
         """
         with self._lock:
             # Get base strategy from config
@@ -140,18 +180,22 @@ class RoutingPolicy:
             base_strategy = base_config['strategy']
             max_latency = base_config.get('max_latency_threshold')
 
-            # Get ranked strategies from cost tracker
-            ranked_strategies = cost_tracker.get_all_strategies_ranked()
-
-            if ranked_strategies:
-                # Find the best performing strategy that's appropriate for this query type
+            # Context-first, then global, then default: a cold context must not
+            # block learning, and no learning data must not block routing.
+            for ranked_strategies in (
+                cost_tracker.get_all_strategies_ranked(query_type=query_type.value),
+                cost_tracker.get_all_strategies_ranked(),
+            ):
                 for strategy, score in ranked_strategies:
                     # Only consider strategies that are valid for this query type
                     if not self._is_strategy_appropriate_for_query_type(strategy, query_type):
                         continue
                     # Skip strategies that are too slow for this query type's SLO
                     if max_latency is not None:
-                        latency = cost_tracker.get_average_latency(strategy)
+                        latency = cost_tracker.get_average_latency(
+                            strategy, query_type=query_type.value)
+                        if latency is None:
+                            latency = cost_tracker.get_average_latency(strategy)
                         if latency is not None and latency > max_latency:
                             continue
                     return strategy
@@ -190,9 +234,17 @@ class RoutingPolicy:
         Accepts both QueryType enums and their string values.
         
         Returns:
-            Tuple of (strategy, budget_level, policy_applied)
+            Tuple of (strategy, budget_level, policy_applied) where
+            policy_applied is "strict" (confident: full strategy, full budget),
+            "degraded" (uncertain: type-appropriate strategy, stepped-down
+            budget; UPDATE degrades to a read-only strategy), or "fallback"
+            (unknown query type: factual default).
         """
-        query_type = self._resolve_query_type(query_type)
+        resolved = self._resolve_query_type(query_type)
+        # An unresolvable type is the only true fallback: the classifier's
+        # guess carries no information at all.
+        known = _is_known_query_type(query_type)
+        query_type = resolved
 
         with self._lock:
             # Perform periodic cleanup
@@ -200,21 +252,26 @@ class RoutingPolicy:
 
             # Get base configuration
             base_config = self._config_for(query_type)
-            
-            # Check if confidence is high enough for primary strategy
-            min_confidence = base_config['min_confidence']
-            
-            # Get the adapted strategy based on learned effectiveness
-            if confidence >= min_confidence:
+
+            if not known:
+                strategy = self._get_adapted_strategy(QueryType.FACTUAL)
+                policy_applied = "fallback"
+                budget = self.config[QueryType.FACTUAL]['budget']
+            elif confidence >= base_config['min_confidence']:
                 strategy = self._get_adapted_strategy(query_type)
                 policy_applied = "strict"
+                budget = base_config['budget']
             else:
-                # Use fallback strategy when confidence is low
-                strategy = "hybrid_fallback"
-                policy_applied = "fallback"
-            
-            budget = base_config['budget']
-            
+                # Graded fallback (RouteRAG "minimal sufficient retrieval"):
+                # the type guess stays informative when uncertain, so keep the
+                # type-appropriate strategy and spend less on it.
+                if query_type == QueryType.UPDATE:
+                    strategy = _UPDATE_DEGRADED_STRATEGY
+                else:
+                    strategy = self._get_adapted_strategy(query_type)
+                policy_applied = "degraded"
+                budget = _DEGRADED_BUDGET[base_config['budget']]
+
             # Record this usage pattern
             usage_key = f"{query_type.value}_{datetime.now().isoformat()}"
             self._usage[usage_key] = {

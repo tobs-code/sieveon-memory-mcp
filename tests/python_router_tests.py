@@ -46,6 +46,16 @@ class TestRoutingPolicy(unittest.TestCase):
         self.assertEqual(strategy, "hybrid_with_graph_expansion")
         self.assertEqual(budget, "high")
 
+    def test_multi_hop_at_typical_classifier_confidence_stays_strict(self):
+        """Measured multi-hop confidences are 0.68/0.71 -- below the old 0.8
+        bar, which sent exactly the queries needing graph expansion to the
+        generic fallback. The threshold must sit inside the operating range."""
+        for conf in (0.68, 0.71):
+            strategy, budget, applied = route(self.policy, "multi-hop", conf)
+            self.assertEqual(strategy, "hybrid_with_graph_expansion", conf)
+            self.assertEqual(applied, "strict", conf)
+            self.assertEqual(budget, "high", conf)
+
     def test_conversational_query_routing(self):
         """Conversational queries route to the BM25/vector/temporal strategy"""
         strategy, budget, _ = route(self.policy, "conversational", 0.8)
@@ -58,18 +68,34 @@ class TestRoutingPolicy(unittest.TestCase):
         self.assertEqual(strategy, "knowledge_graph_with_invalidation")
         self.assertEqual(budget, "high")
 
-    def test_update_query_below_min_confidence_falls_back(self):
-        """UPDATE has a high min_confidence, so weaker matches fall back"""
-        strategy, _, applied = route(self.policy, "update", 0.8)
-        self.assertEqual(strategy, "hybrid_fallback")
-        self.assertEqual(applied, "fallback")
-
-    def test_low_confidence_fallback(self):
-        """Below min_confidence the policy falls back to hybrid_fallback"""
-        strategy, budget, applied = route(self.policy, "temporal", 0.2)
-        self.assertEqual(strategy, "hybrid_fallback")
+    def test_update_query_below_min_confidence_degrades_to_read_only(self):
+        """UPDATE has a high min_confidence (writes are dangerous), so weaker
+        matches degrade -- but to a READ-ONLY strategy, never to a generic
+        fallback and never to the invalidation path that triggers writes."""
+        strategy, budget, applied = route(self.policy, "update", 0.8)
+        self.assertEqual(applied, "degraded")
+        self.assertNotEqual(strategy, "knowledge_graph_with_invalidation")
+        self.assertNotEqual(strategy, "hybrid_fallback")
+        # budget steps down one level from the configured HIGH
         self.assertEqual(budget, "medium")
-        self.assertEqual(applied, "fallback")
+
+    def test_low_confidence_degrades_type_strategy_not_generic_fallback(self):
+        """Below min_confidence the policy keeps the query-type strategy at a
+        reduced budget. The classifier's type guess stays informative even when
+        uncertain; the generic fallback discards it."""
+        strategy, budget, applied = route(self.policy, "temporal", 0.2)
+        self.assertEqual(strategy, "event_log_first")
+        self.assertEqual(applied, "degraded")
+        # MEDIUM steps down to LOW
+        self.assertEqual(budget, "low")
+
+    def test_degraded_budget_steps_down_one_level(self):
+        """HIGH -> MEDIUM -> LOW, never below LOW."""
+        _, budget, applied = route(self.policy, "factual", 0.2)
+        self.assertEqual(applied, "degraded")
+        self.assertEqual(budget, "medium")  # HIGH -> MEDIUM
+        _, budget, _ = route(self.policy, "conversational", 0.2)
+        self.assertEqual(budget, "low")  # MEDIUM -> LOW
 
     def test_high_confidence_strict(self):
         """Above min_confidence the policy applies the strict policy"""
@@ -106,14 +132,17 @@ class TestRoutingPolicy(unittest.TestCase):
         strategy, _, _ = route(custom_policy, "factual", 0.8)
         self.assertEqual(strategy, "custom_strategy")
 
-    def test_custom_config_low_confidence_still_falls_back(self):
-        """A raised min_confidence routes low-confidence queries to the fallback"""
+    def test_custom_config_low_confidence_degrades(self):
+        """A raised min_confidence degrades low-confidence queries: same
+        strategy, stepped-down budget -- not the generic fallback."""
         custom_policy = RoutingPolicy(
             config={"factual": {"strategy": "custom_strategy", "min_confidence": 0.9}}
         )
-        strategy, _, applied = route(custom_policy, "factual", 0.8)
-        self.assertEqual(strategy, "hybrid_fallback")
-        self.assertEqual(applied, "fallback")
+        strategy, budget, applied = route(custom_policy, "factual", 0.8)
+        self.assertEqual(strategy, "custom_strategy")
+        self.assertEqual(applied, "degraded")
+        # HIGH steps down to MEDIUM
+        self.assertEqual(budget, "medium")
 
     def test_update_query_config(self):
         """update_query_config changes the strategy for a query type"""
@@ -213,6 +242,55 @@ class TestCostTracker(unittest.TestCase):
         self.assertAlmostEqual(self.tracker.get_success_rate("s"), 2 / 3)
         self.assertEqual(self.tracker.get_all_costs()["s"]["total_requests"], 3)
 
+    def test_ranking_is_per_query_type_not_global(self):
+        """A strategy that shines for factual must not hijack temporal routing.
+
+        This is the core contextual-bandit property: effectiveness is learned
+        per (query type, strategy), so a globally good strategy cannot override
+        a locally better one.
+        """
+        for _ in range(3):
+            self.tracker.record_request("semantic_hybrid", latency=0.4,
+                                        success=True, relevance=0.9,
+                                        query_type="factual")
+            self.tracker.record_request("event_log_first", latency=0.3,
+                                        success=True, relevance=0.9,
+                                        query_type="temporal")
+        # semantic_hybrid has NO temporal samples: it must not outrank the
+        # strategy that actually proved itself on temporal queries.
+        ranked_temporal = [s for s, _ in
+                           self.tracker.get_all_strategies_ranked(query_type="temporal")]
+        self.assertIn("event_log_first", ranked_temporal)
+        self.assertNotIn("semantic_hybrid", ranked_temporal)
+
+    def test_global_ranking_aggregates_contexts(self):
+        """Without a query type, ranking aggregates across contexts
+        (backward compatible with the old global view)."""
+        for _ in range(3):
+            self.tracker.record_request("a", latency=0.1, success=True,
+                                        relevance=0.9, query_type="factual")
+            self.tracker.record_request("b", latency=0.1, success=True,
+                                        relevance=0.9, query_type="temporal")
+        ranked = [s for s, _ in self.tracker.get_all_strategies_ranked()]
+        self.assertIn("a", ranked)
+        self.assertIn("b", ranked)
+
+    def test_export_import_roundtrip(self):
+        """State survives a process restart via export/import (for persistence)."""
+        for _ in range(3):
+            self.tracker.record_request("s", latency=0.2, success=True,
+                                        relevance=0.8, query_type="factual")
+        state = self.tracker.export_state()
+        import json
+        json.dumps(state)  # must be JSON-serializable for DB storage
+        fresh = CostTracker()
+        fresh.import_state(state)
+        self.assertAlmostEqual(fresh.get_average_latency("s", query_type="factual"), 0.2)
+        self.assertEqual(
+            [s for s, _ in fresh.get_all_strategies_ranked(query_type="factual")],
+            [s for s, _ in self.tracker.get_all_strategies_ranked(query_type="factual")],
+        )
+
     def test_cost_formula(self):
         """Cost = base_cost * num_queries * (1 + (1 - relevance))"""
         self.tracker.record_request(
@@ -294,19 +372,12 @@ class TestQueryClassifier(unittest.TestCase):
         self.classifier = QueryClassifier()
 
     def test_classify_various_query_types(self):
-        """Test classification of various query types"""
+        """Test classification of various query types (English only)"""
         test_cases = [
-            ("Wann habe ich Alice getroffen?", "temporal"),
             ("When did I meet Alice?", "temporal"),
-            ("Wer ist mein Kunde?", "factual"),
             ("Who is my customer?", "factual"),
-            ("Warum haben wir das Projekt gestoppt?", "multi-hop"),
             ("Why did we stop the project?", "multi-hop"),
-            ("Worüber haben wir gestern gesprochen?", "conversational"),
-            # NOTE: "What did we talk about yesterday?" might match temporal patterns ("yesterday") stronger than conversational
-            # so we'll adjust the expectation accordingly
             ("What did we talk about yesterday?", "conversational"),  # This may sometimes be classified as temporal
-            ("Aktualisiere meinen Namen", "update"),
             ("Update my name", "update"),
         ]
 
@@ -324,7 +395,7 @@ class TestQueryClassifier(unittest.TestCase):
 
     def test_confidence_calculation(self):
         """Test that confidence is properly calculated"""
-        q_type, confidence = self.classifier.classify("Wann habe ich Alice getroffen?")
+        q_type, confidence = self.classifier.classify("When did I meet Alice?")
         self.assertGreaterEqual(confidence, 0.6)  # Should have high confidence for clear temporal query
 
         q_type, confidence = self.classifier.classify("some random text")
@@ -334,7 +405,7 @@ class TestQueryClassifier(unittest.TestCase):
         """Test that priorities are handled when multiple patterns match"""
         # A query that matches both temporal and factual patterns
         # According to priority order, temporal should win
-        query = "Wann wer hat den Bericht geschrieben?"  # Contains both temporal and factual patterns
+        query = "When did who write the report?"  # Contains both temporal and factual patterns
         q_type, confidence = self.classifier.classify(query)
         # Since we don't have a specific test case that matches multiple patterns clearly,
         # we'll just verify it returns a valid result
@@ -368,7 +439,7 @@ class TestRouterIntegration(unittest.TestCase):
     def test_full_router_pipeline(self):
         """Test the full pipeline from classification to routing decision"""
         test_queries = [
-            ("Wann habe ich Alice getroffen?", QueryType.TEMPORAL),
+            ("When did I meet Alice?", QueryType.TEMPORAL),
             ("Who is the CEO?", QueryType.FACTUAL),
             ("Why did sales decrease?", QueryType.MULTI_HOP),
             ("Do you remember our last meeting?", QueryType.CONVERSATIONAL),
@@ -392,7 +463,21 @@ class TestRouterIntegration(unittest.TestCase):
                 self.assertIn(budget, list(BudgetLevel))
 
                 if applied == "fallback":
-                    self.assertEqual(strategy, "hybrid_fallback")
+                    # Unknown type: factual default (hybrid_fallback is retired;
+                    # the router no longer selects it)
+                    self.assertEqual(
+                        strategy, self.policy.config[QueryType.FACTUAL]["strategy"]
+                    )
+                elif applied == "degraded":
+                    # Uncertain: type-appropriate strategy at reduced budget.
+                    # UPDATE degrades to a read-only strategy, never the
+                    # invalidation write path.
+                    if expected_type == QueryType.UPDATE:
+                        self.assertEqual(strategy, "knowledge_graph_first")
+                    else:
+                        self.assertEqual(
+                            strategy, self.policy.config[expected_type]["strategy"]
+                        )
                     self.assertLess(
                         confidence, self.policy.config[expected_type]["min_confidence"]
                     )

@@ -151,6 +151,7 @@ async def _execute_query(
             since=since,
             until=until,
             at_time=at_time,
+            query_type=q_type.value,
         )
         if isinstance(results_raw, dict) and results_raw.get("error"):
             execution_error = {
