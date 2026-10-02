@@ -679,6 +679,66 @@ class TestLoCoMoGoldBuilder(unittest.TestCase):
                 f"{name}: triples must stay null until hand-annotated")
 
 
+def analyse_of_one_sentence():
+    from scripts.eval_triples_unlabelled import analyse
+    return analyse([{"text": "a", "stratum": "x", "triples": []}])
+
+
+class TestUnlabelledAnalysis(unittest.TestCase):
+    """Gold-free measurements must not claim what they cannot measure.
+
+    Precision needs labels. Volume, confidence spread and how often several
+    labels compete for one entity pair are measurable without any, and the
+    last of those is the useful one: contested pairs are where the relation
+    decision was not actually made, whatever the individual scores claim.
+    """
+
+    def test_report_has_no_precision_claim(self):
+        """The word may appear in prose saying it is impossible; it must never
+        be a computed number."""
+        import inspect
+        from scripts import eval_triples_unlabelled as m
+        src = inspect.getsource(m)
+        # No precision-like key may be returned.
+        self.assertNotIn('"precision"', src)
+        self.assertNotIn("'precision'", src)
+        # And the report body must not print a precision line.
+        body = inspect.getsource(m.report)
+        self.assertNotIn("precision", body.lower())
+        # The analyse() result must not carry one either.
+        self.assertNotIn("precision", analyse_of_one_sentence())
+
+    def test_contested_pairs_detected(self):
+        from scripts.eval_triples_unlabelled import analyse
+        records = [
+            {"text": "a", "stratum": "x", "triples": [
+                {"subject": "A", "object": "B", "predicate": "built",
+                 "confidence": 0.9},
+                {"subject": "A", "object": "B", "predicate": "created",
+                 "confidence": 0.8},
+                {"subject": "C", "object": "D", "predicate": "uses",
+                 "confidence": 0.7},
+            ]},
+        ]
+        a = analyse(records)
+        self.assertEqual(a["contested_pairs"], 1)
+        self.assertEqual(a["triples"], 3)
+        self.assertEqual(a["silent_sentences"], 0)
+        self.assertIn("built", a["contested_examples"][0]["predicates"])
+        self.assertIn("created", a["contested_examples"][0]["predicates"])
+
+    def test_silent_sentences_counted(self):
+        from scripts.eval_triples_unlabelled import analyse
+        a = analyse([
+            {"text": "a", "stratum": "x", "triples": []},
+            {"text": "b", "stratum": "x", "triples": [
+                {"subject": "A", "object": "B", "predicate": "uses",
+                 "confidence": 0.7}]},
+        ])
+        self.assertEqual(a["silent_sentences"], 1)
+        self.assertEqual(a["per_sentence"], 0.5)
+
+
 class TestRelationLabelCoverage(unittest.TestCase):
     """The inference label list is the model's entire output space.
 
