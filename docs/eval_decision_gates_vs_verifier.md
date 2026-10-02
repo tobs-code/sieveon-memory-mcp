@@ -208,6 +208,15 @@ signal for strict entailment (a model or check that can read
 "provides" as over-reading "bring"), which is a separate piece of work and
 should be treated as such rather than as a threshold to tune.
 
+**Decision, 2026-10-02: threshold tuning for strict entailment rejected.**
+The verifier separates wrong from non-wrong claims but does not separate
+supported from implied claims (pairwise AUC 0.527 [0.380, 0.666], interval
+contains 0.5). Stricter thresholds on this signal therefore cannot
+materially improve strict entailment precision. Do not revisit without a
+different signal. Related: the auto-accept band is left unchanged because
+n is too small (6 uniform, 15 stratified), not because it was tested to
+insufficiency.
+
 Extraction confidence is a weaker signal under both labellings
 (0.570 / 0.625 AUC) and, notably, is *not* blind to the distinction --
 which means it is not a candidate either, but it does not contradict the
