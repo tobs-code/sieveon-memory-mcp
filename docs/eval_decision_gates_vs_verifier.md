@@ -17,11 +17,35 @@ reported deltas: 0.844 - 0.362 and 0.818 - 0.336.
 | Adoption             | —                  | —      | **yes**                 | **yes**                 |
 
 Pipeline end-to-end (gates + verifier, measured 2026-10-02 on the same 118):
-43 kept of 118 asserted; 22 gate-rejected, 28 verifier-accepted, 15
-auto-accepted (>0.95), 0 floor-dropped. Precision 0.698 vs baseline 0.441
-(+0.257), strict 0.512 vs 0.297 (+0.215). The MiniLM2 column above is this
-pipeline number: gates are already in the path, so a verifier-only column
-would measure a configuration that never ships.
+every asserted triple ends in exactly one state (scripts/eval_pipeline_matrix.py,
+docs/eval_pipeline_matrix.json):
+
+| Path                | n  | right | wrong |
+|---------------------|---:|------:|------:|
+| structural_drop     | 22 |     6 |    16 |
+| verifier_drop       | 53 |    16 |    37 |
+| verifier_accept     | 28 |    23 |     5 |
+| auto_accept         | 15 |     7 |     8 |
+| floor_drop          |  0 |     0 |     0 |
+| kept                | 43 |    30 |    13 |
+
+Precision 0.698 (30/43) vs baseline 0.441 (+0.257), strict 0.512 (22/43) vs
+0.297 (+0.215), retention 36.4%. The MiniLM2 column above is this pipeline
+number: gates are already in the path, so a verifier-only column would
+measure a configuration that never ships.
+
+Two readings the matrix forces. The verifier is doing the work: it drops 53
+of which 37 are wrong, and accepts 28 of which 23 are right. But auto-accept
+is barely better than chance at 7 right of 15 -- that bucket holds the known
+residual class (a very confident wrong triple, e.g. the Joanna `discovered`
+at 0.97, auto-accepts by policy). Widening the band upward would trade those
+auto-accepts for verifier load and needs its own measurement; the current
+numbers are the baseline for it.
+
+Recall is still not measured. The precise claim is: the pipeline raises
+precision substantially on the 118 annotated model assertions while
+discarding most of them. Not: it improves extraction quality overall -- that
+would need the triples the model never asserted.
 
 The base rows are numbers, not estimates:
 precision 52/118, strict 35/118, and the gate row is 36/96 after removing

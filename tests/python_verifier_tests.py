@@ -181,5 +181,56 @@ class TestBandConstants(unittest.TestCase):
         self.assertIn("teleports into", claim)
 
 
+class TestPipelineMatrix(unittest.TestCase):
+    """Every asserted triple ends in exactly one state.
+
+    A stage whose contribution cannot be audited per triple makes its share
+    of the headline number unverifiable. The matrix is the audit trail for
+    the +0.257 precision gain, and it once caught a reporting error where
+    the categories summed to 65 instead of 118 because the verifier-drop
+    bucket was never reported separately.
+    """
+
+    def test_matrix_partitions_all_asserted_triples(self):
+        import json
+        from pathlib import Path
+        root = Path(__file__).resolve().parents[1]
+        summary = json.loads(
+            (root / "docs" / "eval_pipeline_matrix.json")
+            .read_text(encoding="utf-8"))
+        by_state = summary["by_state"]
+        self.assertEqual(sum(by_state.values()), summary["total"])
+        self.assertEqual(summary["total"], 118)
+        for state in ("structural_drop", "verifier_drop", "verifier_accept",
+                      "auto_accept", "floor_drop"):
+            self.assertIn(state, by_state,
+                          f"missing pipeline state: {state}")
+
+    def test_kept_equals_accepts(self):
+        import json
+        from pathlib import Path
+        root = Path(__file__).resolve().parents[1]
+        summary = json.loads(
+            (root / "docs" / "eval_pipeline_matrix.json")
+            .read_text(encoding="utf-8"))
+        by_state = summary["by_state"]
+        self.assertEqual(
+            summary["kept"],
+            by_state["verifier_accept"] + by_state["auto_accept"])
+
+    def test_precision_matches_matrix_counts(self):
+        import json
+        from pathlib import Path
+        root = Path(__file__).resolve().parents[1]
+        summary = json.loads(
+            (root / "docs" / "eval_pipeline_matrix.json")
+            .read_text(encoding="utf-8"))
+        right = sum(1 for m in summary["matrix"]
+                    if m["state"] in ("verifier_accept", "auto_accept")
+                    and m["verdict"] in ("supported", "implied"))
+        self.assertEqual(
+            round(right / summary["kept"], 4), summary["precision"])
+
+
 if __name__ == "__main__":
     unittest.main()
