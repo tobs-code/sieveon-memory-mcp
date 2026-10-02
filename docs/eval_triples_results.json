@@ -1,0 +1,862 @@
+{
+  "backend": "relex",
+  "sentences": 20,
+  "gold_triples": 21,
+  "gold_found": 14,
+  "asserted": 32,
+  "false_triples": 18,
+  "recall": 0.6667,
+  "precision": 0.4375,
+  "hallucinated": 0,
+  "mis_parse": 10,
+  "wrong_predicate": 8,
+  "predicate_table": [
+    {
+      "predicate": "developed",
+      "gold": 2,
+      "asserted": 9,
+      "delta": 7,
+      "never_produced": false
+    },
+    {
+      "predicate": "created",
+      "gold": 0,
+      "asserted": 3,
+      "delta": 3,
+      "never_produced": false
+    },
+    {
+      "predicate": "located_in",
+      "gold": 0,
+      "asserted": 2,
+      "delta": 2,
+      "never_produced": false
+    },
+    {
+      "predicate": "works_at",
+      "gold": 0,
+      "asserted": 2,
+      "delta": 2,
+      "never_produced": false
+    },
+    {
+      "predicate": "acquired",
+      "gold": 1,
+      "asserted": 2,
+      "delta": 1,
+      "never_produced": false
+    },
+    {
+      "predicate": "leads",
+      "gold": 0,
+      "asserted": 1,
+      "delta": 1,
+      "never_produced": false
+    },
+    {
+      "predicate": "uses",
+      "gold": 3,
+      "asserted": 4,
+      "delta": 1,
+      "never_produced": false
+    },
+    {
+      "predicate": "discovered",
+      "gold": 7,
+      "asserted": 7,
+      "delta": 0,
+      "never_produced": false
+    },
+    {
+      "predicate": "founded",
+      "gold": 2,
+      "asserted": 2,
+      "delta": 0,
+      "never_produced": false
+    },
+    {
+      "predicate": "built",
+      "gold": 1,
+      "asserted": 0,
+      "delta": -1,
+      "never_produced": true
+    },
+    {
+      "predicate": "designed",
+      "gold": 1,
+      "asserted": 0,
+      "delta": -1,
+      "never_produced": true
+    },
+    {
+      "predicate": "funded",
+      "gold": 1,
+      "asserted": 0,
+      "delta": -1,
+      "never_produced": true
+    },
+    {
+      "predicate": "integrated",
+      "gold": 1,
+      "asserted": 0,
+      "delta": -1,
+      "never_produced": true
+    },
+    {
+      "predicate": "provides",
+      "gold": 1,
+      "asserted": 0,
+      "delta": -1,
+      "never_produced": true
+    },
+    {
+      "predicate": "wrote",
+      "gold": 1,
+      "asserted": 0,
+      "delta": -1,
+      "never_produced": true
+    }
+  ],
+  "never_produced": [
+    "built",
+    "designed",
+    "funded",
+    "integrated",
+    "provides",
+    "wrote"
+  ],
+  "confusion": {
+    "discovered": {
+      "developed": 1
+    },
+    "designed": {
+      "created": 1,
+      "developed": 1
+    },
+    "uses": {
+      "developed": 2
+    },
+    "founded": {
+      "works_at": 2
+    },
+    "acquired": {
+      "developed": 1
+    }
+  },
+  "false_detail": [
+    {
+      "text": "Marie Curie discovered radium with Pierre Curie in 1898 in Paris.",
+      "subject": "Pierre Curie",
+      "predicate": "developed",
+      "object": "radium",
+      "confidence": 0.8273371458053589,
+      "kind": "wrong-predicate"
+    },
+    {
+      "text": "Ada Lovelace wrote the first algorithm for the Analytical Engine in 1843.",
+      "subject": "Ada Lovelace",
+      "predicate": "created",
+      "object": "algorithm",
+      "confidence": 0.9242615699768066,
+      "kind": "mis-parse"
+    },
+    {
+      "text": "The Analytical Engine was designed by Charles Babbage in London.",
+      "subject": "Charles Babbage",
+      "predicate": "created",
+      "object": "Analytical Engine",
+      "confidence": 0.8967379927635193,
+      "kind": "wrong-predicate"
+    },
+    {
+      "text": "The Analytical Engine was designed by Charles Babbage in London.",
+      "subject": "Charles Babbage",
+      "predicate": "developed",
+      "object": "Analytical Engine",
+      "confidence": 0.832233726978302,
+      "kind": "wrong-predicate"
+    },
+    {
+      "text": "Rocketdyne built the Saturn V first stage for NASA.",
+      "subject": "Rocketdyne",
+      "predicate": "created",
+      "object": "Saturn V",
+      "confidence": 0.8676742911338806,
+      "kind": "mis-parse"
+    },
+    {
+      "text": "Rocketdyne built the Saturn V first stage for NASA.",
+      "subject": "Rocketdyne",
+      "predicate": "developed",
+      "object": "Saturn V",
+      "confidence": 0.9684299230575562,
+      "kind": "mis-parse"
+    },
+    {
+      "text": "Iceland heats most buildings with geothermal district heating from volcanic sites.",
+      "subject": "Iceland",
+      "predicate": "developed",
+      "object": "geothermal district heating",
+      "confidence": 0.7031034231185913,
+      "kind": "wrong-predicate"
+    },
+    {
+      "text": "Iceland heats most buildings with geothermal district heating from volcanic sites.",
+      "subject": "geothermal district heating",
+      "predicate": "located_in",
+      "object": "Iceland",
+      "confidence": 0.8213683366775513,
+      "kind": "mis-parse"
+    },
+    {
+      "text": "Elon Musk founded SpaceX in 2002.",
+      "subject": "Elon Musk",
+      "predicate": "works_at",
+      "object": "SpaceX",
+      "confidence": 0.8357468247413635,
+      "kind": "wrong-predicate"
+    },
+    {
+      "text": "Microsoft acquired GitHub in 2018.",
+      "subject": "Microsoft",
+      "predicate": "developed",
+      "object": "GitHub",
+      "confidence": 0.8758068084716797,
+      "kind": "wrong-predicate"
+    },
+    {
+      "text": "Airbus uses CFM LEAP engines on the A320neo.",
+      "subject": "Airbus",
+      "predicate": "developed",
+      "object": "CFM LEAP engines",
+      "confidence": 0.8015332221984863,
+      "kind": "wrong-predicate"
+    },
+    {
+      "text": "Bill Gates founded Microsoft and later funded the Gates Foundation.",
+      "subject": "Bill Gates",
+      "predicate": "works_at",
+      "object": "Microsoft",
+      "confidence": 0.7580179572105408,
+      "kind": "wrong-predicate"
+    },
+    {
+      "text": "QuantumDB is a database engine.",
+      "subject": "QuantumDB",
+      "predicate": "uses",
+      "object": "database engine",
+      "confidence": 0.9023893475532532,
+      "kind": "mis-parse"
+    },
+    {
+      "text": "After the acquisition closed in 2014, Facebook integrated WhatsApp's messaging infrastructure into Messenger, which increased daily active users substantially.",
+      "subject": "Facebook",
+      "predicate": "acquired",
+      "object": "WhatsApp",
+      "confidence": 0.8246408700942993,
+      "kind": "mis-parse"
+    },
+    {
+      "text": "After the acquisition closed in 2014, Facebook integrated WhatsApp's messaging infrastructure into Messenger, which increased daily active users substantially.",
+      "subject": "Facebook",
+      "predicate": "developed",
+      "object": "messaging infrastructure",
+      "confidence": 0.8915874361991882,
+      "kind": "mis-parse"
+    },
+    {
+      "text": "After the acquisition closed in 2014, Facebook integrated WhatsApp's messaging infrastructure into Messenger, which increased daily active users substantially.",
+      "subject": "Facebook",
+      "predicate": "uses",
+      "object": "messaging infrastructure",
+      "confidence": 0.8043429851531982,
+      "kind": "mis-parse"
+    },
+    {
+      "text": "The Nesjavellir station provides hot water to Reykjavik homes.",
+      "subject": "Nesjavellir station",
+      "predicate": "located_in",
+      "object": "Reykjavik",
+      "confidence": 0.8836188316345215,
+      "kind": "mis-parse"
+    },
+    {
+      "text": "The Nesjavellir station provides hot water to Reykjavik homes.",
+      "subject": "Nesjavellir station",
+      "predicate": "leads",
+      "object": "homes",
+      "confidence": 0.783414363861084,
+      "kind": "mis-parse"
+    }
+  ],
+  "missed_detail": [
+    {
+      "text": "Ada Lovelace wrote the first algorithm for the Analytical Engine in 1843.",
+      "gold": [
+        "Ada Lovelace",
+        "wrote",
+        "first algorithm"
+      ]
+    },
+    {
+      "text": "The Analytical Engine was designed by Charles Babbage in London.",
+      "gold": [
+        "Charles Babbage",
+        "designed",
+        "Analytical Engine"
+      ]
+    },
+    {
+      "text": "Rocketdyne built the Saturn V first stage for NASA.",
+      "gold": [
+        "Rocketdyne",
+        "built",
+        "Saturn V first stage"
+      ]
+    },
+    {
+      "text": "Iceland heats most buildings with geothermal district heating from volcanic sites.",
+      "gold": [
+        "Iceland",
+        "uses",
+        "geothermal district heating"
+      ]
+    },
+    {
+      "text": "Bill Gates founded Microsoft and later funded the Gates Foundation.",
+      "gold": [
+        "Bill Gates",
+        "funded",
+        "Gates Foundation"
+      ]
+    },
+    {
+      "text": "After the acquisition closed in 2014, Facebook integrated WhatsApp's messaging infrastructure into Messenger, which increased daily active users substantially.",
+      "gold": [
+        "Facebook",
+        "integrated",
+        "WhatsApp messaging infrastructure"
+      ]
+    },
+    {
+      "text": "The Nesjavellir station provides hot water to Reykjavik homes.",
+      "gold": [
+        "Nesjavellir station",
+        "provides",
+        "hot water"
+      ]
+    }
+  ],
+  "per_sentence": [
+    {
+      "id": "curie-1",
+      "text": "Marie Curie discovered radium with Pierre Curie in 1898 in Paris.",
+      "gold": [
+        [
+          "Marie Curie",
+          "discovered",
+          "radium"
+        ],
+        [
+          "Pierre Curie",
+          "discovered",
+          "radium"
+        ]
+      ],
+      "asserted": [
+        {
+          "subject": "Marie Curie",
+          "predicate": "discovered",
+          "object": "radium",
+          "confidence": 0.9757444858551025
+        },
+        {
+          "subject": "Pierre Curie",
+          "predicate": "developed",
+          "object": "radium",
+          "confidence": 0.8273371458053589
+        },
+        {
+          "subject": "Pierre Curie",
+          "predicate": "discovered",
+          "object": "radium",
+          "confidence": 0.8548073768615723
+        }
+      ],
+      "found": 2,
+      "false": 1,
+      "note": "COMITATIVE 'with'. PropBank marks 'with' in 'I sang with my sister' as comitative, so both agents discovered radium. An earlier version of this gold asserted only Marie Curie and scored the co-agent triple as a false positive. Correct reading: this is a true positive, and calling it agent confusion was my error."
+    },
+    {
+      "id": "becquerel-1",
+      "text": "Henri Becquerel discovered radioactivity and Polonium.",
+      "gold": [
+        [
+          "Henri Becquerel",
+          "discovered",
+          "radioactivity"
+        ],
+        [
+          "Henri Becquerel",
+          "discovered",
+          "Polonium"
+        ]
+      ],
+      "asserted": [
+        {
+          "subject": "Henri Becquerel",
+          "predicate": "discovered",
+          "object": "radioactivity",
+          "confidence": 0.9815117716789246
+        },
+        {
+          "subject": "Henri Becquerel",
+          "predicate": "discovered",
+          "object": "Polonium",
+          "confidence": 0.9626893401145935
+        }
+      ],
+      "found": 2,
+      "false": 0,
+      "note": "COORDINATION, not a bad sentence. An earlier version of this gold item asserted no triples because the sentence is historically wrong (Polonium was Curie's), which made the extractor look faulty for extracting it. The extractor is right: the text says this. Gold follows the text."
+    },
+    {
+      "id": "beck-1",
+      "text": "Ada Lovelace wrote the first algorithm for the Analytical Engine in 1843.",
+      "gold": [
+        [
+          "Ada Lovelace",
+          "wrote",
+          "first algorithm"
+        ]
+      ],
+      "asserted": [
+        {
+          "subject": "Ada Lovelace",
+          "predicate": "created",
+          "object": "algorithm",
+          "confidence": 0.9242615699768066
+        }
+      ],
+      "found": 0,
+      "false": 1,
+      "note": "'for the Analytical Engine' is a purpose adjunct"
+    },
+    {
+      "id": "babbage-1",
+      "text": "The Analytical Engine was designed by Charles Babbage in London.",
+      "gold": [
+        [
+          "Charles Babbage",
+          "designed",
+          "Analytical Engine"
+        ]
+      ],
+      "asserted": [
+        {
+          "subject": "Charles Babbage",
+          "predicate": "created",
+          "object": "Analytical Engine",
+          "confidence": 0.8967379927635193
+        },
+        {
+          "subject": "Charles Babbage",
+          "predicate": "developed",
+          "object": "Analytical Engine",
+          "confidence": 0.832233726978302
+        }
+      ],
+      "found": 0,
+      "false": 2,
+      "note": "passive voice: subject and object swap. ADVERSARIAL."
+    },
+    {
+      "id": "nasa-1",
+      "text": "Rocketdyne built the Saturn V first stage for NASA.",
+      "gold": [
+        [
+          "Rocketdyne",
+          "built",
+          "Saturn V first stage"
+        ]
+      ],
+      "asserted": [
+        {
+          "subject": "Rocketdyne",
+          "predicate": "created",
+          "object": "Saturn V",
+          "confidence": 0.8676742911338806
+        },
+        {
+          "subject": "Rocketdyne",
+          "predicate": "developed",
+          "object": "Saturn V",
+          "confidence": 0.9684299230575562
+        }
+      ],
+      "found": 0,
+      "false": 2,
+      "note": "'for NASA' is the beneficiary, not the object"
+    },
+    {
+      "id": "geyser-1",
+      "text": "Iceland heats most buildings with geothermal district heating from volcanic sites.",
+      "gold": [
+        [
+          "Iceland",
+          "uses",
+          "geothermal district heating"
+        ]
+      ],
+      "asserted": [
+        {
+          "subject": "Iceland",
+          "predicate": "developed",
+          "object": "geothermal district heating",
+          "confidence": 0.7031034231185913
+        },
+        {
+          "subject": "geothermal district heating",
+          "predicate": "located_in",
+          "object": "Iceland",
+          "confidence": 0.8213683366775513
+        }
+      ],
+      "found": 0,
+      "false": 2,
+      "note": "previously produced 'Geothermal energy uses Erdinneren' -- adjective parsed as subject"
+    },
+    {
+      "id": "gen-1",
+      "text": "Elon Musk founded SpaceX in 2002.",
+      "gold": [
+        [
+          "Elon Musk",
+          "founded",
+          "SpaceX"
+        ]
+      ],
+      "asserted": [
+        {
+          "subject": "Elon Musk",
+          "predicate": "works_at",
+          "object": "SpaceX",
+          "confidence": 0.8357468247413635
+        },
+        {
+          "subject": "Elon Musk",
+          "predicate": "founded",
+          "object": "SpaceX",
+          "confidence": 0.9073541760444641
+        }
+      ],
+      "found": 1,
+      "false": 1,
+      "note": "clean active"
+    },
+    {
+      "id": "gen-2",
+      "text": "Microsoft acquired GitHub in 2018.",
+      "gold": [
+        [
+          "Microsoft",
+          "acquired",
+          "GitHub"
+        ]
+      ],
+      "asserted": [
+        {
+          "subject": "Microsoft",
+          "predicate": "developed",
+          "object": "GitHub",
+          "confidence": 0.8758068084716797
+        },
+        {
+          "subject": "Microsoft",
+          "predicate": "acquired",
+          "object": "GitHub",
+          "confidence": 0.9177426099777222
+        }
+      ],
+      "found": 1,
+      "false": 1,
+      "note": "clean active"
+    },
+    {
+      "id": "gen-3",
+      "text": "Netflix uses Amazon Web Services for its infrastructure.",
+      "gold": [
+        [
+          "Netflix",
+          "uses",
+          "Amazon Web Services"
+        ]
+      ],
+      "asserted": [
+        {
+          "subject": "Netflix",
+          "predicate": "uses",
+          "object": "Amazon Web Services",
+          "confidence": 0.9624059200286865
+        }
+      ],
+      "found": 1,
+      "false": 0,
+      "note": "prepositional adjunct; the exact sentence the paraphrase eval asks about"
+    },
+    {
+      "id": "gen-4",
+      "text": "Airbus uses CFM LEAP engines on the A320neo.",
+      "gold": [
+        [
+          "Airbus",
+          "uses",
+          "CFM LEAP engines"
+        ]
+      ],
+      "asserted": [
+        {
+          "subject": "Airbus",
+          "predicate": "developed",
+          "object": "CFM LEAP engines",
+          "confidence": 0.8015332221984863
+        },
+        {
+          "subject": "Airbus",
+          "predicate": "uses",
+          "object": "CFM LEAP engines",
+          "confidence": 0.9236003756523132
+        }
+      ],
+      "found": 1,
+      "false": 1,
+      "note": "clean active with a prepositional adjunct"
+    },
+    {
+      "id": "multi-1",
+      "text": "Bill Gates founded Microsoft and later funded the Gates Foundation.",
+      "gold": [
+        [
+          "Bill Gates",
+          "founded",
+          "Microsoft"
+        ],
+        [
+          "Bill Gates",
+          "funded",
+          "Gates Foundation"
+        ]
+      ],
+      "asserted": [
+        {
+          "subject": "Bill Gates",
+          "predicate": "works_at",
+          "object": "Microsoft",
+          "confidence": 0.7580179572105408
+        },
+        {
+          "subject": "Bill Gates",
+          "predicate": "founded",
+          "object": "Microsoft",
+          "confidence": 0.8415622711181641
+        }
+      ],
+      "found": 1,
+      "false": 1,
+      "note": "coordination: two clauses, both must be found. Previously only the first."
+    },
+    {
+      "id": "multi-2",
+      "text": "Marie Curie discovered radium, polonium and radioactivity.",
+      "gold": [
+        [
+          "Marie Curie",
+          "discovered",
+          "radium"
+        ],
+        [
+          "Marie Curie",
+          "discovered",
+          "polonium"
+        ],
+        [
+          "Marie Curie",
+          "discovered",
+          "radioactivity"
+        ]
+      ],
+      "asserted": [
+        {
+          "subject": "Marie Curie",
+          "predicate": "discovered",
+          "object": "radium",
+          "confidence": 0.9925087094306946
+        },
+        {
+          "subject": "Marie Curie",
+          "predicate": "discovered",
+          "object": "polonium",
+          "confidence": 0.9918151497840881
+        },
+        {
+          "subject": "Marie Curie",
+          "predicate": "discovered",
+          "object": "radioactivity",
+          "confidence": 0.9403054714202881
+        }
+      ],
+      "found": 3,
+      "false": 0,
+      "note": "list coordination. Previously only the first object."
+    },
+    {
+      "id": "neg-1",
+      "text": "QuantumDB is a database engine.",
+      "gold": [],
+      "asserted": [
+        {
+          "subject": "QuantumDB",
+          "predicate": "uses",
+          "object": "database engine",
+          "confidence": 0.9023893475532532
+        }
+      ],
+      "found": 0,
+      "false": 1,
+      "note": "copular definition, no verb. Should yield nothing, not 'X is Y' noise."
+    },
+    {
+      "id": "neg-2",
+      "text": "How much is the ticket to Munich?",
+      "gold": [],
+      "asserted": [],
+      "found": 0,
+      "false": 0,
+      "note": "question, not a statement. Should yield nothing."
+    },
+    {
+      "id": "neg-3",
+      "text": "I will discuss the project with Bob tomorrow.",
+      "gold": [],
+      "asserted": [],
+      "found": 0,
+      "false": 0,
+      "note": "future intent, not an assertion of fact. Previously 'I uses Bob' style noise."
+    },
+    {
+      "id": "passive-2",
+      "text": "The engine was developed by Helios Labs in 2024.",
+      "gold": [
+        [
+          "Helios Labs",
+          "developed",
+          "engine"
+        ]
+      ],
+      "asserted": [
+        {
+          "subject": "Helios Labs",
+          "predicate": "developed",
+          "object": "engine",
+          "confidence": 0.9029754996299744
+        }
+      ],
+      "found": 1,
+      "false": 0,
+      "note": "passive, ADVERSARIAL"
+    },
+    {
+      "id": "long-1",
+      "text": "Helios Labs, which was founded in Graz, developed the QuantumDB engine in 2024 while collaborating with Nova Systems on the event pipeline.",
+      "gold": [
+        [
+          "Helios Labs",
+          "developed",
+          "QuantumDB engine"
+        ]
+      ],
+      "asserted": [
+        {
+          "subject": "Helios Labs",
+          "predicate": "developed",
+          "object": "QuantumDB engine",
+          "confidence": 0.9775469303131104
+        }
+      ],
+      "found": 1,
+      "false": 0,
+      "note": "ADVERSARIAL: relative clause plus participial clause. Only the main clause should produce a triple."
+    },
+    {
+      "id": "long-2",
+      "text": "After the acquisition closed in 2014, Facebook integrated WhatsApp's messaging infrastructure into Messenger, which increased daily active users substantially.",
+      "gold": [
+        [
+          "Facebook",
+          "integrated",
+          "WhatsApp messaging infrastructure"
+        ]
+      ],
+      "asserted": [
+        {
+          "subject": "Facebook",
+          "predicate": "acquired",
+          "object": "WhatsApp",
+          "confidence": 0.8246408700942993
+        },
+        {
+          "subject": "Facebook",
+          "predicate": "developed",
+          "object": "messaging infrastructure",
+          "confidence": 0.8915874361991882
+        },
+        {
+          "subject": "Facebook",
+          "predicate": "uses",
+          "object": "messaging infrastructure",
+          "confidence": 0.8043429851531982
+        }
+      ],
+      "found": 0,
+      "false": 3,
+      "note": "ADVERSARIAL: subordinate clause first, possessives, and a non-factive trailing clause."
+    },
+    {
+      "id": "attr-1",
+      "text": "Marie Curie was a physicist and chemist who worked in Paris.",
+      "gold": [],
+      "asserted": [],
+      "found": 0,
+      "false": 0,
+      "note": "copular + relative clause. Previously produced 'Marie Curie acquired Chemistry'."
+    },
+    {
+      "id": "attr-2",
+      "text": "The Nesjavellir station provides hot water to Reykjavik homes.",
+      "gold": [
+        [
+          "Nesjavellir station",
+          "provides",
+          "hot water"
+        ]
+      ],
+      "asserted": [
+        {
+          "subject": "Nesjavellir station",
+          "predicate": "located_in",
+          "object": "Reykjavik",
+          "confidence": 0.8836188316345215
+        },
+        {
+          "subject": "Nesjavellir station",
+          "predicate": "leads",
+          "object": "homes",
+          "confidence": 0.783414363861084
+        }
+      ],
+      "found": 0,
+      "false": 2,
+      "note": "'to Reykjavik homes' is the recipient"
+    }
+  ]
+}

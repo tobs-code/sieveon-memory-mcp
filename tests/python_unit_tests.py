@@ -603,6 +603,124 @@ class TestSurrealStatementBuilding(unittest.TestCase):
                 f"{assigned.get(name)!r}")
 
 
+class TestTripleEvalMatching(unittest.TestCase):
+    """Pure helpers of scripts/eval_triples.py.
+
+    The metric itself is what exposed that SVO extraction asserts roughly
+    three wrong triples for every correct one, so the classification of a
+    wrong triple has to be right: counting a mis-parse as acceptable would
+    report precision 1.0 on a sentence where the extractor attached the wrong
+    agent to the right object.
+    """
+
+    def _gold(self):
+        return [("Marie Curie", "discovered", "radium")]
+
+    def test_matching_ignores_case_and_possessive_ending(self):
+        from scripts.eval_triples import _matches
+        self.assertTrue(_matches(
+            {"subject": "marie curie", "predicate": "Discovered",
+             "object": "Radium"}, self._gold()[0]))
+        # "'s" is normalised away, so a possessive on a single-word object
+        # still matches the bare form.
+        self.assertTrue(_matches(
+            {"subject": "Ada Lovelace", "predicate": "wrote",
+             "object": "algorithm's"}, ("Ada Lovelace", "wrote", "algorithm")))
+
+    def test_predicate_must_match_exactly(self):
+        """The verb is the claim, so a different one is not a match."""
+        from scripts.eval_triples import _matches
+        self.assertFalse(_matches(
+            {"subject": "Marie Curie", "predicate": "developed",
+             "object": "radium"}, self._gold()[0]))
+
+    def test_kind_classification(self):
+        from scripts.eval_triples import _false_kind
+        # _false_kind takes the whole gold list: whether a triple is false
+        # depends on whether it is asserted anywhere in the sentence, not
+        # against one reference triple.
+        gold = self._gold()
+        text = "Marie Curie discovered radium with Pierre Curie in 1898 in Paris."
+
+        # Right subject and object, wrong verb.
+        self.assertEqual(
+            _false_kind({"subject": "Marie Curie", "predicate": "developed",
+                         "object": "radium", "_text": text}, gold),
+            "wrong-predicate")
+
+        # Both words occur in the sentence, but this pair is not asserted.
+        self.assertEqual(
+            _false_kind({"subject": "Pierre Curie", "predicate": "founded",
+                         "object": "Paris", "_text": text}, gold),
+            "mis-parse")
+
+        # An entity that never occurs in the sentence.
+        self.assertEqual(
+            _false_kind({"subject": "Marie Curie", "predicate": "discovered",
+                         "object": "unobtainium", "_text": text}, gold),
+            "hallucinated")
+
+    def test_comitative_is_a_true_positive_not_agent_confusion(self):
+        """PropBank marks 'with' in 'I sang with my sister' comitative.
+
+        So both agents discovered radium, and scoring the co-agent triple as
+        a false positive is a gold error, not a model error.
+        """
+        from scripts.eval_triples import _false_kind, _matches
+        text = "Marie Curie discovered radium with Pierre Curie in 1898."
+        gold = [("Marie Curie", "discovered", "radium"),
+                ("Pierre Curie", "discovered", "radium")]
+        self.assertIsNone(_false_kind(
+            {"subject": "Pierre Curie", "predicate": "discovered",
+             "object": "radium", "_text": text}, gold))
+        self.assertTrue(_matches(
+            {"subject": "Pierre Curie", "predicate": "discovered",
+             "object": "radium"}, gold[1]))
+
+    def test_predicate_table_must_list_gold_only_predicates(self):
+        """A table built only from asserted rows hides the worst finding.
+
+        Six gold predicates were never produced by the model, and an
+        asserted-only table made them invisible -- which inverted the
+        conclusion from "precision is low" to "a third of recall is
+        unreachable at any confidence threshold".
+        """
+        from scripts.eval_triples import evaluate, load_gold
+        report = evaluate(load_gold())
+        table = {r["predicate"] for r in report["predicate_table"]}
+        gold_preds = set()
+        for row in load_gold():
+            for t in row["triples"]:
+                gold_preds.add(t[1].lower())
+        self.assertTrue(
+            gold_preds <= table,
+            f"gold predicates missing from the table: {gold_preds - table}")
+        self.assertEqual(
+            report["gold_triples"],
+            sum(r["gold"] for r in report["predicate_table"]),
+            "the gold column must sum to the gold triple count")
+
+    def test_a_correct_triple_is_not_false_at_all(self):
+        from scripts.eval_triples import _false_kind
+        self.assertIsNone(_false_kind(
+            {"subject": "Marie Curie", "predicate": "discovered",
+             "object": "radium"}, self._gold()))
+
+    def test_gold_set_loads_and_is_adversarial(self):
+        from scripts.eval_triples import load_gold
+        rows = load_gold()
+        self.assertGreaterEqual(len(rows), 20)
+        # The set must contain sentences that assert nothing, or the eval
+        # cannot measure a false positive at all.
+        self.assertTrue(any(not r["triples"] for r in rows))
+        # And constructions that break naive parsers.
+        joined = " ".join(r["text"].lower() for r in rows)
+        for construction in ("was designed by", "and later funded",
+                             "which was founded"):
+            self.assertIn(construction, joined,
+                          f"gold set lost an adversarial case: {construction}")
+
+
 class TestRelationLabelMapping(unittest.TestCase):
     """Pure-function tests for the relex/gliner predicate normalization."""
 

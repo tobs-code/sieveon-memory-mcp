@@ -303,6 +303,27 @@ migration.
 Caveat: 39 clean sentences cannot separate good encoders. If a harder corpus
 with near-duplicate distractors ever shows ranking headroom, revisit.
 
+## Correction (2026-10-02): the "overlap almost completely" claim was wrong
+
+An earlier version of this document concluded that the score distributions
+for correct and wrong facts "overlap almost completely", based on a
+threshold sweep that moved fact precision only 0.12 -> 0.18 between 0.7 and
+0.9. That sweep used `fact_salience`, a heuristic computed **per source
+text**, so every triple extracted from one sentence shares the same value.
+A per-text score structurally cannot separate correct from incorrect
+triples *within* a sentence, which makes the overlap an artefact of the
+measurement rather than a property of the model.
+
+Measuring the raw relex confidence per triple against per-triple
+correctness gives AUC 0.919 instead — see
+[ADR-004](ADR-004-triple-precision.md). The two numbers do not contradict
+each other; they are two different predictors, and the raw confidence is
+the relevant one for filtering triples. Do not use the old claim as
+counter-evidence.
+
+The 95% CI on that AUC is roughly 0.81-1.0 at 13 correct vs 19 wrong, so it
+is directionally useful and nowhere near settled.
+
 ## Reproducing
 
     python scripts/eval_extraction.py          # per-fact metrics, AUC, tier operating point
