@@ -1,0 +1,158 @@
+{
+  "note": "AE-1 scale-up only. Pilot v2 (instead of) + 3 new pairs, same shell, no new cues. NOT merged into v2 or the expansion freeze. Generator untouched.",
+  "pairs": [
+    {
+      "class": "clean_positive",
+      "construction_family_id": "active_encouragement:recipient_switch",
+      "entities": [
+        "the coach",
+        "the club"
+      ],
+      "entity_types": [
+        "person",
+        "organization"
+      ],
+      "frame": "active_encouragement",
+      "pair_id": "AE-1--v2",
+      "sentence": "The coach encouraged the club to keep going.",
+      "source": "pilot_v2",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "hard_negative",
+      "construction_family_id": "active_encouragement:recipient_switch",
+      "entities": [
+        "the coach",
+        "the club"
+      ],
+      "entity_types": [
+        "person",
+        "organization"
+      ],
+      "frame": "active_encouragement",
+      "pair_id": "AE-1--v2",
+      "sentence": "The coach encouraged the crowd instead of the club.",
+      "source": "pilot_v2",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "clean_positive",
+      "construction_family_id": "active_encouragement:recipient_switch",
+      "entities": [
+        "Maria",
+        "the nonprofit"
+      ],
+      "entity_types": [
+        "person",
+        "organization"
+      ],
+      "frame": "active_encouragement",
+      "pair_id": "AE-1--01",
+      "sentence": "Maria encouraged the nonprofit to keep going.",
+      "source": "scaled",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "hard_negative",
+      "construction_family_id": "active_encouragement:recipient_switch",
+      "entities": [
+        "Maria",
+        "the nonprofit"
+      ],
+      "entity_types": [
+        "person",
+        "organization"
+      ],
+      "frame": "active_encouragement",
+      "pair_id": "AE-1--01",
+      "sentence": "Maria encouraged the donors instead of the nonprofit.",
+      "source": "scaled",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "clean_positive",
+      "construction_family_id": "active_encouragement:recipient_switch",
+      "entities": [
+        "the meetup",
+        "Tom"
+      ],
+      "entity_types": [
+        "event",
+        "person"
+      ],
+      "frame": "active_encouragement",
+      "pair_id": "AE-1--02",
+      "sentence": "The meetup encouraged Tom to keep going.",
+      "source": "scaled",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "hard_negative",
+      "construction_family_id": "active_encouragement:recipient_switch",
+      "entities": [
+        "the meetup",
+        "Tom"
+      ],
+      "entity_types": [
+        "event",
+        "person"
+      ],
+      "frame": "active_encouragement",
+      "pair_id": "AE-1--02",
+      "sentence": "The meetup encouraged the guests instead of Tom.",
+      "source": "scaled",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "clean_positive",
+      "construction_family_id": "active_encouragement:recipient_switch",
+      "entities": [
+        "the team",
+        "the app"
+      ],
+      "entity_types": [
+        "organization",
+        "technology"
+      ],
+      "frame": "active_encouragement",
+      "pair_id": "AE-1--03",
+      "sentence": "The team encouraged the app to keep going.",
+      "source": "scaled",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "hard_negative",
+      "construction_family_id": "active_encouragement:recipient_switch",
+      "entities": [
+        "the team",
+        "the app"
+      ],
+      "entity_types": [
+        "organization",
+        "technology"
+      ],
+      "frame": "active_encouragement",
+      "pair_id": "AE-1--03",
+      "sentence": "The team encouraged the users instead of the app.",
+      "source": "scaled",
+      "target_relation": [
+        "provides"
+      ]
+    }
+  ],
+  "status": "scaled_unmerged"
+}
