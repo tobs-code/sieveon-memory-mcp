@@ -35,7 +35,8 @@ from typing import Any, Dict, List, Tuple
 
 ROOT = Path(__file__).resolve().parents[1]
 TRIPLE_VERDICTS = ROOT / "docs" / "eval_triples_annotation_uniform.jsonl"
-RECALL_GOLD = ROOT / "docs" / "eval_recall_gold_pilot.jsonl"
+RECALL_GOLD = [ROOT / "docs" / "eval_recall_gold_pilot.jsonl",
+               ROOT / "docs" / "eval_recall_gold_batch2.jsonl"]
 
 # Severity on the two scales. Recall gold has no `wrong`: a fact that is not
 # gold is either held out as below threshold or absent, so `wrong` maps onto
@@ -52,8 +53,17 @@ def load() -> Tuple[Dict[Tuple[str, str, str], str], List[Dict[str, Any]]]:
         if line.strip():
             g = json.loads(line)
             verdicts[(g["s"], g["p"], g["o"])] = g["verdict"]
-    rows = [json.loads(l) for l in
-            RECALL_GOLD.read_text(encoding="utf-8").splitlines() if l.strip()]
+    rows = []
+    seen = set()
+    for f in RECALL_GOLD:
+        if not f.exists():
+            continue
+        for line in f.read_text(encoding="utf-8").splitlines():
+            if line.strip():
+                r = json.loads(line)
+                if r["id"] not in seen:
+                    seen.add(r["id"])
+                    rows.append(r)
     return verdicts, rows
 
 

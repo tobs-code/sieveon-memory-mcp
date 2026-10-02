@@ -1,26 +1,26 @@
 {
-  "gold": 14,
-  "claims": 51,
-  "claims_on_graphable_sentences": 39,
-  "found": 4,
-  "imprecise": 9,
-  "missed": 1,
+  "gold": 21,
+  "claims": 60,
+  "claims_on_graphable_sentences": 43,
+  "found": 6,
+  "imprecise": 10,
+  "missed": 5,
   "below_threshold": 19,
-  "predicate_discipline": 2,
-  "predicate_discipline_rate": 0.051,
+  "predicate_discipline": 3,
+  "predicate_discipline_rate": 0.07,
   "spurious": 5,
-  "non_graphable_sentences": 2,
-  "non_graphable_claims": 3,
-  "schema_gap_facts": 3,
-  "schema_gap_claims": 9,
-  "precision_if_gap_counted": 0.271,
+  "non_graphable_sentences": 4,
+  "non_graphable_claims": 5,
+  "schema_gap_facts": 9,
+  "schema_gap_claims": 12,
+  "precision_if_gap_counted": 0.291,
   "recall": 0.286,
-  "recall_incl_implied": 0.929,
-  "precision": 0.333,
-  "precision_strict": 0.103,
-  "precision_incl_implied": 0.333,
-  "precision_naive_all_claims": 0.255,
-  "f1": 0.308,
+  "recall_incl_implied": 0.762,
+  "precision": 0.372,
+  "precision_strict": 0.14,
+  "precision_incl_implied": 0.372,
+  "precision_naive_all_claims": 0.267,
+  "f1": 0.323,
   "detail": {
     "found": [
       {
@@ -78,6 +78,34 @@
           "o": "family"
         },
         "via_predicate": "part_of"
+      },
+      {
+        "id": "conv-30/session_10_observation/Gina/D10:2",
+        "gold": [
+          "Gina",
+          "founded",
+          "online clothing store"
+        ],
+        "matched": {
+          "s": "Gina",
+          "p": "founded",
+          "o": "online clothing store"
+        },
+        "via_predicate": "founded"
+      },
+      {
+        "id": "conv-30/session_10_observation/Gina/D10:2",
+        "gold": [
+          "Gina",
+          "works_at",
+          "online clothing store"
+        ],
+        "matched": {
+          "s": "Gina",
+          "p": "works_at",
+          "o": "online clothing store"
+        },
+        "via_predicate": "works_at"
       }
     ],
     "imprecise": [
@@ -206,6 +234,20 @@
           "o": "circuit training"
         },
         "via_predicate": "provides"
+      },
+      {
+        "id": "conv-42/session_19_observation/Joanna/D19:6",
+        "gold": [
+          "Joanna",
+          "part_of",
+          "writers group"
+        ],
+        "matched": {
+          "s": "Joanna",
+          "p": "part_of",
+          "o": "writers group"
+        },
+        "via_predicate": "part_of"
       }
     ],
     "missed": [
@@ -215,6 +257,38 @@
           "Deborah",
           "received",
           "quote"
+        ]
+      },
+      {
+        "id": "conv-41/session_28_observation/Maria/D28:6",
+        "gold": [
+          "Maria",
+          "provides",
+          "support"
+        ]
+      },
+      {
+        "id": "conv-41/session_28_observation/Maria/D28:6",
+        "gold": [
+          "Maria",
+          "provides",
+          "encouragement"
+        ]
+      },
+      {
+        "id": "conv-44/session_7_observation/Andrew/D7:12",
+        "gold": [
+          "Audrey",
+          "provides",
+          "support"
+        ]
+      },
+      {
+        "id": "conv-44/session_7_observation/Andrew/D7:12",
+        "gold": [
+          "Audrey",
+          "provides",
+          "assistance"
         ]
       }
     ],
@@ -435,6 +509,14 @@
           "p": "built",
           "o": "environment"
         }
+      },
+      {
+        "id": "conv-42/session_19_observation/Joanna/D19:6",
+        "claim": {
+          "s": "Joanna",
+          "p": "works_at",
+          "o": "writers group"
+        }
       }
     ],
     "non_graphable": [
@@ -460,6 +542,22 @@
           "s": "Melanie",
           "p": "developed",
           "o": "creativity"
+        }
+      },
+      {
+        "id": "conv-50/session_15_observation/Dave/D15:9",
+        "claim": {
+          "s": "Dave",
+          "p": "created",
+          "o": "collaborations"
+        }
+      },
+      {
+        "id": "conv-41/session_15_observation/John/D15:9",
+        "claim": {
+          "s": "John",
+          "p": "leads",
+          "o": "veterans"
         }
       }
     ],
@@ -535,6 +633,30 @@
           "p": "discovered",
           "o": "reality"
         }
+      },
+      {
+        "id": "conv-43/session_2_observation/John/D2:8",
+        "claim": {
+          "s": "John",
+          "p": "wrote",
+          "o": "book collection"
+        }
+      },
+      {
+        "id": "conv-26/session_7_observation/Caroline/D7:1",
+        "claim": {
+          "s": "Caroline",
+          "p": "founded",
+          "o": "LGBTQ conference"
+        }
+      },
+      {
+        "id": "conv-48/session_6_observation/Deborah/D6:10",
+        "claim": {
+          "s": "Deborah",
+          "p": "works_at",
+          "o": "Bali"
+        }
       }
     ]
   },
@@ -562,43 +684,53 @@
     "distinct_gold_predicates": [
       "created",
       "developed",
+      "founded",
       "part_of",
       "provides",
       "received",
-      "uses"
+      "uses",
+      "works_at"
     ],
     "gold_predicate_counts": {
       "created": 1,
       "developed": 2,
-      "part_of": 1,
-      "provides": 7,
+      "founded": 1,
+      "part_of": 2,
+      "provides": 11,
       "received": 1,
-      "uses": 2
+      "uses": 2,
+      "works_at": 1
     },
     "scorable_predicates": [
       "created",
       "developed",
+      "founded",
       "part_of",
       "provides",
-      "uses"
+      "uses",
+      "works_at"
     ],
     "unscorable_predicates": [
       "received"
     ],
-    "scorable_gold_facts": 13,
+    "scorable_gold_facts": 20,
     "unscorable_gold_facts": 1,
     "scorable_ids": [
       "conv-26/session_11_observation/Melanie/D11:7",
+      "conv-30/session_10_observation/Gina/D10:2",
       "conv-41/session_18_observation/Maria/D18:15",
       "conv-41/session_20_observation/Maria/D20:3",
       "conv-41/session_25_observation/John/D25:13",
+      "conv-41/session_28_observation/Maria/D28:6",
       "conv-41/session_31_observation/Maria/D31:14",
       "conv-42/session_10_observation/Joanna/D10:9",
+      "conv-42/session_19_observation/Joanna/D19:6",
       "conv-42/session_27_observation/Joanna/D27:2",
+      "conv-44/session_7_observation/Andrew/D7:12",
       "conv-48/session_18_observation/Jolene/D18:5",
       "conv-48/session_28_observation/Jolene/D28:26"
     ]
   },
-  "scorable_recall": 1.0,
-  "scorable_recall_clean": 0.308
+  "scorable_recall": 0.8,
+  "scorable_recall_clean": 0.3
 }
