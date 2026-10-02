@@ -738,7 +738,7 @@ async def ensure_schema_loaded():
             "DEFINE FIELD OVERWRITE name ON entity TYPE string;",
             "DEFINE FIELD OVERWRITE type ON entity TYPE string DEFAULT 'unknown';",
             "DEFINE FIELD OVERWRITE embedding ON entity TYPE option<array>;",
-            "DEFINE FIELD OVERWRITE metadata ON entity TYPE option<object>;",
+            "DEFINE FIELD OVERWRITE metadata ON entity TYPE option<object> FLEXIBLE;",
             "DEFINE FIELD OVERWRITE forgotten ON entity TYPE bool DEFAULT false;",
             "DEFINE FIELD OVERWRITE forget_reason ON entity TYPE option<string>;",
             "DEFINE FIELD OVERWRITE created_at ON entity TYPE option<datetime> DEFAULT time::now();",

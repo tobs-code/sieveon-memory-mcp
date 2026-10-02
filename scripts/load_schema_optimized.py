@@ -3,12 +3,18 @@ import sys
 
 import requests
 
-URL = "http://127.0.0.1:8000/sql"
-AUTH = ("root", "root")
+URL = os.getenv("SURREALDB_URL", "http://127.0.0.1:8000/sql")
+AUTH = (os.getenv("SURREALDB_USER", "root"), os.getenv("SURREALDB_PASS", "root"))
+# Previously hardcoded, which silently sent every schema statement to
+# `sieveon` regardless of the configured namespace/database. On a
+# non-default SURREALDB_NS the loader appeared to succeed while changing
+# nothing, and the target DB was left without a schema.
+NS = os.getenv("SURREALDB_NS", "sieveon")
+DB = os.getenv("SURREALDB_DB", "sieveon")
 
 
 def run_sql_batch(statements, label=""):
-    sql = "USE NS sieveon DB sieveon;\n" + ";\n".join(statements) + ";"
+    sql = f"USE NS {NS} DB {DB};\n" + ";\n".join(statements) + ";"
     headers = {"Accept": "application/json", "Content-Type": "text/plain"}
     response = requests.post(URL, data=sql, headers=headers, auth=AUTH, timeout=60)
     data = response.json()
@@ -84,7 +90,10 @@ def ensure_entity_schema():
             # `type` fail with "Couldn't coerce value for field `type`".
             "DEFINE FIELD OVERWRITE type ON entity TYPE string DEFAULT 'unknown'",
             "DEFINE FIELD OVERWRITE embedding ON entity TYPE option<array>",
-            "DEFINE FIELD OVERWRITE metadata ON entity TYPE option<object>",
+            # FLEXIBLE: on SCHEMAFULL, TYPE object is schemafull by default, so
+            # this OVERWRITE would otherwise strip the flag and break every
+            # entity write that carries metadata.
+            "DEFINE FIELD OVERWRITE metadata ON entity TYPE option<object> FLEXIBLE",
             "DEFINE FIELD OVERWRITE forgotten ON entity TYPE bool DEFAULT false",
             "DEFINE FIELD OVERWRITE forget_reason ON entity TYPE option<string>",
             "DEFINE FIELD OVERWRITE created_at ON entity TYPE option<datetime> DEFAULT time::now()",

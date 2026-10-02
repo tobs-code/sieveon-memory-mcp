@@ -472,6 +472,66 @@ class TestSurrealStatementBuilding(unittest.TestCase):
             "RETURN $name;", {"name": "O'Brien \"quoted\""})
         self.assertIn("\"O'Brien \\\"quoted\\\"\"", body)
 
+    def test_entity_metadata_field_is_flexible(self):
+        """On SCHEMAFULL, TYPE object is schemafull by default.
+
+        Without FLEXIBLE every entity write carrying metadata fails, which
+        takes out merge_entities and consolidate on a fresh setup. This
+        caught that on a schema.surql/migration mismatch: both declared
+        entity.metadata without FLEXIBLE while the dev table happened to be
+        SCHEMALESS, so it only broke on a clean install.
+        """
+        import re
+        for path in ("src/mcp/migrations.py", "docs/schema.surql"):
+            with open(path, encoding="utf-8") as fh:
+                source = fh.read()
+            for line in source.splitlines():
+                if re.search(r"metadata ON entity TYPE", line):
+                    self.assertIn(
+                        "FLEXIBLE", line,
+                        f"{path}: entity.metadata needs FLEXIBLE: {line.strip()}")
+                    break
+            else:
+                self.fail(f"{path}: no entity.metadata definition found")
+
+    def test_schema_loader_honours_configured_namespace(self):
+        """run_sql_batch must not hardcode a namespace.
+
+        It used to send `USE NS sieveon DB sieveon` regardless of the
+        environment, so loading against a custom SURREALDB_NS appeared to
+        succeed while writing to the default database and leaving the
+        target without a schema.
+        """
+        import ast
+        import os
+        path = os.path.join("scripts", "load_schema_optimized.py")
+        with open(path, encoding="utf-8") as fh:
+            tree = ast.parse(fh.read())
+        interpolated = []
+        for node in ast.walk(tree):
+            # An f-string is a JoinedStr; plain string constants never carry
+            # the {name} placeholders, so only JoinedStr is of interest.
+            if isinstance(node, ast.JoinedStr):
+                rendered = ast.unparse(node)
+                if "USE NS" in rendered:
+                    interpolated.append(rendered)
+        self.assertTrue(interpolated, "expected a USE NS f-string in the loader")
+        for stmt in interpolated:
+            # NS/DB must come from the environment, not be baked in.
+            self.assertIn("{NS}", stmt, f"namespace is hardcoded: {stmt}")
+            self.assertIn("{DB}", stmt, f"database is hardcoded: {stmt}")
+
+        # And the values they interpolate must come from the environment.
+        assigned = {}
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name):
+                assigned[node.targets[0].id] = ast.unparse(node.value)
+        for name in ("NS", "DB", "URL", "AUTH"):
+            self.assertIn(
+                "os.getenv", assigned.get(name, ""),
+                f"{name} must be read from the environment, got "
+                f"{assigned.get(name)!r}")
+
 
 class TestRelationLabelMapping(unittest.TestCase):
     """Pure-function tests for the relex/gliner predicate normalization."""

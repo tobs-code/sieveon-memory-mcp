@@ -216,7 +216,7 @@ DEFINE TABLE IF NOT EXISTS entity SCHEMAFULL;
 DEFINE FIELD IF NOT EXISTS name ON entity TYPE string;
 DEFINE FIELD IF NOT EXISTS type ON entity TYPE string DEFAULT 'unknown';
 DEFINE FIELD IF NOT EXISTS embedding ON entity TYPE none | array;
-DEFINE FIELD IF NOT EXISTS metadata ON entity TYPE none | object;
+DEFINE FIELD IF NOT EXISTS metadata ON entity TYPE none | object FLEXIBLE;
 DEFINE FIELD IF NOT EXISTS forgotten ON entity TYPE bool DEFAULT false;
 DEFINE FIELD IF NOT EXISTS forget_reason ON entity TYPE none | string;
 DEFINE FIELD IF NOT EXISTS created_at ON entity TYPE none | datetime DEFAULT time::now();
