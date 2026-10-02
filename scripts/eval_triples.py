@@ -75,14 +75,29 @@ def _triple_key(t: Any) -> Tuple[str, str, str]:
     return (_norm(parts[0]), _norm(parts[1]), _norm(parts[2]))
 
 
-def _matches(asserted: Dict[str, Any], gold: Any) -> bool:
+def _matches(asserted: Dict[str, Any], gold: Any, relaxed_span: bool = False) -> bool:
     """Whether an asserted triple matches a gold one.
 
     Exact on all three slots, with articles and possessives stripped. Kept
     strict on purpose: a predicate is the claim, and accepting a different
     verb would hide the failure this eval exists to find.
+
+    With relaxed_span, a subject or object counts as matching when it is a
+    sub-span of the gold one or vice versa. This is not leniency for its own
+    sake: "Saturn V" against gold "Saturn V first stage" and "algorithm"
+    against "first algorithm" are both defensible span boundaries, and span
+    ends are an annotation convention. The two modes separate "wrong span"
+    from "disagreeable span".
     """
-    return _triple_key(asserted) == _triple_key(gold)
+    a = _triple_key(asserted)
+    g = _triple_key(gold)
+    if a[1] != g[1]:
+        return False
+    if relaxed_span:
+        def _overlap(x: str, y: str) -> bool:
+            return x == y or (x in y and x) or (y in x and y)
+        return _overlap(a[0], g[0]) and _overlap(a[2], g[2])
+    return a == g
 
 
 def _false_kind(asserted: Dict[str, Any], gold: List[Sequence[str]]) -> Optional[str]:
@@ -112,6 +127,42 @@ def _false_kind(asserted: Dict[str, Any], gold: List[Sequence[str]]) -> Optional
     return "hallucinated"
 
 
+def _span_quality(
+    asserted: Dict[str, Any],
+    gold: List[Sequence[str]],
+) -> str:
+    """Whether the asserted entity spans match the gold spans exactly.
+
+    The mis-parse/hallucinated split only proves a string occurs somewhere in
+    the sentence. "Saturn V" and "Saturn V first stage" both occur; only one
+    is the object the sentence talks about. So span quality is measured
+    separately against the gold spans, and cross-tabulated with correctness
+    to answer the only question that matters here: is span selection the
+    lever, or is it the relation decision?
+
+      exact     both spans equal a gold entity in this sentence
+      boundary  spans occur in the sentence but are not gold spans
+      absent    at least one span is not a gold entity at all
+    """
+    text = _norm(asserted.get("_text", ""))
+    gold_names = set()
+    for g in gold:
+        gold_names.add(_norm(g[0]))
+        gold_names.add(_norm(g[2]))
+
+    subject = _norm(asserted.get("subject", ""))
+    obj = _norm(asserted.get("object", ""))
+
+    both_present = subject in text and obj in text
+    both_exact = subject in gold_names and obj in gold_names
+
+    if both_exact:
+        return "exact"
+    if both_present:
+        return "boundary"
+    return "absent"
+
+
 def evaluate(
     sentences: List[Dict[str, Any]],
     show_all: bool = False,
@@ -125,6 +176,10 @@ def evaluate(
     false_triples: List[Dict[str, Any]] = []
     missed: List[Dict[str, Any]] = []
     per_sentence = []
+    # span quality x correctness. The point is to see whether span errors
+    # concentrate in the wrong assertions; if they do not, buying better span
+    # selection fixes nothing.
+    span_table: Dict[str, Dict[str, int]] = {}
 
     for row in sentences:
         text = row["text"]
@@ -144,6 +199,13 @@ def evaluate(
                 found_gold.append(g)
             else:
                 missed.append({"text": text, "gold": list(g)})
+
+        for a in asserted:
+            span = _span_quality(a, gold)
+            correct = any(_matches(a, g) for g in gold)
+            bucket = span_table.setdefault(
+                span, {"correct": 0, "wrong": 0})
+            bucket["correct" if correct else "wrong"] += 1
 
         fp = []
         for a in asserted:
@@ -217,6 +279,28 @@ def evaluate(
             p = _norm(a.get("predicate", ""))
             got_preds[p] = got_preds.get(p, 0) + 1
 
+    # Relaxed-span scoring: same pass with span boundaries allowed to differ.
+    # The gap between strict and relaxed is the part of the error that is
+    # annotation convention rather than a wrong triple, so it must not be
+    # reported as one.
+    gold_by_text = {r["text"]: [tuple(g) for g in r["gold"]]
+                    for r in per_sentence}
+    relaxed_correct = 0
+    relaxed_asserted = 0
+    for ps in per_sentence:
+        gold = gold_by_text[ps["text"]]
+        for a in ps["asserted"]:
+            relaxed_asserted += 1
+            if any(_matches(a, g, relaxed_span=True) for g in gold):
+                relaxed_correct += 1
+    relaxed_precision = (
+        relaxed_correct / relaxed_asserted if relaxed_asserted else 0.0)
+    relaxed_recall = (
+        sum(1 for ps in per_sentence
+            for g in gold_by_text[ps["text"]]
+            if any(_matches(a, g, relaxed_span=True) for a in ps["asserted"]))
+        / gold_total if gold_total else 0.0)
+
     predicate_table = []
     for p in sorted(set(gold_preds) | set(got_preds)):
         g = gold_preds.get(p, 0)
@@ -240,8 +324,6 @@ def evaluate(
     # asserted triple whose subject/object pair matches a gold pair. This is
     # what separates "wrong verb" from "wrong entities" without guessing.
     confusion: Dict[str, Dict[str, int]] = {}
-    gold_by_text = {r["text"]: [tuple(g) for g in r["gold"]]
-                    for r in per_sentence}
     for ps in per_sentence:
         gold = gold_by_text[ps["text"]]
         for a in ps["asserted"]:
@@ -275,6 +357,9 @@ def evaluate(
         "predicate_table": predicate_table,
         "never_produced": never_produced,
         "confusion": confusion,
+        "span_table": span_table,
+        "relaxed_precision": round(relaxed_precision, 4),
+        "relaxed_recall": round(relaxed_recall, 4),
         "false_detail": false_triples,
         "missed_detail": missed,
         "per_sentence": per_sentence,
@@ -361,6 +446,26 @@ def print_report(report: Dict[str, Any]) -> None:
         for gold_p, preds in report["confusion"].items():
             for pred_p, n in preds.items():
                 print(f"    {gold_p:14} -> {pred_p:14} x{n}")
+
+    print("\n  span quality x correctness:")
+    print("    A span lever only exists if wrong assertions concentrate in the "
+          "non-exact rows.")
+    print(f"    {'span':10} {'correct':>8} {'wrong':>6} {'precision':>10}")
+    for span in ("exact", "boundary", "absent"):
+        b = report["span_table"].get(span)
+        if not b:
+            continue
+        tot = b["correct"] + b["wrong"]
+        print(f"    {span:10} {b['correct']:8} {b['wrong']:6} "
+              f"{b['correct'] / tot if tot else 0:10.3f}")
+
+    print(f"\n  strict   precision {report['precision']:.3f}  "
+          f"recall {report['recall']:.3f}")
+    print(f"  relaxed  precision {report['relaxed_precision']:.3f}  "
+          f"recall {report['relaxed_recall']:.3f}   "
+          f"(span boundaries may differ)")
+    print(f"  -> {report['relaxed_precision'] - report['precision']:+.3f} "
+          f"precision is span-boundary convention rather than a wrong triple")
 
     if report["missed_detail"]:
         print("\n  missed gold triples:")

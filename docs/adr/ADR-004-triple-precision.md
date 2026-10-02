@@ -1,5 +1,61 @@
 # ADR-004: Triple precision was a label-configuration problem
 
+## Spans were a red herring, and my own gold caused it
+
+Both research rounds agreed that span boundaries were probably *not* the first
+lever, on the premise that every asserted subject/object string occurs in its
+source sentence. That premise was wrong: the strings being textually present
+is not the same as the spans being right. "Saturn V" is in "Rocketdyne built
+the Saturn V first stage", and it is not the object the sentence is about.
+
+Measuring span quality against the gold spans gave a striking result:
+
+    span       correct  wrong  precision
+    exact           16      5      0.762
+    boundary         0     12      0.000
+
+Every correct assertion had exact spans and not one non-exact assertion was
+correct -- which reads as "spans are the whole problem".
+
+That reading was wrong too, because span boundaries are an annotation
+convention. "Saturn V" against gold "Saturn V first stage" and "algorithm"
+against gold "first algorithm" are both defensible, and I had silently
+scored my own preference as a model error. Scoring the same output with span
+boundaries allowed to differ:
+
+    strict    precision 0.485  recall 0.762
+    relaxed   precision 0.576  recall 0.905
+
+Relaxed recall is **0.905**. Two thirds of the apparent recall loss was my
+boundary choice, not extraction failure. The span-quality table above is a
+statement about my annotation, not about the model. It is kept because it is
+what made the mistake visible, and because a boundary-only error is still
+worth distinguishing from a wrong relation: `Ada Lovelace -wrote-> algorithm`
+and `Rocketdyne -built-> Saturn V` have the correct predicate and would both
+be fixed by span correction alone.
+
+## What is actually left, after label repair and span correction
+
+Of 17 remaining false triples, the classes are:
+
+* **Argument-role confusion**, the largest group. `provides hot water to
+  Reykjavik homes` becomes `Nesjavellir station located_in Reykjavik` --
+  recipient read as location. `uses AWS for its infrastructure` becomes
+  `Netflix built infrastructure` -- a purpose adjunct read as the object.
+  `geothermal district heating located_in Iceland` inverts the real relation.
+  `After the acquisition closed in 2014, Facebook integrated ...` becomes
+  `Facebook acquired WhatsApp` -- an anaphor resolved to the wrong pair.
+* **Wrong verb among similar**, on correct entities: `designed` read as
+  `created` or `developed`; `acquired` read as `developed`.
+* **Copular treated as relational**: `QuantumDB is a database engine` becomes
+  `QuantumDB uses database engine`.
+* **Span-only**, 2 cases, predicate already correct.
+
+So the residual problem is semantic role assignment, not entity selection and
+not span boundaries. That is what an entailment-style verifier or an SRL model
+addresses, and it is what neither of the earlier rounds' cheap levers would
+have fixed.
+
 ## Root cause: the label list was too small
 
 relex is a zero-shot joint NER+RE model. It does not know what a predicate
@@ -118,13 +174,20 @@ in-sample. Deciding this needs production text.
 
 Label more production text (roughly 150-300 sentences, per a paired-power
 estimate for detecting a 10-point precision difference), then a confusion
-matrix over all assertions and a gold-spans ablation to separate the entity,
-argument and predicate layers. Only then a structural gate: reject
-semantically impossible relation/entity-type combinations, and per-predicate
-thresholds. A verifier comes after that, and an LLM judge last -- an ACL 2025
-study found LLM judges on biomedical RE below 50% accuracy before
-output-format constraints.
+matrix over all assertions. Only then a structural gate: reject semantically
+impossible relation/entity-type combinations, and per-predicate thresholds.
 
-If a verifier is built, judge it by its AUC **within the ambiguous confidence
-band**, not overall: the base confidence already ranks well globally, and only
-the band between the floor and the accept threshold is undecided.
+The remaining errors are argument-role errors, so the architecture question is
+the one both research rounds named: an entailment-style verifier asking
+"does this sentence entail `subject predicate object`" rather than classifying
+an entity pair into a label. Both rounds' objection to that stands -- a
+verifier must reject, and entailment systems are known to over-accept -- so it
+should be judged by its discrimination **within the ambiguous confidence
+band**, not overall. An LLM judge comes last: an ACL 2025 study found LLM
+judges on biomedical RE below 50% accuracy before output-format constraints.
+
+A cheap, more targeted structural gate may come first, because most residual
+errors are one of three shapes and all three are checkable without a model:
+copular definitions produce no relation, a `to`-marked phrase is a recipient
+rather than a location, and a `for`-marked phrase is a purpose adjunct rather
+than an object.

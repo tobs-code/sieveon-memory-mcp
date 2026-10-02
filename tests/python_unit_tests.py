@@ -680,6 +680,43 @@ class TestTripleEvalMatching(unittest.TestCase):
             {"subject": "Marie Curie", "predicate": "developed",
              "object": "radium"}, self._gold()[0]))
 
+    def test_relaxed_matching_separates_span_convention_from_wrong_verb(self):
+        """Span boundaries are an annotation convention, not a model error.
+
+        "Saturn V" against gold "Saturn V first stage" and "algorithm" against
+        "first algorithm" are both defensible. Under strict matching those
+        counted as false triples, which made span quality look like the lever
+        -- assertions with a non-exact span scored precision 0.000 -- when
+        two thirds of the apparent recall loss was really my own boundary
+        choice. Relaxed recall is 0.905 against 0.762 strict.
+        """
+        from scripts.eval_triples import _matches
+        gold = [("Rocketdyne", "built", "Saturn V first stage")]
+        short = {"subject": "Rocketdyne", "predicate": "built",
+                 "object": "Saturn V"}
+        self.assertFalse(_matches(short, gold[0]))
+        self.assertTrue(_matches(short, gold[0], relaxed_span=True))
+
+        # Relaxing spans must never relax the predicate: the verb is the claim.
+        wrong_verb = {"subject": "Rocketdyne", "predicate": "developed",
+                      "object": "Saturn V"}
+        self.assertFalse(_matches(wrong_verb, gold[0], relaxed_span=True))
+
+    def test_relaxed_scoring_is_reported_and_never_worse_than_strict(self):
+        from scripts.eval_triples import evaluate, load_gold
+        report = evaluate(load_gold())
+        self.assertGreaterEqual(report["relaxed_precision"],
+                                report["precision"])
+        self.assertGreaterEqual(report["relaxed_recall"], report["recall"])
+
+    def test_span_table_covers_every_assertion(self):
+        from scripts.eval_triples import evaluate, load_gold
+        report = evaluate(load_gold())
+        total = sum(b["correct"] + b["wrong"]
+                    for b in report["span_table"].values())
+        self.assertEqual(total, report["asserted"],
+                         "every assertion needs a span-quality row")
+
     def test_kind_classification(self):
         from scripts.eval_triples import _false_kind
         # _false_kind takes the whole gold list: whether a triple is false

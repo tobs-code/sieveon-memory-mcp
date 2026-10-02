@@ -123,6 +123,18 @@
       "developed": 1
     }
   },
+  "span_table": {
+    "exact": {
+      "correct": 16,
+      "wrong": 5
+    },
+    "boundary": {
+      "correct": 0,
+      "wrong": 12
+    }
+  },
+  "relaxed_precision": 0.5758,
+  "relaxed_recall": 0.9048,
   "false_detail": [
     {
       "text": "Marie Curie discovered radium with Pierre Curie in 1898 in Paris.",
