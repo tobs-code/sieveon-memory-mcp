@@ -1,0 +1,496 @@
+{
+  "held_for_family_audit": [
+    "active_encouragement:recipient_switch",
+    "assistance_mentioned:interrogative_need",
+    "nominal_possessive:desiderative_embedding"
+  ],
+  "note": "Scale-up of the 3 accepted pilot families only. Held families stay at 1 pilot pair each in eval_phase_a_expansion_pilot.json. NOT merged into controlled_seed_expanded_v2. Generator untouched.",
+  "pairs": [
+    {
+      "class": "clean_positive",
+      "construction_family_id": "active_assistance:delegated_causative",
+      "entities": [
+        "Maria",
+        "Tim"
+      ],
+      "entity_types": [
+        "person",
+        "person"
+      ],
+      "frame": "active_assistance",
+      "pair_id": "AA-1--00",
+      "sentence": "Maria carried the boxes for Tim.",
+      "source": "pilot",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "hard_negative",
+      "construction_family_id": "active_assistance:delegated_causative",
+      "entities": [
+        "Maria",
+        "Tim"
+      ],
+      "entity_types": [
+        "person",
+        "person"
+      ],
+      "frame": "active_assistance",
+      "pair_id": "AA-1--00",
+      "sentence": "Maria had Tim carry the boxes.",
+      "source": "pilot",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "clean_positive",
+      "construction_family_id": "active_assistance:delegated_causative",
+      "entities": [
+        "the coach",
+        "the club"
+      ],
+      "entity_types": [
+        "person",
+        "organization"
+      ],
+      "frame": "active_assistance",
+      "pair_id": "AA-1--01",
+      "sentence": "The coach repaired the fence for the club.",
+      "source": "scaled",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "hard_negative",
+      "construction_family_id": "active_assistance:delegated_causative",
+      "entities": [
+        "the coach",
+        "the club"
+      ],
+      "entity_types": [
+        "person",
+        "organization"
+      ],
+      "frame": "active_assistance",
+      "pair_id": "AA-1--01",
+      "sentence": "The coach had the club repair the fence.",
+      "source": "scaled",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "clean_positive",
+      "construction_family_id": "active_assistance:delegated_causative",
+      "entities": [
+        "the team",
+        "the app"
+      ],
+      "entity_types": [
+        "organization",
+        "technology"
+      ],
+      "frame": "active_assistance",
+      "pair_id": "AA-1--02",
+      "sentence": "The team moved the crates for the app.",
+      "source": "scaled",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "hard_negative",
+      "construction_family_id": "active_assistance:delegated_causative",
+      "entities": [
+        "the team",
+        "the app"
+      ],
+      "entity_types": [
+        "organization",
+        "technology"
+      ],
+      "frame": "active_assistance",
+      "pair_id": "AA-1--02",
+      "sentence": "The team had the app move the crates.",
+      "source": "scaled",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "clean_positive",
+      "construction_family_id": "active_assistance:delegated_causative",
+      "entities": [
+        "the meetup",
+        "Tom"
+      ],
+      "entity_types": [
+        "event",
+        "person"
+      ],
+      "frame": "active_assistance",
+      "pair_id": "AA-1--03",
+      "sentence": "The meetup painted the hall for Tom.",
+      "source": "scaled",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "hard_negative",
+      "construction_family_id": "active_assistance:delegated_causative",
+      "entities": [
+        "the meetup",
+        "Tom"
+      ],
+      "entity_types": [
+        "event",
+        "person"
+      ],
+      "frame": "active_assistance",
+      "pair_id": "AA-1--03",
+      "sentence": "The meetup had Tom paint the hall.",
+      "source": "scaled",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "clean_positive",
+      "construction_family_id": "assistance_mentioned:nominalized_commentary",
+      "entities": [
+        "the organizer",
+        "the venue"
+      ],
+      "entity_types": [
+        "organization",
+        "organization"
+      ],
+      "frame": "assistance_performed_vs_mentioned",
+      "pair_id": "AP-1--00",
+      "sentence": "The organizer helped the venue move the boxes.",
+      "source": "pilot",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "hard_negative",
+      "construction_family_id": "assistance_mentioned:nominalized_commentary",
+      "entities": [
+        "the organizer",
+        "the venue"
+      ],
+      "entity_types": [
+        "organization",
+        "organization"
+      ],
+      "frame": "assistance_performed_vs_mentioned",
+      "pair_id": "AP-1--00",
+      "sentence": "The organizer's talk of helping the venue moved nobody.",
+      "source": "pilot",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "clean_positive",
+      "construction_family_id": "assistance_mentioned:nominalized_commentary",
+      "entities": [
+        "Maria",
+        "the nonprofit"
+      ],
+      "entity_types": [
+        "person",
+        "organization"
+      ],
+      "frame": "assistance_performed_vs_mentioned",
+      "pair_id": "AP-1--01",
+      "sentence": "Maria helped the nonprofit file the forms.",
+      "source": "scaled",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "hard_negative",
+      "construction_family_id": "assistance_mentioned:nominalized_commentary",
+      "entities": [
+        "Maria",
+        "the nonprofit"
+      ],
+      "entity_types": [
+        "person",
+        "organization"
+      ],
+      "frame": "assistance_performed_vs_mentioned",
+      "pair_id": "AP-1--01",
+      "sentence": "Maria's talk of helping the nonprofit filed nothing.",
+      "source": "scaled",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "clean_positive",
+      "construction_family_id": "assistance_mentioned:nominalized_commentary",
+      "entities": [
+        "the team",
+        "the app"
+      ],
+      "entity_types": [
+        "organization",
+        "technology"
+      ],
+      "frame": "assistance_performed_vs_mentioned",
+      "pair_id": "AP-1--02",
+      "sentence": "The team assisted the app with the move.",
+      "source": "scaled",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "hard_negative",
+      "construction_family_id": "assistance_mentioned:nominalized_commentary",
+      "entities": [
+        "the team",
+        "the app"
+      ],
+      "entity_types": [
+        "organization",
+        "technology"
+      ],
+      "frame": "assistance_performed_vs_mentioned",
+      "pair_id": "AP-1--02",
+      "sentence": "The team's talk of assisting the app moved nothing.",
+      "source": "scaled",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "clean_positive",
+      "construction_family_id": "assistance_mentioned:nominalized_commentary",
+      "entities": [
+        "the meetup",
+        "Tom"
+      ],
+      "entity_types": [
+        "event",
+        "person"
+      ],
+      "frame": "assistance_performed_vs_mentioned",
+      "pair_id": "AP-1--03",
+      "sentence": "The meetup helped Tom carry the bags.",
+      "source": "scaled",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "hard_negative",
+      "construction_family_id": "assistance_mentioned:nominalized_commentary",
+      "entities": [
+        "the meetup",
+        "Tom"
+      ],
+      "entity_types": [
+        "event",
+        "person"
+      ],
+      "frame": "assistance_performed_vs_mentioned",
+      "pair_id": "AP-1--03",
+      "sentence": "The meetup's talk of helping Tom carried nothing.",
+      "source": "scaled",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "clean_positive",
+      "construction_family_id": "intentional:conditional_hypothetical",
+      "entities": [
+        "the coach",
+        "the club"
+      ],
+      "entity_types": [
+        "person",
+        "organization"
+      ],
+      "frame": "intentional",
+      "pair_id": "IN-1--00",
+      "sentence": "The coach helped the club after she asked.",
+      "source": "pilot",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "hard_negative",
+      "construction_family_id": "intentional:conditional_hypothetical",
+      "entities": [
+        "the coach",
+        "the club"
+      ],
+      "entity_types": [
+        "person",
+        "organization"
+      ],
+      "frame": "intentional",
+      "pair_id": "IN-1--00",
+      "sentence": "The coach would help the club if she asked.",
+      "source": "pilot",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "clean_positive",
+      "construction_family_id": "intentional:conditional_hypothetical",
+      "entities": [
+        "Maria",
+        "the nonprofit"
+      ],
+      "entity_types": [
+        "person",
+        "organization"
+      ],
+      "frame": "intentional",
+      "pair_id": "IN-1--01",
+      "sentence": "Maria assisted the nonprofit after she asked.",
+      "source": "scaled",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "hard_negative",
+      "construction_family_id": "intentional:conditional_hypothetical",
+      "entities": [
+        "Maria",
+        "the nonprofit"
+      ],
+      "entity_types": [
+        "person",
+        "organization"
+      ],
+      "frame": "intentional",
+      "pair_id": "IN-1--01",
+      "sentence": "Maria would assist the nonprofit if she asked.",
+      "source": "scaled",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "clean_positive",
+      "construction_family_id": "intentional:conditional_hypothetical",
+      "entities": [
+        "the organizer",
+        "the venue"
+      ],
+      "entity_types": [
+        "organization",
+        "organization"
+      ],
+      "frame": "intentional",
+      "pair_id": "IN-1--02",
+      "sentence": "The organizer supported the venue after she asked.",
+      "source": "scaled",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "hard_negative",
+      "construction_family_id": "intentional:conditional_hypothetical",
+      "entities": [
+        "the organizer",
+        "the venue"
+      ],
+      "entity_types": [
+        "organization",
+        "organization"
+      ],
+      "frame": "intentional",
+      "pair_id": "IN-1--02",
+      "sentence": "The organizer would support the venue if she asked.",
+      "source": "scaled",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "clean_positive",
+      "construction_family_id": "intentional:conditional_hypothetical",
+      "entities": [
+        "the team",
+        "the app"
+      ],
+      "entity_types": [
+        "organization",
+        "technology"
+      ],
+      "frame": "intentional",
+      "pair_id": "IN-1--03",
+      "sentence": "The team helped the app after she asked.",
+      "source": "scaled",
+      "target_relation": [
+        "provides"
+      ]
+    },
+    {
+      "class": "hard_negative",
+      "construction_family_id": "intentional:conditional_hypothetical",
+      "entities": [
+        "the team",
+        "the app"
+      ],
+      "entity_types": [
+        "organization",
+        "technology"
+      ],
+      "frame": "intentional",
+      "pair_id": "IN-1--03",
+      "sentence": "The team would help the app if she asked.",
+      "source": "scaled",
+      "target_relation": [
+        "provides"
+      ]
+    }
+  ],
+  "scaled_families": [
+    "active_assistance:delegated_causative",
+    "assistance_mentioned:nominalized_commentary",
+    "intentional:conditional_hypothetical"
+  ],
+  "status": "scaled_unmerged",
+  "freeze": {
+    "version": "phase_a_expansion_scaled_v1",
+    "date": "2026-10-02",
+    "parent": "controlled_seed_expanded_v2",
+    "parent_commit": "f9347bd",
+    "scope": "phase_a_expansion",
+    "families_scaled": [
+      "active_assistance:delegated_causative",
+      "assistance_mentioned:nominalized_commentary",
+      "intentional:conditional_hypothetical"
+    ],
+    "pairs": 12,
+    "sentences": 24,
+    "held_families": [
+      "active_encouragement:recipient_switch",
+      "assistance_mentioned:interrogative_need",
+      "nominal_possessive:desiderative_embedding"
+    ],
+    "rejected_candidates": 4,
+    "generator_changed": false,
+    "v2_modified": false,
+    "gates": "clean",
+    "pairs_digest": "30da286886be4c5c59cf1a6f6b1f477a2fc8e4e223f7deb3c7cb273094f2c21f"
+  }
+}
