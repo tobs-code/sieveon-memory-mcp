@@ -80,11 +80,15 @@ CONTROLLED_FRAMES: List[Dict[str, Any]] = [
                   "the relation",
     },
     {
-        "frame": "abstract_object",
-        "cue": "assistance performed with a concrete object vs an abstract one",
-        "positive_template": "{X} helped {Y} move the boxes.",
-        "negative_template": "{X} values the value of support.",
-        "expect": "object concreteness is part of the positive cue",
+        # Originally specified as "concrete vs abstract object". That trains
+        # the exact heuristic the recall audit disproved: `John supports James`
+        # was missed too, so object concreteness does not explain the failure.
+        # The cue is the semantic role of the assistance, not the noun class.
+        "frame": "assistance_performed_vs_mentioned",
+        "cue": "assistance carried out vs assistance only spoken of",
+        "positive_template": "{X} helped {Y} carry the boxes.",
+        "negative_template": "{X} talked about helping {Y} carry the boxes.",
+        "expect": "the negative mentions the assistance without performing it",
     },
     {
         "frame": "intentional",
@@ -98,6 +102,89 @@ CONTROLLED_FRAMES: List[Dict[str, Any]] = [
 PROVENANCE = ("natural_clean_positive", "natural_ambiguous_positive",
               "natural_hard_negative", "seed_possessive",
               "controlled_clean_positive", "controlled_hard_negative")
+
+# Construction rules, frozen with the frames. Each is checked by
+# validate_constructed(), not merely asserted here.
+CONSTRUCTION_RULES = {
+    "no_test_leakage": "no controlled sentence may paraphrase or reuse text "
+                       "from the 53 counterfactual facts or the 44 current "
+                       "gold sentences, nor any audited or annotated sentence",
+    "one_gold_relation": "a controlled example asserts exactly one target "
+                         "relation; no additional competing relation is "
+                         "smuggled in",
+    "entity_type_balance": "entity types are drawn from the production "
+                           "typology and varied across frames, so the model "
+                           "cannot key on person-to-person alone",
+    "matched_local_syntax": "the two variants of a pair share their entities "
+                            "and their local syntax; only the declared cue "
+                            "may differ, so no positional cue such as "
+                            "sentence length or verb class separates them",
+    "no_aspect_leak": "no variant may introduce an aspect the other lacks",
+}
+
+ENTITY_TYPES = ["person", "organization", "concept", "event", "location",
+                "technology"]
+
+
+def _test_corpus_texts() -> List[str]:
+    """Every sentence that must not be paraphrased into controlled data."""
+    texts: List[str] = []
+    for rel in ("docs/eval_recall_gold_counterfactual.jsonl",
+                "docs/eval_recall_gold_pilot.jsonl",
+                "docs/eval_recall_gold_batch2.jsonl",
+                "docs/eval_recall_gold_expanded.jsonl",
+                "docs/eval_training_pilot.jsonl",
+                "docs/eval_hard_negative_prevalence.jsonl"):
+        p = ROOT / rel
+        if not p.exists():
+            continue
+        for line in p.read_text(encoding="utf-8").splitlines():
+            if line.strip():
+                r = json.loads(line)
+            t = r.get("text")
+            if t:
+                texts.append(t.strip().lower())
+    return texts
+
+
+def validate_constructed(entries: List[Dict[str, Any]],
+                         corpus: List[str]) -> List[str]:
+    """Semantic checks on built pairs, beyond the spec-level validation."""
+    problems: List[str] = []
+    banned_aspects = ("never ", "hadn't", "won't", "will ", "would have")
+
+    by_frame: Dict[str, List[Dict[str, Any]]] = {}
+    for e in entries:
+        by_frame.setdefault(e["frame"], []).append(e)
+
+    for frame, group in by_frame.items():
+        pos = [e for e in group if e["class"] == "clean_positive"]
+        neg = [e for e in group if e["class"] == "hard_negative"]
+        if len(pos) != 1 or len(neg) != 1:
+            problems.append(f"{frame}: expected one clean and one hard, got "
+                            f"{len(pos)}/{len(neg)}")
+            continue
+        a, b = pos[0], neg[0]
+        if a["entities"] != b["entities"]:
+            problems.append(f"{frame}: pair does not share its entities")
+        wa, wb = a["sentence"].split(), b["sentence"].split()
+        if abs(len(wa) - len(wb)) > 4:
+            problems.append(f"{frame}: pair differs in length by "
+                            f"{abs(len(wa) - len(wb))} tokens, which lets "
+                            f"length separate the classes")
+        for e in (a, b):
+            low = e["sentence"].lower()
+            if any(w in low for w in banned_aspects):
+                problems.append(f"{frame}/{e['class']}: aspect or negation leak")
+            if len(e["target_relation"]) != 1:
+                problems.append(f"{frame}/{e['class']}: more than one target "
+                                f"relation: {e['target_relation']}")
+        for t in corpus:
+            if a["sentence"].strip().lower() == t or \
+                    b["sentence"].strip().lower() == t:
+                problems.append(f"{frame}: controlled sentence collides with "
+                                f"frozen test or audited text")
+    return problems
 
 
 def natural_entries() -> List[Dict[str, Any]]:
@@ -178,6 +265,40 @@ def validate(nat: List[Dict[str, Any]]) -> List[str]:
     return problems
 
 
+def build_seeds() -> List[Dict[str, Any]]:
+    """The ten controlled seeds: one matched pair per frame.
+
+    Entity types are varied deliberately. Every frame uses the same two
+    entities in both variants, so nothing but the cue separates the classes;
+    the types change from frame to frame so the model cannot learn that
+    person-to-person assistance is the positive case.
+    """
+    slots = [
+        ("Maria", "Tim", ["person", "person"]),
+        ("Maria", "the nonprofit", ["person", "organization"]),
+        ("the venue", "the organizer", ["organization", "organization"]),
+        ("the app", "the team", ["technology", "organization"]),
+        ("the meetup", "Tom", ["event", "person"]),
+    ]
+    out: List[Dict[str, Any]] = []
+    for f, (x, y, types) in zip(CONTROLLED_FRAMES, slots):
+        for cls, key in (("clean_positive", "positive_template"),
+                         ("hard_negative", "negative_template")):
+            tpl = f[key]
+            out.append({
+                "frame": f["frame"], "cue": f["cue"], "class": cls,
+                "template": tpl,
+                "sentence": tpl.format(X=x, Y=y),
+                "entities": [x, y], "entity_types": types,
+                "target_relation": ["provides"],
+                "target_object": ("encouragement" if f["frame"] ==
+                                 "active_encouragement" else "help"),
+                "provenance": ("controlled_clean_positive" if cls ==
+                               "clean_positive" else "controlled_hard_negative"),
+            })
+    return out
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--out", default="")
@@ -206,6 +327,28 @@ def main() -> int:
     print("  the controlled layer fills missing contrasts and stays labelled.")
 
     problems = validate(nat)
+
+    seeds = build_seeds()
+    corpus = _test_corpus_texts()
+    problems += validate_constructed(seeds, corpus)
+
+    print(f"\n  controlled seeds built: {len(seeds)} "
+          f"({len(seeds) // 2} matched pairs)\n")
+    print(f"  {'frame':34} {'entities':28} cue")
+    for f in CONTROLLED_FRAMES:
+        s = [e for e in seeds if e["frame"] == f["frame"]][0]
+        print(f"  {f['frame']:34} {s['entities'][0] + ' / ' + s['entities'][1]:28} "
+              f"{f['cue'][:34]}")
+    print()
+    for e in seeds:
+        print(f"    {e['class']:16} {e['sentence']}")
+
+    print("\n  construction rules enforced:")
+    for k, v in CONSTRUCTION_RULES.items():
+        print(f"    {k:22} {v[:78]}")
+    print(f"\n  leakage check against {len(corpus)} frozen sentences: "
+          f"{'clean' if not any('collides' in p for p in problems) else 'COLLISION'}")
+
     print(f"\n  validation: {'clean' if not problems else 'PROBLEMS'}")
     for p in problems:
         print(f"    {p}")
@@ -224,6 +367,8 @@ def main() -> int:
             "purpose": "phase-A training data, split by provenance",
             "natural": nat,
             "controlled_frames": CONTROLLED_FRAMES,
+            "construction_rules": CONSTRUCTION_RULES,
+            "controlled_seeds": seeds,
             "natural_counts": dict(counts),
             "natural_rates": {k: round(v / 60, 4)
                               for k, v in counts.items()

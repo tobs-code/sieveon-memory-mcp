@@ -267,11 +267,11 @@
       "expect": "instrumental use of a possessive phrase does not itself assert the relation"
     },
     {
-      "frame": "abstract_object",
-      "cue": "assistance performed with a concrete object vs an abstract one",
-      "positive_template": "{X} helped {Y} move the boxes.",
-      "negative_template": "{X} values the value of support.",
-      "expect": "object concreteness is part of the positive cue"
+      "frame": "assistance_performed_vs_mentioned",
+      "cue": "assistance carried out vs assistance only spoken of",
+      "positive_template": "{X} helped {Y} carry the boxes.",
+      "negative_template": "{X} talked about helping {Y} carry the boxes.",
+      "expect": "the negative mentions the assistance without performing it"
     },
     {
       "frame": "intentional",
@@ -279,6 +279,215 @@
       "positive_template": "{X} helped {Y} after she asked.",
       "negative_template": "{X} planned to help {Y} after she asked.",
       "expect": "planning is not performing"
+    }
+  ],
+  "construction_rules": {
+    "no_test_leakage": "no controlled sentence may paraphrase or reuse text from the 53 counterfactual facts or the 44 current gold sentences, nor any audited or annotated sentence",
+    "one_gold_relation": "a controlled example asserts exactly one target relation; no additional competing relation is smuggled in",
+    "entity_type_balance": "entity types are drawn from the production typology and varied across frames, so the model cannot key on person-to-person alone",
+    "matched_local_syntax": "the two variants of a pair share their entities and their local syntax; only the declared cue may differ, so no positional cue such as sentence length or verb class separates them",
+    "no_aspect_leak": "no variant may introduce an aspect the other lacks"
+  },
+  "controlled_seeds": [
+    {
+      "frame": "active_assistance",
+      "cue": "realised vs offered",
+      "class": "clean_positive",
+      "template": "{X} helped {Y} with the fundraiser.",
+      "sentence": "Maria helped Tim with the fundraiser.",
+      "entities": [
+        "Maria",
+        "Tim"
+      ],
+      "entity_types": [
+        "person",
+        "person"
+      ],
+      "target_relation": [
+        "provides"
+      ],
+      "target_object": "help",
+      "provenance": "controlled_clean_positive"
+    },
+    {
+      "frame": "active_assistance",
+      "cue": "realised vs offered",
+      "class": "hard_negative",
+      "template": "{X} offered to help {Y} with the fundraiser.",
+      "sentence": "Maria offered to help Tim with the fundraiser.",
+      "entities": [
+        "Maria",
+        "Tim"
+      ],
+      "entity_types": [
+        "person",
+        "person"
+      ],
+      "target_relation": [
+        "provides"
+      ],
+      "target_object": "help",
+      "provenance": "controlled_hard_negative"
+    },
+    {
+      "frame": "active_encouragement",
+      "cue": "directed encouragement vs reported effect",
+      "class": "clean_positive",
+      "template": "{X} encouraged {Y} to keep going.",
+      "sentence": "Maria encouraged the nonprofit to keep going.",
+      "entities": [
+        "Maria",
+        "the nonprofit"
+      ],
+      "entity_types": [
+        "person",
+        "organization"
+      ],
+      "target_relation": [
+        "provides"
+      ],
+      "target_object": "encouragement",
+      "provenance": "controlled_clean_positive"
+    },
+    {
+      "frame": "active_encouragement",
+      "cue": "directed encouragement vs reported effect",
+      "class": "hard_negative",
+      "template": "{Y} said {X}'s encouragement kept him going.",
+      "sentence": "the nonprofit said Maria's encouragement kept him going.",
+      "entities": [
+        "Maria",
+        "the nonprofit"
+      ],
+      "entity_types": [
+        "person",
+        "organization"
+      ],
+      "target_relation": [
+        "provides"
+      ],
+      "target_object": "encouragement",
+      "provenance": "controlled_hard_negative"
+    },
+    {
+      "frame": "nominal_possessive",
+      "cue": "direct possession vs instrumental framing",
+      "class": "clean_positive",
+      "template": "{X}'s support for {Y} was constant.",
+      "sentence": "the venue's support for the organizer was constant.",
+      "entities": [
+        "the venue",
+        "the organizer"
+      ],
+      "entity_types": [
+        "organization",
+        "organization"
+      ],
+      "target_relation": [
+        "provides"
+      ],
+      "target_object": "help",
+      "provenance": "controlled_clean_positive"
+    },
+    {
+      "frame": "nominal_possessive",
+      "cue": "direct possession vs instrumental framing",
+      "class": "hard_negative",
+      "template": "{Y} succeeded with {X}'s support.",
+      "sentence": "the organizer succeeded with the venue's support.",
+      "entities": [
+        "the venue",
+        "the organizer"
+      ],
+      "entity_types": [
+        "organization",
+        "organization"
+      ],
+      "target_relation": [
+        "provides"
+      ],
+      "target_object": "help",
+      "provenance": "controlled_hard_negative"
+    },
+    {
+      "frame": "assistance_performed_vs_mentioned",
+      "cue": "assistance carried out vs assistance only spoken of",
+      "class": "clean_positive",
+      "template": "{X} helped {Y} carry the boxes.",
+      "sentence": "the app helped the team carry the boxes.",
+      "entities": [
+        "the app",
+        "the team"
+      ],
+      "entity_types": [
+        "technology",
+        "organization"
+      ],
+      "target_relation": [
+        "provides"
+      ],
+      "target_object": "help",
+      "provenance": "controlled_clean_positive"
+    },
+    {
+      "frame": "assistance_performed_vs_mentioned",
+      "cue": "assistance carried out vs assistance only spoken of",
+      "class": "hard_negative",
+      "template": "{X} talked about helping {Y} carry the boxes.",
+      "sentence": "the app talked about helping the team carry the boxes.",
+      "entities": [
+        "the app",
+        "the team"
+      ],
+      "entity_types": [
+        "technology",
+        "organization"
+      ],
+      "target_relation": [
+        "provides"
+      ],
+      "target_object": "help",
+      "provenance": "controlled_hard_negative"
+    },
+    {
+      "frame": "intentional",
+      "cue": "intention vs execution",
+      "class": "clean_positive",
+      "template": "{X} helped {Y} after she asked.",
+      "sentence": "the meetup helped Tom after she asked.",
+      "entities": [
+        "the meetup",
+        "Tom"
+      ],
+      "entity_types": [
+        "event",
+        "person"
+      ],
+      "target_relation": [
+        "provides"
+      ],
+      "target_object": "help",
+      "provenance": "controlled_clean_positive"
+    },
+    {
+      "frame": "intentional",
+      "cue": "intention vs execution",
+      "class": "hard_negative",
+      "template": "{X} planned to help {Y} after she asked.",
+      "sentence": "the meetup planned to help Tom after she asked.",
+      "entities": [
+        "the meetup",
+        "Tom"
+      ],
+      "entity_types": [
+        "event",
+        "person"
+      ],
+      "target_relation": [
+        "provides"
+      ],
+      "target_object": "help",
+      "provenance": "controlled_hard_negative"
     }
   ],
   "natural_counts": {
