@@ -57,9 +57,13 @@ def main() -> int:
     ap.add_argument("--fold-id", default=None)
     args = ap.parse_args()
 
-    rows = [json.loads(line) for line in
-            Path(args.train).read_text(encoding="utf-8").splitlines()
-            if line.strip()]
+    try:
+        rows = [json.loads(line) for line in
+                Path(args.train).read_text(encoding="utf-8").splitlines()
+                if line.strip()]
+    except json.JSONDecodeError as exc:
+        print(f"  PROBLEM input is not JSONL: {exc}", file=sys.stderr)
+        return 1
     problems: list[str] = []
     for i, ex in enumerate(rows, 1):
         problems += validate_example(ex, i)
