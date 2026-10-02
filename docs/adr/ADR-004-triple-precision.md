@@ -34,6 +34,87 @@ worth distinguishing from a wrong relation: `Ada Lovelace -wrote-> algorithm`
 and `Rocketdyne -built-> Saturn V` have the correct predicate and would both
 be fixed by span correction alone.
 
+## Structural gating: measured, not assumed
+
+Three syntactic gates were proposed before any of them were tried: a copular
+frame states no relation, a "to"-marked phrase is a recipient rather than a
+location, and a "for"-marked phrase is a purpose adjunct rather than an
+object. `scripts/eval_structural_gates.py` scores them against the 118-triple
+annotation.
+
+The copular gate **alone is useless.** A copular clause yields 34 asserted
+triples of which 18 are wrong — a 53% wrong rate against 56% overall. Almost
+no discriminative power. It also rejects 16 correct triples, because "John is
+a member of a hiking club" really does license `part_of`. Applied alone it
+makes precision *worse*: 0.441 becomes 0.429.
+
+Conjoining it with the event-predicate set (`built`, `founded`, `created`,
+`developed`, `acquired`, `discovered`, `designed`, `funded`, `integrated`,
+`joined`) makes it specific: a copular frame cannot license a predicate that
+asserts something happened.
+
+    copular + event predicate   rejects 22   16 wrong, 6 good
+    recipient-not-location     rejects  0
+    purpose-not-object         rejects  0
+
+    precision before gates   0.441
+    precision after gates    0.479     (+0.038)
+
+So the structural gate is worth having, and worth far less than claimed. The
+figure of "31 of 66 false triples, about 47%" was asserted before any of it
+was measured and **did not hold**: the honest number is 16 of 66, 24.2%.
+
+The two adjunct gates fire zero times. Their patterns are too narrow to catch
+the "provides hot water to Reykjavik homes" and "uses AWS for its
+infrastructure" cases, because a reliable version needs to identify the
+surface verb and its direct object rather than match the preposition, and
+that is a dependency parse, not a regex.
+
+## Development history vs observed error behaviour
+
+These are different claims and are kept apart on purpose:
+
+* "`built` and `founded` were unreachable before the label repair" is a
+  statement about the configuration at a point in time. Six verbs were
+  missing from `_SIEVEON_RELATION_LABELS`; recall was capped at 0.714.
+* "`built` and `founded` are over-applied to sentences where the event did
+  not happen" is a statement about the current run: `built` is asserted 11
+  times and is right 0 times.
+
+Neither implies the other. Repairing the label list made those predicates
+reachable and immediately exposed how often they get used wrongly. Had they
+stayed unreachable, the error would have been invisible as a
+precision problem and would have shown up only as missing recall.
+
+## The confidence result is the hardest negative finding
+
+Mean confidence by verdict: supported 0.861, implied 0.809, **wrong 0.821**.
+Wrong triples carry essentially the same scores as right ones. No threshold
+can separate them, at any operating point. Whatever fixes this has to
+change what the model decides, not how confident it is about it.
+
+That is also why the earlier AUC of 0.919 needs its caveat read carefully:
+the extractor applies `RELEX_REL_THRESHOLD=0.7` internally, so the AUC is
+computed over an already-filtered set and the lowest-scoring wrong triple
+sits at 0.703, right at the floor. Censored, and flattered by an unknown
+amount.
+
+## Annotation gap: modality is part of the gold
+
+One triple was absent from the hand annotation and is recorded in
+`docs/eval_triples_annotation_gap.jsonl` as inferred rather than annotated:
+"Caroline is excited to create a family for kids who need one" yielded
+`created family`. Intent, not completion.
+
+The annotation marked three structurally identical cases wrong -- "Audrey is
+researching to find an awesome spot", "Andrew is considering getting
+houseplants", "Sam started a new diet" -- so the reading is consistent.
+But the case is worth naming: modality and tense are part of whether a fact
+is true, and a gold format that only records `triples[]` cannot express
+"intention, not completion". A predicate applied to an unrealised intention
+yields a fact about the world that does not exist, which is the same failure
+as a hallucination arriving with a different cause.
+
 ## What is actually left, after label repair and span correction
 
 Of 17 remaining false triples, the classes are:
