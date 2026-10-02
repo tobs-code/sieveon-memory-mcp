@@ -789,6 +789,39 @@ class TestTripleAnnotationReconciliation(unittest.TestCase):
         self.assertNotIn("recall", inspect.getsource(m.reconcile))
 
 
+class TestCopularEventGate(unittest.TestCase):
+    """The only structural gate that earns its keep.
+
+    A copular frame alone has no discriminative power (53% wrong rate
+    against 56% overall) and also rejects 16 correct triples, including
+    "John is a member of a hiking club" which really does license part_of.
+    Alone it makes precision worse. Conjoined with event predicates it
+    rejects 22 triples of which 16 are wrong: +0.038 precision. Measured in
+    scripts/eval_structural_gates.py against the 118-triple annotation.
+    """
+
+    def test_event_predicate_rejected_in_copular_frame(self):
+        from src.extraction.entropy_gate import _copular_event_rejected
+        self.assertTrue(_copular_event_rejected(
+            "Andrew is a person living in an apartment.", "built"))
+        self.assertTrue(_copular_event_rejected(
+            "Caroline was a teacher in Berlin.", "founded"))
+
+    def test_non_event_predicate_survives_copular_frame(self):
+        """part_of and located_in ARE licensed by a copular sentence."""
+        from src.extraction.entropy_gate import _copular_event_rejected
+        self.assertFalse(_copular_event_rejected(
+            "John is a member of a hiking club.", "part_of"))
+        self.assertFalse(_copular_event_rejected(
+            "Orion Labs is headquartered in Vienna.", "located_in"))
+
+    def test_non_copular_sentence_passes_everything(self):
+        from src.extraction.entropy_gate import _copular_event_rejected
+        self.assertFalse(_copular_event_rejected(
+            "Elon Musk founded SpaceX in 2002.", "founded"))
+        self.assertFalse(_copular_event_rejected("", "built"))
+
+
 class TestRelationLabelCoverage(unittest.TestCase):
     """The inference label list is the model's entire output space.
 

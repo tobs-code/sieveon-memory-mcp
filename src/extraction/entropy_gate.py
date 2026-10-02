@@ -225,6 +225,36 @@ class EntropyGateConfig:
         self.max_entities_for_cooccurrence = max_entities_for_cooccurrence
 
 
+# Predicates asserting that something happened. A copular frame states what
+# something IS ("John is a member of a club"), so it cannot license any of
+# these. Measured, not assumed: see scripts/eval_structural_gates.py and the
+# "Structural gating" section of docs/adr/ADR-004-triple-precision.md.
+_EVENT_PREDICATES = frozenset({
+    "built", "founded", "created", "developed", "acquired",
+    "discovered", "designed", "funded", "integrated", "joined",
+})
+
+_COPULAR_RE = None
+
+
+def _copular_event_rejected(text: str, predicate: str) -> bool:
+    """Whether a copular frame rules out this triple.
+
+    "Andrew is a person living in an apartment" licenses part_of, never
+    `built`. Returns True when the sentence is copular and the predicate
+    asserts an event, hence the triple is rejected. Narrowly scoped: it must
+    not reject `part_of` or `located_in`, which a copular sentence can and
+    does license.
+    """
+    global _COPULAR_RE
+    if _COPULAR_RE is None:
+        import re as _re
+        _COPULAR_RE = _re.compile(r"\b(is|are|was|were)\s+(a|an|the)\b", _re.I)
+    if predicate not in _EVENT_PREDICATES:
+        return False
+    return bool(_COPULAR_RE.search(text or ""))
+
+
 class EntropyGate:
     def __init__(
         self,
@@ -1268,6 +1298,7 @@ class EntropyGate:
         entities_created = 0
         facts_created = 0
         tier_skipped = 0
+        structurally_dropped = 0
         tier_thr = tier_threshold()
         saliences: List[float] = []
         entity_ids = []
@@ -1301,6 +1332,26 @@ class EntropyGate:
 
         # Create facts from SVO triples
         if svo_triples:
+            # Structural pre-filter. A copular frame states what something
+            # IS, so it cannot license a predicate asserting something
+            # happened. Measured on 118 hand-annotated production triples:
+            # alone the copular test has no discriminative power (it also
+            # rejects "John is a member of a hiking club", which really does
+            # license part_of), but conjoined with event predicates it
+            # rejects 22 triples of which 16 are wrong and 6 are good, moving
+            # precision 0.441 -> 0.479. Cheap and falsifiable: see
+            # scripts/eval_structural_gates.py.
+            #
+            # Deliberately narrow. The remaining wrong triples are mostly
+            # argument-role errors (recipient read as location, purpose read
+            # as object), which need the surface verb and its direct object
+            # to judge -- a dependency parse, not a regex.
+            before_filter = len(svo_triples)
+            svo_triples = [
+                t for t in svo_triples
+                if not _copular_event_rejected(text, t.get("predicate", ""))
+            ]
+            structurally_dropped = before_filter - len(svo_triples)
             for triple in svo_triples:
                 subject = triple["subject"]
                 predicate = triple["predicate"]
@@ -1523,6 +1574,9 @@ class EntropyGate:
             "entities_created": entities_created,
             "facts_created": facts_created,
             "tier_skipped": tier_skipped,
+            # Narrow structural pre-filter (copular + event predicate).
+            # Reported so a change in stored-fact volume is attributable.
+            "structurally_dropped": structurally_dropped,
             "avg_fact_salience": avg_sal,
             "salience_version": SALIENCE_VERSION if saliences else None,
         }
