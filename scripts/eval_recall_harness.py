@@ -389,6 +389,68 @@ def clustered_recall_ci(rows: List[Dict[str, Any]],
     return vals[int(0.025 * reps)], vals[int(0.975 * reps)]
 
 
+def cluster_sensitivity(rows: List[Dict[str, Any]],
+                        claims_by_id: Dict[str, List[Dict[str, Any]]],
+                        ) -> Dict[str, Any]:
+    """Per-conversation recall, plus leave-one-cluster-out influence.
+
+    The percentile bootstrap is kept but demoted. With eight observed
+    conversations carrying between one and eleven scorable gold facts each,
+    cluster rates run from 0.00 to 1.00, and resampling whole conversations
+    from units that small produces a percentile interval that excludes its
+    own point estimate. That is a property of the current constellation, not
+    a verdict on the bootstrap in general, so the interval is reported as
+    secondary and the influence report carries the uncertainty story.
+
+    The delete-one-cluster values need no distributional assumption at all:
+    each is simply the pooled rate with one conversation removed. No minimum
+    cluster size is imposed and no conversation is dropped from the estimate,
+    because conv-26 at 1/1 and conv-47 at 0/1 are genuine parts of the
+    defined population.
+
+    The pooled rate stays fact-weighted. An unweighted mean of cluster rates
+    would answer a different question -- how good is an average conversation
+    -- and would quietly replace the estimand.
+    """
+    by_conv: Dict[str, List[Tuple[Tuple[str, str, str], bool]]] = {}
+    for r in rows:
+        conv = r["id"].split("/")[0]
+        claims = claims_by_id.get(r["id"], [])
+        got = {(norm(c["s"]), norm(c["p"]), norm(c["o"]))
+               for c in claims}
+        for t in (r.get("triples") or []):
+            g = (norm(t[0]), norm(t[1]), norm(t[2]))
+            if t[1] not in VOCAB:
+                continue
+            by_conv.setdefault(conv, []).append(
+                (g, any(norm(c["s"]) == g[0] and norm(c["o"]) == g[2]
+                        and norm(c["p"]) == g[1] for c in claims)))
+
+    per: Dict[str, Dict[str, Any]] = {}
+    for conv, items in sorted(by_conv.items()):
+        n = len(items)
+        f = sum(1 for _, hit in items if hit)
+        per[conv] = {"scorable": n, "found": f,
+                     "recall": round(f / n, 3) if n else None}
+
+    tot = sum(v["scorable"] for v in per.values())
+    fnd = sum(v["found"] for v in per.values())
+    pooled = fnd / tot if tot else float("nan")
+
+    jack: Dict[str, float] = {}
+    for conv in per:
+        rest_t = tot - per[conv]["scorable"]
+        rest_f = fnd - per[conv]["found"]
+        jack[conv] = round(rest_f / rest_t, 3) if rest_t else float("nan")
+
+    return {"pooled": round(pooled, 3), "total_scorable": tot,
+            "total_found": fnd, "per_conversation": per,
+            "delete_one_conversation": jack,
+            "influence_span": [min(jack.values()), max(jack.values())]
+            if jack else None,
+            "conversations": len(per)}
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--gold", type=Path, action="append", default=None,
@@ -579,9 +641,32 @@ def main() -> int:
         c = d["claim"]
         print(f"    {c['s']} -{c['p']}-> {c['o']}")
 
+    cs = cluster_sensitivity(gold_rows, claims_by_id)
+    print()
+    print("=== cluster sensitivity (primary uncertainty view) ===")
+    print(f"  pooled, fact-weighted   {cs['pooled']:.3f} "
+          f"({cs['total_found']}/{cs['total_scorable']})")
+    print(f"  conversations observed  {cs['conversations']}")
+    print()
+    print(f"  {'conversation':14} {'scorable':>8} {'found':>6} {'recall':>7} "
+          f"{'without it':>11}")
+    for conv, v in cs["per_conversation"].items():
+        print(f"  {conv:14} {v['scorable']:8} {v['found']:6} "
+              f"{v['recall']:7.2f} {cs['delete_one_conversation'][conv]:11.3f}")
+    if cs["influence_span"]:
+        lo, hi = cs["influence_span"]
+        print()
+        print(f"  delete-one-conversation span [{lo:.3f}, {hi:.3f}] "
+              f"(pooled {cs['pooled']:.3f})")
+        print("  No conversation is excluded from the estimate. The spread "
+              "shows how much the\n  pooled rate depends on single "
+              "conversations, which is where the uncertainty\n  currently "
+              "comes from: heterogeneous clusters with few gold facts each, "
+              "not one\n  dominant conversation.")
+
     if args.out:
         Path(args.out).write_text(json.dumps(
-            dict(r, vocabulary_audit=audit,
+            dict(r, vocabulary_audit=audit, cluster_sensitivity=cs,
                  scorable_recall=round(recall_scorable, 3),
                  scorable_recall_clean=round(recall_scorable_clean, 3)),
             indent=2, ensure_ascii=False),

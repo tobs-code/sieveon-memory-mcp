@@ -1,26 +1,28 @@
 {
-  "gold": 21,
-  "claims": 60,
-  "claims_on_graphable_sentences": 43,
-  "found": 6,
-  "imprecise": 10,
-  "missed": 5,
+  "gold": 37,
+  "claims": 162,
+  "claims_on_graphable_sentences": 68,
+  "found": 9,
+  "imprecise": 15,
+  "missed": 13,
   "below_threshold": 19,
-  "predicate_discipline": 3,
-  "predicate_discipline_rate": 0.07,
-  "spurious": 5,
-  "non_graphable_sentences": 4,
-  "non_graphable_claims": 5,
-  "schema_gap_facts": 9,
-  "schema_gap_claims": 12,
-  "precision_if_gap_counted": 0.291,
-  "recall": 0.286,
-  "recall_incl_implied": 0.762,
-  "precision": 0.372,
-  "precision_strict": 0.14,
-  "precision_incl_implied": 0.372,
-  "precision_naive_all_claims": 0.267,
-  "f1": 0.323,
+  "predicate_discipline": 9,
+  "predicate_discipline_rate": 0.132,
+  "spurious": 16,
+  "non_graphable_sentences": 36,
+  "non_graphable_claims": 58,
+  "schema_gap_facts": 29,
+  "schema_gap_claims": 36,
+  "sentence_dropout": 20,
+  "sentence_dropout_carrying_gold": 2,
+  "precision_if_gap_counted": 0.231,
+  "recall": 0.243,
+  "recall_incl_implied": 0.649,
+  "precision": 0.353,
+  "precision_strict": 0.132,
+  "precision_incl_implied": 0.353,
+  "precision_naive_all_claims": 0.148,
+  "f1": 0.288,
   "detail": {
     "found": [
       {
@@ -106,6 +108,48 @@
           "o": "online clothing store"
         },
         "via_predicate": "works_at"
+      },
+      {
+        "id": "conv-41/session_2_observation/Maria/D2:25",
+        "gold": [
+          "Maria",
+          "created",
+          "peach cobbler"
+        ],
+        "matched": {
+          "s": "Maria",
+          "p": "created",
+          "o": "peach cobbler"
+        },
+        "via_predicate": "created"
+      },
+      {
+        "id": "conv-42/session_12_observation/Nate/D12:3",
+        "gold": [
+          "Max",
+          "part_of",
+          "family"
+        ],
+        "matched": {
+          "s": "Max",
+          "p": "part_of",
+          "o": "family"
+        },
+        "via_predicate": "part_of"
+      },
+      {
+        "id": "conv-44/session_12_observation/Audrey/D12:10",
+        "gold": [
+          "Audrey",
+          "created",
+          "personalized tags"
+        ],
+        "matched": {
+          "s": "Audrey",
+          "p": "created",
+          "o": "personalized tags"
+        },
+        "via_predicate": "created"
       }
     ],
     "imprecise": [
@@ -248,6 +292,76 @@
           "o": "writers group"
         },
         "via_predicate": "part_of"
+      },
+      {
+        "id": "conv-30/session_5_observation/Gina/D5:1",
+        "gold": [
+          "Gina",
+          "works_at",
+          "store"
+        ],
+        "matched": {
+          "s": "Gina",
+          "p": "works_at",
+          "o": "store"
+        },
+        "via_predicate": "works_at"
+      },
+      {
+        "id": "conv-30/session_8_observation/Gina/D8:6",
+        "gold": [
+          "Dance",
+          "provides",
+          "stress relief"
+        ],
+        "matched": {
+          "s": "Dance",
+          "p": "provides",
+          "o": "stress relief"
+        },
+        "via_predicate": "provides"
+      },
+      {
+        "id": "conv-30/session_13_observation/Jon/D13:7",
+        "gold": [
+          "Jon",
+          "provides",
+          "training"
+        ],
+        "matched": {
+          "s": "Jon",
+          "p": "provides",
+          "o": "training"
+        },
+        "via_predicate": "provides"
+      },
+      {
+        "id": "conv-43/session_14_observation/John/D14:9",
+        "gold": [
+          "John",
+          "provides",
+          "support"
+        ],
+        "matched": {
+          "s": "John",
+          "p": "provides",
+          "o": "support"
+        },
+        "via_predicate": "provides"
+      },
+      {
+        "id": "conv-44/session_6_observation/Audrey/D6:8",
+        "gold": [
+          "Audrey",
+          "provides",
+          "tips"
+        ],
+        "matched": {
+          "s": "Audrey",
+          "p": "provides",
+          "o": "tips"
+        },
+        "via_predicate": "provides"
       }
     ],
     "missed": [
@@ -289,6 +403,70 @@
           "Audrey",
           "provides",
           "assistance"
+        ]
+      },
+      {
+        "id": "conv-30/session_8_observation/Gina/D8:6",
+        "gold": [
+          "fashion",
+          "provides",
+          "creativity"
+        ]
+      },
+      {
+        "id": "conv-30/session_13_observation/Jon/D13:7",
+        "gold": [
+          "Jon",
+          "provides",
+          "mentoring"
+        ]
+      },
+      {
+        "id": "conv-41/session_14_observation/John/D14:3",
+        "gold": [
+          "Maria",
+          "provides",
+          "support"
+        ]
+      },
+      {
+        "id": "conv-42/session_12_observation/Nate/D12:3",
+        "gold": [
+          "Nate",
+          "acquired",
+          "Max"
+        ]
+      },
+      {
+        "id": "conv-42/session_28_observation/Joanna/D28:8",
+        "gold": [
+          "Joanna",
+          "developed",
+          "script"
+        ]
+      },
+      {
+        "id": "conv-43/session_9_observation/John/D9:12",
+        "gold": [
+          "John",
+          "provides",
+          "help"
+        ]
+      },
+      {
+        "id": "conv-43/session_14_observation/John/D14:9",
+        "gold": [
+          "John",
+          "provides",
+          "advice"
+        ]
+      },
+      {
+        "id": "conv-47/session_4_observation/James/D4:16",
+        "gold": [
+          "James",
+          "uses",
+          "Apex Legends"
         ]
       }
     ],
@@ -335,6 +513,105 @@
           "s": "Maria",
           "p": "provides",
           "o": "words of encouragement"
+        },
+        "on_gold_bearing": true
+      },
+      {
+        "id": "conv-41/session_14_observation/John/D14:3",
+        "claim": {
+          "s": "John",
+          "p": "provides",
+          "o": "support"
+        },
+        "on_gold_bearing": true
+      },
+      {
+        "id": "conv-41/session_14_observation/John/D14:3",
+        "claim": {
+          "s": "John",
+          "p": "provides",
+          "o": "kind words"
+        },
+        "on_gold_bearing": true
+      },
+      {
+        "id": "conv-42/session_12_observation/Nate/D12:3",
+        "claim": {
+          "s": "Nate",
+          "p": "part_of",
+          "o": "family"
+        },
+        "on_gold_bearing": true
+      },
+      {
+        "id": "conv-42/session_12_observation/Nate/D12:3",
+        "claim": {
+          "s": "Max",
+          "p": "provides",
+          "o": "energy"
+        },
+        "on_gold_bearing": true
+      },
+      {
+        "id": "conv-42/session_12_observation/Nate/D12:3",
+        "claim": {
+          "s": "Max",
+          "p": "provides",
+          "o": "joy"
+        },
+        "on_gold_bearing": true
+      },
+      {
+        "id": "conv-43/session_9_observation/John/D9:12",
+        "claim": {
+          "s": "John",
+          "p": "located_in",
+          "o": "NYC"
+        },
+        "on_gold_bearing": true
+      },
+      {
+        "id": "conv-43/session_9_observation/John/D9:12",
+        "claim": {
+          "s": "Tim",
+          "p": "located_in",
+          "o": "NYC"
+        },
+        "on_gold_bearing": true
+      },
+      {
+        "id": "conv-43/session_14_observation/John/D14:9",
+        "claim": {
+          "s": "John",
+          "p": "works_at",
+          "o": "court"
+        },
+        "on_gold_bearing": true
+      },
+      {
+        "id": "conv-44/session_6_observation/Audrey/D6:8",
+        "claim": {
+          "s": "Audrey",
+          "p": "provides",
+          "o": "training"
+        },
+        "on_gold_bearing": true
+      },
+      {
+        "id": "conv-47/session_4_observation/James/D4:16",
+        "claim": {
+          "s": "James",
+          "p": "works_at",
+          "o": "team"
+        },
+        "on_gold_bearing": true
+      },
+      {
+        "id": "conv-47/session_4_observation/James/D4:16",
+        "claim": {
+          "s": "Apex Legends",
+          "p": "provides",
+          "o": "fast-paced gameplay"
         },
         "on_gold_bearing": true
       }
@@ -517,6 +794,54 @@
           "p": "works_at",
           "o": "writers group"
         }
+      },
+      {
+        "id": "conv-30/session_5_observation/Gina/D5:1",
+        "claim": {
+          "s": "Gina",
+          "p": "acquired",
+          "o": "store"
+        }
+      },
+      {
+        "id": "conv-30/session_5_observation/Gina/D5:1",
+        "claim": {
+          "s": "Gina",
+          "p": "founded",
+          "o": "store"
+        }
+      },
+      {
+        "id": "conv-42/session_28_observation/Joanna/D28:8",
+        "claim": {
+          "s": "Joanna",
+          "p": "created",
+          "o": "script"
+        }
+      },
+      {
+        "id": "conv-42/session_28_observation/Joanna/D28:8",
+        "claim": {
+          "s": "Joanna",
+          "p": "wrote",
+          "o": "script"
+        }
+      },
+      {
+        "id": "conv-44/session_12_observation/Audrey/D12:10",
+        "claim": {
+          "s": "Audrey",
+          "p": "designed",
+          "o": "personalized tags"
+        }
+      },
+      {
+        "id": "conv-47/session_4_observation/James/D4:16",
+        "claim": {
+          "s": "James",
+          "p": "developed",
+          "o": "Apex Legends"
+        }
       }
     ],
     "non_graphable": [
@@ -558,6 +883,430 @@
           "s": "John",
           "p": "leads",
           "o": "veterans"
+        }
+      },
+      {
+        "id": "conv-26/session_12_observation/Caroline/D12:9",
+        "claim": {
+          "s": "Caroline",
+          "p": "created",
+          "o": "things"
+        }
+      },
+      {
+        "id": "conv-26/session_14_observation/Melanie/D14:30",
+        "claim": {
+          "s": "Melanie",
+          "p": "created",
+          "o": "landscapes"
+        }
+      },
+      {
+        "id": "conv-26/session_14_observation/Melanie/D14:30",
+        "claim": {
+          "s": "Melanie",
+          "p": "created",
+          "o": "still life"
+        }
+      },
+      {
+        "id": "conv-26/session_19_observation/Melanie/D19:10",
+        "claim": {
+          "s": "Melanie",
+          "p": "discovered",
+          "o": "true self"
+        }
+      },
+      {
+        "id": "conv-26/session_19_observation/Melanie/D19:10",
+        "claim": {
+          "s": "Caroline",
+          "p": "discovered",
+          "o": "true self"
+        }
+      },
+      {
+        "id": "conv-30/session_2_observation/Gina/D2:7",
+        "claim": {
+          "s": "Gina",
+          "p": "designed",
+          "o": "good flooring"
+        }
+      },
+      {
+        "id": "conv-30/session_2_observation/Gina/D2:7",
+        "claim": {
+          "s": "good flooring",
+          "p": "provides",
+          "o": "injuries"
+        }
+      },
+      {
+        "id": "conv-30/session_10_observation/Jon/D10:5",
+        "claim": {
+          "s": "Jon",
+          "p": "works_at",
+          "o": "business project"
+        }
+      },
+      {
+        "id": "conv-30/session_10_observation/Jon/D10:5",
+        "claim": {
+          "s": "Jon",
+          "p": "provides",
+          "o": "advice"
+        }
+      },
+      {
+        "id": "conv-30/session_18_observation/Jon/D18:2",
+        "claim": {
+          "s": "Jon",
+          "p": "works_at",
+          "o": "dance studio"
+        }
+      },
+      {
+        "id": "conv-30/session_18_observation/Jon/D18:2",
+        "claim": {
+          "s": "Jon",
+          "p": "built",
+          "o": "dance studio"
+        }
+      },
+      {
+        "id": "conv-41/session_16_observation/Maria/D16:8",
+        "claim": {
+          "s": "Maria",
+          "p": "works_at",
+          "o": "charity"
+        }
+      },
+      {
+        "id": "conv-41/session_23_observation/Maria/D23:8",
+        "claim": {
+          "s": "Maria",
+          "p": "provides",
+          "o": "inspiring hope"
+        }
+      },
+      {
+        "id": "conv-42/session_3_observation/Nate/D3:14",
+        "claim": {
+          "s": "Nate",
+          "p": "created",
+          "o": "new flavors"
+        }
+      },
+      {
+        "id": "conv-42/session_3_observation/Nate/D3:14",
+        "claim": {
+          "s": "Nate",
+          "p": "developed",
+          "o": "new flavors"
+        }
+      },
+      {
+        "id": "conv-42/session_3_observation/Nate/D3:14",
+        "claim": {
+          "s": "Nate",
+          "p": "discovered",
+          "o": "new flavors"
+        }
+      },
+      {
+        "id": "conv-42/session_10_observation/Joanna/D10:13",
+        "claim": {
+          "s": "Joanna",
+          "p": "created",
+          "o": "Cooking"
+        }
+      },
+      {
+        "id": "conv-42/session_10_observation/Joanna/D10:13",
+        "claim": {
+          "s": "Joanna",
+          "p": "located_in",
+          "o": "kitchen"
+        }
+      },
+      {
+        "id": "conv-42/session_15_observation/Nate/D15:14",
+        "claim": {
+          "s": "Nate",
+          "p": "created",
+          "o": "cork board"
+        }
+      },
+      {
+        "id": "conv-42/session_15_observation/Nate/D15:14",
+        "claim": {
+          "s": "Nate",
+          "p": "founded",
+          "o": "cork board"
+        }
+      },
+      {
+        "id": "conv-42/session_15_observation/Nate/D15:14",
+        "claim": {
+          "s": "Nate",
+          "p": "designed",
+          "o": "cork board"
+        }
+      },
+      {
+        "id": "conv-42/session_15_observation/Nate/D15:14",
+        "claim": {
+          "s": "Nate",
+          "p": "built",
+          "o": "cork board"
+        }
+      },
+      {
+        "id": "conv-42/session_21_observation/Joanna/D21:17",
+        "claim": {
+          "s": "Joanna",
+          "p": "created",
+          "o": "blueberries"
+        }
+      },
+      {
+        "id": "conv-42/session_21_observation/Joanna/D21:17",
+        "claim": {
+          "s": "Joanna",
+          "p": "uses",
+          "o": "blueberries"
+        }
+      },
+      {
+        "id": "conv-42/session_21_observation/Joanna/D21:17",
+        "claim": {
+          "s": "Joanna",
+          "p": "created",
+          "o": "coconut milk"
+        }
+      },
+      {
+        "id": "conv-42/session_21_observation/Joanna/D21:17",
+        "claim": {
+          "s": "Joanna",
+          "p": "uses",
+          "o": "coconut milk"
+        }
+      },
+      {
+        "id": "conv-42/session_21_observation/Joanna/D21:17",
+        "claim": {
+          "s": "Joanna",
+          "p": "created",
+          "o": "gluten-free crust"
+        }
+      },
+      {
+        "id": "conv-42/session_21_observation/Joanna/D21:17",
+        "claim": {
+          "s": "Joanna",
+          "p": "uses",
+          "o": "gluten-free crust"
+        }
+      },
+      {
+        "id": "conv-42/session_23_observation/Nate/D23:3",
+        "claim": {
+          "s": "Nate",
+          "p": "works_at",
+          "o": "convention"
+        }
+      },
+      {
+        "id": "conv-42/session_23_observation/Nate/D23:3",
+        "claim": {
+          "s": "Nate",
+          "p": "founded",
+          "o": "convention"
+        }
+      },
+      {
+        "id": "conv-42/session_23_observation/Nate/D23:3",
+        "claim": {
+          "s": "Nate",
+          "p": "created",
+          "o": "games"
+        }
+      },
+      {
+        "id": "conv-42/session_23_observation/Nate/D23:3",
+        "claim": {
+          "s": "Nate",
+          "p": "developed",
+          "o": "games"
+        }
+      },
+      {
+        "id": "conv-42/session_23_observation/Nate/D23:3",
+        "claim": {
+          "s": "Nate",
+          "p": "created",
+          "o": "gaming session"
+        }
+      },
+      {
+        "id": "conv-43/session_11_observation/John/D11:7",
+        "claim": {
+          "s": "John",
+          "p": "leads",
+          "o": "team trip"
+        }
+      },
+      {
+        "id": "conv-43/session_11_observation/John/D11:7",
+        "claim": {
+          "s": "John",
+          "p": "discovered",
+          "o": "new city"
+        }
+      },
+      {
+        "id": "conv-43/session_20_observation/John/D20:6",
+        "claim": {
+          "s": "John",
+          "p": "uses",
+          "o": "yoga poses"
+        }
+      },
+      {
+        "id": "conv-43/session_20_observation/John/D20:6",
+        "claim": {
+          "s": "John",
+          "p": "created",
+          "o": "Warrior II"
+        }
+      },
+      {
+        "id": "conv-43/session_20_observation/John/D20:6",
+        "claim": {
+          "s": "John",
+          "p": "designed",
+          "o": "Warrior II"
+        }
+      },
+      {
+        "id": "conv-43/session_20_observation/John/D20:6",
+        "claim": {
+          "s": "Warrior II",
+          "p": "provides",
+          "o": "strength"
+        }
+      },
+      {
+        "id": "conv-43/session_20_observation/John/D20:6",
+        "claim": {
+          "s": "Warrior II",
+          "p": "provides",
+          "o": "balance"
+        }
+      },
+      {
+        "id": "conv-43/session_23_observation/John/D23:9",
+        "claim": {
+          "s": "John",
+          "p": "uses",
+          "o": "basketball"
+        }
+      },
+      {
+        "id": "conv-44/session_9_observation/Audrey/D9:23",
+        "claim": {
+          "s": "Audrey",
+          "p": "discovered",
+          "o": "lake"
+        }
+      },
+      {
+        "id": "conv-44/session_9_observation/Audrey/D9:23",
+        "claim": {
+          "s": "Audrey",
+          "p": "built",
+          "o": "lake"
+        }
+      },
+      {
+        "id": "conv-44/session_9_observation/Audrey/D9:23",
+        "claim": {
+          "s": "lake",
+          "p": "located_in",
+          "o": "mountains"
+        }
+      },
+      {
+        "id": "conv-44/session_15_observation/Andrew/D15:6",
+        "claim": {
+          "s": "Andrew",
+          "p": "discovered",
+          "o": "little spots"
+        }
+      },
+      {
+        "id": "conv-44/session_18_observation/Andrew/D18:17",
+        "claim": {
+          "s": "Andrew",
+          "p": "acquired",
+          "o": "dog-friendly place"
+        }
+      },
+      {
+        "id": "conv-44/session_18_observation/Andrew/D18:17",
+        "claim": {
+          "s": "Andrew",
+          "p": "built",
+          "o": "dog-friendly place"
+        }
+      },
+      {
+        "id": "conv-47/session_1_observation/James/D1:14",
+        "claim": {
+          "s": "James",
+          "p": "created",
+          "o": "app"
+        }
+      },
+      {
+        "id": "conv-47/session_1_observation/James/D1:14",
+        "claim": {
+          "s": "James",
+          "p": "developed",
+          "o": "app"
+        }
+      },
+      {
+        "id": "conv-47/session_1_observation/James/D1:14",
+        "claim": {
+          "s": "James",
+          "p": "designed",
+          "o": "app"
+        }
+      },
+      {
+        "id": "conv-47/session_1_observation/James/D1:14",
+        "claim": {
+          "s": "James",
+          "p": "built",
+          "o": "app"
+        }
+      },
+      {
+        "id": "conv-47/session_1_observation/James/D1:14",
+        "claim": {
+          "s": "app",
+          "p": "provides",
+          "o": "dog walking"
+        }
+      },
+      {
+        "id": "conv-47/session_1_observation/James/D1:14",
+        "claim": {
+          "s": "app",
+          "p": "provides",
+          "o": "pet care"
         }
       }
     ],
@@ -657,6 +1406,198 @@
           "p": "works_at",
           "o": "Bali"
         }
+      },
+      {
+        "id": "conv-26/session_1_observation/Caroline/D1:3",
+        "claim": {
+          "s": "Caroline",
+          "p": "works_at",
+          "o": "LGBTQ support group"
+        }
+      },
+      {
+        "id": "conv-26/session_1_observation/Caroline/D1:3",
+        "claim": {
+          "s": "Caroline",
+          "p": "founded",
+          "o": "LGBTQ support group"
+        }
+      },
+      {
+        "id": "conv-26/session_1_observation/Caroline/D1:3",
+        "claim": {
+          "s": "Caroline",
+          "p": "created",
+          "o": "transgender stories"
+        }
+      },
+      {
+        "id": "conv-26/session_1_observation/Caroline/D1:3",
+        "claim": {
+          "s": "Caroline",
+          "p": "discovered",
+          "o": "transgender stories"
+        }
+      },
+      {
+        "id": "conv-26/session_1_observation/Caroline/D1:3",
+        "claim": {
+          "s": "Caroline",
+          "p": "wrote",
+          "o": "transgender stories"
+        }
+      },
+      {
+        "id": "conv-30/session_17_observation/Gina/D17:1",
+        "claim": {
+          "s": "Gina",
+          "p": "works_at",
+          "o": "fashion editors"
+        }
+      },
+      {
+        "id": "conv-41/session_10_observation/John/D10:1",
+        "claim": {
+          "s": "John",
+          "p": "founded",
+          "o": "weekend yoga class"
+        }
+      },
+      {
+        "id": "conv-41/session_19_observation/Maria/D19:1",
+        "claim": {
+          "s": "Maria",
+          "p": "works_at",
+          "o": "gym"
+        }
+      },
+      {
+        "id": "conv-42/session_6_observation/Joanna/D6:2",
+        "claim": {
+          "s": "Joanna",
+          "p": "wrote",
+          "o": "writing gig"
+        }
+      },
+      {
+        "id": "conv-42/session_18_observation/Nate/D18:10",
+        "claim": {
+          "s": "Nate",
+          "p": "created",
+          "o": "dairy-free dessert recipe"
+        }
+      },
+      {
+        "id": "conv-42/session_18_observation/Nate/D18:10",
+        "claim": {
+          "s": "Nate",
+          "p": "developed",
+          "o": "dairy-free dessert recipe"
+        }
+      },
+      {
+        "id": "conv-42/session_18_observation/Nate/D18:10",
+        "claim": {
+          "s": "Nate",
+          "p": "wrote",
+          "o": "dairy-free dessert recipe"
+        }
+      },
+      {
+        "id": "conv-42/session_18_observation/Nate/D18:10",
+        "claim": {
+          "s": "Joanna",
+          "p": "created",
+          "o": "dairy-free dessert recipe"
+        }
+      },
+      {
+        "id": "conv-43/session_6_observation/John/D6:13",
+        "claim": {
+          "s": "John",
+          "p": "built",
+          "o": "big courts"
+        }
+      },
+      {
+        "id": "conv-43/session_6_observation/John/D6:13",
+        "claim": {
+          "s": "John",
+          "p": "acquired",
+          "o": "hard work"
+        }
+      },
+      {
+        "id": "conv-43/session_6_observation/John/D6:13",
+        "claim": {
+          "s": "John",
+          "p": "acquired",
+          "o": "scholarship"
+        }
+      },
+      {
+        "id": "conv-43/session_17_observation/John/D17:9",
+        "claim": {
+          "s": "John",
+          "p": "created",
+          "o": "fantasy series"
+        }
+      },
+      {
+        "id": "conv-43/session_17_observation/John/D17:9",
+        "claim": {
+          "s": "John",
+          "p": "developed",
+          "o": "fantasy series"
+        }
+      },
+      {
+        "id": "conv-43/session_17_observation/John/D17:9",
+        "claim": {
+          "s": "John",
+          "p": "wrote",
+          "o": "fantasy series"
+        }
+      },
+      {
+        "id": "conv-43/session_17_observation/John/D17:9",
+        "claim": {
+          "s": "John",
+          "p": "discovered",
+          "o": "fantasy worlds"
+        }
+      },
+      {
+        "id": "conv-43/session_25_observation/Tim/D25:11",
+        "claim": {
+          "s": "Tim",
+          "p": "created",
+          "o": "recent happenings"
+        }
+      },
+      {
+        "id": "conv-43/session_27_observation/Tim/D27:15",
+        "claim": {
+          "s": "Tim",
+          "p": "created",
+          "o": "books"
+        }
+      },
+      {
+        "id": "conv-43/session_27_observation/Tim/D27:15",
+        "claim": {
+          "s": "Tim",
+          "p": "wrote",
+          "o": "books"
+        }
+      },
+      {
+        "id": "conv-44/session_23_observation/Audrey/D23:18",
+        "claim": {
+          "s": "Audrey",
+          "p": "works_at",
+          "o": "tattoo parlor"
+        }
       }
     ]
   },
@@ -682,6 +1623,7 @@
       "wrote"
     ],
     "distinct_gold_predicates": [
+      "acquired",
       "created",
       "developed",
       "founded",
@@ -692,16 +1634,18 @@
       "works_at"
     ],
     "gold_predicate_counts": {
-      "created": 1,
-      "developed": 2,
+      "acquired": 1,
+      "created": 3,
+      "developed": 3,
       "founded": 1,
-      "part_of": 2,
-      "provides": 11,
+      "part_of": 3,
+      "provides": 20,
       "received": 1,
-      "uses": 2,
-      "works_at": 1
+      "uses": 3,
+      "works_at": 2
     },
     "scorable_predicates": [
+      "acquired",
       "created",
       "developed",
       "founded",
@@ -713,24 +1657,98 @@
     "unscorable_predicates": [
       "received"
     ],
-    "scorable_gold_facts": 20,
+    "scorable_gold_facts": 36,
     "unscorable_gold_facts": 1,
     "scorable_ids": [
       "conv-26/session_11_observation/Melanie/D11:7",
       "conv-30/session_10_observation/Gina/D10:2",
+      "conv-30/session_13_observation/Jon/D13:7",
+      "conv-30/session_5_observation/Gina/D5:1",
+      "conv-30/session_8_observation/Gina/D8:6",
+      "conv-41/session_14_observation/John/D14:3",
       "conv-41/session_18_observation/Maria/D18:15",
       "conv-41/session_20_observation/Maria/D20:3",
       "conv-41/session_25_observation/John/D25:13",
       "conv-41/session_28_observation/Maria/D28:6",
+      "conv-41/session_2_observation/Maria/D2:25",
       "conv-41/session_31_observation/Maria/D31:14",
       "conv-42/session_10_observation/Joanna/D10:9",
+      "conv-42/session_12_observation/Nate/D12:3",
       "conv-42/session_19_observation/Joanna/D19:6",
       "conv-42/session_27_observation/Joanna/D27:2",
+      "conv-42/session_28_observation/Joanna/D28:8",
+      "conv-43/session_14_observation/John/D14:9",
+      "conv-43/session_9_observation/John/D9:12",
+      "conv-44/session_12_observation/Audrey/D12:10",
+      "conv-44/session_6_observation/Audrey/D6:8",
       "conv-44/session_7_observation/Andrew/D7:12",
+      "conv-47/session_4_observation/James/D4:16",
       "conv-48/session_18_observation/Jolene/D18:5",
       "conv-48/session_28_observation/Jolene/D28:26"
     ]
   },
-  "scorable_recall": 0.8,
-  "scorable_recall_clean": 0.3
+  "cluster_sensitivity": {
+    "pooled": 0.667,
+    "total_scorable": 36,
+    "total_found": 24,
+    "per_conversation": {
+      "conv-26": {
+        "scorable": 1,
+        "found": 1,
+        "recall": 1.0
+      },
+      "conv-30": {
+        "scorable": 7,
+        "found": 5,
+        "recall": 0.714
+      },
+      "conv-41": {
+        "scorable": 11,
+        "found": 8,
+        "recall": 0.727
+      },
+      "conv-42": {
+        "scorable": 6,
+        "found": 4,
+        "recall": 0.667
+      },
+      "conv-43": {
+        "scorable": 3,
+        "found": 1,
+        "recall": 0.333
+      },
+      "conv-44": {
+        "scorable": 4,
+        "found": 2,
+        "recall": 0.5
+      },
+      "conv-47": {
+        "scorable": 1,
+        "found": 0,
+        "recall": 0.0
+      },
+      "conv-48": {
+        "scorable": 3,
+        "found": 3,
+        "recall": 1.0
+      }
+    },
+    "delete_one_conversation": {
+      "conv-26": 0.657,
+      "conv-30": 0.655,
+      "conv-41": 0.64,
+      "conv-42": 0.667,
+      "conv-43": 0.697,
+      "conv-44": 0.688,
+      "conv-47": 0.686,
+      "conv-48": 0.636
+    },
+    "influence_span": [
+      0.636,
+      0.697
+    ],
+    "conversations": 8
+  },
+  "scorable_recall": 0.667,
+  "scorable_recall_clean": 0.25
 }

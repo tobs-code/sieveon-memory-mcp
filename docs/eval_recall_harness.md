@@ -345,13 +345,52 @@ below 20. It is labelled approximate: the draw is deterministic, so the
 interval describes the variability of a comparable draw, not a population
 this one represents.
 
-**The interval does not contain the point estimate.** That is a real symptom
-and not a rounding artefact. At this size the result moves further when
-whole conversations change than the fact count suggests, so 0.800 is
-unstable and must be quoted with that caveat until more conversations carry
-annotated gold facts. A naive binomial interval over 20 facts would have
-been narrower and would have hidden exactly this.
+**The interval does not contain the point estimate**, and after 60 annotated
+expanded sentences the reason is visible in the per-conversation table below:
+eight conversations carry between one and eleven scorable gold facts each,
+and their rates run from 0.00 to 1.00. Resampling units that small and that
+heterogeneous yields a percentile interval that excludes its own point
+estimate. That is a property of this constellation -- few, unbalanced
+clusters -- and not a verdict on the percentile bootstrap in general, which
+is why the interval is retained as secondary rather than dropped.
 
-The pilot's `1.000` and the current `0.800` with its interval are both
-consistent with a true coverage somewhere in that wide range. The expanded
-sample exists to narrow it.
+Because of that, the primary uncertainty view is cluster sensitivity:
+
+    pooled, fact-weighted      0.667  (24/36)
+    delete-one-conversation    [0.636, 0.697]
+
+The pooled rate stays fact-weighted. An unweighted mean of the per-cluster
+rates would answer a different question -- how good is an average
+conversation -- and would replace the estimand rather than describe it. No
+minimum cluster size is imposed and no conversation is dropped: conv-26 at
+1/1 and conv-47 at 0/1 are genuine parts of the defined population, and
+censoring them would silently narrow the population after the fact.
+
+| conversation | scorable | found | recall | pooled without it |
+| --- | ---: | ---: | ---: | ---: |
+| conv-26 | 1 | 1 | 1.00 | 0.657 |
+| conv-30 | 7 | 5 | 0.71 | 0.655 |
+| conv-41 | 11 | 8 | 0.73 | 0.640 |
+| conv-42 | 6 | 4 | 0.67 | 0.667 |
+| conv-43 | 3 | 1 | 0.33 | 0.697 |
+| conv-44 | 4 | 2 | 0.50 | 0.688 |
+| conv-47 | 1 | 0 | 0.00 | 0.686 |
+| conv-48 | 3 | 3 | 1.00 | 0.636 |
+
+The influence span is narrow -- removing any single conversation moves the
+pooled rate by less than three points -- so no one conversation dominates.
+The per-cluster rates are nonetheless spread from 0.00 to 1.00, which is the
+actual finding: the uncertainty in this measurement comes from heterogeneous
+clusters carrying few gold facts each, not from one conversation carrying the
+result.
+
+Approved wording for the estimate:
+
+> Scorable recall: 24/36 = 0.667. The estimate is fact-weighted across the
+> sampled sentences. Conversation-level recall varies substantially across
+> the observed clusters, so uncertainty is reported separately via cluster
+> sensitivity rather than as an ordinary binomial interval.
+
+The pilot's `1.000` and the current `0.667` with its influence span are both
+consistent with a true coverage somewhere around two thirds. The expanded
+sample exists to narrow the cluster picture, not to move the point estimate.
