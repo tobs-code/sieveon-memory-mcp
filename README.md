@@ -45,7 +45,7 @@ Sieveon is an agent memory system that intelligently classifies, routes, plans, 
 | Component | Path | Description |
 |-----------|------|-------------|
 | **MCP Server** | `src/mcp/server.py` | Control plane (Anthropic MCP protocol) — stdio mode. 19 tools + 6 MCP resources: `memory_store`, `memory_store_batch`, `memory_store_markdown`, `memory_query`, `memory_update`, `memory_get`, `event_log_search`, `kg_query`, `graph_traverse`, `semantic_search`, `list_entities`, `list_events`, `memory_stats`, `memory_explain_routing`, `memory_forget`, `memory_unforget`, `memory_consolidate`, `memory_merge_entities`, `memory_find_duplicates`; Resources: `sieveon://stats`, `sieveon://entity/{id}`, `sieveon://event/{id}`, `sieveon://kg/subject/{name}`, `sieveon://kg/predicate/{type}`, `sieveon://search/{query}` |
-| **Extraction** | `src/extraction/` | Local-first entity extraction: relex (`knowledgator/gliner-relex-multi-v1.0`, joint NER+RE, ~60ms) → gliner2.5-multi (zero-shot, multilingual) → spaCy fallback. Groq API (`GROQ_MODEL`, default `openai/gpt-oss-20b`) explicit opt-in only via `EXTRACTION_METHOD=groq`. Thresholds via `RELEX_ENT/REL_THRESHOLD`, `GLINER_ENT/REL_THRESHOLD` |
+| **Extraction** | `src/extraction/` | Local-first entity extraction: relex (`knowledgator/gliner-relex-multi-v1.0`, joint NER+RE, ~60ms) → gliner2.5-multi (zero-shot, multilingual) → spaCy fallback. Groq API (`GROQ_MODEL`, default `openai/gpt-oss-20b`) explicit opt-in only via `EXTRACTION_METHOD=groq`. Thresholds via `RELEX_ENT/REL_THRESHOLD`, `GLINER_ENT/REL_THRESHOLD`. **Triple** chain has no spaCy fallback (see below). |
 | **Classifier** | `src/extraction/classifier.py` | Hybrid ML+Regex query classifier: sklearn LogisticRegression on Qwen3-Embedding-0.6B embeddings (1024d) + TF-IDF (500 unigrams+bigrams), with regex fallback when ML confidence < 0.6. Synthetic training data generator at `scripts/generate_synthetic_training_data.py`, manual labeling CLI at `scripts/label_queries.py` |
 | **Migrations** | `src/mcp/migrations.py` | Versioned auto-migration engine for breaking schema changes |
 | **Router** | `src/router/` | Query classification policy + budget tracking: `policy.py` (RoutingPolicy, strategy per QueryType), `budget.py` (BudgetTracker, BudgetLevel), `cost_awareness.py` (CostTracker effectiveness ranking) |
@@ -57,19 +57,21 @@ Sieveon is an agent memory system that intelligently classifies, routes, plans, 
 
 ## Key Features
 
-- **Query Classification** — 5 types: Temporal, Factual, Multi-Hop, Conversational, Update. Hybrid approach: sklearn LogisticRegression on Qwen3-Embedding-0.6B embeddings (1024d) **+ TF-IDF (500 unigrams+bigrams)** with regex fallback when ML confidence < 0.6, plus deterministic vetoes (update read-requests, DE factual frames). Trained on TREC + SQuAD (factual), HotpotQA (multi-hop), TimeQA + CLINC-time (temporal), CoQA + CLINC-greetings (conversational), CLINC-intents + synthetic (update); per-class cap 600, seed 42.
-  - **5-fold CV F1-macro** (primary metric, n=1000, 200/class): **0.944 ± 0.006**
-  - Holdout F1-macro (n=200, ~8.5% template leakage): 0.955 (clean: 0.949) — all residual errors below the 0.6 threshold, i.e. the regex fallback decides them in production
-  - **0.6-threshold accuracy**: 100% (105/105 samples above threshold; coverage 52.5%)
-  - **Boundary suite**: 25/25 adversarial queries (update-negatives, memory-writes, why-factuals, coordination, greetings, DE) — behaviors pinned as `TestRegexClassifier` unit tests in `tests/python_unit_tests.py`
+- **Query Classification** — 5 types: Temporal, Factual, Multi-Hop, Conversational, Update. Hybrid approach: sklearn LogisticRegression on Qwen3-Embedding-0.6B embeddings (1024d) **+ TF-IDF (500 unigrams+bigrams)** with regex fallback when ML confidence < 0.6, plus deterministic vetoes (update read-requests). **English only** (2026-10-01): German/Denglish template rows removed from training, German regex patterns and vetoes deleted. Trained on TREC + SQuAD (factual), HotpotQA (multi-hop), TimeQA + CLINC-time (temporal), CoQA + CLINC-greetings (conversational), CLINC-intents + synthetic (update); per-class cap 600, seed 42.
+  - **5-fold CV F1-macro** (primary metric, n=1000, 200/class): **0.924 ± 0.015**
+  - Holdout F1-macro (n=200): 0.920 — residual errors below the 0.6 threshold, i.e. the regex fallback decides them in production
+  - **0.6-threshold accuracy**: 99.2% (117/118 samples above threshold; coverage 59.0%)
+  - **Boundary suite**: adversarial queries (update-negatives, memory-writes, why-factuals, coordination, greetings) — behaviors pinned as `TestRegexClassifier` unit tests in `tests/python_unit_tests.py`. English only since 2026-10-01.
   - **Caveats:** (1) TREC original 6 labels were heuristically mapped (ABBR/ENTY/HUM/LOC → factual, NUM/time → temporal, NUM/count → factual); the old DESC/why → multi-hop mapping was **removed 2026-09-30** (197 rows → factual: TREC why-questions are single-fact explanations). Original labels discarded. (2) CoQA mapped 100% → conversational. (3) Synthetic data uses templates → ~9% exact duplicates across any random train/test split. (4) Aggregate CV intentionally lower than the old 0.967 — the remapped training set is harder and honest (template memorization removed); robustness moved to the boundary suite. (5) Internal eval only — not yet validated on real agent traffic.
   - Run `python scripts/eval_classifier.py` to reproduce. Retrain via `python scripts/train_classifier.py --cap 600`.
-- **Extraction Eval** — `docs/eval_extraction_gold.jsonl` (31 DE/EN sentences with expected entities/triples) + `python scripts/eval_extraction.py [--sweep]`: entity precision/recall, triple recall (synonym-tolerant predicates), latency per backend. Reference: relex entP 0.91/entR 0.98/tripR 0.71 @0.7 (~110ms), gliner tripR 0.94 (broader, noisier), spacy tripR 0.00 (dependency labels don't match KG predicates).
+- **Extraction Eval** — `docs/eval_extraction_gold.jsonl` (39 **English-only** sentences, 32 triples) + `python scripts/eval_extraction.py [--sweep]`: entity precision/recall, triple recall, **per-fact precision**, latency per backend, and the AUC of fact salience as a correct-vs-wrong discriminator. Predicate matching is synonym-tolerant. Reference: relex entP 0.92/entR 0.97/tripR 0.84 / factP 0.51 (~620ms), gliner tripR 0.88 but factP 0.24, spacy tripR 0.00 (excluded from the triple chain, see below). Details in [ADR-002](docs/adr/ADR-002-extraction-measurement-correction.md).
+- **English only** — deliberate, measured decision. Splitting the gold set by language: relex per-fact precision was **0.188 on English** vs **0.028 on German** (1 correct fact of 36 on FewRel-mapped data; 0.400 on the 20-sentence English project set before the canonical expansion, 0.509 after). The embedding model is English-only as well. German was dropped from the gold set rather than tuned; non-English input is expected to degrade extraction and search.
 - **Adaptive Retrieval** — `memory_query` (classify → route → execute) selects per query type (event log, KG, hybrid BM25+vector+temporal). Direct tools (`event_log_search`, `semantic_search`, `kg_query`, `graph_traverse`) bypass the router for explicit lookups. Temporal pinning: `memory_query(..., since?, until?, at_time?)` bounds event timestamps (`fn::events_at` semantics) and pins KG validity (`fn::facts_at_time` semantics, `type::datetime`); graph expansion is bounded BFS (depth 2)
 - **Entropy Gating** — Composite score: Shannon character entropy + gzip compression ratio (Kolmogorov complexity proxy) + embedding novelty. Raw Event Log is always append-only; the gate decides only whether to extract into the Knowledge Graph.
 - **Entity Extraction** — Local-first: relex joint NER+RE → gliner2.5-multi → spaCy fallback (all on the RTX 2080, no API in the default chain). Groq API opt-in only (`EXTRACTION_METHOD=groq`). Type preservation (LLM classification preferred over heuristic).
-  - **Fallback semantics:** the chain advances only on backend error or *empty* result — never on low scores. Every fact carries `extractor` (`relex`/`gliner`/`groq`/`spacy`/`manual`) so fallback evidence stays distinguishable in the KG; confidence is never rescaled, comparability comes from `salience` below.
-  - **Thresholds:** `RELEX_REL_THRESHOLD` (default 0.7) is global across languages — measured DE/EN score medians differ slightly (0.23 vs 0.30) but kept-relation counts at 0.7 are near-identical (~4–5/text both), so no per-language split. Sweep via `python scripts/eval_extraction.py --sweep`.
+  - **Triple chain has no spaCy fallback** (ADR-002): spaCy asserted 0 correct triples of 15 because it scores a relation by the cosine similarity of the subject and object *names* — a measure of string similarity, not of there being a relation. Returning no triple beats returning a false one: retrieval can fail to find a fact that does not exist, but it will happily surface a false one. spaCy still backs *entity* extraction (entR 0.98). An explicit `EXTRACTION_METHOD` is honoured strictly — `relex` never silently falls back to a weaker backend.
+  - **Fallback semantics:** the chain advances only on backend error or *empty* result — never on low scores. Every fact carries `extractor` (`relex`/`gliner`/`groq`/`spacy`/`manual`) so fallback evidence stays distinguishable in the KG; confidence is never rescaled, comparability comes from `salience` below. Caveat: `extractor` is inferred from entity labels by majority vote, so it can misattribute a triple (known limitation).
+  - **Thresholds:** `RELEX_REL_THRESHOLD` (default 0.7). Sweep via `python scripts/eval_extraction.py --sweep`. Note the sweep is not a precision/recall trade you can win outright — raising it from 0.7 to 0.9 lifts per-fact precision 0.12→0.18 but drops triple recall 0.29→0.22, because the model's score distributions for correct and wrong facts overlap almost completely.
 - **Logical Invalidation** — `valid_until` timestamps instead of hard deletes. `memory_update` auto-creates target entities if they don't exist yet.
 - **Forgetting & Consolidation** — `memory_forget` soft-deletes events or entities; `memory_consolidate` (sole MCP entrypoint) triggers `ConservativeMaintainer` runs (with optional physical stale-fact removal).
 - **Cost Awareness** — Tracks & budgets resource consumption per strategy
@@ -313,6 +315,24 @@ A memory server that returns stored text into LLM context is a
   Limitations) — bind stdio locally or put auth in front.
 
 ---
+
+## Known Limitations
+
+- **KG fact precision is low.** On the gold set relex asserts 45 facts to get 13
+  right (fact precision 0.29); gliner 18/75. Retrieval can only be as trustworthy
+  as what was written. A background fact with no verb — "The VectorDB engine OR
+  (query) was rated 5/5" — yields `VectorDB developed engine` at confidence 0.84.
+  See [ADR-002](docs/adr/ADR-002-extraction-measurement-correction.md).
+- **`extractor` is inferred, not recorded.** `infer_extractor` votes on entity
+  labels to guess which backend produced a fact, so a relex triple can be stored
+  as `extractor=spacy`. Do not treat it as provenance.
+- **`TIER_DROP_THRESHOLD` (0.50) is inert.** Fact salience ranks relex output
+  usefully (AUC 0.817) but the whole distribution sits above 0.50, so tiering
+  drops nothing; it also only applies to co-occurrence predicates, while 86% of
+  wrong facts are SVO.
+- **`fact.salience` is not read by retrieval.** It is written at ingest and
+  surfaces in `memory_explain_routing`/diagnostics only; no retrieval strategy
+  ranks on it.
 
 ## License
 
