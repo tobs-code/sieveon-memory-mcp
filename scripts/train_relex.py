@@ -1,15 +1,18 @@
-"""Minimal GLiNER-Relex training entrypoint (contract validation stage).
+"""Minimal GLiNER-Relex training entrypoint.
 
 Reads training JSONL conforming to docs/eval_relex_training_contract_v1.json,
 validates schema, label map, entity spans and the split-hygiene rule
-(family/pair ids must not reach the model), and writes a training manifest.
+(family/pair ids must not reach the model), fine-tunes the frozen base
+model with gliner.training.Trainer, and writes checkpoint + manifest.
 
-The actual Trainer loop (gliner.training.Trainer + RelationExtraction
-processor) is wired in the next step. Without --dry-run this entrypoint
-refuses to run: no training happens before the contract is frozen.
+Contract constants (labels, seed, base model, forbidden features) come from
+the contract file, never from CLI flags. --fold-id is carried into the
+manifest verbatim; the runner assigns it, this script never derives it.
 
 Usage:
     python scripts/train_relex.py --train <training.jsonl> --out <dir> --dry-run
+    python scripts/train_relex.py --train <training.jsonl> --out <dir> \\
+        --epochs 1 --batch-size 2 [--fold-id <id>]
 """
 
 from __future__ import annotations
@@ -55,6 +58,8 @@ def main() -> int:
     ap.add_argument("--out", required=True)
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--fold-id", default=None)
+    ap.add_argument("--epochs", type=int, default=1)
+    ap.add_argument("--batch-size", type=int, default=2)
     args = ap.parse_args()
 
     try:
@@ -82,9 +87,142 @@ def main() -> int:
         print("  dry-run: contract valid, no training executed")
         return 0
 
-    print("  REFUSED: trainer loop not yet wired (next step). "
-          "Re-run with --dry-run.", file=sys.stderr)
-    return 2
+    return run_training(rows, digest, args)
+
+
+def _words_with_offsets(sentence: str) -> list[tuple[str, int, int]]:
+    words: list[tuple[str, int, int]] = []
+    for match in __import__("re").finditer(r"\S+", sentence):
+        words.append((match.group(0), match.start(), match.end()))
+    return words
+
+
+def _word_index(words: list[tuple[str, int, int]], start: int, end: int) -> tuple[int, int]:
+    lo = next(i for i, (_, ws, we) in enumerate(words) if ws <= start < we)
+    hi = next(i for i, (_, ws, we) in enumerate(words) if ws < end <= we)
+    return lo, hi + 1
+
+
+def to_gliner_sample(ex: dict) -> dict:
+    """Contract example -> tokens + entity/relation word indices.
+
+    Both X and Y are always annotated as generic 'entity' spans; the only
+    supervision signal is whether the 'provides' relation links them.
+    clean_positive carries (X, Y, provides); hard negatives carry the same
+    spans with no relation. Metadata never leaves this function.
+    """
+    sent = ex["sentence"]
+    words = _words_with_offsets(sent)
+    tokens = [w for w, _, _ in words]
+    spans = {}
+    for order, role in enumerate(("X", "Y")):
+        ent = ex["entities"][role]
+        spans[role] = _word_index(words, ent["start"], ent["end"])
+    order = sorted(spans, key=lambda r: spans[r][0])
+    ner = [(spans[r][0], spans[r][1], "entity") for r in order]
+    relations: list[tuple[int, int, str]] = []
+    if ex["relation"] == "provides":
+        head = order.index("X")
+        tail = order.index("Y")
+        relations = [(head, tail, "provides")]
+    return {"tokens": tokens, "ner": ner, "relations": relations}
+
+
+def run_training(rows: list[dict], digest: str, args) -> int:
+    import torch
+    from torch.utils.data import Dataset
+    from gliner import GLiNER
+    from gliner.data_processing import (
+        RelationExtractionTokenProcessor, WordsSplitter,
+    )
+    from gliner.training import Trainer, TrainingArguments
+
+    base = CONTRACT["model"]["base"]
+    seed = CONTRACT["reproducibility"]["seed"]
+    print(f"  loading base {base}")
+    model = GLiNER.from_pretrained(base)
+    tokenizer = getattr(model, "tokenizer", None)
+    if tokenizer is None:
+        from transformers import AutoTokenizer
+        tokenizer = AutoTokenizer.from_pretrained(base)
+    processor = RelationExtractionTokenProcessor(
+        model.config, tokenizer, WordsSplitter("whitespace"))
+    classes_to_id = {"entity": 0}
+    rel_classes_to_id = {"provides": 0}
+
+    samples = [to_gliner_sample(ex) for ex in rows]
+    for s in samples:
+        s["classes_to_id"] = dict(classes_to_id)
+        s["rel_class_to_ids"] = dict(rel_classes_to_id)
+        s["entities"] = s.pop("ner")
+
+    class _DS(Dataset):
+        def __len__(self):
+            return len(samples)
+
+        def __getitem__(self, i):
+            return samples[i]
+
+    def collate(batch):
+        raw_tokens = [s["tokens"] for s in batch]
+        n = len(batch)
+        prompted, plens = processor.prepare_inputs(
+            raw_tokens, entities=[["entity"]] * n,
+            relations=[["provides"]] * n)
+        shifted = []
+        for s, pl in zip(batch, plens):
+            shifted.append(
+                [(a + pl, b + pl, lab) for (a, b, lab) in s["entities"]])
+        pre = [processor.preprocess_example(
+            pt, ner, classes_to_id,
+            s["relations"], rel_classes_to_id)
+            for pt, ner, s in zip(prompted, shifted, batch)]
+        merged = processor.create_batch_dict(
+            pre, [dict(classes_to_id)] * n,
+            [{v: k for k, v in classes_to_id.items()}] * n,
+            [dict(rel_classes_to_id)] * n,
+            [{v: k for k, v in rel_classes_to_id.items()}] * n)
+        merged["rel_class_to_ids"] = [dict(rel_classes_to_id)] * n
+        merged.update(processor.tokenize_inputs(
+            prompted,
+            [dict(classes_to_id)] * n, blank=None,
+            relations=[dict(rel_classes_to_id)] * n))
+        out = processor.tokenize_and_prepare_labels(merged, True)
+        import torch as _torch
+        out["text_lengths"] = _torch.LongTensor([len(p) for p in prompted])
+        return out
+
+    use_cpu = not torch.cuda.is_available()
+    targs = TrainingArguments(
+        output_dir=args.out, seed=seed, do_train=True,
+        num_train_epochs=args.epochs,
+        per_device_train_batch_size=args.batch_size,
+        save_strategy="no", logging_steps=1, report_to="none",
+        use_cpu=use_cpu, dataloader_drop_last=False,
+    )
+    trainer = Trainer(model=model, args=targs, train_dataset=_DS(),
+                      data_collator=collate)
+    trainer.train()
+
+    out = Path(args.out)
+    model.save_pretrained(str(out))
+    weight_files = sorted(out.glob("*.safetensors")) or sorted(out.glob("*.bin"))
+    ckpt_digest = hashlib.sha256(weight_files[0].read_bytes()).hexdigest()
+    manifest = {
+        "base_model": base,
+        "label_map": list(LABELS),
+        "seed": seed,
+        "contract_version": CONTRACT["version"],
+        "fold_id": args.fold_id,
+        "training_data_digest": digest,
+        "training_examples": len(rows),
+        "epochs": args.epochs,
+        "checkpoint_digest": ckpt_digest,
+    }
+    (out / "training_manifest.json").write_text(
+        json.dumps(manifest, indent=2), encoding="utf-8")
+    print(f"  trained: checkpoint {out} digest {ckpt_digest[:16]}")
+    return 0
 
 
 if __name__ == "__main__":
