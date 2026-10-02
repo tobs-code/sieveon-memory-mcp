@@ -20,6 +20,7 @@
       "confidence": 0.8858,
       "verdict": "supported",
       "state": "verifier_accept",
+      "shadow_margin": 6.873,
       "text": "Joanna's new script is different from her previous work but has the potential to be someth"
     },
     {
@@ -31,6 +32,7 @@
       "confidence": 0.9635,
       "verdict": "supported",
       "state": "auto_accept",
+      "shadow_margin": 6.9141,
       "text": "John had his first call-out with the firefighting brigade last Sunday to help those in nee"
     },
     {
@@ -42,6 +44,7 @@
       "confidence": 0.7023,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "John had his first call-out with the firefighting brigade last Sunday to help those in nee"
     },
     {
@@ -53,6 +56,7 @@
       "confidence": 0.7365,
       "verdict": "supported",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "John had his first call-out with the firefighting brigade last Sunday to help those in nee"
     },
     {
@@ -64,6 +68,7 @@
       "confidence": 0.9104,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Audrey is researching to find an awesome spot for the upcoming hike."
     },
     {
@@ -75,6 +80,7 @@
       "confidence": 0.7169,
       "verdict": "wrong",
       "state": "verifier_accept",
+      "shadow_margin": 6.8887,
       "text": "Sam started a new diet and exercise routine last Monday and it has made a huge difference."
     },
     {
@@ -86,6 +92,7 @@
       "confidence": 0.8425,
       "verdict": "wrong",
       "state": "verifier_accept",
+      "shadow_margin": 6.9258,
       "text": "Sam started a new diet and exercise routine last Monday and it has made a huge difference."
     },
     {
@@ -97,6 +104,7 @@
       "confidence": 0.7779,
       "verdict": "wrong",
       "state": "verifier_accept",
+      "shadow_margin": 6.748,
       "text": "Sam started a new diet and exercise routine last Monday and it has made a huge difference."
     },
     {
@@ -108,6 +116,7 @@
       "confidence": 0.8703,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "John is a member of a hiking club, even though he just joined."
     },
     {
@@ -119,6 +128,7 @@
       "confidence": 0.8696,
       "verdict": "wrong",
       "state": "structural_drop",
+      "shadow_margin": null,
       "text": "John is a member of a hiking club, even though he just joined."
     },
     {
@@ -130,6 +140,7 @@
       "confidence": 0.869,
       "verdict": "supported",
       "state": "verifier_accept",
+      "shadow_margin": 6.9512,
       "text": "John is a member of a hiking club, even though he just joined."
     },
     {
@@ -141,6 +152,7 @@
       "confidence": 0.8825,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Tim joined a fantasy literature forum and had a great discussion about his favorite books."
     },
     {
@@ -152,6 +164,7 @@
       "confidence": 0.7264,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Tim joined a fantasy literature forum and had a great discussion about his favorite books."
     },
     {
@@ -163,6 +176,7 @@
       "confidence": 0.9601,
       "verdict": "wrong",
       "state": "auto_accept",
+      "shadow_margin": 4.5469,
       "text": "Tim joined a fantasy literature forum and had a great discussion about his favorite books."
     },
     {
@@ -174,6 +188,7 @@
       "confidence": 0.914,
       "verdict": "implied",
       "state": "verifier_accept",
+      "shadow_margin": 7.2422,
       "text": "Audrey has a small garden where she takes care of Peruvian Lilies, finding peace and relax"
     },
     {
@@ -185,6 +200,7 @@
       "confidence": 0.7721,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Audrey has a small garden where she takes care of Peruvian Lilies, finding peace and relax"
     },
     {
@@ -196,6 +212,7 @@
       "confidence": 0.9055,
       "verdict": "supported",
       "state": "verifier_accept",
+      "shadow_margin": 6.9492,
       "text": "Audrey has a small garden where she takes care of Peruvian Lilies, finding peace and relax"
     },
     {
@@ -207,6 +224,7 @@
       "confidence": 0.8623,
       "verdict": "supported",
       "state": "verifier_accept",
+      "shadow_margin": 7.209,
       "text": "Audrey has a small garden where she takes care of Peruvian Lilies, finding peace and relax"
     },
     {
@@ -218,6 +236,7 @@
       "confidence": 0.9281,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Andrew is considering getting more plants for his house to bring some peace."
     },
     {
@@ -229,6 +248,7 @@
       "confidence": 0.7943,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Andrew is considering getting more plants for his house to bring some peace."
     },
     {
@@ -240,6 +260,7 @@
       "confidence": 0.9578,
       "verdict": "wrong",
       "state": "auto_accept",
+      "shadow_margin": 0.7885,
       "text": "Andrew is considering getting more plants for his house to bring some peace."
     },
     {
@@ -251,6 +272,7 @@
       "confidence": 0.9851,
       "verdict": "supported",
       "state": "auto_accept",
+      "shadow_margin": 6.2441,
       "text": "Jon juggles between running his dance studio and pursuing business goals, finding it rewar"
     },
     {
@@ -262,6 +284,7 @@
       "confidence": 0.7317,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "John believes taking time for oneself is crucial for staying sharp, gaining new perspectiv"
     },
     {
@@ -273,6 +296,7 @@
       "confidence": 0.7536,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "John believes taking time for oneself is crucial for staying sharp, gaining new perspectiv"
     },
     {
@@ -284,6 +308,7 @@
       "confidence": 0.7536,
       "verdict": "implied",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "John believes taking time for oneself is crucial for staying sharp, gaining new perspectiv"
     },
     {
@@ -295,6 +320,7 @@
       "confidence": 0.842,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Joanna believes that meaningful and powerful stories stem from personal experiences and fe"
     },
     {
@@ -306,6 +332,7 @@
       "confidence": 0.9452,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Joanna believes that meaningful and powerful stories stem from personal experiences and fe"
     },
     {
@@ -317,6 +344,7 @@
       "confidence": 0.747,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Joanna believes that meaningful and powerful stories stem from personal experiences and fe"
     },
     {
@@ -328,6 +356,7 @@
       "confidence": 0.7676,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Joanna believes that meaningful and powerful stories stem from personal experiences and fe"
     },
     {
@@ -339,6 +368,7 @@
       "confidence": 0.9723,
       "verdict": "wrong",
       "state": "auto_accept",
+      "shadow_margin": -3.4463,
       "text": "Caroline treasures a hand-painted bowl made by a friend for her 18th birthday, which remin"
     },
     {
@@ -350,6 +380,7 @@
       "confidence": 0.9373,
       "verdict": "supported",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Caroline treasures a hand-painted bowl made by a friend for her 18th birthday, which remin"
     },
     {
@@ -361,6 +392,7 @@
       "confidence": 0.7424,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Caroline treasures a hand-painted bowl made by a friend for her 18th birthday, which remin"
     },
     {
@@ -372,6 +404,7 @@
       "confidence": 0.8696,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "John appreciates Tim's support and encouragement, and feels motivated by it."
     },
     {
@@ -383,6 +416,7 @@
       "confidence": 0.8029,
       "verdict": "wrong",
       "state": "verifier_accept",
+      "shadow_margin": 7.002,
       "text": "Audrey finds strengthening the bond with her dogs through petting, hugs, and calmness duri"
     },
     {
@@ -394,6 +428,7 @@
       "confidence": 0.8952,
       "verdict": "supported",
       "state": "verifier_accept",
+      "shadow_margin": 6.9688,
       "text": "Audrey finds strengthening the bond with her dogs through petting, hugs, and calmness duri"
     },
     {
@@ -405,6 +440,7 @@
       "confidence": 0.7263,
       "verdict": "implied",
       "state": "verifier_accept",
+      "shadow_margin": 6.5664,
       "text": "Audrey finds strengthening the bond with her dogs through petting, hugs, and calmness duri"
     },
     {
@@ -416,6 +452,7 @@
       "confidence": 0.9094,
       "verdict": "supported",
       "state": "verifier_accept",
+      "shadow_margin": 6.834,
       "text": "Audrey finds strengthening the bond with her dogs through petting, hugs, and calmness duri"
     },
     {
@@ -427,6 +464,7 @@
       "confidence": 0.8542,
       "verdict": "supported",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Audrey finds strengthening the bond with her dogs through petting, hugs, and calmness duri"
     },
     {
@@ -438,6 +476,7 @@
       "confidence": 0.7352,
       "verdict": "implied",
       "state": "verifier_accept",
+      "shadow_margin": 7.1816,
       "text": "Deborah's workshops involve activities like yoga, meditation, and self-reflection to promo"
     },
     {
@@ -449,6 +488,7 @@
       "confidence": 0.8891,
       "verdict": "supported",
       "state": "verifier_accept",
+      "shadow_margin": 6.9023,
       "text": "Deborah's workshops involve activities like yoga, meditation, and self-reflection to promo"
     },
     {
@@ -460,6 +500,7 @@
       "confidence": 0.8652,
       "verdict": "supported",
       "state": "verifier_accept",
+      "shadow_margin": 6.5488,
       "text": "Deborah's workshops involve activities like yoga, meditation, and self-reflection to promo"
     },
     {
@@ -471,6 +512,7 @@
       "confidence": 0.8395,
       "verdict": "supported",
       "state": "verifier_accept",
+      "shadow_margin": 6.8164,
       "text": "Deborah's workshops involve activities like yoga, meditation, and self-reflection to promo"
     },
     {
@@ -482,6 +524,7 @@
       "confidence": 0.9438,
       "verdict": "supported",
       "state": "verifier_accept",
+      "shadow_margin": 6.9473,
       "text": "Melanie got new running shoes for running, which she finds great for destressing and clear"
     },
     {
@@ -493,6 +536,7 @@
       "confidence": 0.7454,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Melanie got new running shoes for running, which she finds great for destressing and clear"
     },
     {
@@ -504,6 +548,7 @@
       "confidence": 0.8919,
       "verdict": "supported",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Melanie got new running shoes for running, which she finds great for destressing and clear"
     },
     {
@@ -515,6 +560,7 @@
       "confidence": 0.8323,
       "verdict": "wrong",
       "state": "structural_drop",
+      "shadow_margin": null,
       "text": "Painting is a fun way for Melanie to express her feelings and get creative, helping her re"
     },
     {
@@ -526,6 +572,7 @@
       "confidence": 0.7351,
       "verdict": "wrong",
       "state": "structural_drop",
+      "shadow_margin": null,
       "text": "Painting is a fun way for Melanie to express her feelings and get creative, helping her re"
     },
     {
@@ -537,6 +584,7 @@
       "confidence": 0.8104,
       "verdict": "wrong",
       "state": "structural_drop",
+      "shadow_margin": null,
       "text": "Deborah mentions that mindfulness is a huge part of her life and offers to assist Jolene w"
     },
     {
@@ -548,6 +596,7 @@
       "confidence": 0.937,
       "verdict": "supported",
       "state": "verifier_accept",
+      "shadow_margin": 6.8145,
       "text": "Jon is a dancer who runs his own dance studio."
     },
     {
@@ -559,6 +608,7 @@
       "confidence": 0.7974,
       "verdict": "wrong",
       "state": "structural_drop",
+      "shadow_margin": null,
       "text": "Andrew is a person living in an apartment."
     },
     {
@@ -570,6 +620,7 @@
       "confidence": 0.8398,
       "verdict": "supported",
       "state": "structural_drop",
+      "shadow_margin": null,
       "text": "Tim recently gave a presentation in class and felt it was a small but significant progress"
     },
     {
@@ -581,6 +632,7 @@
       "confidence": 0.783,
       "verdict": "supported",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Tim recently gave a presentation in class and felt it was a small but significant progress"
     },
     {
@@ -592,6 +644,7 @@
       "confidence": 0.7115,
       "verdict": "supported",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Tim recently gave a presentation in class and felt it was a small but significant progress"
     },
     {
@@ -603,6 +656,7 @@
       "confidence": 0.8089,
       "verdict": "supported",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Audrey took long walks with Max in the neighborhood when she was a kid, sharing worries an"
     },
     {
@@ -614,6 +668,7 @@
       "confidence": 0.7665,
       "verdict": "supported",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Audrey took long walks with Max in the neighborhood when she was a kid, sharing worries an"
     },
     {
@@ -625,6 +680,7 @@
       "confidence": 0.8059,
       "verdict": "wrong",
       "state": "structural_drop",
+      "shadow_margin": null,
       "text": "Joanna has a stuffed animal dog named Tilly that was a gift from Nate."
     },
     {
@@ -636,6 +692,7 @@
       "confidence": 0.8065,
       "verdict": "supported",
       "state": "structural_drop",
+      "shadow_margin": null,
       "text": "Joanna has a stuffed animal dog named Tilly that was a gift from Nate."
     },
     {
@@ -647,6 +704,7 @@
       "confidence": 0.9812,
       "verdict": "supported",
       "state": "auto_accept",
+      "shadow_margin": 5.4375,
       "text": "Having his own dance studio and teaching others is a dream come true for Jon."
     },
     {
@@ -658,6 +716,7 @@
       "confidence": 0.7104,
       "verdict": "implied",
       "state": "structural_drop",
+      "shadow_margin": null,
       "text": "Having his own dance studio and teaching others is a dream come true for Jon."
     },
     {
@@ -669,6 +728,7 @@
       "confidence": 0.8464,
       "verdict": "wrong",
       "state": "structural_drop",
+      "shadow_margin": null,
       "text": "Having his own dance studio and teaching others is a dream come true for Jon."
     },
     {
@@ -680,6 +740,7 @@
       "confidence": 0.8224,
       "verdict": "supported",
       "state": "structural_drop",
+      "shadow_margin": null,
       "text": "John's mobile game is a 2D adventure game with puzzles and exploration."
     },
     {
@@ -691,6 +752,7 @@
       "confidence": 0.8983,
       "verdict": "supported",
       "state": "structural_drop",
+      "shadow_margin": null,
       "text": "John's mobile game is a 2D adventure game with puzzles and exploration."
     },
     {
@@ -702,6 +764,7 @@
       "confidence": 0.7857,
       "verdict": "implied",
       "state": "verifier_accept",
+      "shadow_margin": 6.7812,
       "text": "John's mobile game is a 2D adventure game with puzzles and exploration."
     },
     {
@@ -713,6 +776,7 @@
       "confidence": 0.9006,
       "verdict": "implied",
       "state": "structural_drop",
+      "shadow_margin": null,
       "text": "John's mobile game is a 2D adventure game with puzzles and exploration."
     },
     {
@@ -724,6 +788,7 @@
       "confidence": 0.748,
       "verdict": "supported",
       "state": "verifier_accept",
+      "shadow_margin": 6.748,
       "text": "John's mobile game is a 2D adventure game with puzzles and exploration."
     },
     {
@@ -735,6 +800,7 @@
       "confidence": 0.7853,
       "verdict": "supported",
       "state": "verifier_accept",
+      "shadow_margin": 6.3574,
       "text": "John's mobile game is a 2D adventure game with puzzles and exploration."
     },
     {
@@ -746,6 +812,7 @@
       "confidence": 0.7335,
       "verdict": "wrong",
       "state": "structural_drop",
+      "shadow_margin": null,
       "text": "Joanna is a fan of superheroes in general, finding each one's story and powers fascinating"
     },
     {
@@ -757,6 +824,7 @@
       "confidence": 0.8035,
       "verdict": "wrong",
       "state": "structural_drop",
+      "shadow_margin": null,
       "text": "Joanna is a fan of superheroes in general, finding each one's story and powers fascinating"
     },
     {
@@ -768,6 +836,7 @@
       "confidence": 0.8842,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Joanna is a fan of superheroes in general, finding each one's story and powers fascinating"
     },
     {
@@ -779,6 +848,7 @@
       "confidence": 0.7113,
       "verdict": "wrong",
       "state": "structural_drop",
+      "shadow_margin": null,
       "text": "Joanna is a fan of superheroes in general, finding each one's story and powers fascinating"
     },
     {
@@ -790,6 +860,7 @@
       "confidence": 0.9088,
       "verdict": "wrong",
       "state": "structural_drop",
+      "shadow_margin": null,
       "text": "Joanna is a fan of superheroes in general, finding each one's story and powers fascinating"
     },
     {
@@ -801,6 +872,7 @@
       "confidence": 0.7003,
       "verdict": "wrong",
       "state": "structural_drop",
+      "shadow_margin": null,
       "text": "John had a big win in his game last week and advanced to the next level, which was a huge "
     },
     {
@@ -812,6 +884,7 @@
       "confidence": 0.7571,
       "verdict": "wrong",
       "state": "structural_drop",
+      "shadow_margin": null,
       "text": "John had a big win in his game last week and advanced to the next level, which was a huge "
     },
     {
@@ -823,6 +896,7 @@
       "confidence": 0.7802,
       "verdict": "wrong",
       "state": "structural_drop",
+      "shadow_margin": null,
       "text": "Tim is a fan of the fantasy genre, particularly enjoying epic adventures and magical world"
     },
     {
@@ -834,6 +908,7 @@
       "confidence": 0.7324,
       "verdict": "wrong",
       "state": "structural_drop",
+      "shadow_margin": null,
       "text": "Tim is a fan of the fantasy genre, particularly enjoying epic adventures and magical world"
     },
     {
@@ -845,6 +920,7 @@
       "confidence": 0.828,
       "verdict": "wrong",
       "state": "structural_drop",
+      "shadow_margin": null,
       "text": "Tim is a fan of the fantasy genre, particularly enjoying epic adventures and magical world"
     },
     {
@@ -856,6 +932,7 @@
       "confidence": 0.7814,
       "verdict": "supported",
       "state": "verifier_accept",
+      "shadow_margin": 6.8535,
       "text": "Deborah's experience with her mother's friends allowed her to appreciate her mother more a"
     },
     {
@@ -867,6 +944,7 @@
       "confidence": 0.706,
       "verdict": "implied",
       "state": "verifier_accept",
+      "shadow_margin": 6.7754,
       "text": "Deborah's experience with her mother's friends allowed her to appreciate her mother more a"
     },
     {
@@ -878,6 +956,7 @@
       "confidence": 0.7927,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Deborah visited her mother's old house last week which holds special memories as her mothe"
     },
     {
@@ -889,6 +968,7 @@
       "confidence": 0.9199,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Deborah visited her mother's old house last week which holds special memories as her mothe"
     },
     {
@@ -900,6 +980,7 @@
       "confidence": 0.7077,
       "verdict": "implied",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Deborah visited her mother's old house last week which holds special memories as her mothe"
     },
     {
@@ -911,6 +992,7 @@
       "confidence": 0.7323,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Deborah visited her mother's old house last week which holds special memories as her mothe"
     },
     {
@@ -922,6 +1004,7 @@
       "confidence": 0.9381,
       "verdict": "supported",
       "state": "verifier_accept",
+      "shadow_margin": 6.834,
       "text": "Jolene and her partner came across a waterfall oasis during a hike where she felt peaceful"
     },
     {
@@ -933,6 +1016,7 @@
       "confidence": 0.7119,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Jolene and her partner came across a waterfall oasis during a hike where she felt peaceful"
     },
     {
@@ -944,6 +1028,7 @@
       "confidence": 0.9439,
       "verdict": "supported",
       "state": "verifier_accept",
+      "shadow_margin": 6.6543,
       "text": "Jolene and her partner came across a waterfall oasis during a hike where she felt peaceful"
     },
     {
@@ -955,6 +1040,7 @@
       "confidence": 0.7665,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Jolene and her partner came across a waterfall oasis during a hike where she felt peaceful"
     },
     {
@@ -966,6 +1052,7 @@
       "confidence": 0.979,
       "verdict": "wrong",
       "state": "auto_accept",
+      "shadow_margin": 3.0947,
       "text": "Audrey's favorite recipe is Chicken Pot Pie, a family recipe that reminds her of her grand"
     },
     {
@@ -977,6 +1064,7 @@
       "confidence": 0.7393,
       "verdict": "supported",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Jolene recently went on a trip to Rio de Janeiro with her partner, where they attended yog"
     },
     {
@@ -988,6 +1076,7 @@
       "confidence": 0.9887,
       "verdict": "supported",
       "state": "auto_accept",
+      "shadow_margin": 5.8848,
       "text": "Jolene bought a console as a gift for her partner on the 17th."
     },
     {
@@ -999,6 +1088,7 @@
       "confidence": 0.803,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Jolene bought a console as a gift for her partner on the 17th."
     },
     {
@@ -1010,6 +1100,7 @@
       "confidence": 0.9837,
       "verdict": "implied",
       "state": "auto_accept",
+      "shadow_margin": 3.0244,
       "text": "Andrew and his girlfriend volunteered at a pet shelter on Monday and found it rewarding."
     },
     {
@@ -1021,6 +1112,7 @@
       "confidence": 0.9826,
       "verdict": "implied",
       "state": "auto_accept",
+      "shadow_margin": 2.6787,
       "text": "Andrew and his girlfriend volunteered at a pet shelter on Monday and found it rewarding."
     },
     {
@@ -1032,6 +1124,7 @@
       "confidence": 0.8913,
       "verdict": "supported",
       "state": "verifier_accept",
+      "shadow_margin": 6.9492,
       "text": "Jolene spends time playing video games with her partner to relax after a long day."
     },
     {
@@ -1043,6 +1136,7 @@
       "confidence": 0.752,
       "verdict": "implied",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Jolene has a room in her mother's house where she has many memories."
     },
     {
@@ -1054,6 +1148,7 @@
       "confidence": 0.7268,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Jolene has a room in her mother's house where she has many memories."
     },
     {
@@ -1065,6 +1160,7 @@
       "confidence": 0.815,
       "verdict": "implied",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Jolene has a room in her mother's house where she has many memories."
     },
     {
@@ -1076,6 +1172,7 @@
       "confidence": 0.7314,
       "verdict": "supported",
       "state": "verifier_accept",
+      "shadow_margin": 6.9277,
       "text": "Jolene has a room in her mother's house where she has many memories."
     },
     {
@@ -1087,6 +1184,7 @@
       "confidence": 0.9062,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Deborah has a pendant that reminds her of her mother."
     },
     {
@@ -1098,6 +1196,7 @@
       "confidence": 0.7864,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Deborah has a pendant that reminds her of her mother."
     },
     {
@@ -1109,6 +1208,7 @@
       "confidence": 0.9616,
       "verdict": "implied",
       "state": "auto_accept",
+      "shadow_margin": 6.2656,
       "text": "John got promoted at work to assistant manager and is excited about it, seeing it as a ste"
     },
     {
@@ -1120,6 +1220,7 @@
       "confidence": 0.9743,
       "verdict": "wrong",
       "state": "auto_accept",
+      "shadow_margin": 6.709,
       "text": "Joanna finds nature to be calming and a way to reset, with worries and stress vanishing wh"
     },
     {
@@ -1131,6 +1232,7 @@
       "confidence": 0.9004,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Joanna finds nature to be calming and a way to reset, with worries and stress vanishing wh"
     },
     {
@@ -1142,6 +1244,7 @@
       "confidence": 0.956,
       "verdict": "wrong",
       "state": "auto_accept",
+      "shadow_margin": 0.5341,
       "text": "Joanna finds nature to be calming and a way to reset, with worries and stress vanishing wh"
     },
     {
@@ -1153,6 +1256,7 @@
       "confidence": 0.9584,
       "verdict": "wrong",
       "state": "auto_accept",
+      "shadow_margin": -1.8544,
       "text": "Joanna finds nature to be calming and a way to reset, with worries and stress vanishing wh"
     },
     {
@@ -1164,6 +1268,7 @@
       "confidence": 0.7519,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Joanna finds nature to be calming and a way to reset, with worries and stress vanishing wh"
     },
     {
@@ -1175,6 +1280,7 @@
       "confidence": 0.7513,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "John is excited about the opportunity to combine his love for gaming and helping by teachi"
     },
     {
@@ -1186,6 +1292,7 @@
       "confidence": 0.9052,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "John is excited about the opportunity to combine his love for gaming and helping by teachi"
     },
     {
@@ -1197,6 +1304,7 @@
       "confidence": 0.7183,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "John is excited about the opportunity to combine his love for gaming and helping by teachi"
     },
     {
@@ -1208,6 +1316,7 @@
       "confidence": 0.7786,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "John is keen on stopping by The Cliffs of Moher after his season."
     },
     {
@@ -1219,6 +1328,7 @@
       "confidence": 0.9772,
       "verdict": "wrong",
       "state": "auto_accept",
+      "shadow_margin": 3.2744,
       "text": "Maria dropped off baked goods at a homeless shelter last week and is motivated to help peo"
     },
     {
@@ -1230,6 +1340,7 @@
       "confidence": 0.8553,
       "verdict": "implied",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "John has been overwhelmed by the response and volunteers at the food drive events."
     },
     {
@@ -1241,6 +1352,7 @@
       "confidence": 0.7483,
       "verdict": "wrong",
       "state": "verifier_accept",
+      "shadow_margin": 7.4785,
       "text": "John is involved in brainstorming projects to help underserved communities with education,"
     },
     {
@@ -1252,6 +1364,7 @@
       "confidence": 0.7522,
       "verdict": "implied",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "John is involved in brainstorming projects to help underserved communities with education,"
     },
     {
@@ -1263,6 +1376,7 @@
       "confidence": 0.717,
       "verdict": "implied",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "John is involved in brainstorming projects to help underserved communities with education,"
     },
     {
@@ -1274,6 +1388,7 @@
       "confidence": 0.7522,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Tim is excited to watch the new fantasy TV series called \"The Wheel of Time\" based on a bo"
     },
     {
@@ -1285,6 +1400,7 @@
       "confidence": 0.9424,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Tim is excited to watch the new fantasy TV series called \"The Wheel of Time\" based on a bo"
     },
     {
@@ -1296,6 +1412,7 @@
       "confidence": 0.7256,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Tim is excited to watch the new fantasy TV series called \"The Wheel of Time\" based on a bo"
     },
     {
@@ -1307,6 +1424,7 @@
       "confidence": 0.9179,
       "verdict": "wrong",
       "state": "verifier_drop",
+      "shadow_margin": null,
       "text": "Caroline is excited to create a family for kids who need one, even though she anticipates "
     }
   ]

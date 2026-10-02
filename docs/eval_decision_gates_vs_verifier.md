@@ -38,9 +38,40 @@ Two readings the matrix forces. The verifier is doing the work: it drops 53
 of which 37 are wrong, and accepts 28 of which 23 are right. But auto-accept
 is barely better than chance at 7 right of 15 -- that bucket holds the known
 residual class (a very confident wrong triple, e.g. the Joanna `discovered`
-at 0.97, auto-accepts by policy). Widening the band upward would trade those
-auto-accepts for verifier load and needs its own measurement; the current
-numbers are the baseline for it.
+at 0.97, auto-accepts by policy).
+
+Per-path precision with Wilson 95% intervals:
+
+| Path            |  n | right | wrong | precision | 95% CI      |
+|-----------------|---:|------:|------:|----------:|:------------|
+| structural_drop | 22 |     6 |    16 | —         | [0.132-0.482] |
+| verifier_drop   | 53 |    16 |    37 | —         | [0.195-0.435] |
+| verifier_accept | 28 |    23 |     5 | **0.821** | [0.644-0.921] |
+| auto_accept     | 15 |     7 |     8 | **0.467** | [0.248-0.699] |
+| kept            | 43 |    30 |    13 | **0.698** | —           |
+
+The CIs are the point, not decoration: auto-accept at n=15 spans 0.248 to
+0.699, which includes both "near chance" and "acceptable". Describing 7/15
+as near chance is plausible; claiming it as established is not.
+
+Shadow verifier on the auto-accepts (production path unchanged, measured
+with --shadow):
+
+| Band     | n | right | would-drop | would-keep | right lost |
+|----------|---|------:|-----------:|-----------:|-----------:|
+| 0.95-0.97| 6 |     2 |          4 |          2 | 0          |
+| 0.97-0.99| 9 |     5 |          8 |          1 | 5          |
+
+Extending the band downward would drop 12 to remove 7 wrong at the cost of
+5 right -- and in the 0.97-0.99 band alone it would drop more right (5) than
+wrong (3). That is not a recommendation to move the boundary; with n=6 and
+n=9 it is evidence that the upper region needs more data before any move.
+The production boundary stays at 0.95. These numbers are its baseline.
+
+Coverage note: floor_drop is 0, which validates nothing about the <0.70
+path. It means no asserted triple in this set scored below the floor, not
+that the floor is correct. The implementation is tested
+(tests/python_verifier_tests.py); its empirical effect is unobserved here.
 
 Recall is still not measured. The precise claim is: the pipeline raises
 precision substantially on the 118 annotated model assertions while
