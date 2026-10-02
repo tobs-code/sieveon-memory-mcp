@@ -273,6 +273,50 @@ def score(gold_rows: List[Dict[str, Any]],
     }
 
 
+def production_vocabulary() -> set:
+    """Predicate names the production chain can actually produce.
+
+    Read live from `verbalise.CLAIM` rather than copied into a list here.
+    That dict is the verbaliser of the extractor's own output, so it is the
+    one place that answers "can this predicate exist in the store at all". A
+    gold fact whose predicate is missing from it is a vocabulary gap: no
+    claim could ever match it, so charging the extractor for missing it would
+    be measuring the schema.
+    """
+    from src.extraction.verbalise import CLAIM
+    return set(CLAIM)
+
+
+def audit_vocabulary(gold_rows: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Which gold facts are expressible in the production vocabulary.
+
+    Purely derived: the gold file is not rewritten. Semantic gold stays the
+    ground truth; this only decides what the extractor could be scored on.
+    """
+    vocab = production_vocabulary()
+    preds: Dict[str, List[str]] = {}
+    for r in gold_rows:
+        for t in (r.get("triples") or []):
+            preds.setdefault(t[1], []).append(r["id"])
+    in_vocab = sorted(p for p in preds if p in vocab)
+    out_vocab = sorted(p for p in preds if p not in vocab)
+    scorable = [r for r in gold_rows for t in (r.get("triples") or [])
+                if t[1] in vocab]
+    unscorable = [r for r in gold_rows for t in (r.get("triples") or [])
+                  if t[1] not in vocab]
+    return {
+        "vocabulary_size": len(vocab),
+        "vocabulary": sorted(vocab),
+        "distinct_gold_predicates": sorted(preds),
+        "gold_predicate_counts": {k: len(v) for k, v in sorted(preds.items())},
+        "scorable_predicates": in_vocab,
+        "unscorable_predicates": out_vocab,
+        "scorable_gold_facts": len(scorable),
+        "unscorable_gold_facts": len(unscorable),
+        "scorable_ids": sorted({r["id"] for r in scorable}),
+    }
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--gold", type=Path, default=GOLD)
@@ -304,6 +348,31 @@ def main() -> int:
         return 2
 
     r = score(gold_rows, claims_by_id)
+    audit = audit_vocabulary(gold_rows)
+
+    # Two denominators, both reported. Semantic coverage counts every gold
+    # fact, including the ones the schema cannot express. Scorable recall
+    # counts only what an extractor claim could ever have matched. Quoting
+    # either alone is how a schema gap gets mistaken for a model defect.
+    n_gold = r["gold"]
+    n_unscorable = audit["unscorable_gold_facts"]
+    n_scorable = n_gold - n_unscorable
+    recall_scorable = ((r["found"] + r["imprecise"]) / n_scorable
+                       if n_scorable else float("nan"))
+    recall_scorable_clean = (r["found"] / n_scorable
+                             if n_scorable else float("nan"))
+
+    print("=== vocabulary audit ===")
+    print(f"  production vocabulary  {audit['vocabulary_size']} predicates "
+          f"(src/extraction/verbalise.py CLAIM)")
+    print(f"  distinct gold preds    "
+          f"{len(audit['distinct_gold_predicates'])}: "
+          f"{audit['distinct_gold_predicates']}")
+    print(f"  scorable predicates    {audit['scorable_predicates']}")
+    print(f"  NOT in vocabulary      {audit['unscorable_predicates'] or 'none'}")
+    print(f"  gold facts             {n_gold} total, {n_scorable} scorable, "
+          f"{n_unscorable} vocabulary gap")
+    print()
 
     print(f"=== recall harness: {len(gold_rows)} sentences, gold-first ===")
     print(f"  gold facts        {r['gold']}")
@@ -319,9 +388,13 @@ def main() -> int:
           f"{r['predicate_discipline_rate']:>4}")
     print()
     print(f"  recall            {r['recall']:.3f}   "
-          f"({r['found']}/{r['gold']}, clean predicates only)")
+          f"({r['found']}/{r['gold']}, semantic gold, clean predicates)")
     print(f"  recall incl impl  {r['recall_incl_implied']:.3f}   "
-          f"({r['found'] + r['imprecise']}/{r['gold']})")
+          f"({r['found'] + r['imprecise']}/{r['gold']}, semantic gold)")
+    print(f"  scorable recall   {recall_scorable:.3f}   "
+          f"({r['found'] + r['imprecise']}/{n_scorable}, vocabulary gap excluded)")
+    print(f"  scorable clean    {recall_scorable_clean:.3f}   "
+          f"({r['found']}/{n_scorable})")
     print(f"  precision         {r['precision']:.3f}   "
           f"({r['found'] + r['imprecise']}"
           f"/{r['claims_on_graphable_sentences']})")
@@ -357,8 +430,12 @@ def main() -> int:
         print(f"    {c['s']} -{c['p']}-> {c['o']}")
 
     if args.out:
-        Path(args.out).write_text(json.dumps(r, indent=2, ensure_ascii=False),
-                                  encoding="utf-8")
+        Path(args.out).write_text(json.dumps(
+            dict(r, vocabulary_audit=audit,
+                 scorable_recall=round(recall_scorable, 3),
+                 scorable_recall_clean=round(recall_scorable_clean, 3)),
+            indent=2, ensure_ascii=False),
+            encoding="utf-8")
         print(f"\nwrote {args.out}")
     return 0
 

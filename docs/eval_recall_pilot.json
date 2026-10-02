@@ -537,5 +537,68 @@
         }
       }
     ]
-  }
+  },
+  "vocabulary_audit": {
+    "vocabulary_size": 17,
+    "vocabulary": [
+      "acquired",
+      "built",
+      "created",
+      "designed",
+      "developed",
+      "discovered",
+      "founded",
+      "funded",
+      "integrated",
+      "joined",
+      "leads",
+      "located_in",
+      "part_of",
+      "provides",
+      "uses",
+      "works_at",
+      "wrote"
+    ],
+    "distinct_gold_predicates": [
+      "created",
+      "developed",
+      "part_of",
+      "provides",
+      "received",
+      "uses"
+    ],
+    "gold_predicate_counts": {
+      "created": 1,
+      "developed": 2,
+      "part_of": 1,
+      "provides": 7,
+      "received": 1,
+      "uses": 2
+    },
+    "scorable_predicates": [
+      "created",
+      "developed",
+      "part_of",
+      "provides",
+      "uses"
+    ],
+    "unscorable_predicates": [
+      "received"
+    ],
+    "scorable_gold_facts": 13,
+    "unscorable_gold_facts": 1,
+    "scorable_ids": [
+      "conv-26/session_11_observation/Melanie/D11:7",
+      "conv-41/session_18_observation/Maria/D18:15",
+      "conv-41/session_20_observation/Maria/D20:3",
+      "conv-41/session_25_observation/John/D25:13",
+      "conv-41/session_31_observation/Maria/D31:14",
+      "conv-42/session_10_observation/Joanna/D10:9",
+      "conv-42/session_27_observation/Joanna/D27:2",
+      "conv-48/session_18_observation/Jolene/D18:5",
+      "conv-48/session_28_observation/Jolene/D28:26"
+    ]
+  },
+  "scorable_recall": 1.0,
+  "scorable_recall_clean": 0.308
 }
