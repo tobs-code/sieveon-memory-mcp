@@ -168,3 +168,47 @@ not new labels):
 - requirement inverted as supply: `requires X` becomes `provides X`
   ([50] lilies/watering/sunlight).
 - problem source as tool: `phone issues` becomes `uses phone` ([42]).
+
+Strict entailment vs. broad precision, measured 2026-10-02
+------------------------------------------------------------
+
+Question: the uniform kept set shows strict 6/29 = 0.207 against broad
+16/29 = 0.552. Is that a defect of the decision logic, or of the score?
+
+`scripts/eval_verifier_strict.py`, same MiniLM2 scores over all 202
+annotated triples from both sets, only the labelling swapped:
+
+| Target                | n  | pos | AUC              | PR-AUC | P@R=0.60 |
+| --------------------- | -- | --- | ---------------- | ------ | --------- |
+| supported+implied vs wrong | 202 | 78 | 0.819 [0.763, 0.874] | 0.702 | 0.712 |
+| supported vs rest         | 202 | 47 | 0.775 [0.707, 0.839] | 0.425 | 0.452 |
+
+Those two overlap. The decisive numbers are the pairwise ones:
+
+| Pair                   | n  | AUC              |
+| ---------------------- | -- | ---------------- |
+| supported vs wrong     | 171 | 0.837 [0.769, 0.897] |
+| implied   vs wrong     | 155 | 0.792 [0.708, 0.870] |
+| supported vs implied   | 78  | **0.527 [0.380, 0.666]** |
+
+Mean margin by hand verdict: supported +5.930, implied +5.426,
+wrong +2.459. The gap between not-wrong and wrong is about 3 margin
+units; the gap between supported and implied is about half a unit.
+
+So the verifier separates false from plausible well and is **at chance
+on the supported/implied distinction** -- the interval contains 0.5. No
+threshold on this score can substantially raise strict precision, because
+the two classes are not separable in the score at all. `strict = 0.207`
+is therefore not a threshold that was set wrong, and moving the accept
+margin is not the fix.
+
+What this rules out: a stricter accept margin, or a second, stricter
+threshold on the same verifier margin. What it leaves open: a different
+signal for strict entailment (a model or check that can read
+"provides" as over-reading "bring"), which is a separate piece of work and
+should be treated as such rather than as a threshold to tune.
+
+Extraction confidence is a weaker signal under both labellings
+(0.570 / 0.625 AUC) and, notably, is *not* blind to the distinction --
+which means it is not a candidate either, but it does not contradict the
+verifier result: it is close to chance on both.
