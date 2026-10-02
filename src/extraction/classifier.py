@@ -29,8 +29,11 @@ _UPDATE_READ_REQUEST_RE = re.compile(
 
 # Distinct question words: 2+ in one query usually means multiple facts
 # ("Who ... and where ...") -> multi-hop, even if each word alone is factual.
+# English only (2026-10-01): German question words were removed along with all
+# other German support. Notably, German "was" (= what) used to collide with
+# English "was" (past tense of "be") and faked coordinations.
 _WH_WORD_RE = re.compile(
-    r"\b(who|what|which|where|when|why|how|wer|was|welche|wo|wann|warum|wie)\b"
+    r"\b(who|what|which|where|when|why|how)\b"
 )
 
 # Definitional why ("why is/are ..."): asks for an explanation of a stable
@@ -38,14 +41,8 @@ _WH_WORD_RE = re.compile(
 # ("why did/was ...") stays multi-hop territory.
 _WHY_DEFINITIONAL_RE = re.compile(r"\bwhy\s+(is|are)\b")
 
-# German factual question frames. Conversational DE training data uses
-# worüber/gesprochen/erinnerst-frames exclusively, so these frames never
-# legitimately route to conversational -- an ML "conversational" verdict on
-# them is always template gravity from EN CoQA "What ..." questions.
-_DE_FACTUAL_RE = re.compile(
-    r"\bwas\s+(ist|sind|hat|haben|war|waren|wurde|wurden|bedeutet|kostet|steht)\b"
-    r"|\bwer\s+(ist|war|hat)\b|\bwo\s+ist\b|\bwie\s+funktioni"
-)
+# German factual question frames were removed 2026-10-01 with all other
+# German support (English-only decision).
 _TRAINING_PATHS = [
     Path(__file__).parents[2] / "docs" / "data" / "trec_queries.jsonl",
     Path(__file__).parents[2] / "docs" / "data" / "coqa_conversational.jsonl",
@@ -68,21 +65,9 @@ class _RegexClassifier:
 
     def __init__(self):
         self.temporal_patterns = [
-            # Deutsch
-            r"\bwann\b",
-            r"\bgestern\b",
-            r"\bheute\b",
-            r"\bmorgen\b",
-            r"\bletzt\b",
-            r"\bnächste\b",
+            # English only (2026-10-01): German patterns removed with all
+            # other German support. "timestamp" is tech English, kept.
             r"\btimestamp\b",
-            r"\bzeit\b",
-            r"\bdatum\b",
-            r"\bseit\b",
-            r"\bbis\b",
-            r"\bänderung\b",
-            r"\bgeändert\b",
-            # Englisch
             r"\bwhen\b",
             r"\byesterday\b",
             r"\btoday\b",
@@ -99,25 +84,7 @@ class _RegexClassifier:
             # routed too many lookups to temporal.
         ]
         self.factual_patterns = [
-            # Deutsch
-            r"\bwer\b",
-            r"\bwas\b",
-            r"\bwelche\b",
-            r"\bwo\b",
-            r"\bhat\b",
-            r"\bhaben\b",
-            r"\bist\b",
-            r"\bworan\b",
-            r"\bwomit\b",
-            r"\bwodurch\b",
-            r"\bwerdegang\b",
-            r"\bfakten\b",
-            r"\binfos\b",
-            r"\bnenne\b",
-            r"\bliste\b",
-            r"\bzeig\b",
-            r"\bfinde\b",
-            # Englisch
+            # English only (2026-10-01)
             r"\bwho\b",
             r"\bwhat\b",
             r"\bwhich\b",
@@ -129,31 +96,11 @@ class _RegexClassifier:
             r"\bshow\b",
             r"\bfind\b",
             r"\btell\b",
-            # Englisch + Deutsch: how-questions are lookups, not multi-hop
+            # how-questions are lookups, not multi-hop
             r"\bhow\b",
-            r"\bwie\b",
-            # Deutsch: reflexive change-questions ask what changed (factual).
-            # Umlaute in beiden Schreibweisen (ä/ae), da User beides tippen.
-            r"\bwas hat sich\b",
-            r"\bwas haben sich\b",
-            r"\bhat sich ge(ä|ae)ndert\b",
-            r"\bhaben sich ge(ä|ae)ndert\b",
         ]
         self.multi_hop_patterns = [
-            # Deutsch
-            r"\bwarum\b",
-            r"\bweshalb\b",
-            r"\bwieso\b",
-            r"\bwegen\b",
-            r"\bdaher\b",
-            r"\bdeshalb\b",
-            r"\bbeziehung\b",
-            r"\bverbunden\b",
-            r"\bzusammenhang\b",
-            r"\bund wo\b",
-            r"\bund was\b",
-            r"\bund welche\b",
-            # Englisch
+            # English only (2026-10-01)
             r"\bwhy\b",
             r"\bbecause\b",
             r"\breason\b",
@@ -165,15 +112,7 @@ class _RegexClassifier:
             r"\band which\b",
         ]
         self.conversational_patterns = [
-            # Deutsch
-            r"\bworüber\b",
-            r"\büber was\b",
-            r"\bgesprochen\b",
-            r"\bredeten\b",
-            r"\bunterhielt\b",
-            r"\berinnerst du dich\b",
-            r"\bweißt du noch\b",
-            # Englisch
+            # English only (2026-10-01)
             r"\bwhat about\b",
             r"\btalked about\b",
             r"\bspoke about\b",
@@ -189,30 +128,14 @@ class _RegexClassifier:
             r"^\s*hi\b",
             r"^\s*hello\b",
             r"^\s*hey\b",
-            r"^\s*hallo\b",
             r"\bgood morning\b",
             r"\bgood evening\b",
             r"\bthank you\b",
             r"\bthanks\b",
-            r"\bdanke\b",
             r"\bsee you\b",
         ]
         self.update_patterns = [
-            # Deutsch
-            r"\baktualisiere\b",
-            r"\bupdate\b",
-            r"\bändere\b",
-            r"\bkorrigiere\b",
-            r"\bsetze\b",
-            r"\büberschreibe\b",
-            # Deutsch: memory-write verbs (erinnern/vergessen/merken)
-            r"\bvergiss\b",
-            r"\bvergisst\b",
-            r"\bvergesse\b",
-            r"\berinnere\b",
-            r"\bmerke\b",
-            r"\bmerk dir\b",
-            # Englisch
+            # English only (2026-10-01)
             r"\bupdate\b",
             r"\bchange\b",
             r"\bmodify\b",
@@ -479,12 +402,9 @@ class QueryClassifier:
         if self._ml.is_trained():
             label, confidence = self._ml.classify(query)
             if confidence >= _ML_CONFIDENCE_THRESHOLD:
-                # Deterministic vetoes: known phrasings must never route to
-                # update (triggers writes) or conversational (EN-template
-                # gravity on DE factual frames), no matter the ML confidence.
+                # Deterministic veto: known phrasings must never route to
+                # update (triggers writes), no matter the ML confidence.
                 if label == "update" and _UPDATE_READ_REQUEST_RE.search(query.lower()):
-                    return self._regex.classify(query)
-                if label == "conversational" and _DE_FACTUAL_RE.search(query.lower()):
                     return self._regex.classify(query)
                 return label, confidence
 

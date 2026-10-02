@@ -1,0 +1,34 @@
+{"query": "Who discovered radium?", "gold": [1], "paraphrase": false}
+{"query": "Who founded SpaceX?", "gold": [25], "paraphrase": false}
+{"query": "Who founded Microsoft?", "gold": [26], "paraphrase": false}
+{"query": "Who acquired GitHub?", "gold": [20], "paraphrase": false}
+{"query": "Who acquired WhatsApp?", "gold": [21], "paraphrase": false}
+{"query": "Which company uses QuantumDB?", "gold": [10], "paraphrase": false}
+{"query": "Who developed the QuantumDB engine?", "gold": [11], "paraphrase": false}
+{"query": "Who leads Nova Systems?", "gold": [13], "paraphrase": false}
+{"query": "Who acquired Atlas Freight?", "gold": [12], "paraphrase": false}
+{"query": "Who wrote the first algorithm?", "gold": [17], "paraphrase": false}
+{"query": "Who discovered penicillin?", "gold": [30], "paraphrase": false}
+{"query": "Who discovered X-rays?", "gold": [31], "paraphrase": false}
+{"query": "What engines does SpaceX use?", "gold": [33], "paraphrase": false}
+{"query": "Who is the CEO of Microsoft?", "gold": [19], "paraphrase": false}
+{"query": "Where is Orion Labs headquartered?", "gold": [6], "paraphrase": false}
+{"query": "Who founded Amazon?", "gold": [28], "paraphrase": false}
+{"query": "Who founded Apple?", "gold": [29], "paraphrase": false}
+{"query": "What did Nature publish in 2001?", "gold": [38], "paraphrase": false}
+{"query": "Who founded eBay?", "gold": [27], "paraphrase": false}
+{"query": "Who works at Acme Corp?", "gold": [3, 9], "paraphrase": false}
+{"query": "Which companies made acquisitions in 2014?", "gold": [21, 23], "paraphrase": false}
+{"query": "What did Ada Lovelace write?", "gold": [17, 37], "paraphrase": false}
+{"query": "Who founded a company in the 1990s?", "gold": [27, 28], "paraphrase": false}
+{"query": "The person in charge of Nova Systems?", "gold": [13], "paraphrase": true}
+{"query": "Which firm purchased YouTube?", "gold": [22], "paraphrase": true}
+{"query": "Who first saw the moons of Jupiter?", "gold": [32], "paraphrase": true}
+{"query": "The streaming service's cloud provider?", "gold": [35], "paraphrase": true}
+{"query": "Where is Munich's Acme Corp based?", "gold": [14], "paraphrase": true}
+{"query": "The outfit that built the A320neo's powerplants?", "gold": [34], "paraphrase": true}
+{"query": "Who runs Microsoft as chief executive?", "gold": [19], "paraphrase": true}
+{"query": "What is the capital of France?", "gold": [], "paraphrase": false}
+{"query": "Who won the 2024 presidential election?", "gold": [], "paraphrase": false}
+{"query": "What is the speed of light in vacuum?", "gold": [], "paraphrase": false}
+{"query": "How do black holes form?", "gold": [], "paraphrase": false}

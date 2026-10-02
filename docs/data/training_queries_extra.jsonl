@@ -53,13 +53,6 @@
 {"text": "good morning", "type": "conversational", "source": "boundary-v1"}
 {"text": "thanks a lot", "type": "conversational", "source": "boundary-v1"}
 {"text": "see you tomorrow", "type": "conversational", "source": "boundary-v1"}
-{"text": "Was hat sich an den Vienna Mietpreisen geaendert?", "type": "factual", "source": "boundary-v1"}
-{"text": "Merke dir, dass mein Zug um acht faehrt", "type": "update", "source": "boundary-v1"}
-{"text": "Vergiss nicht, die Blumen zu giessen", "type": "update", "source": "boundary-v1"}
-{"text": "Wer leitet Orion Labs und wo sitzen sie?", "type": "multi-hop", "source": "boundary-v1"}
-{"text": "Warum ist der Himmel ueber Wien heute grau?", "type": "factual", "source": "boundary-v1"}
-{"text": "Wie funktioniert die U-Bahn Preisstaffelung?", "type": "factual", "source": "boundary-v1"}
-{"text": "hallo", "type": "conversational", "source": "boundary-v1"}
 {"text": "Set the thermostat to 21 degrees", "type": "update", "source": "boundary-v1"}
 {"text": "Cancel my booking for Thursday evening", "type": "update", "source": "boundary-v1"}
 {"text": "Reschedule the dentist to next Monday", "type": "update", "source": "boundary-v1"}
@@ -89,20 +82,8 @@
 {"text": "Why does ice float on cold water?", "type": "factual", "source": "boundary-v3"}
 {"text": "Why is olive oil liquid at room temperature?", "type": "factual", "source": "boundary-v3"}
 {"text": "Why do clocks tick in a steady rhythm?", "type": "factual", "source": "boundary-v3"}
-{"text": "Was hat sich geaendert?", "type": "factual", "source": "boundary-v3"}
-{"text": "Was ist neu?", "type": "factual", "source": "boundary-v3"}
-{"text": "Was gibt es Neues?", "type": "factual", "source": "boundary-v3"}
-{"text": "Was hat sich ereignet?", "type": "factual", "source": "boundary-v3"}
-{"text": "Was ist passiert?", "type": "factual", "source": "boundary-v3"}
-{"text": "Erinnerst du dich an den Ausflug?", "type": "conversational", "source": "boundary-v3"}
 {"text": "What changed since this morning?", "type": "temporal", "source": "boundary-v3+relabeled"}
 {"text": "What has changed in the schedule?", "type": "factual", "source": "boundary-v3"}
 {"text": "What exactly changed overnight?", "type": "temporal", "source": "boundary-v3+relabeled"}
 {"text": "Which details changed in the report?", "type": "factual", "source": "boundary-v3"}
 {"text": "What differences are there versus yesterday?", "type": "factual", "source": "boundary-v3"}
-{"text": "Was kostet das Ticket?", "type": "factual", "source": "boundary-v4"}
-{"text": "Was bedeutet Demokratie?", "type": "factual", "source": "boundary-v4"}
-{"text": "Wo ist der Wiener Hauptbahnhof?", "type": "factual", "source": "boundary-v4"}
-{"text": "Wer war Mozart?", "type": "factual", "source": "boundary-v4"}
-{"text": "Was ist der Unterschied zwischen Rye und Weizen?", "type": "factual", "source": "boundary-v4"}
-{"text": "Was steht im neuen Bericht?", "type": "factual", "source": "boundary-v4"}

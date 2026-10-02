@@ -272,16 +272,17 @@ ONTOLOGY = {
     "predicate_types": {
         "works_at": {"source": "person", "target": "organization"},
         "located_in": {"source": ["person", "organization"], "target": "location"},
-        "developed": {"source": "person", "target": ["technology", "concept", "product"]},
+        "developed": {"source": ["person", "organization"], "target": ["technology", "concept", "product"]},
+        "discovered": {"source": ["person", "organization"], "target": ["technology", "concept"]},
         "founded": {"source": "person", "target": "organization"},
         "uses": {
             "source": ["person", "organization"],
             "target": ["technology", "concept"],
         },
-        "part_of": {"source": "concept", "target": "concept"},
+        "part_of": {"source": "*", "target": "*"},
         "leads": {"source": "person", "target": ["organization", "project"]},
         "wrote": {"source": "person", "target": "concept"},
-        "published": {"source": "person", "target": "concept"},
+        "published": {"source": ["person", "organization"], "target": "concept"},
         "created": {"source": ["person", "organization"], "target": ["technology", "concept", "product"]},
         "built": {"source": ["person", "organization"], "target": ["technology", "concept", "product"]},
         "designed": {"source": ["person", "organization"], "target": ["technology", "concept", "product"]},
@@ -1297,8 +1298,25 @@ def extract_triples_with_groq(text: str) -> list[dict]:
 
 
 def extract_triples(text: str) -> list[dict]:
-    """Dispatch triple extraction. Same chain as extract_entities (no Groq in auto)."""
+    """Dispatch triple extraction. Same chain as extract_entities (no Groq in auto).
+
+    spaCy is deliberately NOT a fallback here (ADR-002). On the gold set it
+    asserted 0 correct triples out of 15 (tripR 0.000): its dependency labels do
+    not correspond to KG predicates, so every fact it contributes is wrong.
+    Returning no triple is strictly better than returning a false one --
+    retrieval can fail to find a fact that does not exist, but it will happily
+    surface a fact that is false. spaCy still backs entity extraction
+    (entR 0.981); only the triple chain is gated.
+
+    An explicit EXTRACTION_METHOD is also honoured strictly: requesting "relex"
+    returns relex's output or nothing, rather than silently downgrading to a
+    weaker backend.
+    """
+    if not text or not text.strip():
+        return []
+
     method = os.getenv("EXTRACTION_METHOD", "auto")
+
     if method in ("relex", "auto"):
         triples = extract_triples_with_relex(text)
         if triples:
@@ -1311,6 +1329,6 @@ def extract_triples(text: str) -> list[dict]:
         triples = extract_triples_with_groq(text)
         if triples:
             return triples
-    return extract_triples_with_spacy(text)
+    return []
 
 

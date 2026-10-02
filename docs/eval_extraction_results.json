@@ -1,50 +1,62 @@
 {
-  "relex@0.3": {
+  "relex": {
     "backend": "relex",
-    "avg_ms": 739.4,
-    "entity_precision": 0.911,
-    "entity_recall": 0.981,
-    "triple_recall": 0.824,
-    "junk_clean": "1/7"
-  },
-  "relex@0.5": {
-    "backend": "relex",
-    "avg_ms": 110.2,
-    "entity_precision": 0.911,
-    "entity_recall": 0.981,
-    "triple_recall": 0.765,
-    "junk_clean": "1/7"
-  },
-  "relex@0.7": {
-    "backend": "relex",
-    "avg_ms": 107.3,
-    "entity_precision": 0.911,
-    "entity_recall": 0.981,
-    "triple_recall": 0.706,
-    "junk_clean": "1/7"
-  },
-  "relex@0.9": {
-    "backend": "relex",
-    "avg_ms": 112.2,
-    "entity_precision": 0.911,
-    "entity_recall": 0.981,
-    "triple_recall": 0.471,
-    "junk_clean": "1/7"
+    "entity_precision": 0.92,
+    "entity_recall": 0.972,
+    "triple_recall": 0.844,
+    "junk_clean": "1/4",
+    "facts_total": 55,
+    "facts_correct": 28,
+    "facts_wrong": 27,
+    "facts_from_junk_sentences": 3,
+    "fact_precision": 0.509,
+    "salience_auc": 0.761,
+    "salience_auc_ci_lo": 0.624,
+    "salience_auc_ci_hi": 0.881,
+    "tier_threshold": 0.5,
+    "tier_correct_kept": 28,
+    "tier_wrong_dropped": 0,
+    "tier_kept_precision": 0.5091,
+    "avg_ms": 616.4
   },
   "gliner": {
     "backend": "gliner",
-    "avg_ms": 1314.0,
-    "entity_precision": 0.794,
-    "entity_recall": 0.962,
-    "triple_recall": 0.941,
-    "junk_clean": "1/7"
+    "entity_precision": 0.737,
+    "entity_recall": 0.986,
+    "triple_recall": 0.875,
+    "junk_clean": "1/4",
+    "facts_total": 119,
+    "facts_correct": 29,
+    "facts_wrong": 90,
+    "facts_from_junk_sentences": 8,
+    "fact_precision": 0.244,
+    "salience_auc": 0.5,
+    "salience_auc_ci_lo": 0.5,
+    "salience_auc_ci_hi": 0.5,
+    "tier_threshold": 0.5,
+    "tier_correct_kept": 29,
+    "tier_wrong_dropped": 0,
+    "tier_kept_precision": 0.2437,
+    "avg_ms": 1143.2
   },
   "spacy": {
     "backend": "spacy",
-    "avg_ms": 424.6,
-    "entity_precision": 0.567,
-    "entity_recall": 0.981,
+    "entity_precision": 0.617,
+    "entity_recall": 1.0,
     "triple_recall": 0.0,
-    "junk_clean": "1/7"
+    "junk_clean": "1/4",
+    "facts_total": 26,
+    "facts_correct": 0,
+    "facts_wrong": 26,
+    "facts_from_junk_sentences": 3,
+    "fact_precision": 0.0,
+    "salience_auc": null,
+    "salience_auc_ci_lo": null,
+    "salience_auc_ci_hi": null,
+    "tier_threshold": 0.5,
+    "tier_correct_kept": 0,
+    "tier_wrong_dropped": 3,
+    "tier_kept_precision": 0.0,
+    "avg_ms": 420.1
   }
 }
