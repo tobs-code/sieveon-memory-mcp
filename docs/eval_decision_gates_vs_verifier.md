@@ -208,14 +208,34 @@ signal for strict entailment (a model or check that can read
 "provides" as over-reading "bring"), which is a separate piece of work and
 should be treated as such rather than as a threshold to tune.
 
-**Decision, 2026-10-02: threshold tuning for strict entailment rejected.**
-The verifier separates wrong from non-wrong claims but does not separate
-supported from implied claims (pairwise AUC 0.527 [0.380, 0.666], interval
-contains 0.5). Stricter thresholds on this signal therefore cannot
-materially improve strict entailment precision. Do not revisit without a
-different signal. Related: the auto-accept band is left unchanged because
-n is too small (6 uniform, 15 stratified), not because it was tested to
-insufficiency.
+**Decision, 2026-10-02: strict entailment as a target is rejected.**
+Not because strict precision is unimportant, but because neither available
+signal separates `supported` from `implied`. The verifier is at chance
+(pairwise AUC 0.527 [0.380, 0.666]). A static lexical over-reach check is
+also at chance (0.523 [0.418, 0.622]) and composing the two does not help
+(0.525 [0.420, 0.625]; best variant 0.574 [0.437, 0.709], still overlapping
+the baseline). The reason is visible in the hit rates: the predicate
+surface form is present for 14/47 supported and 8/31 implied triples --
+essentially the same rate. `implied` is therefore not an over-reach
+detectable in the surface verb; it is a genuinely semantic distinction.
+
+Consequence: the pipeline keeps optimising broad precision, and `implied`
+is counted as correct with that decision stated rather than hidden.
+Improving strict entailment would need a new, genuinely semantic signal
+and is a separate piece of work with no cheap precursor left to try. The
+lexical gate should not be added to the pipeline: it costs a lexicon to
+maintain and moves nothing.
+
+The auto-accept band is left unchanged because n is too small (6 uniform,
+15 stratified), not because it was tested to insufficiency.
+
+Error cases from the lexical run, kept because they show what a surface
+check would and would not catch -- all of these are wrong triples whose
+predicate form IS present in the sentence: "Audrey is researching to find
+an awesome spot", "Sam started a new diet ... it has made a huge
+difference", "Joanna believes that meaningful stories stem from ...".
+The matching form is there, the relation is not. A lexical gate can
+never fire on these; only the argument structure separates them.
 
 Extraction confidence is a weaker signal under both labellings
 (0.570 / 0.625 AUC) and, notably, is *not* blind to the distinction --

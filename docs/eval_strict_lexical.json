@@ -1,0 +1,70 @@
+{
+  "model": "cross-encoder/nli-MiniLM2-L6-H768",
+  "cases": 202,
+  "pairwise": {
+    "nli_margin": {
+      "n": 78,
+      "auc": 0.527,
+      "auc_ci": [
+        0.38,
+        0.666
+      ],
+      "supported_vs_wrong": {
+        "n": 171,
+        "auc": 0.837,
+        "auc_ci": [
+          0.769,
+          0.897
+        ]
+      }
+    },
+    "lexical": {
+      "n": 78,
+      "auc": 0.523,
+      "auc_ci": [
+        0.418,
+        0.622
+      ],
+      "supported_vs_wrong": {
+        "n": 171,
+        "auc": 0.589,
+        "auc_ci": [
+          0.521,
+          0.664
+        ]
+      }
+    },
+    "margin_x_lexical": {
+      "n": 78,
+      "auc": 0.525,
+      "auc_ci": [
+        0.42,
+        0.625
+      ],
+      "supported_vs_wrong": {
+        "n": 171,
+        "auc": 0.61,
+        "auc_ci": [
+          0.542,
+          0.683
+        ]
+      }
+    },
+    "margin_x_(1+lexical)": {
+      "n": 78,
+      "auc": 0.574,
+      "auc_ci": [
+        0.437,
+        0.709
+      ],
+      "supported_vs_wrong": {
+        "n": 171,
+        "auc": 0.842,
+        "auc_ci": [
+          0.776,
+          0.901
+        ]
+      }
+    }
+  }
+}
