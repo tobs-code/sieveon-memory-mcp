@@ -63,32 +63,47 @@ def main() -> int:
                          "scaling batch, and write the scaffold file")
     ap.add_argument("--offset", type=int, default=0,
                     help="skip the first N sentences of the selected batch")
+    ap.add_argument("--from-scaffold", type=Path, default=None,
+                    help="print these sentences in this file's order, so the "
+                         "position numbers match the scaffold being filled in")
     args = ap.parse_args()
 
-    rows = [json.loads(l) for l in
-            SOURCE.read_text(encoding="utf-8").splitlines() if l.strip()]
-
-    if args.all:
-        picked = list(enumerate(rows, start=1))
-        label = "full uniform sample"
-    elif args.batch2:
-        rest = remaining(rows)
-        picked = [(i, rows[i - 1]) for i in rest]
-        label = f"scaling batch: {len(picked)} remaining sentences"
-        BATCH2.write_text("\n".join(
-            json.dumps({"id": r["id"], "text": r["text"],
-                        "graphable": None, "triples": None,
-                        "excluded": [], "schema_gap": [],
-                        "by": "unannotated"},
-                       ensure_ascii=False) for _, r in picked) + "\n",
-            encoding="utf-8")
-        print(f"wrote scaffold {BATCH2.relative_to(ROOT)} "
-              f"({len(picked)} rows, extractor output withheld)\n")
+    if args.from_scaffold:
+        picked = []
+        for n, line in enumerate(args.from_scaffold.read_text(
+                encoding="utf-8").splitlines(), start=1):
+            if not line.strip():
+                continue
+            r = json.loads(line)
+            picked.append((n, {"id": r["id"], "text": r["text"]}))
+        picked = picked[args.offset:args.offset + args.count]
+        label = f"scaffold order: {args.from_scaffold.name}"
+        picked_out = picked
     else:
-        picked = [(i, rows[i - 1]) for i in PILOT_INDICES[:args.count]]
-        label = "frozen pilot"
+        rows = [json.loads(l) for l in
+                SOURCE.read_text(encoding="utf-8").splitlines() if l.strip()]
+        if args.all:
+            picked = list(enumerate(rows, start=1))
+            label = "full uniform sample"
+        elif args.batch2:
+            rest = remaining(rows)
+            picked = [(i, rows[i - 1]) for i in rest]
+            label = f"scaling batch: {len(picked)} remaining sentences"
+            BATCH2.write_text("\n".join(
+                json.dumps({"id": r["id"], "text": r["text"],
+                            "graphable": None, "triples": None,
+                            "excluded": [], "schema_gap": [],
+                            "by": "unannotated"},
+                           ensure_ascii=False) for _, r in picked) + "\n",
+                encoding="utf-8")
+            print(f"wrote scaffold {BATCH2.relative_to(ROOT)} "
+                  f"({len(picked)} rows, extractor output withheld)\n")
+        else:
+            picked = [(i, rows[i - 1]) for i in PILOT_INDICES[:args.count]]
+            label = "frozen pilot"
+        picked_out = picked[args.offset:args.offset + args.count]
 
-    picked = picked[args.offset:args.offset + args.count]
+    picked = picked_out
 
     print(f"{label}: showing {len(picked)}\n")
     print("Note the position number below is a position in this batch, not "
