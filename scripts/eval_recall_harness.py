@@ -5,6 +5,24 @@ has been unknown. This harness starts from the other side: a hand-written
 gold of facts the sentence entails, scored against the extractor output.
 Found and missed facts, spurious claims, recall, precision, F1.
 
+THE THIRD LABEL, added after the first pilot. A gold of `[]` was doing two
+incompatible jobs: "this sentence carries no knowledge-graph fact" and
+"this sentence carries a graphable fact that I judged below the bar". Both
+were scored as empty, so every claim on such a sentence counted as a false
+positive, and the precision denominator ended up measuring the gold
+annotator's strictness. The two are now separated:
+
+    graphable = "no"     sentence carries no graphable KG fact
+                         -> its claims are excluded from precision entirely
+    graphable = "yes"    at least one graphable fact exists
+                         -> triples[] holds the gold facts,
+                            excluded[] holds graphable relations deliberately
+                            left out, each with a reason
+
+The pilot proved this is not a theoretical concern: `bike routes located_in
+river` was marked supported in the per-triple annotation and omitted from
+gold here. Same sentence, same relation, two verdicts.
+
 THE MATCH RULE, fixed before any number was produced. It is the part that
 would otherwise turn this into a measurement of the matcher:
 
@@ -15,18 +33,17 @@ would otherwise turn this into a measurement of the matcher:
   3. Predicate equivalence is limited to the groups in EQUIVALENT below.
      These are synonym pairs already attested in the hand annotation, not
      a general lexical resource. Notably absent: started/founded,
-     travel/works_at, visit/acquired, check_out/acquired, bring/provides is
-     present only because the annotation labels `animals provides comfort`
-     implied, not supported -- so it counts as a match for recall but is
-     reported as an imprecise match, never as clean.
-  4. No credit is ever given for a triple whose hand-verdict class was
-     disputed. Where the existing annotation says `attended` does not
-     entail `founded`, a claim of founded does not cover a gold founded.
-
-A gold triple the extractor found through a predicate the annotation
-called wrong is counted as NOT FOUND. That is deliberate: recall against
-gold measures whether the right relation was produced, not whether the
-words overlapped.
+     travel/works_at, visit/acquired, check_out/acquired. `bring` and
+     `provides` are equivalent only because the annotation labels the pair
+     implied rather than wrong, so such a match is reported as imprecise,
+     never as clean.
+  4. A claim on a non-graphable sentence is not evidence of anything and
+     is reported apart from the precision computation.
+  5. Predicate discipline is scored separately from fact coverage: a claim
+     whose subject and object match a gold triple but whose predicate does
+     not is a discipline failure, not a missed fact and not a fabricated
+     relation. The extractor produces these constantly -- for `Melanie
+     developed environment` it also emitted `created` and `built`.
 
 Usage:
     python scripts/eval_recall_harness.py
@@ -105,6 +122,9 @@ def score(gold_rows: List[Dict[str, Any]],
     missed: List[Dict[str, Any]] = []
     imprecise: List[Dict[str, Any]] = []
     spurious: List[Dict[str, Any]] = []
+    discipline: List[Dict[str, Any]] = []
+    non_graphable: List[Dict[str, Any]] = []
+    below: List[Dict[str, Any]] = []
 
     for row in gold_rows:
         gold = [tuple(t) for t in (row.get("triples") or [])]
@@ -130,47 +150,81 @@ def score(gold_rows: List[Dict[str, Any]],
                     found.append(rec)
                 else:
                     imprecise.append(rec)
+        # Every claim the gold did not absorb. If its entity pair matches a
+        # graphable fact of this sentence, the extractor addressed the right
+        # thing and attached the wrong relation -- a discipline failure,
+        # which is not a missed fact and not a fabricated relation. Order of
+        # operations matters: a gold triple that was itself found still has
+        # its pair watched here, because `Melanie developed environment` was
+        # found *and* `created`/`built` were emitted alongside it.
+        graphable_pairs = {(norm(g[0]), norm(g[2])) for g in gold}
+        graphable_pairs |= {(norm(e["s"]), norm(e["o"]))
+                            for e in (row.get("excluded") or [])}
+        excluded_triples = [(e["s"], e["p"], e["o"])
+                            for e in (row.get("excluded") or [])]
         for ci, c in enumerate(claims):
-            if ci not in used:
-                spurious.append({"id": row["id"],
-                                 "claim": {k: c[k] for k in "spo"},
-                                 "on_gold_bearing": bool(gold)})
+            if ci in used:
+                continue
+            entry = {"id": row["id"], "claim": {k: c[k] for k in "spo"}}
+            if row.get("graphable") == "no":
+                non_graphable.append(entry)
+                continue
+            # Three distinct failures, kept apart because they call for
+            # different fixes. A claim that restates an excluded relation is
+            # not wrong, it is below the bar we set. A claim on the right
+            # entity pair with a different relation is a discipline failure.
+            # Anything else asserts something the sentence does not carry.
+            if any(match(t, c)[:1] == (True,) for t in excluded_triples):
+                below.append(entry)
+            elif (norm(c["s"]), norm(c["o"])) in graphable_pairs:
+                discipline.append(entry)
+            else:
+                spurious.append(dict(entry, on_gold_bearing=bool(gold)))
 
     n_gold = len(found) + len(imprecise) + len(missed)
-    # Claims on sentences whose gold is empty are counted apart. Calling them
-    # spurious would measure how conservative the gold annotator was, not how
-    # often the extractor is wrong: a sentence annotated [] for every claim
-    # pushes its claims to a 0 denominator. The second precision is the
-    # interpretable one; the first is reported only to show the spread.
-    off_gold = [s for s in spurious if not s["on_gold_bearing"]]
-    spurious_on_gold = [s for s in spurious if s["on_gold_bearing"]]
-    n_claims = len(found) + len(imprecise) + len(spurious_on_gold)
+    # Every claim lands in exactly one bucket. Claims on non-graphable
+    # sentences are excluded from precision: they say nothing about the
+    # extractor, only about what the annotator considered graphable.
+    n_all_claims = (len(found) + len(imprecise) + len(below)
+                    + len(discipline) + len(spurious) + len(non_graphable))
+    scored_claims = n_all_claims - len(non_graphable)
     recall = len(found) / n_gold if n_gold else float("nan")
     strict_recall = (len(found) + len(imprecise)) / n_gold if n_gold else float("nan")
-    precision = len(found) / n_claims if n_claims else float("nan")
     incl = len(found) + len(imprecise)
-    strict_precision = incl / n_claims if n_claims else float("nan")
+    precision = incl / scored_claims if scored_claims else float("nan")
+    clean_precision = len(found) / scored_claims if scored_claims else float("nan")
     f1 = (2 * recall * precision / (recall + precision)
           if (recall + precision) > 0 else float("nan"))
-    n_all_claims = len(found) + len(imprecise) + len(spurious)
-    naive_precision = incl / n_all_claims if n_all_claims else float("nan")
+    naive_precision = (incl / n_all_claims
+                       if n_all_claims else float("nan"))
+    discipline_rate = (len(discipline) / scored_claims
+                       if scored_claims else None)
 
     return {
         "gold": n_gold, "claims": n_all_claims,
-        "claims_on_gold_bearing_sentences": n_claims,
+        "claims_on_graphable_sentences": scored_claims,
         "found": len(found), "imprecise": len(imprecise),
         "missed": len(missed),
-        "spurious": len(spurious_on_gold),
-        "claims_on_empty_gold_sentences": len(off_gold),
+        "below_threshold": len(below),
+        "predicate_discipline": len(discipline),
+        "predicate_discipline_rate": (
+            round(discipline_rate, 3) if discipline_rate is not None else None),
+        "spurious": len(spurious),
+        "non_graphable_sentences": sum(
+            1 for r in gold_rows if r.get("graphable") == "no"),
+        "non_graphable_claims": len(non_graphable),
         "recall": round(recall, 3),
         "recall_incl_implied": round(strict_recall, 3),
         "precision": round(precision, 3),
-        "precision_incl_implied": round(strict_precision, 3),
+        "precision_strict": round(clean_precision, 3),
+        "precision_incl_implied": round(precision, 3),
         "precision_naive_all_claims": round(naive_precision, 3),
         "f1": round(f1, 3),
         "detail": {"found": found, "imprecise": imprecise,
-                   "missed": missed, "spurious": spurious_on_gold,
-                   "off_gold_sentences": off_gold},
+                   "missed": missed, "spurious": spurious,
+                   "below_threshold": below,
+                   "predicate_discipline": discipline,
+                   "non_graphable": non_graphable},
     }
 
 
@@ -196,47 +250,59 @@ def main() -> int:
               f"scoring would silently treat them as having no gold facts.")
         print(f"  first: {unannotated[0]}")
         return 2
+    unlabelled = [r["id"] for r in gold_rows if r.get("graphable") is None]
+    if unlabelled:
+        print(f"  {len(unlabelled)} rows have no `graphable` verdict. Without "
+              f"it an empty\n  triples[] list is ambiguous and the precision "
+              f"denominator is meaningless.")
+        print(f"  first: {unlabelled[0]}")
+        return 2
 
     r = score(gold_rows, claims_by_id)
 
     print(f"=== recall harness: {len(gold_rows)} sentences, gold-first ===")
     print(f"  gold facts        {r['gold']}")
     print(f"  extractor claims  {r['claims']}  "
-          f"({r['claims_on_gold_bearing_sentences']} on sentences with gold)")
+          f"({r['claims_on_graphable_sentences']} on graphable sentences)")
     print()
     print(f"  {'bucket':30} {'n':>4}")
-    for k in ("found", "imprecise", "missed", "spurious",
-              "claims_on_empty_gold_sentences"):
+    for k in ("found", "imprecise", "missed", "below_threshold",
+              "predicate_discipline", "spurious", "non_graphable_claims"):
         print(f"  {k:30} {r[k]:4}")
+    print(f"  {'discipline rate':30} "
+          f"{r['predicate_discipline_rate']:>4}")
     print()
     print(f"  recall            {r['recall']:.3f}   "
           f"({r['found']}/{r['gold']}, clean predicates only)")
     print(f"  recall incl impl  {r['recall_incl_implied']:.3f}   "
           f"({r['found'] + r['imprecise']}/{r['gold']})")
     print(f"  precision         {r['precision']:.3f}   "
-          f"({r['found']}/{r['claims_on_gold_bearing_sentences']}, "
-          f"gold-bearing sentences only)")
-    print(f"  prec incl impl    {r['precision_incl_implied']:.3f}   "
           f"({r['found'] + r['imprecise']}"
-          f"/{r['claims_on_gold_bearing_sentences']})")
+          f"/{r['claims_on_graphable_sentences']})")
+    print(f"  precision strict  {r['precision_strict']:.3f}   "
+          f"({r['found']}/{r['claims_on_graphable_sentences']})")
     print(f"  prec naive        {r['precision_naive_all_claims']:.3f}   "
           f"({r['found'] + r['imprecise']}/{r['claims']}, all claims)")
     print(f"  F1                {r['f1']:.3f}")
     print()
-    print("  The naive figure counts every claim on an empty-gold sentence as a")
-    print("  false positive. That measures the gold annotator's strictness, not")
-    print("  the extractor, and it disagrees with the per-triple annotation on")
-    print("  sentences such as `bike routes located_in river`, which was called")
-    print("  supported there and is not in gold here. Treat it as a disagreement")
-    print("  to resolve, not as a number.")
+    print("  Buckets, and what each one would need:")
+    print("    found/imprecise  the gold fact was extracted")
+    print("    below_threshold  graphable but under the gold bar; not an error")
+    print("    discipline       right entity pair, wrong relation")
+    print("    spurious         the sentence does not carry the fact at all")
+    print("    non_graphable    sentence out of scope; excluded from precision")
     print()
     print("  missed gold facts (the number that did not exist before):")
     for m in r["detail"]["missed"]:
         print(f"    {m['gold'][0]} -{m['gold'][1]}-> {m['gold'][2]}")
     print()
-    print("  spurious claims:")
+    print("  spurious claims (on graphable sentences):")
     for s in r["detail"]["spurious"]:
         c = s["claim"]
+        print(f"    {c['s']} -{c['p']}-> {c['o']}")
+    print("  predicate-discipline failures (right entity pair, wrong relation):")
+    for d in r["detail"]["predicate_discipline"]:
+        c = d["claim"]
         print(f"    {c['s']} -{c['p']}-> {c['o']}")
 
     if args.out:
