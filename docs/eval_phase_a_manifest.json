@@ -1,0 +1,303 @@
+{
+  "purpose": "phase-A training data, split by provenance",
+  "natural": [
+    {
+      "id": "conv-41/session_12_observation/Maria/D12:18",
+      "text": "Maria volunteers at a homeless shelter, finding it fulfilling but also feeling overwhelmed by the growing need for help.",
+      "provenance": "natural_hard_negative",
+      "source": "blind_60",
+      "reason": "help denotes the growing need for assistance at the shelter, not something Maria provides; no provider asserted"
+    },
+    {
+      "id": "conv-41/session_16_observation/John/D16:7",
+      "text": "John expressed willingness to assist in finding volunteers for Maria's charity fundraiser.",
+      "provenance": "natural_hard_negative",
+      "source": "blind_60",
+      "reason": "willingness to assist expresses readiness/intention, not an asserted assistance action"
+    },
+    {
+      "id": "conv-41/session_1_observation/John/D1:14",
+      "text": "John's next move in politics involves chatting with local leaders and organizations to gather support and ideas.",
+      "provenance": "natural_hard_negative",
+      "source": "blind_60",
+      "reason": "John gathers support, he does not provide it; the noun is goal/instrument related"
+    },
+    {
+      "id": "conv-41/session_31_observation/Maria/D31:4",
+      "text": "Maria's new pup, Shadow, is full of energy and brings joy to her life.",
+      "provenance": "natural_ambiguous_positive",
+      "source": "blind_60",
+      "reason": "brings joy is a positive relation from the pup to Maria; positive provides-type case, not a hard negative"
+    },
+    {
+      "id": "conv-42/session_22_observation/Nate/D22:18",
+      "text": "Nate believes encouragement got him far in his gaming career.",
+      "provenance": "natural_hard_negative",
+      "source": "blind_60",
+      "reason": "encouragement described as having helped Nate; no provider asserted, attribution rather than X provides encouragement"
+    },
+    {
+      "id": "conv-42/session_26_observation/Nate/D26:12",
+      "text": "Nate has been helping friends reset their high scores at an international tournament.",
+      "provenance": "natural_clean_positive",
+      "source": "blind_60",
+      "reason": "helping friends reset their high scores is active assistance with explicit participants; a positive relation, not a hard negative"
+    },
+    {
+      "id": "conv-43/session_13_observation/John/D13:6",
+      "text": "John's team faced tough opponents, but they do not quit and back each other up to get better.",
+      "provenance": "natural_clean_positive",
+      "source": "blind_60",
+      "reason": "back each other up is active reciprocal support; positive rather than negative"
+    },
+    {
+      "id": "conv-43/session_26_observation/John/D26:1",
+      "text": "John started doing seminars to help people with sports and marketing.",
+      "provenance": "natural_hard_negative",
+      "source": "blind_60",
+      "reason": "to help people is purpose/intention attached to starting seminars, not an asserted support relation"
+    },
+    {
+      "id": "conv-44/session_17_observation/Andrew/D17:5",
+      "text": "Andrew believes that taking care of pets to ensure they are healthy and happy is important.",
+      "provenance": "natural_hard_negative",
+      "source": "blind_60",
+      "reason": "taking care of pets is a care-of construction, not a provider relation; no provider asserted"
+    },
+    {
+      "id": "conv-44/session_20_observation/Audrey/D20:28",
+      "text": "Audrey believes in taking care of nature for future generations.",
+      "provenance": "natural_hard_negative",
+      "source": "blind_60",
+      "reason": "taking care of nature is care-of, not provides care/support; also belief-framed"
+    },
+    {
+      "id": "conv-44/session_26_observation/Andrew/D26:10",
+      "text": "Andrew appears to be a supportive friend to Audrey, encouraging her and expressing well wishes for her dogs' well-being.",
+      "provenance": "natural_clean_positive",
+      "source": "blind_60",
+      "reason": "encouraging her is active directed assistance toward Audrey; positive, not a hard negative"
+    },
+    {
+      "id": "conv-47/session_11_observation/James/D11:14",
+      "text": "James encouraged John to continue using his skills and passions for making a difference.",
+      "provenance": "natural_clean_positive",
+      "source": "blind_60",
+      "reason": "encouraged John is an active directed support relation; positive rather than hard negative"
+    },
+    {
+      "id": "conv-47/session_15_observation/James/D15:15",
+      "text": "James indicated that no interview is required for volunteering, just the willingness to help people.",
+      "provenance": "natural_hard_negative",
+      "source": "blind_60",
+      "reason": "willingness to help expresses readiness/intention, not an asserted support action"
+    },
+    {
+      "id": "conv-49/session_13_observation/Evan/D13:9",
+      "text": "Evan offered to hook Sam up with a good spot for kayaking.",
+      "provenance": "natural_hard_negative",
+      "source": "blind_60",
+      "reason": "offered to hook Sam up expresses an intended/offered assistance, not an asserted completed support relation"
+    },
+    {
+      "id": "conv-30/session_4_observation/Gina/D4:6|Gina|provides|support",
+      "text": "Gina expresses full support for Jon and encourages him not to give up.",
+      "provenance": "seed_possessive",
+      "source": "training_pilot_50",
+      "precision": "imprecise",
+      "reason": "existing provides gold, possessive frame"
+    },
+    {
+      "id": "conv-30/session_4_observation/Gina/D4:6|Gina|provides|encouragement",
+      "text": "Gina expresses full support for Jon and encourages him not to give up.",
+      "provenance": "seed_possessive",
+      "source": "training_pilot_50",
+      "precision": "imprecise",
+      "reason": "existing provides gold, possessive frame"
+    },
+    {
+      "id": "conv-41/session_31_observation/John/D31:17|family|provides|support",
+      "text": "John values his family greatly and appreciates their support, considering them the best thing ever.",
+      "provenance": "seed_possessive",
+      "source": "training_pilot_50",
+      "precision": "imprecise",
+      "reason": "existing provides gold, possessive frame"
+    },
+    {
+      "id": "conv-41/session_5_observation/Maria/D5:10|Maria|provides|comfort",
+      "text": "Maria had a touching moment with a lonely girl at the shelter, providing comfort and company, which made an impact on her.",
+      "provenance": "seed_possessive",
+      "source": "training_pilot_50",
+      "precision": "imprecise",
+      "reason": "existing provides gold, possessive frame"
+    },
+    {
+      "id": "conv-41/session_5_observation/Maria/D5:10|Maria|provides|company",
+      "text": "Maria had a touching moment with a lonely girl at the shelter, providing comfort and company, which made an impact on her.",
+      "provenance": "seed_possessive",
+      "source": "training_pilot_50",
+      "precision": "imprecise",
+      "reason": "existing provides gold, possessive frame"
+    },
+    {
+      "id": "conv-42/session_13_observation/Nate/D13:21|Nate|provides|support",
+      "text": "Nate is supportive of Joanna and expresses his support for her screenplay.",
+      "provenance": "seed_possessive",
+      "source": "training_pilot_50",
+      "precision": "imprecise",
+      "reason": "existing provides gold, possessive frame"
+    },
+    {
+      "id": "conv-42/session_3_observation/Joanna/D3:3|Nate|provides|support",
+      "text": "Joanna appreciates Nate's support for her screenplay and mentions that it means a lot to her.",
+      "provenance": "seed_possessive",
+      "source": "training_pilot_50",
+      "precision": "imprecise",
+      "reason": "existing provides gold, possessive frame"
+    },
+    {
+      "id": "conv-43/session_25_observation/John/D25:16|Tim|provides|support",
+      "text": "John appreciates Tim's support and expresses thanks for the assistance.",
+      "provenance": "seed_possessive",
+      "source": "training_pilot_50",
+      "precision": "imprecise",
+      "reason": "existing provides gold, possessive frame"
+    },
+    {
+      "id": "conv-43/session_25_observation/John/D25:16|Tim|provides|assistance",
+      "text": "John appreciates Tim's support and expresses thanks for the assistance.",
+      "provenance": "seed_possessive",
+      "source": "training_pilot_50",
+      "precision": "imprecise",
+      "reason": "existing provides gold, possessive frame"
+    },
+    {
+      "id": "conv-44/session_18_observation/Audrey/D18:20|Audrey|provides|encouragement",
+      "text": "Audrey encourages Andrew in his search for a dog-friendly place to live for Toby.",
+      "provenance": "seed_possessive",
+      "source": "training_pilot_50",
+      "precision": "imprecise",
+      "reason": "existing provides gold, possessive frame"
+    },
+    {
+      "id": "conv-44/session_19_observation/Audrey/D19:28|furry companions|provides|love",
+      "text": "Audrey's furry companions mean everything to her and bring loads of love and happiness into her life.",
+      "provenance": "seed_possessive",
+      "source": "training_pilot_50",
+      "precision": "imprecise",
+      "reason": "existing provides gold, possessive frame"
+    },
+    {
+      "id": "conv-44/session_19_observation/Audrey/D19:28|furry companions|provides|happiness",
+      "text": "Audrey's furry companions mean everything to her and bring loads of love and happiness into her life.",
+      "provenance": "seed_possessive",
+      "source": "training_pilot_50",
+      "precision": "imprecise",
+      "reason": "existing provides gold, possessive frame"
+    },
+    {
+      "id": "conv-48/session_24_observation/Jolene/D24:6|her parents|provides|support",
+      "text": "Jolene's passion for video games started when she was 10, which her parents supported.",
+      "provenance": "seed_possessive",
+      "source": "training_pilot_50",
+      "precision": "imprecise",
+      "reason": "existing provides gold, possessive frame"
+    },
+    {
+      "id": "conv-49/session_12_observation/Evan/D12:4|Evan|provides|advice",
+      "text": "Evan offered advice to Sam on how to start lifting weights and emphasized the importance of good form and technique.",
+      "provenance": "seed_possessive",
+      "source": "training_pilot_50",
+      "precision": "imprecise",
+      "reason": "existing provides gold, possessive frame"
+    },
+    {
+      "id": "conv-49/session_23_observation/Evan/D23:5|family|provides|support",
+      "text": "Evan values and appreciates the support and happiness their family brings regarding their marriage.",
+      "provenance": "seed_possessive",
+      "source": "training_pilot_50",
+      "precision": "imprecise",
+      "reason": "existing provides gold, possessive frame"
+    },
+    {
+      "id": "conv-49/session_23_observation/Evan/D23:5|family|provides|happiness",
+      "text": "Evan values and appreciates the support and happiness their family brings regarding their marriage.",
+      "provenance": "seed_possessive",
+      "source": "training_pilot_50",
+      "precision": "imprecise",
+      "reason": "existing provides gold, possessive frame"
+    },
+    {
+      "id": "conv-50/session_12_observation/Calvin/D12:15|Dave|provides|support",
+      "text": "Calvin expresses gratitude for Dave's continued support and encouragement in pursuing his dreams.",
+      "provenance": "seed_possessive",
+      "source": "training_pilot_50",
+      "precision": "imprecise",
+      "reason": "existing provides gold, possessive frame"
+    },
+    {
+      "id": "conv-50/session_12_observation/Calvin/D12:15|Dave|provides|encouragement",
+      "text": "Calvin expresses gratitude for Dave's continued support and encouragement in pursuing his dreams.",
+      "provenance": "seed_possessive",
+      "source": "training_pilot_50",
+      "precision": "imprecise",
+      "reason": "existing provides gold, possessive frame"
+    }
+  ],
+  "controlled_frames": [
+    {
+      "frame": "active_assistance",
+      "cue": "realised vs offered",
+      "positive_template": "{X} helped {Y} with the fundraiser.",
+      "negative_template": "{X} offered to help {Y} with the fundraiser.",
+      "expect": "the negative carries an offer modal, not a performed action"
+    },
+    {
+      "frame": "active_encouragement",
+      "cue": "directed encouragement vs reported effect",
+      "positive_template": "{X} encouraged {Y} to keep going.",
+      "negative_template": "{Y} said {X}'s encouragement kept him going.",
+      "expect": "attribution to an effect is not a provided relation"
+    },
+    {
+      "frame": "nominal_possessive",
+      "cue": "direct possession vs instrumental framing",
+      "positive_template": "{X}'s support for {Y} was constant.",
+      "negative_template": "{Y} succeeded with {X}'s support.",
+      "expect": "instrumental use of a possessive phrase does not itself assert the relation"
+    },
+    {
+      "frame": "abstract_object",
+      "cue": "assistance performed with a concrete object vs an abstract one",
+      "positive_template": "{X} helped {Y} move the boxes.",
+      "negative_template": "{X} values the value of support.",
+      "expect": "object concreteness is part of the positive cue"
+    },
+    {
+      "frame": "intentional",
+      "cue": "intention vs execution",
+      "positive_template": "{X} helped {Y} after she asked.",
+      "negative_template": "{X} planned to help {Y} after she asked.",
+      "expect": "planning is not performing"
+    }
+  ],
+  "natural_counts": {
+    "natural_hard_negative": 9,
+    "natural_ambiguous_positive": 1,
+    "natural_clean_positive": 4,
+    "seed_possessive": 18
+  },
+  "natural_rates": {
+    "natural_hard_negative": 0.15,
+    "natural_ambiguous_positive": 0.0167,
+    "natural_clean_positive": 0.0667
+  },
+  "provenance_tags": [
+    "natural_clean_positive",
+    "natural_ambiguous_positive",
+    "natural_hard_negative",
+    "seed_possessive",
+    "controlled_clean_positive",
+    "controlled_hard_negative"
+  ]
+}
