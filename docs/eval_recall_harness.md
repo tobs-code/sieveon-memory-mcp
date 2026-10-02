@@ -85,3 +85,61 @@ counted as found.
 
 Recall against facts nobody wrote down. A gold of 13 scorable facts across
 20 sentences cannot bound what the extractor misses on unseen phrasings.
+
+## Consistency audit across the two gold files, 2026-10-02
+
+`scripts/check_gold_consistency.py` compares the recall gold against the
+uniform triple annotation on the sentences they share. It is rerunnable,
+because at ~100 facts a hand comparison stops being possible and a
+convention drift would scale invisibly.
+
+    identical              8
+    severity divergence    6
+    scope agreement       18
+    schema gap             3
+    never claimed          1
+
+The 6 divergences, all severity, never facthood:
+
+| Fact                                        | triple file | recall gold |
+| ------------------------------------------- | ----------- | ----------- |
+| `Melanie -developed-> environment`           | implied     | clean       |
+| `Joanna -developed-> projects`               | implied     | clean       |
+| `Jolene -uses-> bullet journal`              | supported   | imprecise   |
+| `Susie -provides-> comfort`                  | supported   | imprecise   |
+| `Susie -provides-> peace`                    | supported   | imprecise   |
+| `bike routes -located_in-> river`            | supported   | below bar   |
+
+Both files agree these facts exist and both decline two of them outright.
+They disagree only on how strongly the wording supports them, and in both
+directions: the recall gold is stricter in three cases and looser in two.
+
+Consequence for reporting. `scorable clean recall` of 4/13 is the
+pessimistic reading -- three of those four are called supported by the
+triple file. The optimistic reading is 6/13. Neither is wrong; they answer
+different questions, so the figure must always be quoted with which file
+it came from.
+
+### The disputed case: `bike routes located_in river`
+
+The frozen rule says `near` does not entail `located_in`, and the recall
+gold holds it below the bar. The triple file calls it supported. **This is
+kept as a deliberate divergence and neither file is edited.** It is the
+cleanest illustration of why the two files coexist: asked whether the
+sentence licenses that claim, it does; asked whether the fact belongs in a
+knowledge graph, it does not. Collapsing them would lose one of the two
+questions.
+
+### Which file answers which question
+
+`docs/eval_triples_gold_locomo_*_model.jsonl`
+: authoritative for precision. Its verdict classes judge a specific claim
+  the extractor made. Use it for anything phrased as "is this claim right".
+
+`docs/eval_recall_gold_pilot.jsonl`
+: authoritative for coverage. Its `triples` list enumerates facts, and its
+  severity flags are calibrated to coverage, not to claim adjudication. Use
+  it for anything phrased as "should this fact be in the graph".
+
+Never average a number from one file into a sentence about the other. Where
+a figure could be read either way, quote both with their source.
