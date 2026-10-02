@@ -1,0 +1,639 @@
+{
+  "counterfactual_scorable": 53,
+  "found": 0,
+  "discipline": 25,
+  "missed": 28,
+  "coverage_of_newly_scorable": 0.0,
+  "baseline_current_schema": {
+    "found": 26,
+    "scorable": 44,
+    "recall": 0.591
+  },
+  "by_family": {
+    "acquisition_passive": {
+      "discipline": 1,
+      "missed": 1
+    },
+    "attribute_need": {
+      "discipline": 2,
+      "missed": 2
+    },
+    "perception_media": {
+      "discipline": 1,
+      "missed": 1
+    },
+    "event_participation": {
+      "discipline": 5,
+      "missed": 6
+    },
+    "location_motion": {
+      "discipline": 2,
+      "missed": 3
+    },
+    "possession": {
+      "discipline": 2,
+      "missed": 5
+    },
+    "social_role": {
+      "discipline": 1,
+      "missed": 1
+    },
+    "achievement": {
+      "discipline": 4,
+      "missed": 1
+    },
+    "conversation_interest": {
+      "discipline": 3,
+      "missed": 4
+    },
+    "attempted": {
+      "discipline": 1
+    },
+    "body_position": {
+      "discipline": 1
+    },
+    "interaction_communication": {
+      "discipline": 2,
+      "missed": 3
+    },
+    "value_relation": {
+      "missed": 1
+    }
+  },
+  "detail": {
+    "found": [],
+    "discipline": [
+      {
+        "id": "conv-48/session_23_observation/Deborah/D23:22",
+        "s": "Deborah",
+        "p": "received",
+        "o": "quote",
+        "family": "acquisition_passive",
+        "status": "accepted_gold_outside_vocab",
+        "claimed_predicates": [
+          "created",
+          "wrote"
+        ]
+      },
+      {
+        "id": "conv-44/session_19_observation/Audrey/D19:22",
+        "s": "Peruvian Lilies",
+        "p": "requires",
+        "o": "watering",
+        "family": "attribute_need",
+        "status": "schema_gap",
+        "claimed_predicates": [
+          "provides"
+        ]
+      },
+      {
+        "id": "conv-44/session_19_observation/Audrey/D19:22",
+        "s": "Peruvian Lilies",
+        "p": "requires",
+        "o": "sunlight",
+        "family": "attribute_need",
+        "status": "schema_gap",
+        "claimed_predicates": [
+          "provides"
+        ]
+      },
+      {
+        "id": "conv-43/session_17_observation/John/D17:11",
+        "s": "John",
+        "p": "watched",
+        "o": "That",
+        "family": "perception_media",
+        "status": "schema_gap",
+        "claimed_predicates": [
+          "created",
+          "wrote"
+        ]
+      },
+      {
+        "id": "conv-26/session_7_observation/Caroline/D7:1",
+        "s": "Caroline",
+        "p": "attended",
+        "o": "LGBTQ conference",
+        "family": "event_participation",
+        "status": "schema_gap",
+        "claimed_predicates": [
+          "founded"
+        ]
+      },
+      {
+        "id": "conv-48/session_6_observation/Deborah/D6:10",
+        "s": "Deborah",
+        "p": "traveled_to",
+        "o": "Bali",
+        "family": "location_motion",
+        "status": "schema_gap",
+        "claimed_predicates": [
+          "works_at"
+        ]
+      },
+      {
+        "id": "conv-26/session_1_observation/Caroline/D1:3",
+        "s": "Caroline",
+        "p": "attended",
+        "o": "LGBTQ support group",
+        "family": "event_participation",
+        "status": "schema_gap",
+        "claimed_predicates": [
+          "founded",
+          "works_at"
+        ]
+      },
+      {
+        "id": "conv-30/session_5_observation/Gina/D5:1",
+        "s": "Gina",
+        "p": "owns",
+        "o": "store",
+        "family": "possession",
+        "status": "schema_gap",
+        "claimed_predicates": [
+          "acquired",
+          "founded",
+          "works_at"
+        ]
+      },
+      {
+        "id": "conv-30/session_17_observation/Gina/D17:1",
+        "s": "Gina",
+        "p": "noticed_by",
+        "o": "fashion editors",
+        "family": "social_role",
+        "status": "schema_gap",
+        "claimed_predicates": [
+          "works_at"
+        ]
+      },
+      {
+        "id": "conv-41/session_10_observation/John/D10:1",
+        "s": "John",
+        "p": "attended",
+        "o": "weekend yoga class",
+        "family": "event_participation",
+        "status": "schema_gap",
+        "claimed_predicates": [
+          "founded"
+        ]
+      },
+      {
+        "id": "conv-41/session_19_observation/Maria/D19:1",
+        "s": "Maria",
+        "p": "joined",
+        "o": "gym",
+        "family": "event_participation",
+        "status": "schema_gap",
+        "claimed_predicates": [
+          "works_at"
+        ]
+      },
+      {
+        "id": "conv-42/session_6_observation/Joanna/D6:2",
+        "s": "Joanna",
+        "p": "auditioned_for",
+        "o": "writing gig",
+        "family": "event_participation",
+        "status": "schema_gap",
+        "claimed_predicates": [
+          "wrote"
+        ]
+      },
+      {
+        "id": "conv-42/session_18_observation/Nate/D18:10",
+        "s": "Nate",
+        "p": "owns",
+        "o": "dairy-free dessert recipe",
+        "family": "possession",
+        "status": "schema_gap",
+        "claimed_predicates": [
+          "created",
+          "developed",
+          "wrote"
+        ]
+      },
+      {
+        "id": "conv-43/session_6_observation/John/D6:13",
+        "s": "John",
+        "p": "earned",
+        "o": "scholarship",
+        "family": "achievement",
+        "status": "schema_gap",
+        "claimed_predicates": [
+          "acquired"
+        ]
+      },
+      {
+        "id": "conv-43/session_17_observation/John/D17:9",
+        "s": "John",
+        "p": "finished",
+        "o": "fantasy series",
+        "family": "achievement",
+        "status": "schema_gap",
+        "claimed_predicates": [
+          "created",
+          "developed",
+          "wrote"
+        ]
+      },
+      {
+        "id": "conv-43/session_25_observation/Tim/D25:11",
+        "s": "Tim",
+        "p": "asked_about",
+        "o": "recent happenings",
+        "family": "conversation_interest",
+        "status": "schema_gap",
+        "claimed_predicates": [
+          "created"
+        ]
+      },
+      {
+        "id": "conv-47/session_21_observation/James/D21:13",
+        "s": "James",
+        "p": "suggested_meeting_at",
+        "o": "Starbucks",
+        "family": "conversation_interest",
+        "status": "schema_gap",
+        "claimed_predicates": [
+          "works_at"
+        ]
+      },
+      {
+        "id": "conv-48/session_9_observation/Deborah/D9:3",
+        "s": "Deborah",
+        "p": "started",
+        "o": "yoga class",
+        "family": "achievement",
+        "status": "schema_gap",
+        "claimed_predicates": [
+          "created",
+          "founded"
+        ]
+      },
+      {
+        "id": "conv-48/session_14_observation/Deborah/D14:3",
+        "s": "Deborah",
+        "p": "tried",
+        "o": "Dancer Pose",
+        "family": "attempted",
+        "status": "schema_gap",
+        "claimed_predicates": [
+          "created",
+          "designed"
+        ]
+      },
+      {
+        "id": "conv-48/session_29_observation/Deborah/D29:5",
+        "s": "Deborah",
+        "p": "visited",
+        "o": "old house",
+        "family": "location_motion",
+        "status": "schema_gap",
+        "claimed_predicates": [
+          "acquired",
+          "built"
+        ]
+      },
+      {
+        "id": "conv-48/session_29_observation/Deborah/D29:5",
+        "s": "Deborah",
+        "p": "sat_on",
+        "o": "bench",
+        "family": "body_position",
+        "status": "schema_gap",
+        "claimed_predicates": [
+          "built"
+        ]
+      },
+      {
+        "id": "conv-49/session_1_observation/Evan/D1:14",
+        "s": "Evan",
+        "p": "started",
+        "o": "watercolor painting",
+        "family": "achievement",
+        "status": "schema_gap",
+        "claimed_predicates": [
+          "created"
+        ]
+      },
+      {
+        "id": "conv-49/session_4_observation/Evan/D4:8",
+        "s": "Evan",
+        "p": "suggests",
+        "o": "flavored seltzer water",
+        "family": "conversation_interest",
+        "status": "schema_gap",
+        "claimed_predicates": [
+          "created"
+        ]
+      },
+      {
+        "id": "conv-50/session_4_observation/Calvin/D4:24",
+        "s": "Calvin",
+        "p": "gifted",
+        "o": "necklace",
+        "family": "interaction_communication",
+        "status": "schema_gap",
+        "claimed_predicates": [
+          "acquired",
+          "created",
+          "designed"
+        ]
+      },
+      {
+        "id": "conv-50/session_20_observation/Calvin/D20:2",
+        "s": "Calvin",
+        "p": "shared",
+        "o": "picture",
+        "family": "interaction_communication",
+        "status": "schema_gap",
+        "claimed_predicates": [
+          "created",
+          "wrote"
+        ]
+      }
+    ],
+    "missed": [
+      {
+        "id": "conv-43/session_2_observation/John/D2:8",
+        "s": "John",
+        "p": "asked_about",
+        "o": "Tim's book collection",
+        "family": "conversation_interest",
+        "status": "schema_gap",
+        "claims_on_sentence": [
+          "wrote"
+        ]
+      },
+      {
+        "id": "conv-43/session_2_observation/John/D2:8",
+        "s": "John",
+        "p": "asked_about",
+        "o": "picture from MinaLima",
+        "family": "conversation_interest",
+        "status": "schema_gap",
+        "claims_on_sentence": [
+          "wrote"
+        ]
+      },
+      {
+        "id": "conv-43/session_23_observation/Tim/D23:8",
+        "s": "Tim",
+        "p": "sent",
+        "o": "picture",
+        "family": "interaction_communication",
+        "status": "schema_gap",
+        "claims_on_sentence": []
+      },
+      {
+        "id": "conv-42/session_19_observation/Joanna/D19:6",
+        "s": "Joanna",
+        "p": "received",
+        "o": "feedback",
+        "family": "acquisition_passive",
+        "status": "schema_gap",
+        "claims_on_sentence": [
+          "part_of",
+          "works_at"
+        ]
+      },
+      {
+        "id": "conv-26/session_17_observation/Caroline/D17:19",
+        "s": "Caroline",
+        "p": "attended",
+        "o": "transgender poetry reading event",
+        "family": "event_participation",
+        "status": "schema_gap",
+        "claims_on_sentence": []
+      },
+      {
+        "id": "conv-41/session_7_observation/Maria/D7:1",
+        "s": "Maria",
+        "p": "attended",
+        "o": "creative writing class",
+        "family": "event_participation",
+        "status": "schema_gap",
+        "claims_on_sentence": []
+      },
+      {
+        "id": "conv-42/session_1_observation/Joanna/D1:10",
+        "s": "Joanna",
+        "p": "watched",
+        "o": "movies",
+        "family": "perception_media",
+        "status": "schema_gap",
+        "claims_on_sentence": []
+      },
+      {
+        "id": "conv-42/session_26_observation/Joanna/D26:22",
+        "s": "Joanna",
+        "p": "owns",
+        "o": "chocolate and raspberry cake recipe",
+        "family": "possession",
+        "status": "schema_gap",
+        "claims_on_sentence": []
+      },
+      {
+        "id": "conv-42/session_28_observation/Joanna/D28:8",
+        "s": "Joanna",
+        "p": "pitched_to",
+        "o": "producers",
+        "family": "event_participation",
+        "status": "schema_gap",
+        "claims_on_sentence": [
+          "created",
+          "wrote"
+        ]
+      },
+      {
+        "id": "conv-43/session_2_observation/Tim/D2:7",
+        "s": "Tim",
+        "p": "owns",
+        "o": "book collection",
+        "family": "possession",
+        "status": "schema_gap",
+        "claims_on_sentence": []
+      },
+      {
+        "id": "conv-43/session_2_observation/Tim/D2:7",
+        "s": "Tim",
+        "p": "owns",
+        "o": "picture",
+        "family": "possession",
+        "status": "schema_gap",
+        "claims_on_sentence": []
+      },
+      {
+        "id": "conv-43/session_6_observation/John/D6:13",
+        "s": "John",
+        "p": "drafted_by",
+        "o": "team",
+        "family": "achievement",
+        "status": "schema_gap",
+        "claims_on_sentence": [
+          "acquired",
+          "built"
+        ]
+      },
+      {
+        "id": "conv-43/session_27_observation/Tim/D27:15",
+        "s": "Tim",
+        "p": "owns",
+        "o": "book collection",
+        "family": "possession",
+        "status": "schema_gap",
+        "claims_on_sentence": [
+          "created",
+          "wrote"
+        ]
+      },
+      {
+        "id": "conv-44/session_23_observation/Audrey/D23:18",
+        "s": "Audrey",
+        "p": "owns",
+        "o": "tattoo",
+        "family": "possession",
+        "status": "schema_gap",
+        "claims_on_sentence": [
+          "works_at"
+        ]
+      },
+      {
+        "id": "conv-47/session_13_observation/James/D13:19",
+        "s": "James",
+        "p": "agrees_to",
+        "o": "bet",
+        "family": "conversation_interest",
+        "status": "schema_gap",
+        "claims_on_sentence": []
+      },
+      {
+        "id": "conv-48/session_14_observation/Deborah/D14:3",
+        "s": "Deborah",
+        "p": "asked_for",
+        "o": "feedback",
+        "family": "conversation_interest",
+        "status": "schema_gap",
+        "claims_on_sentence": [
+          "created",
+          "designed"
+        ]
+      },
+      {
+        "id": "conv-48/session_21_observation/Deborah/D21:1",
+        "s": "Deborah",
+        "p": "attended",
+        "o": "yoga retreat",
+        "family": "event_participation",
+        "status": "schema_gap",
+        "claims_on_sentence": []
+      },
+      {
+        "id": "conv-48/session_21_observation/Deborah/D21:1",
+        "s": "yoga retreat",
+        "p": "near",
+        "o": "mom's place",
+        "family": "location_motion",
+        "status": "schema_gap",
+        "claims_on_sentence": []
+      },
+      {
+        "id": "conv-48/session_24_observation/Deborah/D24:5",
+        "s": "mother",
+        "p": "motivates",
+        "o": "Deborah",
+        "family": "interaction_communication",
+        "status": "schema_gap",
+        "claims_on_sentence": []
+      },
+      {
+        "id": "conv-49/session_4_observation/Evan/D4:8",
+        "s": "flavored seltzer water",
+        "p": "alternative_to",
+        "o": "soda",
+        "family": "value_relation",
+        "status": "schema_gap",
+        "claims_on_sentence": [
+          "created"
+        ]
+      },
+      {
+        "id": "conv-49/session_7_observation/Evan/D7:1",
+        "s": "Evan",
+        "p": "parent_of",
+        "o": "son",
+        "family": "social_role",
+        "status": "schema_gap",
+        "claims_on_sentence": []
+      },
+      {
+        "id": "conv-49/session_9_observation/Evan/D9:14",
+        "s": "Evan",
+        "p": "recommended",
+        "o": "lake",
+        "family": "location_motion",
+        "status": "schema_gap",
+        "claims_on_sentence": []
+      },
+      {
+        "id": "conv-49/session_9_observation/Evan/D9:14",
+        "s": "lake",
+        "p": "near",
+        "o": "trails",
+        "family": "location_motion",
+        "status": "schema_gap",
+        "claims_on_sentence": []
+      },
+      {
+        "id": "conv-49/session_22_observation/Sam/D22:1",
+        "s": "Sam",
+        "p": "took_on_trip",
+        "o": "friends",
+        "family": "interaction_communication",
+        "status": "schema_gap",
+        "claims_on_sentence": []
+      },
+      {
+        "id": "conv-50/session_7_observation/Calvin/D7:1",
+        "s": "Calvin",
+        "p": "toured_with",
+        "o": "Frank Ocean",
+        "family": "event_participation",
+        "status": "schema_gap",
+        "claims_on_sentence": []
+      },
+      {
+        "id": "conv-50/session_7_observation/Calvin/D7:1",
+        "s": "Calvin",
+        "p": "performed_live_in",
+        "o": "Tokyo",
+        "family": "event_participation",
+        "status": "schema_gap",
+        "claims_on_sentence": []
+      },
+      {
+        "id": "conv-50/session_22_observation/Dave/D22:3",
+        "s": "Dave",
+        "p": "restored",
+        "o": "car",
+        "family": "attribute_need",
+        "status": "schema_gap",
+        "claims_on_sentence": [
+          "integrated"
+        ]
+      },
+      {
+        "id": "conv-50/session_22_observation/Dave/D22:3",
+        "s": "Dave",
+        "p": "modified",
+        "o": "car",
+        "family": "attribute_need",
+        "status": "schema_gap",
+        "claims_on_sentence": [
+          "integrated"
+        ]
+      }
+    ]
+  }
+}
