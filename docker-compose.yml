@@ -2,7 +2,15 @@ version: "3.8"
 
 services:
   surrealdb:
-    image: surrealdb/surrealdb:latest
+# Pinned deliberately. Do not use `latest`: the 2.x -> 3.x transition
+    # changed query semantics this codebase depends on. UPDATE no longer
+    # creates a missing record (so the router-cost snapshot is an UPSERT),
+    # and on a SCHEMAFULL table `TYPE object` is schemafull by default
+    # (so entity.metadata is FLEXIBLE). A `docker compose pull` that
+    # silently moved the version would invalidate both with no code change
+    # to point at. Bump deliberately and re-run tests/python_schema_tests.py.
+    # Note the `v` prefix: Docker Hub has no plain `3.3.0` tag.
+    image: surrealdb/surrealdb:v3.3.0
     container_name: sieveon-surrealdb
     ports:
       - "8000:8000"

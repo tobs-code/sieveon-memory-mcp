@@ -1,0 +1,50 @@
+# Debug stack: SurrealDB with a usable shell.
+#
+# Use it as an overlay on the main compose file, so the pinned production
+# definition stays authoritative and only the image differs:
+#
+#   docker compose -f docker-compose.yml -f docker-compose.debug.yml up -d
+#
+# The main file maps port 8000 and names the volume sieveon-data; both are
+# overridden here so this stack can run alongside the real one. Nothing in the
+# default stack changes, and no port or volume is shared, so the debug server
+# can never touch the data the development setup is using.
+#
+# Inspect:
+#   docker compose -f docker-compose.yml -f docker-compose.debug.yml exec surrealdb bash
+#   docker exec -it sieveon-surrealdb-debug surreal sql --pretty
+
+# A separate Compose project. Without this the overlay inherits the project
+# name from the directory, shares it with docker-compose.yml, and `up -d`
+# then removes the production container as a foreign service of the same
+# project. That is how the debug stack took down the real server once.
+name: sieveon-debug
+
+services:
+  surrealdb:
+    build:
+      context: .
+      dockerfile: Dockerfile.surrealdb-debug
+    image: sieveon-surrealdb:3.3.0-debug
+    # Overridden because both stacks derive from the same service key and a
+    # shared container_name makes Compose recreate the running server instead
+    # of starting a second one. Every difference below is what keeps the debug
+    # stack independent: separate name, port, volume and in-memory storage.
+    container_name: sieveon-surrealdb-debug
+    ports: !override
+      # Compose merges `ports` across overlay files, so without !override the
+      # 8000 mapping from docker-compose.yml survives and collides with the
+      # running server. 8001 instead.
+      - "8001:8000"
+    user: root
+    environment:
+      # In-memory on purpose -- a scratch database that disappears with the
+      # container, so experimenting here cannot corrupt anything.
+      SURREAL_PATH: mem://
+    command: start --log debug --user ${SURREALDB_USER:-root} --pass ${SURREALDB_PASS:-root}
+    restart: "no"
+    volumes: !override
+      - sieveon-data-debug:/data
+
+volumes:
+  sieveon-data-debug:

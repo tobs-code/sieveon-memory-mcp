@@ -1,0 +1,48 @@
+# Debug variant of SurrealDB: the real server plus a usable shell.
+#
+# The published surrealdb image is distroless -- the server binary and nothing
+# else. Good for production, useless for diagnosis, and diagnosis matters here
+# because SurrealDB 3 fails quietly in ways that look like application bugs:
+#
+#   * a query that never executed still returns status OK, so a misconfigured
+#     client looks like a working one;
+#   * a SCHEMAFULL table rejects an undeclared field with a message naming
+#     the nested path rather than the table.
+#
+# So this builds the same server on Debian with the usual debugging tools.
+# Alpine was the first choice but SurrealDB ships no musl build, only glibc,
+# and running the glibc binary on Alpine needs a compat layer -- more moving
+# parts than a Debian base.
+#
+# The server version is pinned and must match docker-compose.yml. There is no
+# musl/alpine asset on the release page, hence Debian rather than Alpine.
+#
+# Used via docker-compose.debug.yml; docker-compose.yml keeps the smaller
+# published image.
+
+FROM debian:bookworm-slim
+
+ARG SURREAL_VERSION=v3.3.0
+ARG TARGETARCH=amd64
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        ca-certificates curl jq less vim-tiny procps net-tools \
+        dnsutils iputils-ping iproute2 lsof strace tcpdump \
+        ripgrep tree file openssl bash netcat-openbsd coreutils diffutils \
+        procps psmisc xz-utils zstd && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN curl -fsSL "https://github.com/surrealdb/surrealdb/releases/download/${SURREAL_VERSION}/surreal-${SURREAL_VERSION}.linux-${TARGETARCH}.tgz" \
+    | tar -xz -C /tmp && \
+    install -m 0755 "/tmp/surreal" /usr/local/bin/surreal && \
+    rm -rf /tmp
+
+# Fail the build rather than the container if the binary is unusable.
+RUN surreal version
+
+VOLUME /data
+EXPOSE 8000
+
+ENTRYPOINT ["surreal"]
+CMD ["start", "--log", "info", "--user", "root", "--pass", "root"]

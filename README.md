@@ -1,7 +1,7 @@
 # Sieveon
 
 ![Python](https://img.shields.io/badge/python-3.10%2B-blue)
-![SurrealDB](https://img.shields.io/badge/SurrealDB-3.1.5-8B5CF6)
+![SurrealDB](https://img.shields.io/badge/SurrealDB-3.3.0-8B5CF6)
 ![License](https://img.shields.io/badge/license-Apache%202.0-green)
 ![arXiv](https://img.shields.io/badge/arXiv-2606.24775-b31b1b)
 ![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen)
@@ -112,6 +112,36 @@ python scripts/load_schema_optimized.py
 # 4. Run all tests
 python tests/run_all_tests.py
 ```
+
+The SurrealDB image is pinned to `surrealdb/surrealdb:v3.3.0`. This matters:
+SurrealDB 3 changed query semantics that this codebase depends on — `UPDATE`
+no longer creates a missing record (so the router-cost snapshot is an
+`UPSERT`), and on a `SCHEMAFULL` table `TYPE object` is schemafull by default
+(so `entity.metadata` is `FLEXIBLE`). Running `latest` could invalidate both
+with no code change to point at. Bump the tag deliberately and re-run
+`tests/python_schema_tests.py`.
+
+**Debug stack.** The published image is distroless, so it has no shell and
+there is no way to look inside. `docker-compose.debug.yml` builds the same
+server version on Debian with the usual tools:
+
+```bash
+# Starts on port 8001 with in-memory storage, leaving the real one alone
+docker compose -f docker-compose.yml -f docker-compose.debug.yml up -d
+
+# Shell in
+docker exec -it sieveon-surrealdb-debug bash
+
+# Or query it directly
+echo "USE DB x; SELECT * FROM event;" | docker exec -i sieveon-surrealdb-debug \
+  surreal sql --endpoint http://localhost:8000 --user root --pass root --pretty
+
+docker compose -f docker-compose.yml -f docker-compose.debug.yml down
+```
+
+It runs in its own Compose project (`name: sieveon-debug`), on its own port,
+and with `SURREAL_PATH=mem://`. Note that Alpine is not used: SurrealDB
+publishes no musl build, only glibc.
 
 ### Interactive demo
 
