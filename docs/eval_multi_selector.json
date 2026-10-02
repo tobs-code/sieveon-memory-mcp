@@ -1,0 +1,152 @@
+{
+  "scorable_gold": 44,
+  "baseline": {
+    "recall": 0.5909,
+    "found": 26,
+    "clean": 9
+  },
+  "selector": {
+    "recall": 0.5909,
+    "found": 26,
+    "clean": 10
+  },
+  "shipped_dropped": 0,
+  "kept_per_pair": {
+    "6": 12,
+    "1": 30,
+    "5": 19,
+    "2": 30,
+    "3": 35,
+    "4": 24,
+    "7": 4
+  },
+  "per_predicate": {
+    "attended": {
+      "kept": 27
+    },
+    "built": {
+      "kept": 12
+    },
+    "discovered": {
+      "kept": 17
+    },
+    "took_on_trip": {
+      "kept": 3
+    },
+    "uses": {
+      "kept": 18
+    },
+    "visited": {
+      "kept": 16
+    },
+    "near": {
+      "kept": 3
+    },
+    "created": {
+      "kept": 52
+    },
+    "developed": {
+      "kept": 20
+    },
+    "finished": {
+      "kept": 12
+    },
+    "founded": {
+      "kept": 10
+    },
+    "started": {
+      "kept": 17
+    },
+    "works_at": {
+      "kept": 19
+    },
+    "asked_for": {
+      "kept": 15
+    },
+    "tried": {
+      "kept": 16
+    },
+    "watched": {
+      "kept": 11
+    },
+    "owns": {
+      "kept": 22
+    },
+    "agrees_to": {
+      "kept": 2
+    },
+    "provides": {
+      "kept": 30
+    },
+    "suggests": {
+      "kept": 14
+    },
+    "motivates": {
+      "kept": 7
+    },
+    "shared": {
+      "kept": 23
+    },
+    "wrote": {
+      "kept": 12
+    },
+    "auditioned_for": {
+      "kept": 4
+    },
+    "gifted": {
+      "kept": 12
+    },
+    "recommended": {
+      "kept": 16
+    },
+    "sent": {
+      "kept": 3
+    },
+    "acquired": {
+      "kept": 16
+    },
+    "designed": {
+      "kept": 13
+    },
+    "requires": {
+      "kept": 4
+    },
+    "parent_of": {
+      "kept": 1
+    },
+    "part_of": {
+      "kept": 3
+    },
+    "asked_about": {
+      "kept": 7
+    },
+    "traveled_to": {
+      "kept": 6
+    },
+    "leads": {
+      "kept": 1
+    },
+    "noticed_by": {
+      "kept": 1
+    },
+    "funded": {
+      "kept": 1
+    },
+    "located_in": {
+      "kept": 3
+    },
+    "suggested_meeting_at": {
+      "kept": 5
+    },
+    "earned": {
+      "kept": 7
+    },
+    "restored": {
+      "kept": 4
+    },
+    "modified": {
+      "kept": 1
+    }
+  },
+  "dropped_shipped_detail": []
+}

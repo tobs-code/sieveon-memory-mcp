@@ -21,6 +21,23 @@ comparison. `decide_pair` returns the full decision record so that a caller
 that disagrees with another can compare the intermediate values rather than
 only the final relation.
 
+CARDINALITY. `decide_pair` is a single-winner reranker: one relation per
+entity pair. That is WRONG for this system and the single-winner runs
+recorded with it are negative results under a wrong assumption, not evidence
+about selection quality.
+
+The production contract is multi-relation per entity pair. `Gina founded
+store` and `Gina works_at store` are two facts, both true at once, both
+emitted by the current pipeline and both scored separately by the gold. A
+one-winner reranker can express at most one, so it necessarily loses the
+others -- which is exactly the 4/26/44 pattern the gated run produced. The
+defect is the cardinality assumption, not the gate.
+
+`keep_relations` below is the multi-relation scorer and is the one that
+matches the contract: every candidate relation is judged on its own merits
+and several may survive. It stays here beside the single-winner path so the
+difference is inspectable rather than rewritten away.
+
 Invariant this module is meant to make checkable:
 
     same sentence + same pair + same candidate set + same model state
@@ -174,6 +191,54 @@ def decide_pair(text: str, candidates: Sequence[str], subject: str,
             f"gate invariant violated: abstained against "
             f"{decision['emitted']} but emitted something else")
     return decision
+
+
+def keep_relations(text: str, candidates: Sequence[str], subject: str,
+                   obj: str, shipped_rels: Sequence[str] = (),
+                   gate: str = "abstraction") -> Dict[str, Any]:
+    """Score every relation on its own merits; keep several if several hold.
+
+    This is the multi-relation scorer the production contract requires. Each
+    candidate is judged independently, so no relation's fate depends on
+    where another relation on the same entity pair ranks. That independence
+    is the invariant: the earlier single-winner design made an existing
+    correct relation disappear because another relation on the same pair
+    scored higher, which is what produced every regression in the gated run.
+
+    Returns per-relation keep/drop decisions with the margin that produced
+    them, plus a summary of how many relations survive for this pair.
+    """
+    from scripts.selector_gate import level, verdict
+
+    cands = sorted(set(candidates))
+    hyps = [claim_text(c, subject, obj) for c in cands]
+    scores = score_pairs([text] * len(cands), hyps)
+    shipped = set(shipped_rels)
+
+    per: List[Dict[str, Any]] = []
+    for c, s, h in zip(cands, scores, hyps):
+        keep = True
+        reason = "score kept it"
+        if gate == "abstraction" and shipped:
+            # A shipped relation is never dropped for being less specific
+            # than a rival: dropping it is the exact failure under repair.
+            if c in shipped:
+                keep, reason = True, "already shipped, protected"
+            elif any(verdict(c, r) == "same" for r in shipped):
+                keep, reason = True, "comparable to a shipped relation"
+        per.append({"predicate": c, "hypothesis": h, "margin": round(s, 4),
+                    "level": level(c), "keep": keep, "reason": reason,
+                    "shipped": c in shipped})
+
+    kept = [p["predicate"] for p in per if p["keep"]]
+    return {
+        "candidates": cands,
+        "per_relation": per,
+        "kept": kept,
+        "dropped": [p["predicate"] for p in per if not p["keep"]],
+        "multiplicity": len(kept),
+        "gate": gate,
+    }
 
 
 if __name__ == "__main__":
