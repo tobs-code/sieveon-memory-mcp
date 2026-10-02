@@ -288,33 +288,39 @@
     "matched_local_syntax": "the two variants of a pair share their entities and their local syntax; only the declared cue may differ, so no positional cue such as sentence length or verb class separates them",
     "no_aspect_leak": "no variant may introduce an aspect the other lacks"
   },
-  "controlled_seeds": [
+  "controlled_pairs": [
     {
-      "frame": "active_assistance",
+      "pair_id": "active_assistance--00",
+      "frame_id": "active_assistance",
+      "frame_index": 0,
+      "variant_index": 0,
       "cue": "realised vs offered",
       "class": "clean_positive",
-      "template": "{X} helped {Y} with the fundraiser.",
+      "cue_phrase": "helped",
+      "entities": [
+        "Maria",
+        "Tim"
+      ],
+      "entity_types": [
+        "person",
+        "person"
+      ],
+      "surface": "",
       "sentence": "Maria helped Tim with the fundraiser.",
-      "entities": [
-        "Maria",
-        "Tim"
-      ],
-      "entity_types": [
-        "person",
-        "person"
-      ],
       "target_relation": [
         "provides"
       ],
-      "target_object": "help",
-      "provenance": "controlled_clean_positive"
+      "provenance": "controlled_clean_positive",
+      "split_key": "active_assistance--00"
     },
     {
-      "frame": "active_assistance",
+      "pair_id": "active_assistance--00",
+      "frame_id": "active_assistance",
+      "frame_index": 0,
+      "variant_index": 0,
       "cue": "realised vs offered",
       "class": "hard_negative",
-      "template": "{X} offered to help {Y} with the fundraiser.",
-      "sentence": "Maria offered to help Tim with the fundraiser.",
+      "cue_phrase": "offered to help",
       "entities": [
         "Maria",
         "Tim"
@@ -323,18 +329,22 @@
         "person",
         "person"
       ],
+      "surface": "",
+      "sentence": "Maria offered to help Tim with the fundraiser.",
       "target_relation": [
         "provides"
       ],
-      "target_object": "help",
-      "provenance": "controlled_hard_negative"
+      "provenance": "controlled_hard_negative",
+      "split_key": "active_assistance--00"
     },
     {
-      "frame": "active_encouragement",
-      "cue": "directed encouragement vs reported effect",
+      "pair_id": "active_assistance--01",
+      "frame_id": "active_assistance",
+      "frame_index": 0,
+      "variant_index": 1,
+      "cue": "realised vs offered",
       "class": "clean_positive",
-      "template": "{X} encouraged {Y} to keep going.",
-      "sentence": "Maria encouraged the nonprofit to keep going.",
+      "cue_phrase": "assisted",
       "entities": [
         "Maria",
         "the nonprofit"
@@ -343,18 +353,22 @@
         "person",
         "organization"
       ],
+      "surface": "the ",
+      "sentence": "Maria assisted the nonprofit with the fundraiser.",
       "target_relation": [
         "provides"
       ],
-      "target_object": "encouragement",
-      "provenance": "controlled_clean_positive"
+      "provenance": "controlled_clean_positive",
+      "split_key": "active_assistance--01"
     },
     {
-      "frame": "active_encouragement",
-      "cue": "directed encouragement vs reported effect",
+      "pair_id": "active_assistance--01",
+      "frame_id": "active_assistance",
+      "frame_index": 0,
+      "variant_index": 1,
+      "cue": "realised vs offered",
       "class": "hard_negative",
-      "template": "{Y} said {X}'s encouragement kept him going.",
-      "sentence": "the nonprofit said Maria's encouragement kept him going.",
+      "cue_phrase": "said she would assist",
       "entities": [
         "Maria",
         "the nonprofit"
@@ -363,98 +377,118 @@
         "person",
         "organization"
       ],
+      "surface": "the ",
+      "sentence": "Maria said she would assist the nonprofit with the fundraiser.",
       "target_relation": [
         "provides"
       ],
-      "target_object": "encouragement",
-      "provenance": "controlled_hard_negative"
+      "provenance": "controlled_hard_negative",
+      "split_key": "active_assistance--01"
     },
     {
-      "frame": "nominal_possessive",
-      "cue": "direct possession vs instrumental framing",
+      "pair_id": "active_assistance--02",
+      "frame_id": "active_assistance",
+      "frame_index": 0,
+      "variant_index": 2,
+      "cue": "realised vs offered",
       "class": "clean_positive",
-      "template": "{X}'s support for {Y} was constant.",
-      "sentence": "the venue's support for the organizer was constant.",
+      "cue_phrase": "helped out",
       "entities": [
-        "the venue",
-        "the organizer"
+        "the organizer",
+        "the venue"
       ],
       "entity_types": [
         "organization",
         "organization"
       ],
+      "surface": "",
+      "sentence": "the organizer helped out the venue with the fundraiser.",
       "target_relation": [
         "provides"
       ],
-      "target_object": "help",
-      "provenance": "controlled_clean_positive"
+      "provenance": "controlled_clean_positive",
+      "split_key": "active_assistance--02"
     },
     {
-      "frame": "nominal_possessive",
-      "cue": "direct possession vs instrumental framing",
+      "pair_id": "active_assistance--02",
+      "frame_id": "active_assistance",
+      "frame_index": 0,
+      "variant_index": 2,
+      "cue": "realised vs offered",
       "class": "hard_negative",
-      "template": "{Y} succeeded with {X}'s support.",
-      "sentence": "the organizer succeeded with the venue's support.",
+      "cue_phrase": "spoke of helping out",
       "entities": [
-        "the venue",
-        "the organizer"
+        "the organizer",
+        "the venue"
       ],
       "entity_types": [
         "organization",
         "organization"
       ],
+      "surface": "",
+      "sentence": "the organizer spoke of helping out the venue with the fundraiser.",
       "target_relation": [
         "provides"
       ],
-      "target_object": "help",
-      "provenance": "controlled_hard_negative"
+      "provenance": "controlled_hard_negative",
+      "split_key": "active_assistance--02"
     },
     {
-      "frame": "assistance_performed_vs_mentioned",
-      "cue": "assistance carried out vs assistance only spoken of",
+      "pair_id": "active_encouragement--00",
+      "frame_id": "active_encouragement",
+      "frame_index": 1,
+      "variant_index": 0,
+      "cue": "directed encouragement vs reported effect",
       "class": "clean_positive",
-      "template": "{X} helped {Y} carry the boxes.",
-      "sentence": "the app helped the team carry the boxes.",
+      "cue_phrase": "encouraged",
       "entities": [
-        "the app",
-        "the team"
+        "the team",
+        "the app"
       ],
       "entity_types": [
-        "technology",
-        "organization"
+        "organization",
+        "technology"
       ],
+      "surface": "",
+      "sentence": "the team encouraged the app to keep going.",
       "target_relation": [
         "provides"
       ],
-      "target_object": "help",
-      "provenance": "controlled_clean_positive"
+      "provenance": "controlled_clean_positive",
+      "split_key": "active_encouragement--00"
     },
     {
-      "frame": "assistance_performed_vs_mentioned",
-      "cue": "assistance carried out vs assistance only spoken of",
+      "pair_id": "active_encouragement--00",
+      "frame_id": "active_encouragement",
+      "frame_index": 1,
+      "variant_index": 0,
+      "cue": "directed encouragement vs reported effect",
       "class": "hard_negative",
-      "template": "{X} talked about helping {Y} carry the boxes.",
-      "sentence": "the app talked about helping the team carry the boxes.",
+      "cue_phrase": "said he would encourage",
       "entities": [
-        "the app",
-        "the team"
+        "the team",
+        "the app"
       ],
       "entity_types": [
-        "technology",
-        "organization"
+        "organization",
+        "technology"
       ],
+      "surface": "",
+      "sentence": "the team said he would encourage the app to keep going.",
       "target_relation": [
         "provides"
       ],
-      "target_object": "help",
-      "provenance": "controlled_hard_negative"
+      "provenance": "controlled_hard_negative",
+      "split_key": "active_encouragement--00"
     },
     {
-      "frame": "intentional",
-      "cue": "intention vs execution",
+      "pair_id": "active_encouragement--01",
+      "frame_id": "active_encouragement",
+      "frame_index": 1,
+      "variant_index": 1,
+      "cue": "directed encouragement vs reported effect",
       "class": "clean_positive",
-      "template": "{X} helped {Y} after she asked.",
-      "sentence": "the meetup helped Tom after she asked.",
+      "cue_phrase": "cheered on",
       "entities": [
         "the meetup",
         "Tom"
@@ -463,18 +497,22 @@
         "event",
         "person"
       ],
+      "surface": "the ",
+      "sentence": "the meetup cheered on Tom to keep going.",
       "target_relation": [
         "provides"
       ],
-      "target_object": "help",
-      "provenance": "controlled_clean_positive"
+      "provenance": "controlled_clean_positive",
+      "split_key": "active_encouragement--01"
     },
     {
-      "frame": "intentional",
-      "cue": "intention vs execution",
+      "pair_id": "active_encouragement--01",
+      "frame_id": "active_encouragement",
+      "frame_index": 1,
+      "variant_index": 1,
+      "cue": "directed encouragement vs reported effect",
       "class": "hard_negative",
-      "template": "{X} planned to help {Y} after she asked.",
-      "sentence": "the meetup planned to help Tom after she asked.",
+      "cue_phrase": "spoke of cheering on",
       "entities": [
         "the meetup",
         "Tom"
@@ -483,11 +521,397 @@
         "event",
         "person"
       ],
+      "surface": "the ",
+      "sentence": "the meetup spoke of cheering on Tom to keep going.",
       "target_relation": [
         "provides"
       ],
-      "target_object": "help",
-      "provenance": "controlled_hard_negative"
+      "provenance": "controlled_hard_negative",
+      "split_key": "active_encouragement--01"
+    },
+    {
+      "pair_id": "active_encouragement--02",
+      "frame_id": "active_encouragement",
+      "frame_index": 1,
+      "variant_index": 2,
+      "cue": "directed encouragement vs reported effect",
+      "class": "clean_positive",
+      "cue_phrase": "urged",
+      "entities": [
+        "the coach",
+        "the club"
+      ],
+      "entity_types": [
+        "person",
+        "organization"
+      ],
+      "surface": "",
+      "sentence": "the coach urged the club to keep going.",
+      "target_relation": [
+        "provides"
+      ],
+      "provenance": "controlled_clean_positive",
+      "split_key": "active_encouragement--02"
+    },
+    {
+      "pair_id": "active_encouragement--02",
+      "frame_id": "active_encouragement",
+      "frame_index": 1,
+      "variant_index": 2,
+      "cue": "directed encouragement vs reported effect",
+      "class": "hard_negative",
+      "cue_phrase": "talked about urging",
+      "entities": [
+        "the coach",
+        "the club"
+      ],
+      "entity_types": [
+        "person",
+        "organization"
+      ],
+      "surface": "",
+      "sentence": "the coach talked about urging the club to keep going.",
+      "target_relation": [
+        "provides"
+      ],
+      "provenance": "controlled_hard_negative",
+      "split_key": "active_encouragement--02"
+    },
+    {
+      "pair_id": "nominal_possessive--00",
+      "frame_id": "nominal_possessive",
+      "frame_index": 2,
+      "variant_index": 0,
+      "cue": "direct possession vs instrumental framing",
+      "class": "clean_positive",
+      "cue_phrase": "'s support for",
+      "entities": [
+        "the organizer",
+        "the venue"
+      ],
+      "entity_types": [
+        "organization",
+        "organization"
+      ],
+      "surface": "",
+      "sentence": "the organizer 's support for the venue was steady.",
+      "target_relation": [
+        "provides"
+      ],
+      "provenance": "controlled_clean_positive",
+      "split_key": "nominal_possessive--00"
+    },
+    {
+      "pair_id": "nominal_possessive--00",
+      "frame_id": "nominal_possessive",
+      "frame_index": 2,
+      "variant_index": 0,
+      "cue": "direct possession vs instrumental framing",
+      "class": "hard_negative",
+      "cue_phrase": "'s support was instrumental for",
+      "entities": [
+        "the organizer",
+        "the venue"
+      ],
+      "entity_types": [
+        "organization",
+        "organization"
+      ],
+      "surface": "",
+      "sentence": "the organizer 's support was instrumental for the venue was steady.",
+      "target_relation": [
+        "provides"
+      ],
+      "provenance": "controlled_hard_negative",
+      "split_key": "nominal_possessive--00"
+    },
+    {
+      "pair_id": "assistance_performed_vs_mentioned--00",
+      "frame_id": "assistance_performed_vs_mentioned",
+      "frame_index": 3,
+      "variant_index": 0,
+      "cue": "assistance carried out vs assistance only spoken of",
+      "class": "clean_positive",
+      "cue_phrase": "helped",
+      "entities": [
+        "the organizer",
+        "the venue"
+      ],
+      "entity_types": [
+        "organization",
+        "organization"
+      ],
+      "surface": "",
+      "sentence": "the organizer helped the venue move the boxes.",
+      "target_relation": [
+        "provides"
+      ],
+      "provenance": "controlled_clean_positive",
+      "split_key": "assistance_performed_vs_mentioned--00"
+    },
+    {
+      "pair_id": "assistance_performed_vs_mentioned--00",
+      "frame_id": "assistance_performed_vs_mentioned",
+      "frame_index": 3,
+      "variant_index": 0,
+      "cue": "assistance carried out vs assistance only spoken of",
+      "class": "hard_negative",
+      "cue_phrase": "spoke of helping",
+      "entities": [
+        "the organizer",
+        "the venue"
+      ],
+      "entity_types": [
+        "organization",
+        "organization"
+      ],
+      "surface": "",
+      "sentence": "the organizer spoke of helping the venue move the boxes.",
+      "target_relation": [
+        "provides"
+      ],
+      "provenance": "controlled_hard_negative",
+      "split_key": "assistance_performed_vs_mentioned--00"
+    },
+    {
+      "pair_id": "assistance_performed_vs_mentioned--01",
+      "frame_id": "assistance_performed_vs_mentioned",
+      "frame_index": 3,
+      "variant_index": 1,
+      "cue": "assistance carried out vs assistance only spoken of",
+      "class": "clean_positive",
+      "cue_phrase": "assisted",
+      "entities": [
+        "the team",
+        "the app"
+      ],
+      "entity_types": [
+        "organization",
+        "technology"
+      ],
+      "surface": "the ",
+      "sentence": "the team assisted the app move the boxes.",
+      "target_relation": [
+        "provides"
+      ],
+      "provenance": "controlled_clean_positive",
+      "split_key": "assistance_performed_vs_mentioned--01"
+    },
+    {
+      "pair_id": "assistance_performed_vs_mentioned--01",
+      "frame_id": "assistance_performed_vs_mentioned",
+      "frame_index": 3,
+      "variant_index": 1,
+      "cue": "assistance carried out vs assistance only spoken of",
+      "class": "hard_negative",
+      "cue_phrase": "described assisting",
+      "entities": [
+        "the team",
+        "the app"
+      ],
+      "entity_types": [
+        "organization",
+        "technology"
+      ],
+      "surface": "the ",
+      "sentence": "the team described assisting the app move the boxes.",
+      "target_relation": [
+        "provides"
+      ],
+      "provenance": "controlled_hard_negative",
+      "split_key": "assistance_performed_vs_mentioned--01"
+    },
+    {
+      "pair_id": "assistance_performed_vs_mentioned--02",
+      "frame_id": "assistance_performed_vs_mentioned",
+      "frame_index": 3,
+      "variant_index": 2,
+      "cue": "assistance carried out vs assistance only spoken of",
+      "class": "clean_positive",
+      "cue_phrase": "was busy helping",
+      "entities": [
+        "the meetup",
+        "Tom"
+      ],
+      "entity_types": [
+        "event",
+        "person"
+      ],
+      "surface": "",
+      "sentence": "the meetup was busy helping Tom move the boxes.",
+      "target_relation": [
+        "provides"
+      ],
+      "provenance": "controlled_clean_positive",
+      "split_key": "assistance_performed_vs_mentioned--02"
+    },
+    {
+      "pair_id": "assistance_performed_vs_mentioned--02",
+      "frame_id": "assistance_performed_vs_mentioned",
+      "frame_index": 3,
+      "variant_index": 2,
+      "cue": "assistance carried out vs assistance only spoken of",
+      "class": "hard_negative",
+      "cue_phrase": "was asked about helping",
+      "entities": [
+        "the meetup",
+        "Tom"
+      ],
+      "entity_types": [
+        "event",
+        "person"
+      ],
+      "surface": "",
+      "sentence": "the meetup was asked about helping Tom move the boxes.",
+      "target_relation": [
+        "provides"
+      ],
+      "provenance": "controlled_hard_negative",
+      "split_key": "assistance_performed_vs_mentioned--02"
+    },
+    {
+      "pair_id": "intentional--00",
+      "frame_id": "intentional",
+      "frame_index": 4,
+      "variant_index": 0,
+      "cue": "intention vs execution",
+      "class": "clean_positive",
+      "cue_phrase": "helped",
+      "entities": [
+        "the coach",
+        "the club"
+      ],
+      "entity_types": [
+        "person",
+        "organization"
+      ],
+      "surface": "",
+      "sentence": "the coach helped the club after she asked.",
+      "target_relation": [
+        "provides"
+      ],
+      "provenance": "controlled_clean_positive",
+      "split_key": "intentional--00"
+    },
+    {
+      "pair_id": "intentional--00",
+      "frame_id": "intentional",
+      "frame_index": 4,
+      "variant_index": 0,
+      "cue": "intention vs execution",
+      "class": "hard_negative",
+      "cue_phrase": "planned to help",
+      "entities": [
+        "the coach",
+        "the club"
+      ],
+      "entity_types": [
+        "person",
+        "organization"
+      ],
+      "surface": "",
+      "sentence": "the coach planned to help the club after she asked.",
+      "target_relation": [
+        "provides"
+      ],
+      "provenance": "controlled_hard_negative",
+      "split_key": "intentional--00"
+    },
+    {
+      "pair_id": "intentional--01",
+      "frame_id": "intentional",
+      "frame_index": 4,
+      "variant_index": 1,
+      "cue": "intention vs execution",
+      "class": "clean_positive",
+      "cue_phrase": "assisted",
+      "entities": [
+        "the project",
+        "the sponsor"
+      ],
+      "entity_types": [
+        "concept",
+        "organization"
+      ],
+      "surface": "the ",
+      "sentence": "the project assisted the sponsor after she asked.",
+      "target_relation": [
+        "provides"
+      ],
+      "provenance": "controlled_clean_positive",
+      "split_key": "intentional--01"
+    },
+    {
+      "pair_id": "intentional--01",
+      "frame_id": "intentional",
+      "frame_index": 4,
+      "variant_index": 1,
+      "cue": "intention vs execution",
+      "class": "hard_negative",
+      "cue_phrase": "meant to assist",
+      "entities": [
+        "the project",
+        "the sponsor"
+      ],
+      "entity_types": [
+        "concept",
+        "organization"
+      ],
+      "surface": "the ",
+      "sentence": "the project meant to assist the sponsor after she asked.",
+      "target_relation": [
+        "provides"
+      ],
+      "provenance": "controlled_hard_negative",
+      "split_key": "intentional--01"
+    },
+    {
+      "pair_id": "intentional--02",
+      "frame_id": "intentional",
+      "frame_index": 4,
+      "variant_index": 2,
+      "cue": "intention vs execution",
+      "class": "clean_positive",
+      "cue_phrase": "supported",
+      "entities": [
+        "Maria",
+        "Tim"
+      ],
+      "entity_types": [
+        "person",
+        "person"
+      ],
+      "surface": "",
+      "sentence": "Maria supported Tim after she asked.",
+      "target_relation": [
+        "provides"
+      ],
+      "provenance": "controlled_clean_positive",
+      "split_key": "intentional--02"
+    },
+    {
+      "pair_id": "intentional--02",
+      "frame_id": "intentional",
+      "frame_index": 4,
+      "variant_index": 2,
+      "cue": "intention vs execution",
+      "class": "hard_negative",
+      "cue_phrase": "intended to support",
+      "entities": [
+        "Maria",
+        "Tim"
+      ],
+      "entity_types": [
+        "person",
+        "person"
+      ],
+      "surface": "",
+      "sentence": "Maria intended to support Tim after she asked.",
+      "target_relation": [
+        "provides"
+      ],
+      "provenance": "controlled_hard_negative",
+      "split_key": "intentional--02"
     }
   ],
   "natural_counts": {

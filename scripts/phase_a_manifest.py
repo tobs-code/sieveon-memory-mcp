@@ -153,11 +153,14 @@ def validate_constructed(entries: List[Dict[str, Any]],
     problems: List[str] = []
     banned_aspects = ("never ", "hadn't", "won't", "will ", "would have")
 
-    by_frame: Dict[str, List[Dict[str, Any]]] = {}
+    # Grouping is by pair_id, not by frame: after expansion a frame holds
+    # several pairs, and the invariant under test is the within-pair match.
+    by_pair: Dict[str, List[Dict[str, Any]]] = {}
     for e in entries:
-        by_frame.setdefault(e["frame"], []).append(e)
-
-    for frame, group in by_frame.items():
+        by_pair.setdefault(e.get("pair_id", e.get("frame", "unnamed")),
+                           []).append(e)
+    for pair_id, group in by_pair.items():
+        frame = group[0].get("frame", group[0].get("frame_id", "unnamed"))
         pos = [e for e in group if e["class"] == "clean_positive"]
         neg = [e for e in group if e["class"] == "hard_negative"]
         if len(pos) != 1 or len(neg) != 1:
@@ -299,6 +302,98 @@ def build_seeds() -> List[Dict[str, Any]]:
     return out
 
 
+# Expansion axes. Each frame gets several independent variants of its cue,
+# crossed with different entity pairs and a surface modifier. The rule that
+# makes the result interpretable: within a pair everything is held fixed
+# except the cue phrase. Across pairs the axes vary, but not all of them at
+# once, so a classifier that reacts to sentence length or to entity type has
+# nowhere to hide.
+CUE_VARIANTS = {
+    "active_assistance": [
+        ("helped", "offered to help"),
+        ("assisted", "said she would assist"),
+        ("helped out", "spoke of helping out"),
+    ],
+    "active_encouragement": [
+        ("encouraged", "said he would encourage"),
+        ("cheered on", "spoke of cheering on"),
+        ("urged", "talked about urging"),
+    ],
+    "nominal_possessive": [
+        ("'s support for", "'s support was instrumental for"),
+    ],
+    "assistance_performed_vs_mentioned": [
+        ("helped", "spoke of helping"),
+        ("assisted", "described assisting"),
+        ("was busy helping", "was asked about helping"),
+    ],
+    "intentional": [
+        ("helped", "planned to help"),
+        ("assisted", "meant to assist"),
+        ("supported", "intended to support"),
+    ],
+}
+
+# One shell per frame. The cue phrase slots into the same position in both
+# variants, so the pair cannot be separated by anything but the cue itself.
+SHELLS = {
+    "active_assistance": "{X} {cue} {Y} with the fundraiser.",
+    "active_encouragement": "{X} {cue} {Y} to keep going.",
+    "nominal_possessive": "{X} {cue} {Y} was steady.",
+    "assistance_performed_vs_mentioned": "{X} {cue} {Y} move the boxes.",
+    "intentional": "{X} {cue} {Y} after she asked.",
+}
+
+ENTITY_SLOTS = [
+    (["Maria", "Tim"], ["person", "person"]),
+    (["Maria", "the nonprofit"], ["person", "organization"]),
+    (["the organizer", "the venue"], ["organization", "organization"]),
+    (["the team", "the app"], ["organization", "technology"]),
+    (["the meetup", "Tom"], ["event", "person"]),
+    (["the coach", "the club"], ["person", "organization"]),
+    (["the project", "the sponsor"], ["concept", "organization"]),
+]
+
+
+def build_pairs() -> List[Dict[str, Any]]:
+    """Matched pairs across all five frames, keyed for pair-level splitting."""
+    out: List[Dict[str, Any]] = []
+    for fi, f in enumerate(CONTROLLED_FRAMES):
+        frame = f["frame"]
+        shell = SHELLS[frame]
+        variants = CUE_VARIANTS[frame]
+        for vi, (pos_cue, neg_cue) in enumerate(variants):
+            # One axis moves at a time across pairs: the cue variant advances
+            # fastest, the entity slot advances slowest, so consecutive pairs
+            # differ in exactly one dimension.
+            ents, types = ENTITY_SLOTS[(fi * len(variants) + vi) % len(ENTITY_SLOTS)]
+            surface = "" if vi % 2 == 0 else "the "
+            pid = f"{frame}--{vi:02d}"
+            for cls, cue in (("clean_positive", pos_cue),
+                             ("hard_negative", neg_cue)):
+                out.append({
+                    "pair_id": pid, "frame_id": frame, "frame_index": fi,
+                    "variant_index": vi, "cue": f["cue"],
+                    "class": cls, "cue_phrase": cue,
+                    "entities": list(ents), "entity_types": list(types),
+                    "surface": surface,
+                    "sentence": shell.format(X=ents[0], Y=ents[1], cue=cue),
+                    "target_relation": ["provides"],
+                    "provenance": ("controlled_clean_positive" if cls ==
+                                   "clean_positive" else
+                                   "controlled_hard_negative"),
+                    "split_key": pid,
+                })
+    return out
+
+
+def _render(entry: Dict[str, Any], shell: str, tail: str) -> str:
+    x, y = entry["entities"]
+    if entry["frame_id"] == "nominal_possessive":
+        return f'{entry["surface"]}{x} {entry["cue_phrase"]} {y} was steady.'
+    return f'{x} {entry["cue_phrase"]}{tail}'
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--out", default="")
@@ -328,20 +423,27 @@ def main() -> int:
 
     problems = validate(nat)
 
-    seeds = build_seeds()
+    pairs = build_pairs()
     corpus = _test_corpus_texts()
-    problems += validate_constructed(seeds, corpus)
+    problems += validate_constructed(pairs, corpus)
 
-    print(f"\n  controlled seeds built: {len(seeds)} "
-          f"({len(seeds) // 2} matched pairs)\n")
-    print(f"  {'frame':34} {'entities':28} cue")
-    for f in CONTROLLED_FRAMES:
-        s = [e for e in seeds if e["frame"] == f["frame"]][0]
-        print(f"  {f['frame']:34} {s['entities'][0] + ' / ' + s['entities'][1]:28} "
-              f"{f['cue'][:34]}")
+    print(f"\n  controlled pairs built: {len(pairs)} entries "
+          f"({len(pairs) // 2} matched pairs)\n")
+    print(f"  {'pair_id':38} {'entities':26} classes")
+    seen_pair = []
+    for p in pairs:
+        if p["pair_id"] in seen_pair:
+            continue
+        seen_pair.append(p["pair_id"])
+        same = [e for e in pairs if e["pair_id"] == p["pair_id"]]
+        ents = " / ".join(p["entities"])
+        print(f"  {p['pair_id']:38} {ents:26} "
+              f"{len(same)} entries, cue '{p['cue'][:28]}'")
+    print(f"\n  distinct pair_ids: {len(seen_pair)}  "
+          f"(train/val/test must split on pair_id, never on rows)")
     print()
-    for e in seeds:
-        print(f"    {e['class']:16} {e['sentence']}")
+    for p in pairs[:12]:
+        print(f"    {p['class']:16} {p['sentence']}")
 
     print("\n  construction rules enforced:")
     for k, v in CONSTRUCTION_RULES.items():
@@ -368,7 +470,7 @@ def main() -> int:
             "natural": nat,
             "controlled_frames": CONTROLLED_FRAMES,
             "construction_rules": CONSTRUCTION_RULES,
-            "controlled_seeds": seeds,
+            "controlled_pairs": pairs,
             "natural_counts": dict(counts),
             "natural_rates": {k: round(v / 60, 4)
                               for k, v in counts.items()
