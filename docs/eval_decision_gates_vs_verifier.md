@@ -111,9 +111,12 @@ confidence signal -- it takes over the actual evidence check.
 
 Conventions used throughout this file:
 
-- Precision counts supported + implied. A right proposition on an imprecise
-  predicate ("John works_at assistant manager" for a job title) is a fact
-  the store can use and is not the same defect as a fabricated relation.
+- Precision measures non-wrong semantic plausibility (`supported + implied),
+  not strict textual entailment. Read the uniform kept set as 0.552
+  ("16 of 29 kept triples are not false"), never as "55.2% strictly
+  entailed"; the corresponding strict figure is 0.207 (6/29) and is
+  reported as a diagnostic, not as a target -- see the decision below on why
+  no available signal separates the two classes.
 - Strict precision counts supported only. It is the lower bound and the one
   to cite when the claim is about fully correct facts.
 - Recall is never reported from the annotation. It labels what the model
