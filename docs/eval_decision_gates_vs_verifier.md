@@ -118,3 +118,53 @@ Conventions used throughout this file:
   to cite when the claim is about fully correct facts.
 - Recall is never reported from the annotation. It labels what the model
   asserted; it says nothing about triples it should have found.
+
+Uniform sample, annotated 2026-10-02: the production-adjacent number
+--------------------------------------------------------------------
+
+Same semantics, same reconcile code (`--set uniform`), no merged headline
+with the stratified set. The two samples answer different questions.
+
+- 57 sentences, 84 asserted triples.
+- Pre-pipeline: precision 0.310 (26/84), Wilson [0.221-0.415];
+  strict 0.143 (12/84).
+- Post-pipeline (`eval_pipeline_matrix.py --set uniform`):
+  kept 29/84 (34.5%), precision 0.552 (16/29), Wilson [0.375-0.716];
+  strict 0.207 (6/29).
+- Partition: verifier_drop 55 (10 right / 45 wrong),
+  verifier_accept 23 (13 / 10), auto_accept 6 (3 / 3),
+  structural_drop 0, floor_drop 0.
+- No copular+event frames and no sub-0.70 triples occurred in this sample,
+  so those two paths contribute nothing here -- the 0.552 is the verifier's
+  number alone.
+
+Read against the stratified set (pre 0.441 -> post 0.698, retention 36.4%):
+the uniform sample is worse both before and after the pipeline, and its
+kept-precision CI ([0.375-0.716]) overlaps the stratified pre-pipeline
+precision (0.441). The difference is the expected direction: the
+stratified sample oversamples hard constructions, yet its baseline is
+*higher*, not lower -- the extractor does comparatively well on its
+targeted ambiguity classes and comparatively badly on ordinary sentences,
+where creator overgeneration (`created` 1/12, `built` 0/6, `wrote` 0/6 on
+this sample) dominates.
+
+Strict precision on the uniform kept set (6/29 = 0.207) is the number to
+cite when the claim is about fully correct facts in production-like text;
+it is substantially below the stratified kept strict (0.512). This is the
+cost of the pipeline keeping implied-but-imprecise triples: 10 of the 16
+kept-right uniform triples are implied, not supported.
+
+New error classes observed during uniform annotation (for the taxonomy,
+not new labels):
+
+- fabricated creator/agent relation: a mentioned concept becomes a
+  `created`/`developed` relation of the subject even though no predicate
+  substitution would fix it ([17], [18]).
+- propositional-content-as-agent: content of a that-clause is attributed
+  to the believer as an action ([29]).
+- participation -> founder: `attended` entails `founded` ([43]).
+- completion/achievement overgeneration: a purpose becomes a completed
+  acquisition ([46] `acquired strategy skills`).
+- requirement inverted as supply: `requires X` becomes `provides X`
+  ([50] lilies/watering/sunlight).
+- problem source as tool: `phone issues` becomes `uses phone` ([42]).

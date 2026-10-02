@@ -40,7 +40,9 @@ STATES = ("structural_drop", "verifier_drop", "verifier_accept",
           "auto_accept", "floor_drop")
 
 
-async def build_matrix(shadow: bool = False) -> List[Dict[str, Any]]:
+async def build_matrix(shadow: bool = False,
+                       draft: Path | None = None,
+                       gaps: List[Path] | None = None) -> List[Dict[str, Any]]:
     from scripts.reconcile_triple_annotation import (
         ANNOTATION, IMPLIED, SUPPORTED, WRONG, load_gap,
     )
@@ -49,10 +51,15 @@ async def build_matrix(shadow: bool = False) -> List[Dict[str, Any]]:
     from src.extraction.verbalise import verbalise
     from src.extraction.verifier import _get_verifier
 
+    from scripts.reconcile_triple_annotation import GAP as _GAP, UNIFORM_GAP
+    if draft is None:
+        draft = DRAFT
+    if gaps is None:
+        gaps = [_GAP]
     rows = [json.loads(l) for l in
-            DRAFT.read_text(encoding="utf-8").splitlines() if l.strip()]
+            draft.read_text(encoding="utf-8").splitlines() if l.strip()]
     verdicts = {(s, a, p, o): v for s, i, a, p, o, v in ANNOTATION}
-    for g in load_gap():
+    for g in load_gap(gaps):
         verdicts[(g["stratum"], g["s"], g["p"], g["o"])] = g["verdict"]
 
     counters: Dict[str, int] = {}
@@ -132,8 +139,8 @@ def report(matrix: List[Dict[str, Any]]) -> Dict[str, Any]:
         return m["verdict"] in (SUPPORTED, IMPLIED)
 
     states = Counter(m["state"] for m in matrix)
-    assert sum(states.values()) == len(matrix) == 118, (
-        f"matrix must partition all 118 triples, got {dict(states)}")
+    assert sum(states.values()) == len(matrix), (
+        f"matrix must partition all triples, got {dict(states)}")
 
     kept_states = ("verifier_accept", "auto_accept")
     kept = [m for m in matrix if m["state"] in kept_states]
@@ -141,7 +148,7 @@ def report(matrix: List[Dict[str, Any]]) -> Dict[str, Any]:
     n_strict = sum(1 for m in kept
                    if m["verdict"] == SUPPORTED)
 
-    print("=== pipeline matrix: 118 triples, one state each ===")
+    print(f"=== pipeline matrix: {len(matrix)} triples, one state each ===")
     print(f"\n  {'state':18} {'n':>4} {'right':>6} {'wrong':>6}  95% CI")
     for state in list(STATES) + ["UNANNOTATED"]:
         n = states.get(state, 0)
@@ -167,7 +174,8 @@ def report(matrix: List[Dict[str, Any]]) -> Dict[str, Any]:
     print(f"  retention        {len(kept) / len(matrix):.1%}   "
           f"({len(kept)}/{len(matrix)})")
     print()
-    print("  baseline (no pipeline): precision 0.441, strict 0.297")
+    print("  baseline (no pipeline): stratified 0.441 / 0.297, "
+          "uniform computed per draft -- see reconcile --set uniform")
     return {
         "total": len(matrix),
         "kept": len(kept),
@@ -181,13 +189,24 @@ def report(matrix: List[Dict[str, Any]]) -> Dict[str, Any]:
 async def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--out", default="")
+    ap.add_argument("--set", choices=["stratified", "uniform"], default="stratified")
     ap.add_argument("--shadow", action="store_true",
                     help="also run the verifier over auto-accepts and record "
                          "what it would have decided, without changing any "
                          "accept decision")
     args = ap.parse_args()
 
-    matrix = await build_matrix(shadow=args.shadow)
+    if args.set == "uniform":
+        from scripts.reconcile_triple_annotation import UNIFORM_GAP
+        draft = ROOT / "docs" / "eval_triples_gold_locomo_uniform_model.jsonl"
+        gaps = [UNIFORM_GAP]
+        default_out = "docs/eval_pipeline_matrix_uniform.json"
+    else:
+        draft = DRAFT
+        gaps = None
+        default_out = ""
+
+    matrix = await build_matrix(shadow=args.shadow, draft=draft, gaps=gaps)
     summary = report(matrix)
 
     if args.shadow:

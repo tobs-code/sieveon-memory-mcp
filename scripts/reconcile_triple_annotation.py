@@ -29,6 +29,7 @@ from typing import Any, Dict, List, Tuple
 ROOT = Path(__file__).resolve().parents[1]
 DRAFT = ROOT / "docs" / "eval_triples_gold_locomo_draft_model.jsonl"
 GAP = ROOT / "docs" / "eval_triples_annotation_gap.jsonl"
+UNIFORM_GAP = ROOT / "docs" / "eval_triples_annotation_uniform.jsonl"
 
 SUPPORTED = "supported"
 IMPLIED = "implied"
@@ -166,16 +167,21 @@ ANNOTATION: List[Tuple[str, int, str, str, str, str]] = [
 ]
 
 
-def load_gap() -> List[Dict[str, Any]]:
-    if not GAP.exists():
-        return []
-    return [json.loads(l) for l in GAP.read_text(encoding="utf-8").splitlines()
-            if l.strip()]
+def load_gap(paths) -> List[Dict[str, Any]]:
+    out: List[Dict[str, Any]] = []
+    for p in paths:
+        if not Path(p).exists():
+            continue
+        out.extend(json.loads(l) for l in
+                   Path(p).read_text(encoding="utf-8").splitlines() if l.strip())
+    return out
 
 
-def reconcile() -> Dict[str, Any]:
+def reconcile(draft: Path = DRAFT, gaps=None) -> Dict[str, Any]:
+    if gaps is None:
+        gaps = [GAP]
     rows = [json.loads(l) for l in
-            DRAFT.read_text(encoding="utf-8").splitlines() if l.strip()]
+            draft.read_text(encoding="utf-8").splitlines() if l.strip()]
 
     # (stratum, index) -> row
     indexed: Dict[Tuple[str, int], Dict[str, Any]] = {}
@@ -188,10 +194,11 @@ def reconcile() -> Dict[str, Any]:
     for stratum, idx, s, p, o, v in ANNOTATION:
         verdicts[(stratum, s, p, o)] = v
 
-    for g in load_gap():
+    for g in load_gap(gaps):
         verdicts[(g["stratum"], g["s"], g["p"], g["o"])] = g["verdict"]
 
     annotated = 0
+    judged: List[Dict[str, Any]] = []
     unannotated: List[str] = []
     per_stratum: Dict[str, Counter] = defaultdict(Counter)
     confidence_by_verdict: Dict[str, List[float]] = defaultdict(list)
@@ -206,6 +213,8 @@ def reconcile() -> Dict[str, Any]:
                     f'[{stratum} {idx:2}] {t["s"]} -[{t["p"]}]-> {t["o"]}')
                 continue
             annotated += 1
+            judged.append({"s": t["s"], "p": t["p"], "o": t["o"],
+                           "c": float(t.get("c") or 0.0), "verdict": v})
             per_stratum[stratum][v] += 1
             predicate_verdict[t["p"]][v] += 1
             confidence_by_verdict[v].append(float(t.get("c") or 0.0))
@@ -224,6 +233,7 @@ def reconcile() -> Dict[str, Any]:
     return {
         "asserted": total,
         "annotated": annotated,
+        "judged": judged,
         "unannotated": unannotated,
         "supported": supported,
         "implied": implied,
@@ -242,10 +252,32 @@ def reconcile() -> Dict[str, Any]:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.parse_args()
-    r = reconcile()
+    ap.add_argument("--set", choices=["stratified", "uniform"], default="stratified",
+                    help="which annotated set to reconcile. Both run through "
+                         "this same code; only the draft file and the extra "
+                         "verdict file differ.")
+    ap.add_argument("--out", type=Path, default=None,
+                    help="write the judged gold jsonl here")
+    args = ap.parse_args()
 
-    print("=== LoCoMo triple annotation (production text) ===")
+    if args.set == "uniform":
+        draft = ROOT / "docs" / "eval_triples_gold_locomo_uniform_model.jsonl"
+        gaps = [UNIFORM_GAP]
+        title = "LoCoMo triple annotation (uniform sample)"
+    else:
+        draft = DRAFT
+        gaps = [GAP]
+        title = "LoCoMo triple annotation (production text, stratified)"
+
+    r = reconcile(draft=draft, gaps=gaps)
+
+    if args.out is not None:
+        args.out.write_text("\n".join(
+            json.dumps(t, ensure_ascii=False) for t in r["judged"]
+        ) + "\n", encoding="utf-8")
+        print(f"  wrote {len(r['judged'])} judged triples -> {args.out}")
+
+    print(f"=== {title} ===")
     print(f"  asserted              {r['asserted']}")
     print(f"  annotated             {r['annotated']}")
     if r["unannotated"]:

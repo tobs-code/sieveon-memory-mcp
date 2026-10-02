@@ -1,0 +1,84 @@
+{"stratum": "uniform", "s": "Audrey", "p": "discovered", "o": "bike routes", "verdict": "wrong", "note": "excited to check out = intention, not completed discovery"}
+{"stratum": "uniform", "s": "Audrey", "p": "built", "o": "bike routes", "verdict": "wrong", "note": "no construction whatsoever"}
+{"stratum": "uniform", "s": "bike routes", "p": "located_in", "o": "river", "verdict": "supported", "note": "near the river"}
+{"stratum": "uniform", "s": "John", "p": "works_at", "o": "project", "verdict": "wrong", "note": "working on a project = activity, cf. gold W for brainstorming projects"}
+{"stratum": "uniform", "s": "John", "p": "created", "o": "petition", "verdict": "wrong", "note": "trying to get a petition going = intention, not completed creation"}
+{"stratum": "uniform", "s": "Jon", "p": "works_at", "o": "Door Dash", "verdict": "wrong", "note": "lost his job = employment terminated"}
+{"stratum": "uniform", "s": "John", "p": "provides", "o": "picnics", "verdict": "wrong", "note": "enjoys picnics, does not supply them"}
+{"stratum": "uniform", "s": "John", "p": "provides", "o": "board games", "verdict": "wrong", "note": "enjoys board games, does not supply them"}
+{"stratum": "uniform", "s": "John", "p": "works_at", "o": "playground", "verdict": "wrong", "note": "spending time at a playground is not employment"}
+{"stratum": "uniform", "s": "John", "p": "built", "o": "playground", "verdict": "wrong", "note": "joint play/entertainment entails no building"}
+{"stratum": "uniform", "s": "Sam", "p": "provides", "o": "enjoyable experiences", "verdict": "wrong", "note": "experiences are the topic, not a supplied object"}
+{"stratum": "uniform", "s": "Maria", "p": "discovered", "o": "peaceful moments", "verdict": "implied", "note": "finds peaceful moments vs completed discovery"}
+{"stratum": "uniform", "s": "Maria", "p": "uses", "o": "favorite tunes", "verdict": "implied", "note": "with favorite tunes = preference, not literal instrument use"}
+{"stratum": "uniform", "s": "animals", "p": "provides", "o": "comfort", "verdict": "implied", "note": "bring comfort; provides is more agentive"}
+{"stratum": "uniform", "s": "animals", "p": "provides", "o": "understanding", "verdict": "implied", "note": "bring understanding; not literally provides"}
+{"stratum": "uniform", "s": "animals", "p": "provides", "o": "happiness", "verdict": "implied", "note": "bring happiness; not literally provides"}
+{"stratum": "uniform", "s": "Maria", "p": "works_at", "o": "homeless shelter", "verdict": "wrong", "note": "gold rule from passive stratum: volunteering is not works_at"}
+{"stratum": "uniform", "s": "Maria", "p": "developed", "o": "aerial yoga", "verdict": "wrong", "note": "started aerial yoga is not development"}
+{"stratum": "uniform", "s": "Maria", "p": "founded", "o": "aerial yoga", "verdict": "wrong", "note": "starting is not founding"}
+{"stratum": "uniform", "s": "Maria", "p": "discovered", "o": "new place", "verdict": "wrong", "note": "helping find = assisting a search, not discovery"}
+{"stratum": "uniform", "s": "Maria", "p": "acquired", "o": "new place", "verdict": "wrong", "note": "no acquisition or completion claimed"}
+{"stratum": "uniform", "s": "Maria", "p": "built", "o": "new place", "verdict": "wrong", "note": "no construction"}
+{"stratum": "uniform", "s": "Melanie", "p": "created", "o": "environment", "verdict": "implied", "note": "cultivating an environment is not a completed create verb"}
+{"stratum": "uniform", "s": "Melanie", "p": "developed", "o": "environment", "verdict": "implied", "note": "semantically close, not the literally supported relation"}
+{"stratum": "uniform", "s": "Melanie", "p": "built", "o": "environment", "verdict": "wrong", "note": "built is too physical a manufacture relation"}
+{"stratum": "uniform", "s": "Dave", "p": "created", "o": "collaborations", "verdict": "wrong", "note": "interested in hearing more = interest, not creation by Dave"}
+{"stratum": "uniform", "s": "Melanie", "p": "created", "o": "creativity", "verdict": "wrong", "note": "fabricated creator: concept occurs inside a that-clause"}
+{"stratum": "uniform", "s": "Melanie", "p": "developed", "o": "creativity", "verdict": "wrong", "note": "fabricated creator: concept occurs inside a that-clause"}
+{"stratum": "uniform", "s": "Jolene", "p": "uses", "o": "bullet journal", "verdict": "supported", "note": "crossing tasks off her list in the journal"}
+{"stratum": "uniform", "s": "Jolene", "p": "wrote", "o": "bullet journal", "verdict": "wrong", "note": "usage does not entail authorship"}
+{"stratum": "uniform", "s": "Audrey", "p": "uses", "o": "dogs", "verdict": "implied", "note": "takes them for a walk; uses is instrumental, cf. gold I for hugs"}
+{"stratum": "uniform", "s": "Audrey", "p": "discovered", "o": "center", "verdict": "wrong", "note": "find her center is idiomatic inner balance"}
+{"stratum": "uniform", "s": "Deborah", "p": "works_at", "o": "Bali", "verdict": "wrong", "note": "travel for peace and yoga is not work"}
+{"stratum": "uniform", "s": "Joanna", "p": "created", "o": "presentation", "verdict": "supported", "note": "finished a presentation: completed event"}
+{"stratum": "uniform", "s": "Nate", "p": "acquired", "o": "new tank", "verdict": "supported", "note": "got them a new tank"}
+{"stratum": "uniform", "s": "Nate", "p": "built", "o": "new tank", "verdict": "wrong", "note": "receiving a tank is not building one"}
+{"stratum": "uniform", "s": "Deborah", "p": "created", "o": "quote", "verdict": "wrong", "note": "receiver is not the author"}
+{"stratum": "uniform", "s": "Deborah", "p": "wrote", "o": "quote", "verdict": "wrong", "note": "receiver is not the author"}
+{"stratum": "uniform", "s": "friend", "p": "wrote", "o": "quote", "verdict": "implied", "note": "a quote from a friend establishes source, not formally wrote"}
+{"stratum": "uniform", "s": "John", "p": "developed", "o": "decision-making skills", "verdict": "wrong", "note": "propositional content as agent: he believes chess enhances them"}
+{"stratum": "uniform", "s": "John", "p": "leads", "o": "veterans", "verdict": "wrong", "note": "making sure veterans are supported is not leadership"}
+{"stratum": "uniform", "s": "John", "p": "works_at", "o": "team", "verdict": "wrong", "note": "team is not a workplace, activity is fundraising"}
+{"stratum": "uniform", "s": "Cooking", "p": "provides", "o": "creative", "verdict": "wrong", "note": "creative is an adjective in be creative, not a supplied object"}
+{"stratum": "uniform", "s": "Cooking", "p": "provides", "o": "creativity", "verdict": "implied", "note": "helps him express creativity paraphrases, but provides is stronger than helps"}
+{"stratum": "uniform", "s": "John", "p": "part_of", "o": "family road trip", "verdict": "wrong", "note": "got back from the trip is not an explicit part_of relation"}
+{"stratum": "uniform", "s": "Gina", "p": "works_at", "o": "online clothing store", "verdict": "supported", "note": "her own store plus started = operates it"}
+{"stratum": "uniform", "s": "Gina", "p": "founded", "o": "online clothing store", "verdict": "supported", "note": "started her own store is a founding statement"}
+{"stratum": "uniform", "s": "John", "p": "wrote", "o": "book collection", "verdict": "wrong", "note": "asking about Tim's collection implies no authorship"}
+{"stratum": "uniform", "s": "Jolene", "p": "provides", "o": "comfort", "verdict": "wrong", "note": "argument role inverted: Susie provides comfort to Jolene"}
+{"stratum": "uniform", "s": "Susie", "p": "provides", "o": "comfort", "verdict": "supported", "note": "Susie brings her comfort"}
+{"stratum": "uniform", "s": "Susie", "p": "provides", "o": "peace", "verdict": "supported", "note": "brings her peace"}
+{"stratum": "uniform", "s": "Joanna", "p": "discovered", "o": "trails", "verdict": "supported", "note": "found some amazing trails is a direct match"}
+{"stratum": "uniform", "s": "Joanna", "p": "located_in", "o": "town", "verdict": "wrong", "note": "trails in her town locates the trails, not Joanna"}
+{"stratum": "uniform", "s": "Sam", "p": "uses", "o": "phone", "verdict": "wrong", "note": "phone issues makes the phone a problem source, not a tool"}
+{"stratum": "uniform", "s": "Caroline", "p": "founded", "o": "LGBTQ conference", "verdict": "wrong", "note": "participation to founder: attended entails nothing"}
+{"stratum": "uniform", "s": "Maria", "p": "works_at", "o": "military", "verdict": "wrong", "note": "institution mentioned as where others served"}
+{"stratum": "uniform", "s": "James", "p": "created", "o": "turn-based strategy game", "verdict": "wrong", "note": "player to creator"}
+{"stratum": "uniform", "s": "James", "p": "developed", "o": "turn-based strategy game", "verdict": "wrong", "note": "player to developer"}
+{"stratum": "uniform", "s": "James", "p": "acquired", "o": "strategy skills", "verdict": "implied", "note": "completion overgeneration: a purpose is not a completed acquisition"}
+{"stratum": "uniform", "s": "Joanna", "p": "developed", "o": "projects", "verdict": "implied", "note": "working on projects supports activity, not development"}
+{"stratum": "uniform", "s": "Joanna", "p": "created", "o": "dairy-free dessert recipes", "verdict": "wrong", "note": "testing recipes is not authoring them"}
+{"stratum": "uniform", "s": "Joanna", "p": "developed", "o": "dairy-free dessert recipes", "verdict": "wrong", "note": "testing goes beyond development"}
+{"stratum": "uniform", "s": "Joanna", "p": "wrote", "o": "dairy-free dessert recipes", "verdict": "wrong", "note": "no statement that she wrote them"}
+{"stratum": "uniform", "s": "Andrew", "p": "discovered", "o": "new hobbies", "verdict": "implied", "note": "finding vs completed discovering"}
+{"stratum": "uniform", "s": "Andrew", "p": "discovered", "o": "cooking", "verdict": "wrong", "note": "cooking is tried as a hobby, not discovered as an object"}
+{"stratum": "uniform", "s": "Andrew", "p": "created", "o": "new recipes", "verdict": "wrong", "note": "trying out recipes is not creating them"}
+{"stratum": "uniform", "s": "Audrey", "p": "created", "o": "Peruvian Lilies", "verdict": "wrong", "note": "possession and care entail no creation"}
+{"stratum": "uniform", "s": "Audrey", "p": "developed", "o": "Peruvian Lilies", "verdict": "wrong", "note": "no breeding or development statement"}
+{"stratum": "uniform", "s": "Audrey", "p": "designed", "o": "Peruvian Lilies", "verdict": "wrong", "note": "creator overgeneration: Audrey's marks ownership, not design"}
+{"stratum": "uniform", "s": "Peruvian Lilies", "p": "provides", "o": "watering", "verdict": "wrong", "note": "watering is a requirement, lilies require it"}
+{"stratum": "uniform", "s": "Peruvian Lilies", "p": "provides", "o": "sunlight", "verdict": "wrong", "note": "sunlight is a required resource, not supplied"}
+{"stratum": "uniform", "s": "Andrew", "p": "acquired", "o": "new cafe", "verdict": "wrong", "note": "check out = visit, not purchase"}
+{"stratum": "uniform", "s": "Andrew", "p": "built", "o": "new cafe", "verdict": "wrong", "note": "visiting entails no construction"}
+{"stratum": "uniform", "s": "John", "p": "created", "o": "fantasy show", "verdict": "wrong", "note": "viewer to creator"}
+{"stratum": "uniform", "s": "John", "p": "created", "o": "That", "verdict": "wrong", "note": "That is the show title, created by someone else"}
+{"stratum": "uniform", "s": "John", "p": "wrote", "o": "That", "verdict": "wrong", "note": "no authorship statement"}
+{"stratum": "uniform", "s": "John", "p": "discovered", "o": "reality", "verdict": "wrong", "note": "escape reality is the opposite of discovery"}
+{"stratum": "uniform", "s": "yoga studio", "p": "provides", "o": "kickboxing", "verdict": "supported", "note": "offers a variety of classes including kickboxing"}
+{"stratum": "uniform", "s": "yoga studio", "p": "provides", "o": "circuit training", "verdict": "supported", "note": "offers a variety of classes including circuit training"}
+{"stratum": "uniform", "s": "John", "p": "works_at", "o": "yoga studio", "verdict": "wrong", "note": "participation to employment, same defect class as works_at Bali"}
+{"stratum": "uniform", "s": "Joanna", "p": "works_at", "o": "writers group", "verdict": "wrong", "note": "sharing a book and getting feedback is not employment"}
+{"stratum": "uniform", "s": "Joanna", "p": "part_of", "o": "writers group", "verdict": "implied", "note": "membership plausible from sharing, not explicit"}
+{"stratum": "uniform", "s": "Maria", "p": "part_of", "o": "family", "verdict": "supported", "note": "Maria's family establishes membership"}
+{"stratum": "uniform", "s": "Maria", "p": "provides", "o": "words of encouragement", "verdict": "wrong", "note": "argument roles inverted: the family gives them to Maria"}
