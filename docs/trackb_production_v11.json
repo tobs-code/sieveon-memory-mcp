@@ -1,0 +1,426 @@
+{
+  "version": "production_hardening_v1.1",
+  "n_edges": 16,
+  "n_abstains": 0,
+  "edges": [
+    {
+      "subject_id": "entity:maria",
+      "relation": "provides",
+      "object_id": "entity:tim",
+      "evidence": [
+        {
+          "source_key": "expansion|AA-1--00|clean",
+          "subject_mention": "Maria",
+          "object_mention": "Tim",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        },
+        {
+          "source_key": "expansion|AP-2--01|clean",
+          "subject_mention": "Maria",
+          "object_mention": "Tim",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        },
+        {
+          "source_key": "expansion|NP-2--03|clean",
+          "subject_mention": "Maria",
+          "object_mention": "Tim",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        }
+      ]
+    },
+    {
+      "subject_id": "entity:tim",
+      "relation": "provides",
+      "object_id": "entity:maria",
+      "evidence": [
+        {
+          "source_key": "expansion|AA-1--00|hard",
+          "subject_mention": "Tim",
+          "object_mention": "Maria",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        }
+      ]
+    },
+    {
+      "subject_id": "entity:meetup",
+      "relation": "provides",
+      "object_id": "entity:tom",
+      "evidence": [
+        {
+          "source_key": "expansion|AA-1--03|clean",
+          "subject_mention": "The meetup",
+          "object_mention": "Tom",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        },
+        {
+          "source_key": "expansion|AP-1--03|clean",
+          "subject_mention": "The meetup",
+          "object_mention": "Tom",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        },
+        {
+          "source_key": "expansion|AE-1--02|clean",
+          "subject_mention": "The meetup",
+          "object_mention": "Tom",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        },
+        {
+          "source_key": "epistemic|nominal_possessive:epistemic--03|clean",
+          "subject_mention": "the meetup",
+          "object_mention": "Tom",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        }
+      ]
+    },
+    {
+      "subject_id": "entity:organizer",
+      "relation": "provides",
+      "object_id": "entity:venue",
+      "evidence": [
+        {
+          "source_key": "expansion|AP-1--00|clean",
+          "subject_mention": "The organizer",
+          "object_mention": "the venue",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        },
+        {
+          "source_key": "expansion|IN-1--02|clean",
+          "subject_mention": "The organizer",
+          "object_mention": "the venue",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        },
+        {
+          "source_key": "expansion|AP-2--03|clean",
+          "subject_mention": "The organizer",
+          "object_mention": "the venue",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        },
+        {
+          "source_key": "epistemic|nominal_possessive:epistemic--01|clean",
+          "subject_mention": "the organizer",
+          "object_mention": "the venue",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        }
+      ]
+    },
+    {
+      "subject_id": "entity:maria",
+      "relation": "provides",
+      "object_id": "entity:nonprofit",
+      "evidence": [
+        {
+          "source_key": "expansion|AP-1--01|clean",
+          "subject_mention": "Maria",
+          "object_mention": "the nonprofit",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        },
+        {
+          "source_key": "expansion|IN-1--01|clean",
+          "subject_mention": "Maria",
+          "object_mention": "the nonprofit",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        },
+        {
+          "source_key": "expansion|AE-1--01|clean",
+          "subject_mention": "Maria",
+          "object_mention": "the nonprofit",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        },
+        {
+          "source_key": "expansion|NP-2--00|clean",
+          "subject_mention": "Maria",
+          "object_mention": "the nonprofit",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        },
+        {
+          "source_key": "epistemic|nominal_possessive:epistemic--00|clean",
+          "subject_mention": "Maria",
+          "object_mention": "the nonprofit",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        }
+      ]
+    },
+    {
+      "subject_id": "entity:team",
+      "relation": "provides",
+      "object_id": "entity:app",
+      "evidence": [
+        {
+          "source_key": "expansion|AP-1--02|clean",
+          "subject_mention": "The team",
+          "object_mention": "the app",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        },
+        {
+          "source_key": "expansion|IN-1--03|clean",
+          "subject_mention": "The team",
+          "object_mention": "the app",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        },
+        {
+          "source_key": "expansion|AE-1--03|clean",
+          "subject_mention": "The team",
+          "object_mention": "the app",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        },
+        {
+          "source_key": "expansion|AP-2--00|clean",
+          "subject_mention": "The team",
+          "object_mention": "the app",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        }
+      ]
+    },
+    {
+      "subject_id": "entity:coach",
+      "relation": "provides",
+      "object_id": "entity:club",
+      "evidence": [
+        {
+          "source_key": "expansion|IN-1--00|clean",
+          "subject_mention": "The coach",
+          "object_mention": "the club",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        },
+        {
+          "source_key": "expansion|AE-1--v2|clean",
+          "subject_mention": "The coach",
+          "object_mention": "the club",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        },
+        {
+          "source_key": "expansion|AP-2--02|clean",
+          "subject_mention": "The coach",
+          "object_mention": "the club",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        },
+        {
+          "source_key": "expansion|NP-2--01|clean",
+          "subject_mention": "The coach",
+          "object_mention": "the club",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        }
+      ]
+    },
+    {
+      "subject_id": "entity:coach",
+      "relation": "provides",
+      "object_id": "entity:crowd",
+      "evidence": [
+        {
+          "source_key": "expansion|AE-1--v2|hard",
+          "subject_mention": "The coach",
+          "object_mention": "the crowd",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        }
+      ]
+    },
+    {
+      "subject_id": "entity:maria",
+      "relation": "provides",
+      "object_id": "entity:donors",
+      "evidence": [
+        {
+          "source_key": "expansion|AE-1--01|hard",
+          "subject_mention": "Maria",
+          "object_mention": "the donors",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        }
+      ]
+    },
+    {
+      "subject_id": "entity:team",
+      "relation": "provides",
+      "object_id": "entity:users",
+      "evidence": [
+        {
+          "source_key": "expansion|AE-1--03|hard",
+          "subject_mention": "The team",
+          "object_mention": "the users",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        }
+      ]
+    },
+    {
+      "subject_id": "entity:project",
+      "relation": "provides",
+      "object_id": "entity:sponsor",
+      "evidence": [
+        {
+          "source_key": "expansion|NP-2--02|clean",
+          "subject_mention": "The project",
+          "object_mention": "the sponsor",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        }
+      ]
+    },
+    {
+      "subject_id": "entity:maria",
+      "relation": "provides",
+      "object_id": "entity:homeless shelter",
+      "evidence": [
+        {
+          "source_key": "blind|conv-41/session_12_observation/Maria/D12:18",
+          "subject_mention": "Maria",
+          "object_mention": "homeless shelter",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        }
+      ]
+    },
+    {
+      "subject_id": "entity:john",
+      "relation": "provides",
+      "object_id": "entity:community",
+      "evidence": [
+        {
+          "source_key": "blind|conv-41/session_6_observation/John/D6:12",
+          "subject_mention": "John",
+          "object_mention": "the community",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        }
+      ]
+    },
+    {
+      "subject_id": "entity:nate",
+      "relation": "provides",
+      "object_id": "entity:friends",
+      "evidence": [
+        {
+          "source_key": "blind|conv-42/session_26_observation/Nate/D26:12",
+          "subject_mention": "Nate",
+          "object_mention": "friends",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        }
+      ]
+    },
+    {
+      "subject_id": "entity:they",
+      "relation": "provides",
+      "object_id": "entity:each other",
+      "evidence": [
+        {
+          "source_key": "blind|conv-43/session_13_observation/John/D13:6",
+          "subject_mention": "they",
+          "object_mention": "each other",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        }
+      ]
+    },
+    {
+      "subject_id": "entity:james",
+      "relation": "provides",
+      "object_id": "entity:john",
+      "evidence": [
+        {
+          "source_key": "blind|conv-47/session_11_observation/James/D11:14",
+          "subject_mention": "James",
+          "object_mention": "John",
+          "extractor": "nuextract3",
+          "validator": "stepfun",
+          "status": "supported",
+          "pipeline_version": "trackb_two_stage_v1"
+        }
+      ]
+    }
+  ],
+  "abstains": []
+}
