@@ -1,0 +1,93 @@
+{
+  "entity_encoding": "character offsets into sentence; X = head/source, Y = tail/target; spans must match sentence substrings exactly",
+  "forbidden_model_features": [
+    "construction_family_id",
+    "pair_id",
+    "provenance",
+    "split_key",
+    "cue_phrase"
+  ],
+  "labels": [
+    "provides",
+    "no_relation"
+  ],
+  "model": {
+    "base": "knowledgator/gliner-relex-multi-v1.0",
+    "framework": "gliner.training.Trainer with RelationExtraction processor/collator",
+    "tokenizer_pinned_with_base": true
+  },
+  "output": {
+    "checkpoint": "output dir holds fine-tuned weights plus training manifest",
+    "manifest": [
+      "training_data_digest",
+      "base_model",
+      "seed",
+      "label_map",
+      "fold_id or null",
+      "gliner_version",
+      "torch_seed"
+    ]
+  },
+  "reproducibility": {
+    "seed": 42
+  },
+  "split_rule": "construction_family_id + pair_id steer the split and must never reach the model as features",
+  "status": "contract_only_no_training_run",
+  "training_example_schema": {
+    "entities": {
+      "X": {
+        "end": "int",
+        "start": "int",
+        "text": "str"
+      },
+      "Y": {
+        "end": "int",
+        "start": "int",
+        "text": "str"
+      }
+    },
+    "metadata": {
+      "construction_family_id": "str|null",
+      "pair_id": "str|null",
+      "provenance": "str"
+    },
+    "relation": "provides | no_relation",
+    "required": [
+      "sentence",
+      "entities",
+      "entity_labels",
+      "relation",
+      "metadata"
+    ],
+    "sentence": "str",
+    "entity_labels": {
+      "X": "production entity type",
+      "Y": "production entity type"
+    }
+  },
+  "version": "relex_training_contract_v1_6",
+  "parent": "relex_training_contract_v1_2",
+  "change_scope": "single factor: training relation prompts restricted to [provides] (inference keeps full inventory). Labels, populations, folds, splits, seed, LRs, epochs, loss coefs (all 1.0), thresholds unchanged from v1.2. v1.4 loss weighting explicitly NOT carried over.",
+  "entity_inventory": [
+    "person",
+    "organization",
+    "location",
+    "technology",
+    "concept",
+    "event"
+  ],
+  "entity_mapping_rule": "training entity spans are supervised under their source production type (entity_labels X/Y); training prompts offer the full production inventory plus provides; entity types are supervision classes, never model input features",
+  "training_regime": {
+    "learning_rate": 1e-06,
+    "others_lr": 5e-05,
+    "epochs_default": 5,
+    "batch_size_default": 2,
+    "span_loss_coef": 1.0,
+    "adjacency_loss_coef": 1.0,
+    "relation_loss_coef": 1.0,
+    "train_relation_prompts": [
+      "provides"
+    ],
+    "rationale": "test whether the gold pair learns provides alignment when competing relation priors cannot absorb the mass; gold-pair info stays in training labels only, inference path untouched"
+  }
+}

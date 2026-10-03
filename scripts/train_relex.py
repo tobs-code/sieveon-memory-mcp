@@ -24,12 +24,13 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CONTRACT = json.loads((ROOT / "docs" / "eval_relex_training_contract_v1_4.json").read_text())
+CONTRACT = json.loads((ROOT / "docs" / "eval_relex_training_contract_v1_6.json").read_text())
 
 LABELS = tuple(CONTRACT["labels"])
 FORBIDDEN = tuple(CONTRACT["forbidden_model_features"])
 ENTITY_INVENTORY = list(CONTRACT["entity_inventory"])
 REGIME = CONTRACT.get("training_regime", {})
+REL_PROMPTS = list(REGIME.get("train_relation_prompts", ["provides"]))
 
 
 def validate_example(ex: dict, lineno: int) -> list[str]:
@@ -203,7 +204,7 @@ def run_training(rows: list[dict], digest: str, args) -> int:
         n = len(batch)
         prompted, plens = processor.prepare_inputs(
             raw_tokens, entities=[list(ENTITY_INVENTORY)] * n,
-            relations=[["provides"]] * n)
+            relations=[list(REL_PROMPTS)] * n)
         shifted = []
         for s, pl in zip(batch, plens):
             shifted.append(
@@ -226,7 +227,7 @@ def run_training(rows: list[dict], digest: str, args) -> int:
         tok_out = processor.tokenize_inputs(
             raw_tokens,
             [list(ENTITY_INVENTORY)] * n, blank=None,
-            relations=[["provides"]] * n)
+            relations=[list(REL_PROMPTS)] * n)
         out = dict(merged)
         out.update(tok_out)
         lab_batch = {
@@ -271,6 +272,7 @@ def run_training(rows: list[dict], digest: str, args) -> int:
         "epochs": args.epochs,
         "checkpoint_digest": ckpt_digest,
         "trainable_name_pattern": REGIME.get("trainable_name_pattern"),
+        "train_relation_prompts": list(REL_PROMPTS),
         "loss_coefs": {k: getattr(model.config, k, None) for k in
                        ("span_loss_coef", "adjacency_loss_coef", "relation_loss_coef")},
     }

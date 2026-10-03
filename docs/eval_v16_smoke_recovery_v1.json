@@ -1,0 +1,7 @@
+{"anti_cheating": "gold-pair info in training labels only; inference via unchanged adapter with full 16-label inventory",
+  "config": "v1.6 single factor: training relation prompts restricted to [provides]; v1.2 LRs, seed 42, 5 epochs, loss coefs 1.0, production inventory, inclusive spans",
+  "gate3_entity_recovery": "0/4 operating; 2/4 lens (person/person); no collapse",
+  "gate4_provides_signal": "max provides score 0.0 everywhere incl lens; pair aligns strongly with pretrained priors instead (created 0.634 on clean)",
+  "result": "pair-side supervision alone insufficient per pre-registered tree; mechanism remains open",
+  "train": "4 fresh SVO sentences, disjoint from all frozen sets",
+  "version": "v16_smoke_recovery_v1"}
