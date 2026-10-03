@@ -13,25 +13,28 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from trackb_full_run import load_pairs, norm, edge_present, any_edge
 
-MODEL = "nuextract"
+MODEL = "numind/nuextract3:q4_k_m"
 URL = "http://localhost:11434/api/chat"
-TEMPLATE = {"support_relations": [{"provider": "", "receiver": ""}]}
-EXAMPLE = {"support_relations": [{"provider": "Maria", "receiver": "Tim"}]}
-EXAMPLE_TEXT = "Maria helped Tim with the fundraiser."
-NEG_EXAMPLE = {"support_relations": []}
-NEG_TEXT = "Maria offered to help Tim with the fundraiser."
+TEMPLATE = {"support_relations": [{"provider": "verbatim-string",
+                                   "receiver": "verbatim-string"}]}
+EXAMPLE_IN = "Maria helped Tim with the fundraiser."
+EXAMPLE_OUT = '{"support_relations": [{"provider": "Maria", "receiver": "Tim"}]}'
+EXAMPLE_NEG_IN = "Maria offered to help Tim with the fundraiser."
+EXAMPLE_NEG_OUT = '{"support_relations": []}'
 
 
 def call(sentence: str) -> str:
-    user = ("### Template:\n" + json.dumps(TEMPLATE, indent=2)
-            + "\n### Example:\n" + json.dumps(EXAMPLE)
-            + "\n### Text:\n" + EXAMPLE_TEXT
-            + "\n### Example:\n" + json.dumps(NEG_EXAMPLE)
-            + "\n### Text:\n" + NEG_TEXT
-            + "\n### Text:\n" + sentence)
-    body = json.dumps({"model": MODEL, "stream": False,
-                       "options": {"temperature": 0, "num_ctx": 2048, "num_predict": 128},
-                       "messages": [{"role": "user", "content": user}]}).encode()
+    body = json.dumps({
+        "model": MODEL, "stream": False, "think": False,
+        "options": {"temperature": 0, "num_ctx": 4096, "num_predict": 256},
+        "messages": [
+            {"role": "template", "content": json.dumps(TEMPLATE, indent=4)},
+            {"role": "examples.input", "content": EXAMPLE_IN},
+            {"role": "examples.output", "content": EXAMPLE_OUT},
+            {"role": "examples.input", "content": EXAMPLE_NEG_IN},
+            {"role": "examples.output", "content": EXAMPLE_NEG_OUT},
+            {"role": "user", "content": sentence},
+        ]}).encode()
     last = None
     for _ in range(3):
         try:
@@ -62,7 +65,7 @@ def main() -> int:
     ap.add_argument("--blind-only", action="store_true")
     args = ap.parse_args()
     root = Path(__file__).resolve().parents[1]
-    rec_path = root / "docs" / "trackb_nuextract.jsonl"
+    rec_path = root / "docs" / "trackb_nuextract3.jsonl"
     done = {}
     if rec_path.exists():
         for line in rec_path.read_text().splitlines():
