@@ -1,0 +1,9 @@
+{"architectural_findings": {"prompt_rep_layer": "projects NER entity prompts only; relation prompts bypass it (used raw in pair/relation scoring)",
+                           "rel_token_embeddings": "shared token embedding matrix, not isolable without affecting all text",
+                           "relation_prompt_source": "frozen token embeddings contextualized by the frozen encoder; no dedicated trainable rel-prompt parameters exist",
+                           "relatives": "model.pair_rep_layer.* (relation head, already tested in v1.3); model.token_rep_layer.bert_layer.model.encoder.rel_embeddings (encoder-internal relative positions, not a prompt representation)"},
+  "consequence": "v1.7 as specified is not executable; proceeding to pre-authorized v1.8 requires explicit release",
+  "parent": "relex_training_contract_v1_6",
+  "status": "BLOCKED: contract gap, no training run, no fold",
+  "trainable_candidates_examined": ["model.prompt_rep_layer.* (wrong target: entity prompts, not relation prompts)"],
+  "version": "relex_training_contract_v1_7"}
