@@ -1,0 +1,6 @@
+{"auto_negatives": "reversed + random no_relation pairs scale with entity count (verified: 2 entities -> 2 supervised pairs; 3 entities -> 6 supervised pairs)",
+  "consequence": "dense annotation changes relation supervision volume and negative distribution: not a single-factor experiment with the current trainer",
+  "options_not_taken": ["accept with caveat (weakens isolation)", "disable sampler (second factor, needs versioning)", "drop v1.10"],
+  "spec_rule": "extra implicit no_relation pairs forbidden; auto-generation check required before any training",
+  "status": "BLOCKED: isolation gate fails, no training run, no fold",
+  "version": "dense_entity_isolation_check_v1"}
