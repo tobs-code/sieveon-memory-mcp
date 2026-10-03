@@ -24,7 +24,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CONTRACT = json.loads((ROOT / "docs" / "eval_relex_training_contract_v1_6.json").read_text())
+CONTRACT = json.loads((ROOT / "docs" / "eval_relex_training_contract_v1_11.json").read_text())
 
 LABELS = tuple(CONTRACT["labels"])
 FORBIDDEN = tuple(CONTRACT["forbidden_model_features"])
@@ -48,6 +48,17 @@ def validate_example(ex: dict, lineno: int) -> list[str]:
         span = sent[ent.get("start", -1):ent.get("end", -1)]
         if span != ent.get("text", ""):
             problems.append(f"line {lineno}: {role} span does not match sentence")
+    for j, extra in enumerate(ex.get("extra_entities", [])):
+        span = sent[extra.get("start", -1):extra.get("end", -1)]
+        if span != extra.get("text", ""):
+            problems.append(f"line {lineno}: extra[{j}] span does not match sentence")
+        if extra.get("label") not in ENTITY_INVENTORY:
+            problems.append(f"line {lineno}: extra[{j}] label outside inventory")
+        for role in ("X", "Y"):
+            ent = ex["entities"].get(role, {})
+            if not (extra.get("end", -1) <= ent.get("start", 10**9)
+                    or extra.get("start", -1) >= ent.get("end", -1)):
+                problems.append(f"line {lineno}: extra[{j}] overlaps {role}")
     elabels = ex.get("entity_labels", {})
     for role in ("X", "Y"):
         lab = elabels.get(role)
@@ -139,12 +150,18 @@ def to_gliner_sample(ex: dict) -> dict:
     order = sorted(spans, key=lambda r: spans[r][0])
     elabels = ex.get("entity_labels", {})
     ner = [(spans[r][0], spans[r][1], elabels.get(r, "concept")) for r in order]
+    dense = list(ner)
+    for extra in ex.get("extra_entities", []):
+        w = _word_index(words, extra["start"], extra["end"])
+        dense.append((w[0], w[1], extra["label"]))
+    dense = sorted(set(dense), key=lambda t: (t[0], t[1]))
     relations: list[tuple[int, int, str]] = []
     if ex["relation"] == "provides":
         head = order.index("X")
         tail = order.index("Y")
         relations = [(head, tail, "provides")]
-    return {"tokens": tokens, "ner": ner, "relations": relations}
+    return {"tokens": tokens, "ner": ner, "dense_ner": dense,
+            "relations": relations}
 
 
 def run_training(rows: list[dict], digest: str, args) -> int:
@@ -191,6 +208,7 @@ def run_training(rows: list[dict], digest: str, args) -> int:
         s["classes_to_id"] = dict(classes_to_id)
         s["rel_class_to_ids"] = dict(rel_classes_to_id)
         s["entities"] = s.pop("ner")
+        s["dense_entities"] = s.pop("dense_ner")
 
     class _DS(Dataset):
         def __len__(self):
@@ -200,48 +218,8 @@ def run_training(rows: list[dict], digest: str, args) -> int:
             return samples[i]
 
     def collate(batch):
-        raw_tokens = [s["tokens"] for s in batch]
-        n = len(batch)
-        prompted, plens = processor.prepare_inputs(
-            raw_tokens, entities=[list(ENTITY_INVENTORY)] * n,
-            relations=[list(REL_PROMPTS)] * n)
-        shifted = []
-        for s, pl in zip(batch, plens):
-            shifted.append(
-                [(a + pl, b + pl, lab) for (a, b, lab) in s["entities"]])
-        pre = [processor.preprocess_example(
-            pt, ner, classes_to_id,
-            s["relations"], rel_classes_to_id)
-            for pt, ner, s in zip(prompted, shifted, batch)]
-        merged = processor.create_batch_dict(
-            pre, [dict(classes_to_id)] * n,
-            [{v: k for k, v in classes_to_id.items()}] * n,
-            [dict(rel_classes_to_id)] * n,
-            [{v: k for k, v in rel_classes_to_id.items()}] * n)
-        merged["rel_class_to_ids"] = [dict(rel_classes_to_id)] * n
-        # tokenize_inputs prompts internally; pass raw tokens so the prompt
-        # is built exactly once (passing prompted texts would double it).
-        # NOTE: do not call tokenize_and_prepare_labels here: it would
-        # re-tokenize merged["tokens"] and prepend a second prompt.
-        import torch as _torch
-        tok_out = processor.tokenize_inputs(
-            raw_tokens,
-            [list(ENTITY_INVENTORY)] * n, blank=None,
-            relations=[list(REL_PROMPTS)] * n)
-        out = dict(merged)
-        out.update(tok_out)
-        lab_batch = {
-            "tokens": prompted,
-            "entities": shifted,
-            "classes_to_id": [dict(classes_to_id)] * n,
-            "seq_length": _torch.LongTensor([len(p) for p in prompted]),
-        }
-        out["labels"] = processor.create_labels(lab_batch)
-        adj, rel = processor.create_relation_labels(merged)
-        out["adj_matrix"] = adj
-        out["rel_matrix"] = rel
-        out["text_lengths"] = _torch.LongTensor([len(p) for p in prompted])
-        return out
+        return _collate_impl(processor, batch, classes_to_id,
+                             rel_classes_to_id, ENTITY_INVENTORY, REL_PROMPTS)
 
     use_cpu = not torch.cuda.is_available()
     targs = TrainingArguments(
@@ -280,6 +258,96 @@ def run_training(rows: list[dict], digest: str, args) -> int:
         json.dumps(manifest, indent=2), encoding="utf-8")
     print(f"  trained: checkpoint {out} digest {ckpt_digest[:16]}")
     return 0
+
+def shift_spans(ner_lists, plens):
+    """Shift word spans of ner lists into prompted coordinates."""
+    return [[(a + pl, b + pl, lab) for (a, b, lab) in ner]
+            for ner, pl in zip(ner_lists, plens)]
+
+
+def sparse_relation_batch(processor, samples, classes_to_id,
+                          rel_classes_to_id, entity_prompts, rel_prompts):
+    """Full relation-target computation from the sparse X/Y view only.
+
+    v1.11 sampler decoupling: this is the single code path that feeds
+    relation targets into training. Dense extra entities never enter it.
+    Returns the batch dict with adj_matrix/rel_matrix tensors.
+    """
+    n = len(samples)
+    raw_tokens = [s["tokens"] for s in samples]
+    prompted, plens = processor.prepare_inputs(
+        raw_tokens, entities=[list(entity_prompts)] * n,
+        relations=[list(rel_prompts)] * n)
+    sparse_shifted = shift_spans([s["entities"] for s in samples], plens)
+    pre = [processor.preprocess_example(
+        pt, ner, classes_to_id,
+        s["relations"], rel_classes_to_id)
+        for pt, ner, s in zip(prompted, sparse_shifted, samples)]
+    merged = processor.create_batch_dict(
+        pre, [dict(classes_to_id)] * n,
+        [{v: k for k, v in classes_to_id.items()}] * n,
+        [dict(rel_classes_to_id)] * n,
+        [{v: k for k, v in rel_classes_to_id.items()}] * n)
+    merged["rel_class_to_ids"] = [dict(rel_classes_to_id)] * n
+    merged["tokens"] = raw_tokens
+    merged["entities"] = [s["entities"] for s in samples]
+    adj, rel = processor.create_relation_labels(merged)
+    merged["adj_matrix"] = adj
+    merged["rel_matrix"] = rel
+    merged["rel_idx_all"] = [p["rel_idx"].tolist() for p in pre]
+    merged["rel_label_all"] = [p["rel_label"].tolist() for p in pre]
+    return merged
+
+
+def _collate_impl(processor, batch, classes_to_id, rel_classes_to_id,
+                  entity_inventory, rel_prompts):
+    import torch as _torch
+    raw_tokens = [s["tokens"] for s in batch]
+    n = len(batch)
+    prompted, plens = processor.prepare_inputs(
+        raw_tokens, entities=[list(entity_inventory)] * n,
+        relations=[list(rel_prompts)] * n)
+    # Dual view (contract v1.11): entity supervision sees the dense
+    # annotation (X/Y plus extras); relation targets come exclusively
+    # from sparse_relation_batch, so dense entities can never
+    # manufacture relation targets.
+    dense_shifted = shift_spans(
+        [s["dense_entities"] for s in batch], plens)
+    dense_pre = [processor.preprocess_example(
+        pt, ner, classes_to_id,
+        s["relations"], rel_classes_to_id)
+        for pt, ner, s in zip(prompted, dense_shifted, batch)]
+    merged = processor.create_batch_dict(
+        dense_pre, [dict(classes_to_id)] * n,
+        [{v: k for k, v in classes_to_id.items()}] * n,
+        [dict(rel_classes_to_id)] * n,
+        [{v: k for k, v in rel_classes_to_id.items()}] * n)
+    # tokenize_inputs prompts internally; pass raw tokens so the prompt
+    # is built exactly once (passing prompted texts would double it).
+    # NOTE: do not call tokenize_and_prepare_labels here: it would
+    # re-tokenize merged["tokens"] and prepend a second prompt.
+    tok_out = processor.tokenize_inputs(
+        raw_tokens,
+        [list(entity_inventory)] * n, blank=None,
+        relations=[list(rel_prompts)] * n)
+    out = dict(merged)
+    out.update(tok_out)
+    lab_batch = {
+        "tokens": prompted,
+        "entities": dense_shifted,
+        "classes_to_id": [dict(classes_to_id)] * n,
+        "seq_length": _torch.LongTensor([len(p) for p in prompted]),
+    }
+    out["labels"] = processor.create_labels(lab_batch)
+    rel_b = sparse_relation_batch(processor, batch, classes_to_id,
+                                  rel_classes_to_id, entity_inventory,
+                                  rel_prompts)
+    out["adj_matrix"] = rel_b["adj_matrix"]
+    out["rel_matrix"] = rel_b["rel_matrix"]
+    out["text_lengths"] = _torch.LongTensor([len(p) for p in prompted])
+    return out
+
+
 
 
 if __name__ == "__main__":

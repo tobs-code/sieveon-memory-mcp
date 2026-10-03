@@ -1,0 +1,207 @@
+{
+ "version": "dense_entities_v1",
+ "skip_rule": "only mentions with unambiguous production-inventory type; objects without fitting type (toner/blankets/coins/coffee), temporals (each year/the night), ambiguous (a lift, help crossing) skipped",
+ "entries": [
+  {
+   "sentence": "Bram showed Fenna the workshop.",
+   "extra_entities": [
+    {
+     "start": 18,
+     "end": 30,
+     "text": "the workshop",
+     "label": "location"
+    }
+   ]
+  },
+  {
+   "sentence": "The printer helped the office staff.",
+   "extra_entities": []
+  },
+  {
+   "sentence": "Sanne lifted Jeroen onto the stage.",
+   "extra_entities": [
+    {
+     "start": 25,
+     "end": 34,
+     "text": "the stage",
+     "label": "location"
+    }
+   ]
+  },
+  {
+   "sentence": "Timo carried Sanne across the bridge.",
+   "extra_entities": [
+    {
+     "start": 26,
+     "end": 36,
+     "text": "the bridge",
+     "label": "location"
+    }
+   ]
+  },
+  {
+   "sentence": "The harbor guides ships into the dock.",
+   "extra_entities": [
+    {
+     "start": 29,
+     "end": 37,
+     "text": "the dock",
+     "label": "location"
+    }
+   ]
+  },
+  {
+   "sentence": "The observatory feeds data to the array.",
+   "extra_entities": [
+    {
+     "start": 22,
+     "end": 26,
+     "text": "data",
+     "label": "concept"
+    }
+   ]
+  },
+  {
+   "sentence": "The summit briefed Iris on protocol.",
+   "extra_entities": [
+    {
+     "start": 27,
+     "end": 35,
+     "text": "protocol",
+     "label": "concept"
+    }
+   ]
+  },
+  {
+   "sentence": "The program funds the trust each year.",
+   "extra_entities": []
+  },
+  {
+   "sentence": "The warden opened the shelter for newcomers.",
+   "extra_entities": [
+    {
+     "start": 18,
+     "end": 29,
+     "text": "the shelter",
+     "label": "location"
+    }
+   ]
+  },
+  {
+   "sentence": "The village hosted travelers for the night.",
+   "extra_entities": []
+  },
+  {
+   "sentence": "The beacon warned sailors of the rocks.",
+   "extra_entities": [
+    {
+     "start": 29,
+     "end": 38,
+     "text": "the rocks",
+     "label": "location"
+    }
+   ]
+  },
+  {
+   "sentence": "The mint strikes coins for the treasury.",
+   "extra_entities": []
+  },
+  {
+   "sentence": "Bram asked if Fenna wanted coffee.",
+   "extra_entities": []
+  },
+  {
+   "sentence": "The printer asked if the staff needed toner.",
+   "extra_entities": []
+  },
+  {
+   "sentence": "Sanne asked if Jeroen needed a lift.",
+   "extra_entities": []
+  },
+  {
+   "sentence": "Timo asked if Sanne needed help crossing.",
+   "extra_entities": []
+  },
+  {
+   "sentence": "The harbor asked if the ships needed pilots.",
+   "extra_entities": [
+    {
+     "start": 37,
+     "end": 43,
+     "text": "pilots",
+     "label": "person"
+    }
+   ]
+  },
+  {
+   "sentence": "The observatory asked if the array needed calibration.",
+   "extra_entities": [
+    {
+     "start": 42,
+     "end": 53,
+     "text": "calibration",
+     "label": "concept"
+    }
+   ]
+  },
+  {
+   "sentence": "The summit asked if Iris needed an escort.",
+   "extra_entities": [
+    {
+     "start": 32,
+     "end": 41,
+     "text": "an escort",
+     "label": "person"
+    }
+   ]
+  },
+  {
+   "sentence": "The program asked if the trust needed review.",
+   "extra_entities": [
+    {
+     "start": 38,
+     "end": 44,
+     "text": "review",
+     "label": "concept"
+    }
+   ]
+  },
+  {
+   "sentence": "The warden asked if newcomers needed blankets.",
+   "extra_entities": []
+  },
+  {
+   "sentence": "The village asked if travelers needed lodging.",
+   "extra_entities": [
+    {
+     "start": 38,
+     "end": 45,
+     "text": "lodging",
+     "label": "concept"
+    }
+   ]
+  },
+  {
+   "sentence": "The beacon asked if sailors needed charts.",
+   "extra_entities": [
+    {
+     "start": 35,
+     "end": 41,
+     "text": "charts",
+     "label": "concept"
+    }
+   ]
+  },
+  {
+   "sentence": "The mint asked if the treasury needed an audit.",
+   "extra_entities": [
+    {
+     "start": 38,
+     "end": 46,
+     "text": "an audit",
+     "label": "concept"
+    }
+   ]
+  }
+ ]
+}

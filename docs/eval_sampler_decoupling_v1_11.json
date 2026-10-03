@@ -1,0 +1,16 @@
+{
+  "version": "sampler_decoupling_v1_11",
+  "population_digest": "3854f8b80f0ede95948dea612fc4ab1d83237c3d4cab324339cad4c21b151c97",
+  "target_digest": "c79dcd8fe2b7b27d6623db8a1076eaaab0fc4385bf42c015368e7a314eea1cf8",
+  "gates": {
+    "invariance": true,
+    "counts": [
+      12,
+      12
+    ],
+    "ordinals_gt1": 0,
+    "provides_edges": 12,
+    "determinism": true
+  },
+  "verdict": "PASS - v1.12 released"
+}
