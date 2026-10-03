@@ -1,0 +1,8 @@
+{"baseline": "provides",
+  "change_scope": "prompt phrasing of one relation label only; encoder, weights, entity prompts, thresholds, data, seed untouched; no training",
+  "method": "replace provides slot with variant in the 16-label production inventory; measure variant score/rank/top-relation on gold pairs plus prompt cosine variant-vs-provides and variant-vs-leads",
+  "sentences": "3 fresh SVO sentences with gold X->Y pairs, disjoint from all frozen sets",
+  "status": "contract_only_no_training",
+  "variants": ["provides", "supplies", "gives", "delivers"],
+  "variants_rationale": "simple ditransitive provision verbs, pre-registered as semantically equivalent provision phrasings before the run; not selected for fit",
+  "version": "relex_prompt_separation_v1.5"}

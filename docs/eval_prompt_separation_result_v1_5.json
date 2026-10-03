@@ -1,0 +1,7 @@
+{"decision": {"top_relation": "leads in all runs (0.54-0.80), nearly identical across variants",
+            "variant_scores": "0.0 and unranked for provides/supplies/gives/delivers on all 3 sentences",
+            "verdict": "prompt variation changes representation but not decisions: prompt alone does not explain the failure; pair-side supervision is the next branch"},
+  "prompt_geometry": {"cos_to_leads": {"delivers": 0.5538, "gives": 0.5436, "provides": 0.4685, "supplies": 0.6001},
+                      "note": "representation varies across variants while decisions stay invariant"},
+  "status": "diagnostic_only_no_training_no_threshold_change",
+  "version": "prompt_separation_result_v1.5"}
