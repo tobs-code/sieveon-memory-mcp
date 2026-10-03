@@ -47,10 +47,10 @@
     "object": "Caroline",
     "final": "ACCEPT"
    },
-   "provides_relation_present": null,
-   "subject": null,
-   "object": null,
-   "evidence_span": null,
+   "provides_relation_present": "yes",
+   "subject": "the support group",
+   "object": "Caroline",
+   "evidence_span": "made feel accepted",
    "error_class": null
   },
   {
@@ -62,11 +62,11 @@
     "object": "mental health",
     "final": "ACCEPT"
    },
-   "provides_relation_present": null,
-   "subject": null,
-   "object": null,
+   "provides_relation_present": "no",
+   "subject": "Melanie",
+   "object": "mental health",
    "evidence_span": null,
-   "error_class": null
+   "error_class": "purpose-as-recipient"
   },
   {
    "sentence_id": "prodc1-011",
@@ -77,10 +77,10 @@
     "object": "students",
     "final": "ACCEPT"
    },
-   "provides_relation_present": null,
-   "subject": null,
-   "object": null,
-   "evidence_span": null,
+   "provides_relation_present": "yes",
+   "subject": "Caroline",
+   "object": "students",
+   "evidence_span": "encouraged students",
    "error_class": null
   },
   {
@@ -92,10 +92,10 @@
     "object": "Caroline",
     "final": "ACCEPT"
    },
-   "provides_relation_present": null,
-   "subject": null,
-   "object": null,
-   "evidence_span": null,
+   "provides_relation_present": "yes",
+   "subject": "friends",
+   "object": "Caroline",
+   "evidence_span": "motivating/giving strength",
    "error_class": null
   },
   {
@@ -107,10 +107,10 @@
     "object": "Caroline",
     "final": "ACCEPT"
    },
-   "provides_relation_present": null,
-   "subject": null,
-   "object": null,
-   "evidence_span": null,
+   "provides_relation_present": "yes",
+   "subject": "family",
+   "object": "Caroline",
+   "evidence_span": "motivating/giving strength",
    "error_class": null
   },
   {
@@ -122,10 +122,10 @@
     "object": "Caroline",
     "final": "ACCEPT"
    },
-   "provides_relation_present": null,
-   "subject": null,
-   "object": null,
-   "evidence_span": null,
+   "provides_relation_present": "yes",
+   "subject": "friends",
+   "object": "Caroline",
+   "evidence_span": "love and help",
    "error_class": null
   },
   {
@@ -137,10 +137,10 @@
     "object": "Caroline",
     "final": "ACCEPT"
    },
-   "provides_relation_present": null,
-   "subject": null,
-   "object": null,
-   "evidence_span": null,
+   "provides_relation_present": "yes",
+   "subject": "Melanie",
+   "object": "Caroline",
+   "evidence_span": "supportive of Caroline",
    "error_class": null
   },
   {
@@ -152,10 +152,10 @@
     "object": "Melanie",
     "final": "ACCEPT"
    },
-   "provides_relation_present": null,
-   "subject": null,
-   "object": null,
-   "evidence_span": null,
+   "provides_relation_present": "yes",
+   "subject": "kids",
+   "object": "Melanie",
+   "evidence_span": "keep her motivated",
    "error_class": null
   },
   {
@@ -167,10 +167,10 @@
     "object": "Caroline",
     "final": "ACCEPT"
    },
-   "provides_relation_present": null,
-   "subject": null,
-   "object": null,
-   "evidence_span": null,
+   "provides_relation_present": "yes",
+   "subject": "friends",
+   "object": "Caroline",
+   "evidence_span": "helping with transition",
    "error_class": null
   },
   {
@@ -182,10 +182,10 @@
     "object": "Caroline",
     "final": "ACCEPT"
    },
-   "provides_relation_present": null,
-   "subject": null,
-   "object": null,
-   "evidence_span": null,
+   "provides_relation_present": "yes",
+   "subject": "family",
+   "object": "Caroline",
+   "evidence_span": "helping with transition",
    "error_class": null
   },
   {
@@ -197,10 +197,10 @@
     "object": "Caroline",
     "final": "ACCEPT"
    },
-   "provides_relation_present": null,
-   "subject": null,
-   "object": null,
-   "evidence_span": null,
+   "provides_relation_present": "yes",
+   "subject": "Caroline's friends and family",
+   "object": "Caroline",
+   "evidence_span": "providing love guidance acceptance",
    "error_class": null
   },
   {
@@ -212,10 +212,10 @@
     "object": "Caroline",
     "final": "ACCEPT"
    },
-   "provides_relation_present": null,
-   "subject": null,
-   "object": null,
-   "evidence_span": null,
+   "provides_relation_present": "yes",
+   "subject": "Melanie",
+   "object": "Caroline",
+   "evidence_span": "supports Caroline",
    "error_class": null
   },
   {
@@ -227,11 +227,11 @@
     "object": "Caroline",
     "final": "ACCEPT"
    },
-   "provides_relation_present": null,
-   "subject": null,
-   "object": null,
+   "provides_relation_present": "no",
+   "subject": "accepting and loving people",
+   "object": "Caroline",
    "evidence_span": null,
-   "error_class": null
+   "error_class": "ambient-context-as-provider"
   },
   {
    "sentence_id": "prodc1-060",
@@ -242,10 +242,10 @@
     "object": "Melanie",
     "final": "ACCEPT"
    },
-   "provides_relation_present": null,
-   "subject": null,
-   "object": null,
-   "evidence_span": null,
+   "provides_relation_present": "yes",
+   "subject": "Melanie's family",
+   "object": "Melanie",
+   "evidence_span": "helped her through",
    "error_class": null
   },
   {
@@ -257,10 +257,10 @@
     "object": "a transgender teen",
     "final": "ACCEPT"
    },
-   "provides_relation_present": null,
-   "subject": null,
-   "object": null,
-   "evidence_span": null,
+   "provides_relation_present": "yes",
+   "subject": "Caroline",
+   "object": "a transgender teen",
+   "evidence_span": "mentors",
    "error_class": null
   },
   {
@@ -272,10 +272,10 @@
     "object": "LGBTQ rights",
     "final": "ACCEPT"
    },
-   "provides_relation_present": null,
-   "subject": null,
-   "object": null,
-   "evidence_span": null,
+   "provides_relation_present": "yes",
+   "subject": "the community",
+   "object": "LGBTQ rights",
+   "evidence_span": "support for LGBTQ rights",
    "error_class": null
   },
   {
@@ -287,10 +287,10 @@
     "object": "the LGBTQ+ community",
     "final": "ACCEPT"
    },
-   "provides_relation_present": null,
-   "subject": null,
-   "object": null,
-   "evidence_span": null,
+   "provides_relation_present": "yes",
+   "subject": "Caroline",
+   "object": "the LGBTQ+ community",
+   "evidence_span": "advocate for",
    "error_class": null
   },
   {
@@ -302,11 +302,11 @@
     "object": "homeless shelter",
     "final": "ACCEPT"
    },
-   "provides_relation_present": null,
-   "subject": null,
-   "object": null,
+   "provides_relation_present": "unclear",
+   "subject": "Melanie",
+   "object": "homeless shelter",
    "evidence_span": null,
-   "error_class": null
+   "error_class": "volunteered-with recipient ambiguous"
   },
   {
    "sentence_id": "prodc1-110",
@@ -317,10 +317,10 @@
     "object": "the young people",
     "final": "ACCEPT"
    },
-   "provides_relation_present": null,
-   "subject": null,
-   "object": null,
-   "evidence_span": null,
+   "provides_relation_present": "yes",
+   "subject": "Caroline",
+   "object": "the young people",
+   "evidence_span": "support and guide",
    "error_class": null
   },
   {
@@ -332,10 +332,10 @@
     "object": "someone",
     "final": "ACCEPT"
    },
-   "provides_relation_present": null,
-   "subject": null,
-   "object": null,
-   "evidence_span": null,
+   "provides_relation_present": "yes",
+   "subject": "Caroline",
+   "object": "someone",
+   "evidence_span": "offering love and support",
    "error_class": null
   },
   {
@@ -347,11 +347,11 @@
     "object": "LGBTQ+ folks",
     "final": "ABSTAIN"
    },
-   "provides_relation_present": null,
-   "subject": null,
-   "object": null,
-   "evidence_span": null,
-   "error_class": null
+   "provides_relation_present": "yes",
+   "subject": "adoption agency",
+   "object": "LGBTQ+ folks",
+   "evidence_span": "helps LGBTQ+ folks",
+   "error_class": "abstain-linking-only"
   },
   {
    "sentence_id": "prodc1-016",
@@ -362,18 +362,18 @@
     "object": "Caroline",
     "final": "ABSTAIN"
    },
-   "provides_relation_present": null,
-   "subject": null,
-   "object": null,
-   "evidence_span": null,
-   "error_class": null
+   "provides_relation_present": "yes",
+   "subject": "mentors",
+   "object": "Caroline",
+   "evidence_span": "motivating/giving strength",
+   "error_class": "abstain-linking-only"
   },
   {
    "sentence_id": "prodc1-002",
    "text": "Melanie is currently managing kids and work and finds it overwhelming.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
+   "provides_relation_present": "no",
    "subject": null,
    "object": null,
    "evidence_span": null,
@@ -384,7 +384,7 @@
    "text": "Melanie carves out me-time each day for activities like running, reading, or playing the violin.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
+   "provides_relation_present": "no",
    "subject": null,
    "object": null,
    "evidence_span": null,
@@ -395,7 +395,7 @@
    "text": "Melanie's kids are excited about summer break and they are considering going camping next month.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
+   "provides_relation_present": "no",
    "subject": null,
    "object": null,
    "evidence_span": null,
@@ -406,7 +406,7 @@
    "text": "Melanie went camping with her family in the mountains last week and had a great time exploring nature, roasting marshmallows, and hiking.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
+   "provides_relation_present": "no",
    "subject": null,
    "object": null,
    "evidence_span": null,
@@ -417,7 +417,7 @@
    "text": "Caroline attended an LGBTQ+ pride parade last week and felt a sense of belonging and happiness.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
+   "provides_relation_present": "no",
    "subject": null,
    "object": null,
    "evidence_span": null,
@@ -428,7 +428,7 @@
    "text": "Caroline is considering a career in counseling and mental health to help others.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
+   "provides_relation_present": "no",
    "subject": null,
    "object": null,
    "evidence_span": null,
@@ -439,7 +439,7 @@
    "text": "Melanie signed up for a pottery class and finds it therapeutic for self-expression and creativity.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
+   "provides_relation_present": "no",
    "subject": null,
    "object": null,
    "evidence_span": null,
@@ -450,18 +450,18 @@
    "text": "Pottery is a significant part of Melanie's life as it helps her express her emotions and brings her joy.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
-   "subject": null,
-   "object": null,
-   "evidence_span": null,
-   "error_class": null
+   "provides_relation_present": "unclear",
+   "subject": "Pottery",
+   "object": "Melanie",
+   "evidence_span": "helps her express",
+   "error_class": "benefit-boundary"
   },
   {
    "sentence_id": "prodc1-042",
    "text": "Melanie loves spending time with her kids and seeing the joy in their eyes when exploring new things.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
+   "provides_relation_present": "no",
    "subject": null,
    "object": null,
    "evidence_span": null,
@@ -472,7 +472,7 @@
    "text": "According to 'Becoming Nicole,' Caroline learned the importance of self-acceptance, finding support, and the existence of hope and love.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
+   "provides_relation_present": "no",
    "subject": null,
    "object": null,
    "evidence_span": null,
@@ -483,7 +483,7 @@
    "text": "Melanie has a dog named Luna and a cat named Oliver that bring joy and liveliness to her home.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
+   "provides_relation_present": "no",
    "subject": null,
    "object": null,
    "evidence_span": null,
@@ -494,10 +494,10 @@
    "text": "Running has been great for Melanie's mental health and mood.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
-   "subject": null,
-   "object": null,
-   "evidence_span": null,
+   "provides_relation_present": "yes",
+   "subject": "Running",
+   "object": "Melanies mental health",
+   "evidence_span": "great for mental health",
    "error_class": null
   },
   {
@@ -505,7 +505,7 @@
    "text": "Caroline mentioned the importance of finding peace and mental health through expressions of authentic self.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
+   "provides_relation_present": "no",
    "subject": null,
    "object": null,
    "evidence_span": null,
@@ -516,18 +516,18 @@
    "text": "Melanie finds joy in flowers which represent growth, beauty, and appreciating small moments.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
-   "subject": null,
-   "object": null,
-   "evidence_span": null,
-   "error_class": null
+   "provides_relation_present": "unclear",
+   "subject": "flowers",
+   "object": "Melanie",
+   "evidence_span": "finds joy in flowers",
+   "error_class": "benefit-boundary"
   },
   {
    "sentence_id": "prodc1-092",
    "text": "Caroline has a guinea pig named Oscar.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
+   "provides_relation_present": "no",
    "subject": null,
    "object": null,
    "evidence_span": null,
@@ -538,7 +538,7 @@
    "text": "Caroline loves horses and has a love for them.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
+   "provides_relation_present": "no",
    "subject": null,
    "object": null,
    "evidence_span": null,
@@ -549,7 +549,7 @@
    "text": "Melanie has pets including another cat named Bailey.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
+   "provides_relation_present": "no",
    "subject": null,
    "object": null,
    "evidence_span": null,
@@ -560,7 +560,7 @@
    "text": "Caroline found a vibrant rainbow sidewalk during Pride Month, which reminded her of love and acceptance.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
+   "provides_relation_present": "no",
    "subject": null,
    "object": null,
    "evidence_span": null,
@@ -571,7 +571,7 @@
    "text": "Caroline started playing acoustic guitar about five years ago as a way to express herself and escape in her emotions.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
+   "provides_relation_present": "no",
    "subject": null,
    "object": null,
    "evidence_span": null,
@@ -582,7 +582,7 @@
    "text": "Melanie took her kids to a park and enjoyed seeing them have fun exploring and playing.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
+   "provides_relation_present": "no",
    "subject": null,
    "object": null,
    "evidence_span": null,
@@ -593,7 +593,7 @@
    "text": "Caroline is very focused on making a difference for the LGBTQ+ community through her work.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
+   "provides_relation_present": "no",
    "subject": null,
    "object": null,
    "evidence_span": null,
@@ -604,7 +604,7 @@
    "text": "Melanie has been into art for seven years, finding a passion for painting and pottery.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
+   "provides_relation_present": "no",
    "subject": null,
    "object": null,
    "evidence_span": null,
@@ -615,7 +615,7 @@
    "text": "Caroline recommends doing research, preparing emotionally, and gathering necessary documents when starting the adoption process.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
+   "provides_relation_present": "no",
    "subject": null,
    "object": null,
    "evidence_span": null,
@@ -626,7 +626,7 @@
    "text": "Melanie had a setback due to an injury that led her to take a break from pottery, which she uses for self-expression and peace.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
+   "provides_relation_present": "no",
    "subject": null,
    "object": null,
    "evidence_span": null,
@@ -637,7 +637,7 @@
    "text": "Melanie continued expressing herself through reading and painting during her break from pottery.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
+   "provides_relation_present": "no",
    "subject": null,
    "object": null,
    "evidence_span": null,
@@ -648,7 +648,7 @@
    "text": "Melanie enjoys expressing emotions through art, like painting inspired by sunsets and abstract art.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
+   "provides_relation_present": "no",
    "subject": null,
    "object": null,
    "evidence_span": null,
@@ -659,7 +659,7 @@
    "text": "Melanie's son got into an accident during the road trip.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
+   "provides_relation_present": "no",
    "subject": null,
    "object": null,
    "evidence_span": null,
@@ -670,29 +670,29 @@
    "text": "Melanie finds peace and serenity in nature, particularly during camping trips with her family.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
-   "subject": null,
-   "object": null,
-   "evidence_span": null,
-   "error_class": null
+   "provides_relation_present": "unclear",
+   "subject": "nature",
+   "object": "Melanie",
+   "evidence_span": "peace and serenity",
+   "error_class": "benefit-boundary"
   },
   {
    "sentence_id": "prodc1-142",
    "text": "Melanie believes that being in nature refreshes her soul and helps her reset and recharge.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
-   "subject": null,
-   "object": null,
-   "evidence_span": null,
-   "error_class": null
+   "provides_relation_present": "unclear",
+   "subject": "nature",
+   "object": "Melanie",
+   "evidence_span": "helps reset and recharge",
+   "error_class": "benefit-boundary"
   },
   {
    "sentence_id": "prodc1-147",
    "text": "Caroline passed the adoption agency interviews last Friday and is excited about building her own family through adoption.",
    "stratum": "B_recall_sample",
    "system": null,
-   "provides_relation_present": null,
+   "provides_relation_present": "no",
    "subject": null,
    "object": null,
    "evidence_span": null,

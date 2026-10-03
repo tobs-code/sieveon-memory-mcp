@@ -1,0 +1,36 @@
+{
+  "version": "production_error_matrix_v1",
+  "accept_precision": {
+    "tp": 17,
+    "fp": 2,
+    "unclear": 1,
+    "fp_classes": [
+      "purpose-as-recipient (1)",
+      "ambient-context-as-provider (1)"
+    ]
+  },
+  "abstain": {
+    "n": 2,
+    "both_semantically_yes": true,
+    "verdict": "correct abstains (linking)"
+  },
+  "recall_sample": {
+    "fn_clear": 1,
+    "fn_case": "prodc1-051 non-agentive subject (Running)",
+    "unclear_benefit_cluster": 4,
+    "tn": 25
+  },
+  "haeufung": {
+    "systematic_class_ge2": [
+      "benefit-boundary unclear-cluster (4, scope question, not pipeline error yet)"
+    ],
+    "single_cases_observe": [
+      "purpose-as-recipient",
+      "ambient-context-as-provider",
+      "volunteered-with-recipient",
+      "non-agentive-subject-recall"
+    ],
+    "linking": "no errors; abstains correct",
+    "v13": "not warranted; only open question is benefit-scope definition"
+  }
+}
