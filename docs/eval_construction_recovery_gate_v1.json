@@ -1,0 +1,57 @@
+{
+  "version": "construction_recovery_gate_v1",
+  "rule": "recovered = both gold entities as predicted spans/types at operating thresholds; pass >= 2/3; 0.05 lens diagnostic only",
+  "train": {
+    "n": 6,
+    "digest": "40cd1ba5a6a9bd04696d65bed61f2041a05d17f3b69a2f96c3799cfc0d1e338b",
+    "shell": "possessive copular, neutral adjectives, all provides"
+  },
+  "test": {
+    "n": 3,
+    "results": [
+      {
+        "sentence": "Nadia's support for Kurt was stable.",
+        "recovered": true,
+        "n_pred": 2,
+        "preds": [
+          [
+            "Nadia",
+            "provides",
+            0.627,
+            "Kurt"
+          ],
+          [
+            "Kurt",
+            "provides",
+            0.189,
+            "Nadia"
+          ]
+        ]
+      },
+      {
+        "sentence": "The museum's support for the archive was robust.",
+        "recovered": false,
+        "n_pred": 0,
+        "preds": []
+      },
+      {
+        "sentence": "The clinic's support for the pharmacy was enduring.",
+        "recovered": false,
+        "n_pred": 0,
+        "preds": []
+      }
+    ],
+    "digest": "c11e2b9d347e9e299b2ab70f19aa44903a333238b79de27c902c0eaa7468e272"
+  },
+  "verdict": {
+    "recovered": "0/3",
+    "gate": "NOT PASSED"
+  },
+  "diagnostic_lens_0.05": "1/3; recovered case shows provides Nadia->Kurt at 0.627 correct direction; org/org nominals silent",
+  "consequence": "NP-2 stays inconclusive; construction learnable in principle (person/person) but not robust under this regime",
+  "prior_records_untouched": [
+    "897bcad",
+    "5a61b63",
+    "5b6e6d0"
+  ]
+}
