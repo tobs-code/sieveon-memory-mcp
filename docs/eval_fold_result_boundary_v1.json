@@ -1,0 +1,91 @@
+{
+  "protocol": {
+    "protocol_version": "eval_phase_a_heldout_protocol_v1"
+  },
+  "fold": {
+    "fold_id": "boundary_epistemic-to-np2",
+    "held_out_family": "nominal_possessive:desiderative_embedding",
+    "split_unit": "construction_family_id + pair_id"
+  },
+  "data": {
+    "train_digest": "067b8fecb8d0045e96423a5f0a808d585d562c42de404054be0cb74d87025915",
+    "train_count": 8,
+    "test_digest": "test=NP-2--01/02/03 (6 sentences, pilot excluded)",
+    "test_count": 6
+  },
+  "model": {
+    "base_model": "knowledgator/gliner-relex-multi-v1.0",
+    "checkpoint_digest": "715badd7207723ae",
+    "seed": 42,
+    "label_map": [
+      "provides",
+      "no_relation"
+    ],
+    "epochs": 1
+  },
+  "predictions": {
+    "prediction_digest": "d32417e08e9e889161e03980e39446e4c1ebcfbd6efd5b33164dae2ea84bf7e9",
+    "prediction_count": 6,
+    "per_pair": [
+      {
+        "pair_id": "NP-2--01",
+        "clean_score": 0.0,
+        "hard_score": 0.0,
+        "consistent": false,
+        "n_pred_clean": 0,
+        "n_pred_hard": 0
+      },
+      {
+        "pair_id": "NP-2--02",
+        "clean_score": 0.0,
+        "hard_score": 0.0,
+        "consistent": false,
+        "n_pred_clean": 0,
+        "n_pred_hard": 0
+      },
+      {
+        "pair_id": "NP-2--03",
+        "clean_score": 0.0,
+        "hard_score": 0.0,
+        "consistent": false,
+        "n_pred_clean": 0,
+        "n_pred_hard": 0
+      }
+    ]
+  },
+  "metrics": {
+    "pair_consistency": "0/3 at operating thresholds (all scores 0.0)",
+    "clean_vs_hard_discrimination": "unmeasurable: no predictions above threshold on test or train",
+    "relation_precision": null,
+    "relation_recall": null,
+    "relation_f1": null,
+    "raw_score_note": "low-threshold lens (0.05, diagnostic only): entity stage finds no X/Y pairs on most sentences; base shows relation soup with provides hard>clean on one pair"
+  },
+  "boundary": {
+    "reference_family": "nominal_possessive:epistemic",
+    "test_set": "NP-2--01/02/03 (entity-disjoint)",
+    "collapse_indicator": null
+  },
+  "cue": {
+    "hard_cue": "hoped for / wished for",
+    "cue_disjoint_from_train": true
+  },
+  "entity": {
+    "test_entity_constellations": [
+      "person/organization",
+      "concept/organization",
+      "person/person"
+    ],
+    "train_entity_constellations": [
+      "person/organization",
+      "organization/organization",
+      "organization/technology",
+      "event/person"
+    ]
+  },
+  "decision": {
+    "status": "inconclusive",
+    "rule_id": "boundary-inconclusive-empty-predictions",
+    "notes": "Entity-stage floor: checkpoint reproduces nothing even on train; base equally empty at operating thresholds. No statement about the boundary hypothesis possible. No threshold or rule adjustment made."
+  }
+}
