@@ -1,0 +1,8 @@
+{"candidate_selection": "pairs reach scoring on 5/12 sentences (e.g. funded 0.69 program->trust, leads 0.49 Timo->Sanne); candidate bottleneck excluded as primary explanation, v1.9b not required",
+  "modes": "operating 0.5/0.7, lens 0.05/0.05, raw pair-score inspection; no threshold chosen or changed",
+  "provides_raw": "exactly 0.0 on all 12 gold pairs at lens: not sub-threshold, absent",
+  "reproducibility_note": "identical retrain (seed 42, same digest 3854f8b8) yields different checkpoint digest: negative-sampling randomness breaks bit-reproducibility; digests recorded per run",
+  "threshold_verdict": "threshold practically excluded: provides has zero mass, not truncated mass",
+  "train": "v1.8 population reproduced (digest 3854f8b8), v1.6 regime, 5 epochs",
+  "verdict": "case-3: oracle pairs scored with foreign labels while provides stays 0.0 -> relation-label binding blocked, not candidate generation",
+  "version": "exposure_audit_v19a_v1"}
