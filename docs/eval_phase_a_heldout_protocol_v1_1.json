@@ -1,0 +1,52 @@
+{
+  "axes": {
+    "boundary_generalisation": "especially AP-1 vs AP-2 and epistemic vs NP-2",
+    "cue_generalisation": "relation recognition without re-recognising the family-specific hard cue",
+    "entity_generalisation": "behaviour on unseen entity constellations",
+    "relation_generalisation": "provides recognition outside trained constructions"
+  },
+  "decision_rules": {
+    "AP-1_to_AP-2_correct": "mood axis supported",
+    "AP-2_via_AP-1_mention_cues": "independence not confirmed",
+    "epistemic_to_NP-2_correct": "boundary hypothesis supported",
+    "epistemic_to_NP-2_via_epistemic_cue": "NP-2/epistemic collapse indicator"
+  },
+  "folds": [
+    "AA-1 held-out",
+    "AP-1 held-out",
+    "IN-1 held-out",
+    "AE-1 held-out",
+    "AP-2 held-out",
+    "NP-2 held-out",
+    "epistemic vs NP-2 boundary diagnostic"
+  ],
+  "interpretation_rule": "No global score decides a family. Acceptance/collapse follows pre-registered fold-specific criteria and observed failure modes. Undecidable performance is inconclusive, never retroactive rule adjustment.",
+  "leakage_integrity_rule": "No new training data from defined test facts before execution. Fold, metric or threshold changes after seeing results are forbidden; changes require a new protocol version.",
+  "np2_boundary_precision": "epistemic-to-NP-2 verdicts count only on the 3 entity-disjoint NP-2 pairs (NP-2--01/02/03). The Maria/the nonprofit pilot (NP-2--00, overlapping epistemic--00) stays diagnostic/historic and must not carry the boundary decision.",
+  "primary_metrics": [
+    "paired accuracy / pair consistency",
+    "clean-vs-hard discrimination",
+    "relation precision/recall/F1 on designated test facts",
+    "per fold separately, never aggregated only"
+  ],
+  "scope": [
+    "6 expansion families",
+    "1 epistemic reference family",
+    "split unit: construction_family_id + pair_id",
+    "no new sentences",
+    "no change to v2, expansion freeze or generator",
+    "all counterfactual/current gold facts stay test-only"
+  ],
+  "status": "pre_registered_no_training_exists",
+  "version": "eval_phase_a_heldout_protocol_v1.1",
+  "parent": "eval_phase_a_heldout_protocol_v1",
+  "change_scope": "training strength only; folds, metrics, decision rules, populations unchanged",
+  "training_strength": {
+    "epochs": 5,
+    "seed": 42,
+    "batch_size": 2,
+    "learning_rate": "trainer default 5e-5",
+    "eval_during_training": "none (no early stopping on held-out)",
+    "rationale": "smallest standard multi-epoch budget for 8-example folds, fixed identically for all folds; chosen as technical convention before any re-measurement"
+  }
+}
