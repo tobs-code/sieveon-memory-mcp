@@ -1,0 +1,80 @@
+{
+  "entity_encoding": "character offsets into sentence; X = head/source, Y = tail/target; spans must match sentence substrings exactly",
+  "forbidden_model_features": [
+    "construction_family_id",
+    "pair_id",
+    "provenance",
+    "split_key",
+    "cue_phrase"
+  ],
+  "labels": [
+    "provides",
+    "no_relation"
+  ],
+  "model": {
+    "base": "knowledgator/gliner-relex-multi-v1.0",
+    "framework": "gliner.training.Trainer with RelationExtraction processor/collator",
+    "tokenizer_pinned_with_base": true
+  },
+  "output": {
+    "checkpoint": "output dir holds fine-tuned weights plus training manifest",
+    "manifest": [
+      "training_data_digest",
+      "base_model",
+      "seed",
+      "label_map",
+      "fold_id or null",
+      "gliner_version",
+      "torch_seed"
+    ]
+  },
+  "reproducibility": {
+    "seed": 42
+  },
+  "split_rule": "construction_family_id + pair_id steer the split and must never reach the model as features",
+  "status": "contract_only_no_training_run",
+  "training_example_schema": {
+    "entities": {
+      "X": {
+        "end": "int",
+        "start": "int",
+        "text": "str"
+      },
+      "Y": {
+        "end": "int",
+        "start": "int",
+        "text": "str"
+      }
+    },
+    "metadata": {
+      "construction_family_id": "str|null",
+      "pair_id": "str|null",
+      "provenance": "str"
+    },
+    "relation": "provides | no_relation",
+    "required": [
+      "sentence",
+      "entities",
+      "entity_labels",
+      "relation",
+      "metadata"
+    ],
+    "sentence": "str",
+    "entity_labels": {
+      "X": "production entity type",
+      "Y": "production entity type"
+    }
+  },
+  "version": "relex_training_contract_v1.1",
+  "parent": "relex_training_contract_v1",
+  "change_scope": "entity prompt inventory only; labels, populations, folds, splits, seed, metrics, decisions unchanged",
+  "entity_inventory": [
+    "person",
+    "organization",
+    "location",
+    "technology",
+    "concept",
+    "event"
+  ],
+  "entity_mapping_rule": "training entity spans are supervised under their source production type (entity_labels X/Y); training prompts offer the full production inventory plus provides; entity types are supervision classes, never model input features"
+}

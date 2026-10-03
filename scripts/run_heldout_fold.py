@@ -76,10 +76,12 @@ def to_example(entry: dict) -> dict:
     x, y = entry["entities"]
     sx, ex, tx = _span(sent, x)
     sy, ey, ty = _span(sent, y)
+    tX, tY = entry["entity_types"]
     return {
         "sentence": sent,
         "entities": {"X": {"start": sx, "end": ex, "text": tx},
                      "Y": {"start": sy, "end": ey, "text": ty}},
+        "entity_labels": {"X": tX.lower(), "Y": tY.lower()},
         "relation": ("provides" if entry["class"] == "clean_positive"
                      else "no_relation"),
         "metadata": {

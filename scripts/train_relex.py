@@ -24,10 +24,11 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CONTRACT = json.loads((ROOT / "docs" / "eval_relex_training_contract_v1.json").read_text())
+CONTRACT = json.loads((ROOT / "docs" / "eval_relex_training_contract_v1_1.json").read_text())
 
 LABELS = tuple(CONTRACT["labels"])
 FORBIDDEN = tuple(CONTRACT["forbidden_model_features"])
+ENTITY_INVENTORY = list(CONTRACT["entity_inventory"])
 
 
 def validate_example(ex: dict, lineno: int) -> list[str]:
@@ -45,6 +46,12 @@ def validate_example(ex: dict, lineno: int) -> list[str]:
         span = sent[ent.get("start", -1):ent.get("end", -1)]
         if span != ent.get("text", ""):
             problems.append(f"line {lineno}: {role} span does not match sentence")
+    elabels = ex.get("entity_labels", {})
+    for role in ("X", "Y"):
+        lab = elabels.get(role)
+        if lab not in ENTITY_INVENTORY:
+            problems.append(f"line {lineno}: {role} entity label {lab!r} "
+                            f"outside production inventory")
     for feat in FORBIDDEN:
         if feat in ex and feat not in ("construction_family_id", "pair_id",
                                        "provenance", "split_key", "cue_phrase"):
@@ -104,12 +111,13 @@ def _word_index(words: list[tuple[str, int, int]], start: int, end: int) -> tupl
 
 
 def to_gliner_sample(ex: dict) -> dict:
-    """Contract example -> tokens + entity/relation word indices.
+    """Contract example -> tokens + typed entity/relation word indices.
 
-    Both X and Y are always annotated as generic 'entity' spans; the only
-    supervision signal is whether the 'provides' relation links them.
-    clean_positive carries (X, Y, provides); hard negatives carry the same
-    spans with no relation. Metadata never leaves this function.
+    X and Y carry their source production entity types (contract v1.1
+    entity_labels); prompts offer the full production inventory. The only
+    relation under supervision stays 'provides': clean_positive carries
+    (X, Y, provides), hard negatives carry the same typed spans with no
+    relation. Metadata never leaves this function.
     """
     sent = ex["sentence"]
     words = _words_with_offsets(sent)
@@ -119,7 +127,8 @@ def to_gliner_sample(ex: dict) -> dict:
         ent = ex["entities"][role]
         spans[role] = _word_index(words, ent["start"], ent["end"])
     order = sorted(spans, key=lambda r: spans[r][0])
-    ner = [(spans[r][0], spans[r][1], "entity") for r in order]
+    elabels = ex.get("entity_labels", {})
+    ner = [(spans[r][0], spans[r][1], elabels.get(r, "concept")) for r in order]
     relations: list[tuple[int, int, str]] = []
     if ex["relation"] == "provides":
         head = order.index("X")
@@ -147,8 +156,8 @@ def run_training(rows: list[dict], digest: str, args) -> int:
         tokenizer = AutoTokenizer.from_pretrained(base)
     processor = RelationExtractionTokenProcessor(
         model.config, tokenizer, WordsSplitter("whitespace"))
-    classes_to_id = {"entity": 0}
-    rel_classes_to_id = {"provides": 0}
+    classes_to_id = {lab: i + 1 for i, lab in enumerate(ENTITY_INVENTORY)}
+    rel_classes_to_id = {"provides": 1}
 
     samples = [to_gliner_sample(ex) for ex in rows]
     for s in samples:
@@ -167,7 +176,7 @@ def run_training(rows: list[dict], digest: str, args) -> int:
         raw_tokens = [s["tokens"] for s in batch]
         n = len(batch)
         prompted, plens = processor.prepare_inputs(
-            raw_tokens, entities=[["entity"]] * n,
+            raw_tokens, entities=[list(ENTITY_INVENTORY)] * n,
             relations=[["provides"]] * n)
         shifted = []
         for s, pl in zip(batch, plens):
@@ -183,12 +192,27 @@ def run_training(rows: list[dict], digest: str, args) -> int:
             [dict(rel_classes_to_id)] * n,
             [{v: k for k, v in rel_classes_to_id.items()}] * n)
         merged["rel_class_to_ids"] = [dict(rel_classes_to_id)] * n
-        merged.update(processor.tokenize_inputs(
-            prompted,
-            [dict(classes_to_id)] * n, blank=None,
-            relations=[dict(rel_classes_to_id)] * n))
-        out = processor.tokenize_and_prepare_labels(merged, True)
+        # tokenize_inputs prompts internally; pass raw tokens so the prompt
+        # is built exactly once (passing prompted texts would double it).
+        # NOTE: do not call tokenize_and_prepare_labels here: it would
+        # re-tokenize merged["tokens"] and prepend a second prompt.
         import torch as _torch
+        tok_out = processor.tokenize_inputs(
+            raw_tokens,
+            [list(ENTITY_INVENTORY)] * n, blank=None,
+            relations=[["provides"]] * n)
+        out = dict(merged)
+        out.update(tok_out)
+        lab_batch = {
+            "tokens": prompted,
+            "entities": shifted,
+            "classes_to_id": [dict(classes_to_id)] * n,
+            "seq_length": _torch.LongTensor([len(p) for p in prompted]),
+        }
+        out["labels"] = processor.create_labels(lab_batch)
+        adj, rel = processor.create_relation_labels(merged)
+        out["adj_matrix"] = adj
+        out["rel_matrix"] = rel
         out["text_lengths"] = _torch.LongTensor([len(p) for p in prompted])
         return out
 
