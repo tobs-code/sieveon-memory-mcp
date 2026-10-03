@@ -1,0 +1,7 @@
+{"config": "v1.2 regime unchanged (encoder 1e-6, heads 5e-5, seed 42); only change 5->20 epochs; same 4 SVO sentences; no new data, no threshold change",
+  "entity_recovery": "operating 0/4; 0.05 lens 2/4 (person/person pairs found, tech/org silent); no collapse signature",
+  "loss": "107->~43 plateau across 20 epochs",
+  "provides_relation": "absent at operating and at raw score level; found relations are other predicates",
+  "train_digest": "07b67bf127d847d23c77370f1dd01377ac3df21acff6e7f4f3de89fa384ef4da",
+  "verdict": "branch-2: strength alone insufficient; entity calibration preserved but provides not installed",
+  "version": "v12_strength_diagnostic_v1"}
