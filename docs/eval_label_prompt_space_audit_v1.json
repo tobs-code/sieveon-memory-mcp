@@ -1,0 +1,8 @@
+{"decision_level": {"finding": "leads dominates gold pairs (0.76, 0.58); provides absent above 0.05 on all 3 fresh sentences; one sentence yields no pairs at all",
+                "gold_pair_ranking": "leads > created > designed/built/acquired; provides unranked"},
+  "prompt_geometry": {"closest_to_provides": [["funded", 0.889], ["developed", 0.879], ["designed", 0.8113], ["uses", 0.7892]],
+                      "farthest": [["leads", 0.3659], ["located in", 0.3168], ["part of", 0.2264]],
+                      "method": "contextual rel-prompt embeddings from base encoder on fixed carrier, cosine"},
+  "reading": "branch-1-leaning: provides sits in a dense prompt cluster (funded/developed at ~0.88) AND decision-level leads wins despite geometric distance, pointing at pair-side alignment dynamics as well. No success threshold invented; next experiment direction (label-space separation vs pair-side supervision) requires specification, not tuning.",
+  "training_signal": "v1.3/v1.4 records re-read only, no new optimization run",
+  "version": "label_prompt_space_audit_v1"}
