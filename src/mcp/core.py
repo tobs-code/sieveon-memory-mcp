@@ -62,9 +62,13 @@ async def get_stats_resource() -> str:
     return json.dumps(stats, indent=2, default=str)
 
 
+from urllib.parse import unquote as _unquote
+
+
 @mcp.resource("sieveon://entity/{entity_id}", description="Entity details with active facts")
 async def get_entity_resource(entity_id: str) -> str:
     """Get detailed information about a specific entity, including its active KG facts."""
+    entity_id = _unquote(entity_id)
     try:
         result = await _query_surreal(f"SELECT * FROM {entity_id};")
         data = _extract_result(result, 1)
@@ -88,6 +92,7 @@ async def get_entity_resource(entity_id: str) -> str:
 @mcp.resource("sieveon://event/{event_id}", description="Event details")
 async def get_event_resource(event_id: str) -> str:
     """Get details about a specific event."""
+    event_id = _unquote(event_id)
     try:
         sql = f"SELECT id, content, timestamp, source, metadata, forgotten, forgotten_reason FROM {event_id};"
         result = await _query_surreal(sql)
@@ -102,6 +107,10 @@ async def get_event_resource(event_id: str) -> str:
 @mcp.resource("sieveon://kg/subject/{subject_name}", description="Knowledge graph facts where the named entity is the subject")
 async def kg_subject_resource(subject_name: str) -> str:
     """Get KG facts where the named entity appears as the subject (in.position)."""
+    # FastMCP passes the raw path segment URL-encoded ("Sieveon%20Labs").
+    # Without decoding, the name never matches and the resource always
+    # returns 0 facts -- decode before querying.
+    subject_name = _unquote(subject_name)
     try:
         escaped = escape_surrealql(subject_name)
         sql = f"""
@@ -129,6 +138,7 @@ async def kg_subject_resource(subject_name: str) -> str:
 @mcp.resource("sieveon://kg/predicate/{predicate}", description="Knowledge graph facts filtered by predicate/relation type")
 async def kg_predicate_resource(predicate: str) -> str:
     """Get KG facts filtered by a specific predicate/relation type."""
+    predicate = _unquote(predicate)
     try:
         escaped = escape_surrealql(predicate)
         sql = f"""
@@ -155,6 +165,7 @@ async def kg_predicate_resource(predicate: str) -> str:
 @mcp.resource("sieveon://search/{query}", description="Hybrid search results (semantic + lexical) for a query string")
 async def search_resource(query: str) -> str:
     """Search events by query text using hybrid search (vector + FTX) with RRF fusion."""
+    query = _unquote(query)
     try:
         if not query.strip():
             return json.dumps({"events": [], "count": 0, "message": "Query cannot be empty"}, indent=2)
@@ -572,7 +583,11 @@ def _trust_of(source: str, explicit: Any = None) -> str:
     """
     if isinstance(explicit, str) and explicit:
         return explicit
-    return "direct" if source == "user_input" else "untrusted"
+    # Chunk sources carry a "#chunkN" suffix ("user_input#chunk0"); the base
+    # source decides trust, otherwise every markdown chunk imported with
+    # source="user_input" silently degrades to untrusted.
+    base_source = (source or "").split("#")[0]
+    return "direct" if base_source == "user_input" else "untrusted"
 
 
 def _clean_output(obj: Any) -> Any:

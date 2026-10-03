@@ -86,8 +86,9 @@ async def _store_content(content: str, source: str = "user_input", debug: bool =
                             "structurally_dropped": kg_result.get("structurally_dropped", 0),
                             "verifier_dropped": kg_result.get("verifier_dropped", 0)}
 
+    base_source = (source or "").split("#")[0]
     return {"event_id": event_id, "status": "stored", "source": source,
-            "trust": trust if isinstance(trust, str) and trust else ("direct" if source == "user_input" else "untrusted"),
+            "trust": trust if isinstance(trust, str) and trust else ("direct" if base_source == "user_input" else "untrusted"),
             "gate": gate_info}
 
 

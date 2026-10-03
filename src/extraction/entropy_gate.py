@@ -1758,8 +1758,9 @@ class EntropyGate:
         source_escaped = self._escape_surrealql(source)
         # Trust: explicit wins, else direct only for user_input. Stored on the
         # event; _clean_output derives it for old rows without the field.
+        base_source = (source or "").split("#")[0]
         trust_value = trust if isinstance(trust, str) and trust else (
-            "direct" if source == "user_input" else "untrusted"
+            "direct" if base_source == "user_input" else "untrusted"
         )
         trust_escaped = self._escape_surrealql(trust_value)
         metadata_str = ""

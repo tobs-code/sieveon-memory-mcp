@@ -733,6 +733,11 @@ class RetrievalExecutor:
             "entities": [],
             "facts": [],
             "query": query,
+            # Without diagnostics the relevance scorer falls back to 0.3 for
+            # this lexical-only strategy, which sits below the summary accept
+            # gate -- every event_log_first query then verdicts nothing_found
+            # even with a perfect BM25 hit. Report the lexical channel state.
+            "retrieval_diagnostics": _channel_diagnostics(ftx_events, []),
         }
 
     async def _execute_knowledge_graph_first(
@@ -782,6 +787,12 @@ class RetrievalExecutor:
             "entities": _clean_output(entities),
             "facts": _clean_output(facts),
             "query": query,
+            # Fact/entity volume as the lexical-hit proxy so the relevance
+            # scorer does not fall back to 0.3 and veto a good KG answer.
+            "retrieval_diagnostics": _channel_diagnostics(
+                [{"id": f.get("id"), "bm25": f.get("confidence")} for f in facts],
+                [],
+            ),
         }
 
     async def _execute_hybrid_with_graph_expansion(
@@ -829,6 +840,7 @@ class RetrievalExecutor:
             "entities": _clean_output(entities),
             "facts": _clean_output(expanded_facts),
             "query": query,
+            "retrieval_diagnostics": _channel_diagnostics(ftx_events, []),
         }
 
     async def _execute_composite_kg_vector(
@@ -858,6 +870,7 @@ class RetrievalExecutor:
             "entities": _clean_output(entities),
             "facts": _clean_output(kg_facts),
             "query": query,
+            "retrieval_diagnostics": _channel_diagnostics(ftx_events or [], vec_events or []),
         }
 
     async def _execute_knowledge_graph_with_invalidation(
@@ -959,6 +972,7 @@ class RetrievalExecutor:
             "entities": _clean_output(entities),
             "facts": _clean_output(kg_facts),
             "query": query,
+            "retrieval_diagnostics": _channel_diagnostics(ftx_events or [], []),
         }
 
     async def _execute_semantic_hybrid(
@@ -1120,6 +1134,7 @@ class RetrievalExecutor:
             "entities": _clean_output(entities),
             "facts": _clean_output(kg_facts),
             "query": query,
+            "retrieval_diagnostics": _channel_diagnostics(ftx_events or [], []),
         }
 
     async def _execute_graph_ppr_rerank(

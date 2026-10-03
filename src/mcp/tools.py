@@ -44,6 +44,146 @@ def _prepare_fts_query(query: str, syntax: str = "auto") -> str:
     return escape_surrealql(fts_keywords(query))
 
 
+def _parse_fts_operators(query: str) -> dict:
+    """Parse explicit boolean full-text syntax into structured clauses.
+
+    Supported (as documented on event_log_search/semantic_search):
+      +term    must match
+      -term    must NOT match
+      "phrase" exact phrase (substring, case-insensitive)
+      -"phrase" / +"phrase"  negated / required phrase
+      bare terms are OR'ed (should).
+
+    Returns {"must": [...], "must_not": [...], "should": [...],
+             "must_phrases": [...], "must_not_phrases": [...],
+             "should_phrases": [...]}. Pure function, no I/O.
+    """
+    must, must_not, should = [], [], []
+    must_phrases, must_not_phrases, should_phrases = [], [], []
+    if not query or not query.strip():
+        return {"must": must, "must_not": must_not, "should": should,
+                "must_phrases": must_phrases,
+                "must_not_phrases": must_not_phrases,
+                "should_phrases": should_phrases}
+    # Quoted phrases first, with optional leading +/-
+    remaining = query
+    for m in re.finditer(r'([+-]?)"([^"]+)"', query):
+        prefix, phrase = m.group(1), m.group(2).strip()
+        if phrase:
+            if prefix == "-":
+                must_not_phrases.append(phrase)
+            elif prefix == "+":
+                must_phrases.append(phrase)
+            else:
+                should_phrases.append(phrase)
+        remaining = remaining.replace(m.group(0), " ", 1)
+    for tok in remaining.split():
+        t = tok.strip()
+        if not t:
+            continue
+        if t.startswith("+") and len(t) > 1:
+            must.append(t[1:])
+        elif t.startswith("-") and len(t) > 1:
+            must_not.append(t[1:])
+        else:
+            should.append(t)
+    # De-duplicate preserving order
+    def _dedup(xs):
+        seen, out = set(), []
+        for x in xs:
+            k = x.lower()
+            if k not in seen:
+                seen.add(k)
+                out.append(x)
+        return out
+    return {"must": _dedup(must), "must_not": _dedup(must_not),
+            "should": _dedup(should),
+            "must_phrases": _dedup(must_phrases),
+            "must_not_phrases": _dedup(must_not_phrases),
+            "should_phrases": _dedup(should_phrases)}
+
+
+def _fts_search_plan(query: str, syntax: str = "auto", field: str = "content") -> dict:
+    """Compile a search query into a lexical search plan.
+
+    'auto'/'exact' keep the exact previous behaviour (single @OR@ predicate
+    via _prepare_fts_query) so existing recall measurements stay valid.
+
+    'fts' compiles +must / "phrase" into AND conditions (each must term its
+    own @OR@ predicate, phrases via case-insensitive CONTAINS). Exclusions
+    (-term / -"phrase") are returned separately for Python post-filtering:
+    SurrealDB has no suitable FTX index for `NOT (field @OR@ ...)` (verified
+    2026-10-03: "There was no suitable index supporting the expression"),
+    so pushing negations into SQL fails outright.
+
+    Returns {"where": <positive SQL boolean>, "has_lexical": <whether an
+    @OR@ predicate exists, i.e. search::score(0) is valid>,
+    "exclude_terms": [...], "exclude_phrases": [...]}.
+    """
+    if syntax != "fts":
+        return {
+            "where": f"{field} @OR@ '{_prepare_fts_query(query, syntax)}'",
+            "has_lexical": True,
+            "exclude_terms": [],
+            "exclude_phrases": [],
+        }
+    parts = _parse_fts_operators(query)
+    conds = []
+    for term in parts["must"]:
+        conds.append(f"{field} @OR@ '{escape_surrealql(term)}'")
+    for phrase in parts["must_phrases"]:
+        conds.append(
+            f"string::lowercase({field}) CONTAINS '{escape_surrealql(phrase.lower())}'"
+        )
+    # Bare terms and bare "phrases" are all optional (OR): a document
+    # matching any of them satisfies the should-group.
+    should_branches = []
+    if parts["should"]:
+        should_q = " ".join(parts["should"])
+        should_branches.append(f"{field} @OR@ '{escape_surrealql(should_q)}'")
+    for phrase in parts["should_phrases"]:
+        should_branches.append(
+            f"string::lowercase({field}) CONTAINS '{escape_surrealql(phrase.lower())}'"
+        )
+    if should_branches:
+        conds.append("(" + " OR ".join(f"({b})" for b in should_branches) + ")")
+    has_lexical = any("@OR@" in c for c in conds)
+    return {
+        "where": " AND ".join(f"({c})" for c in conds) if conds else "1=1",
+        "has_lexical": has_lexical,
+        "exclude_terms": list(parts["must_not"]),
+        "exclude_phrases": list(parts["must_not_phrases"]),
+    }
+
+
+def _fts_where_clause(query: str, syntax: str = "auto", field: str = "content") -> str:
+    """Positive SQL WHERE fragment for event full-text search (no exclusions).
+
+    Exclusions (-term / -"phrase") are enforced in Python via
+    _content_excluded(), see _fts_search_plan.
+    """
+    return _fts_search_plan(query, syntax, field)["where"]
+
+
+def _content_excluded(content: str, exclude_terms: list, exclude_phrases: list) -> bool:
+    """Whether content matches any fts exclusion (pure function, no I/O).
+
+    Terms match whole-word case-insensitive (FTX-analyzer approximation),
+    phrases match case-insensitive substring.
+    """
+    if not exclude_terms and not exclude_phrases:
+        return False
+    text = content or ""
+    lowered = text.lower()
+    if exclude_phrases and any(p.lower() in lowered for p in exclude_phrases):
+        return True
+    if exclude_terms:
+        words = set(re.findall(r"\w+", lowered))
+        if any(t.lower() in words for t in exclude_terms):
+            return True
+    return False
+
+
 @mcp.tool()
 async def memory_store(
     content: str, source: str = "user_input", metadata: Optional[Dict[str, Any]] = None,
@@ -134,6 +274,7 @@ async def memory_store_markdown(
     parse_front_matter: bool = True,
     max_concurrent: int = 3,
     metadata: Optional[Dict[str, Any]] = None,
+    trust: Optional[str] = None,
 ) -> dict:
     """Import markdown content or file with overlapping chunking. Each chunk is stored
     individually through the entropy gate and knowledge graph extraction pipeline.
@@ -223,7 +364,7 @@ async def memory_store_markdown(
 
                 chunk_source = f"{source}#chunk{chunk['index']}"
 
-                store_result = await _store_content(chunk_text, source=chunk_source, metadata=chunk_meta)
+                store_result = await _store_content(chunk_text, source=chunk_source, metadata=chunk_meta, trust=trust)
                 store_status = store_result.get("status", "unknown")
                 gate_decision = store_result.get("gate", {}).get("decision", "unknown")
                 if gate_decision in gate_counts:
@@ -458,13 +599,16 @@ async def event_log_search(
     When include_forgotten=True, forgotten events are included and marked as such.
 
     Use query_syntax='fts' for full-text search operators:
-      +term  = term must match     -term  = term must NOT match
+      +term  = term must match (lexical channel)   -term  = term must NOT match (global)
       "a b"  = exact phrase        term1 term2 = any match (OR)
 
     Use query_syntax='exact' for exact phrase matching (auto-wraps in quotes).
     Default 'auto' treats the entire input as plain text with full escaping.
     """
-    query_escaped = _prepare_fts_query(query, query_syntax)
+    fts_plan = _fts_search_plan(query, query_syntax, "content")
+    fts_condition = fts_plan["where"]
+    exclude_terms = fts_plan["exclude_terms"]
+    exclude_phrases = fts_plan["exclude_phrases"]
     # Datetime-Vergleiche brauchen type::datetime (plain strings coerces
     # SurrealDB v3 bei datetime-Feldern NICHT -- stiller Wrong-Result-Bug).
     time_filter = ""
@@ -476,7 +620,7 @@ async def event_log_search(
     if include_forgotten:
         forgotten_filter = "1=1"
     else:
-        forgotten_filter = "forgotten = false"
+        forgotten_filter = "(forgotten = false OR forgotten IS NONE)"
 
     if not query.strip():
         # If no query, just return recent events with offset
@@ -495,18 +639,33 @@ async def event_log_search(
             event["search_type"] = "recent"
         return {"events": _clean_output(events), "count": len(events)}
 
-    fetch_limit = (offset + limit) * 4
+    # Exclusions are post-filtered in Python, so over-fetch to keep recall.
+    fetch_limit = (offset + limit) * (10 if (exclude_terms or exclude_phrases) else 4)
 
-    # 1) Lexical search via FTX index
-    ftx_sql = f"""
-    SELECT id, content, timestamp, source, metadata, forgotten, forgotten_reason, 'lexical' AS search_type, search::score(0) AS bm25
-    FROM event
-    WHERE content @OR@ '{query_escaped}'
-      AND {forgotten_filter}
-      {time_filter}
-    ORDER BY bm25 DESC
-    LIMIT {fetch_limit};
-    """
+    # 1) Lexical search via FTX index (fts mode compiles +must/"phrase" into
+    # AND conditions; -exclusions are post-filtered, see _fts_search_plan).
+    # Without an @OR@ predicate search::score(0) has nothing to score, so
+    # fall back to recency ordering with a zero bm25.
+    if fts_plan["has_lexical"]:
+        ftx_sql = f"""
+        SELECT id, content, timestamp, source, metadata, forgotten, forgotten_reason, 'lexical' AS search_type, search::score(0) AS bm25
+        FROM event
+        WHERE {fts_condition}
+          AND {forgotten_filter}
+          {time_filter}
+        ORDER BY bm25 DESC
+        LIMIT {fetch_limit};
+        """
+    else:
+        ftx_sql = f"""
+        SELECT id, content, timestamp, source, metadata, forgotten, forgotten_reason, 'lexical' AS search_type, 0 AS bm25
+        FROM event
+        WHERE {fts_condition}
+          AND {forgotten_filter}
+          {time_filter}
+        ORDER BY timestamp DESC
+        LIMIT {fetch_limit};
+        """
 
     # Start FTX query immediately (overlap with embedding computation)
     ftx_task = asyncio.create_task(_query_surreal(ftx_sql))
@@ -553,10 +712,19 @@ async def event_log_search(
             else:
                 fused[eid] = {"rrf": 1.0 / (k + rank), "event": ev}
 
-    sorted_events = [
-        item["event"]
-        for item in sorted(fused.values(), key=lambda x: x["rrf"], reverse=True)[offset:offset + limit]
-    ]
+    ranked = sorted(fused.values(), key=lambda x: x["rrf"], reverse=True)
+    if exclude_terms or exclude_phrases:
+        ranked = [
+            item for item in ranked
+            if not _content_excluded(
+                item["event"].get("content", ""), exclude_terms, exclude_phrases)
+        ]
+    sorted_events = [item["event"] for item in ranked[offset:offset + limit]]
+    if not include_forgotten:
+        # Defensive post-filter: the SQL WHERE clause should already exclude
+        # forgotten rows, but a forgotten event leaking through here is a
+        # privacy-relevant failure, so enforce it in Python as well.
+        sorted_events = [ev for ev in sorted_events if not ev.get("forgotten")]
     events = _clean_output(sorted_events)
 
     return {"events": events, "count": len(events)}
@@ -707,16 +875,19 @@ async def semantic_search(
     if not query.strip():
         return {"events": [], "count": 0, "message": "Query cannot be empty"}
 
-    query_escaped = _prepare_fts_query(query, query_syntax)
+    fts_plan = _fts_search_plan(query, query_syntax, "content")
+    ftx_condition = fts_plan["where"]
+    exclude_terms = fts_plan["exclude_terms"]
+    exclude_phrases = fts_plan["exclude_phrases"]
     query_vector = await _embed_query(query)
     query_vector_str = "[" + ", ".join(map(str, query_vector)) + "]"
 
-    fetch_k = min(top_k * 6, 150)
-    forgotten_filter = "forgotten = false"
+    fetch_k = min(top_k * (12 if (exclude_terms or exclude_phrases) else 6), 150)
+    forgotten_filter = "(forgotten = false OR forgotten IS NONE)"
 
     # 1) Vector search (semantic)
     vec_sql = f"""
-    SELECT id, content, timestamp, source, metadata, content_hash,
+    SELECT id, content, timestamp, source, metadata, content_hash, forgotten,
            vector::similarity::cosine(embedding, {query_vector_str}) AS vec_score
     FROM event
     WHERE embedding IS NOT NONE
@@ -728,16 +899,28 @@ async def semantic_search(
     vec_task = asyncio.create_task(_query_surreal(vec_sql))
 
     # 2) FTX search (lexical) — only if query has meaningful content
+    # fts mode compiles +must/"phrase" into AND conditions; -exclusions are
+    # post-filtered in Python (no FTX index support for NOT, see plan).
     ftx_task = None
     if query.strip():
-        ftx_sql = f"""
-        SELECT id, content, timestamp, source, metadata, content_hash, search::score(0) AS bm25
-        FROM event
-        WHERE content @OR@ '{query_escaped}'
-          AND {forgotten_filter}
-        ORDER BY bm25 DESC
-        LIMIT {fetch_k};
-        """
+        if fts_plan["has_lexical"]:
+            ftx_sql = f"""
+            SELECT id, content, timestamp, source, metadata, content_hash, forgotten, search::score(0) AS bm25
+            FROM event
+            WHERE {ftx_condition}
+              AND {forgotten_filter}
+            ORDER BY bm25 DESC
+            LIMIT {fetch_k};
+            """
+        else:
+            ftx_sql = f"""
+            SELECT id, content, timestamp, source, metadata, content_hash, forgotten, 0 AS bm25
+            FROM event
+            WHERE {ftx_condition}
+              AND {forgotten_filter}
+            ORDER BY timestamp DESC
+            LIMIT {fetch_k};
+            """
         ftx_task = asyncio.create_task(_query_surreal(ftx_sql))
 
     vec_result = await vec_task
@@ -756,6 +939,13 @@ async def semantic_search(
     fused = {}  # content_hash -> {event, rrf_score, vec_score}
     seen_ids = set()
 
+    def _bm25_of(ev: dict) -> float:
+        try:
+            v = float(ev.get("bm25") or 0.0)
+            return v if v > 0 else 0.0
+        except (TypeError, ValueError):
+            return 0.0
+
     for rank, ev in enumerate(vec_events):
         eid = ev.get("id")
         ch = ev.get("content_hash") or eid
@@ -769,39 +959,70 @@ async def semantic_search(
             "event": ev,
             "rrf": 1.0 / (k + rank),
             "vec_score": vec_score,
+            "bm25": 0.0,
         }
 
     for rank, ev in enumerate(ftx_events):
         eid = ev.get("id")
         ch = ev.get("content_hash") or eid
+        bm25 = _bm25_of(ev)
         if eid in seen_ids:
             # Already in fused — boost its RRF score
             if ch in fused:
                 fused[ch]["rrf"] += 1.0 / (k + rank)
+                if bm25 > fused[ch].get("bm25", 0.0):
+                    fused[ch]["bm25"] = bm25
+                    fused[ch]["event"]["bm25"] = ev.get("bm25")
             continue
         seen_ids.add(eid)
         if ch in fused:
             fused[ch]["rrf"] += 1.0 / (k + rank)
+            if bm25 > fused[ch].get("bm25", 0.0):
+                fused[ch]["bm25"] = bm25
         else:
             fused[ch] = {
                 "event": ev,
                 "rrf": 1.0 / (k + rank),
                 "vec_score": 0.0,
+                "bm25": bm25,
             }
 
     # 4) Post-filter: penalise repetitive content, collect event IDs for KG lookup
+    # P0 fix: exact/rare-term boost — rare tokens (codes, IDs, long words with
+    # digits/underscores) carry more signal than generic words. A verbatim hit
+    # gets a full extra RRF rank term so exact matches outrank vector noise.
+    # Also: drop soft-forgotten rows defensively (privacy) since the SQL
+    # filter alone leaked them through in production tests.
+    rare_terms = [
+        w.strip(".,!?;:'\"()[]") for w in query.split()
+        if len(w.strip(".,!?;:'\"()[]")) >= 6
+    ]
+    query_lower = query.lower()
     event_ids_for_kg = []
     scored = []
     for ch, entry in fused.items():
         ev = entry["event"]
+        if ev.get("forgotten"):
+            continue
         content = ev.get("content", "")
+        if _content_excluded(content, exclude_terms, exclude_phrases):
+            continue
         rrf = entry["rrf"]
         vec_score = entry["vec_score"]
+        bm25 = entry.get("bm25", 0.0)
 
         if _is_highly_repetitive(content):
             rrf = rrf * 0.02
 
-        scored.append((rrf, vec_score, ev))
+        content_lower = content.lower()
+        if query_lower and query_lower in content_lower:
+            rrf += 1.0 / k
+        elif rare_terms:
+            hits = sum(1 for t in rare_terms if t.lower() in content_lower)
+            if hits:
+                rrf += (hits / len(rare_terms)) * (1.0 / k)
+
+        scored.append((rrf, vec_score, bm25, ev))
         eid = ev.get("id")
         if eid and eid.startswith("event:"):
             event_ids_for_kg.append(eid)
@@ -813,7 +1034,7 @@ async def semantic_search(
         import re
         entity_names = set()
         # Extract entities from event contents
-        for _, _, ev in scored[:top_k]:
+        for _, _, _, ev in scored[:top_k]:
             content = ev.get("content", "")
             for match in re.finditer(r'\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\b', content):
                 name = match.group(1).strip()
@@ -876,20 +1097,20 @@ async def semantic_search(
                 print(f"[semantic_search] KG fact filtering error: {e}")
 
     # 6) Sort by RRF, normalize scores to 0-1, build final output
-    scored.sort(key=lambda x: x[0], reverse=True)
+    # Global scale (comparable across queries, unlike per-query min-max which
+    # pins an irrelevant top-1 to 1.0). The ceiling must include the
+    # post-fusion boosts applied above, otherwise every two-channel hit
+    # saturates at 1.0 and scores stop discriminating (measured 2026-10-03:
+    # five hits all at 1.0): 2/k for two rank-0 channel hits + 1/k exact
+    # substring boost + 1/k rare-term boost = 4/k.
+    scored.sort(key=lambda x: (x[0], x[1]), reverse=True)
     top_results = scored[:top_k]
 
-    # Find min/max RRF for normalization
-    if top_results:
-        min_rrf = min(rrf for rrf, _, _ in top_results)
-        max_rrf = max(rrf for rrf, _, _ in top_results)
-        range_rrf = max_rrf - min_rrf if max_rrf > min_rrf else 1.0
-    else:
-        min_rrf = max_rrf = range_rrf = 1.0
+    max_possible_rrf = 4.0 / k
 
     events = []
-    for rrf, vec_score, ev in top_results:
-        normalized_score = (rrf - min_rrf) / range_rrf if range_rrf > 0 else 0.0
+    for rrf, vec_score, bm25, ev in top_results:
+        normalized_score = min(rrf / max_possible_rrf, 1.0) if max_possible_rrf > 0 else 0.0
         event_out = {
             "id": ev.get("id"),
             "content": ev.get("content"),
@@ -897,8 +1118,11 @@ async def semantic_search(
             "source": ev.get("source"),
             "metadata": ev.get("metadata"),
             "score": round(normalized_score, 4),
+            "rrf": round(rrf, 6),
             "vec_score": round(vec_score, 4) if vec_score > 0 else None,
         }
+        if bm25 > 0:
+            event_out["bm25"] = round(bm25, 4)
         events.append(event_out)
 
     result = {
@@ -1162,13 +1386,23 @@ async def memory_forget(
 
         if hard:
             # Physical removal: derived facts first (they reference the event),
-            # then the event row itself (embedding dies with it).
+            # then the event row itself (embedding dies with it), then orphan
+            # entities left without any referencing fact. Shared entities
+            # survive because they still have facts from other events.
             try:
-                facts_sql = f"SELECT id FROM fact WHERE source_event = {event_id};"
+                facts_sql = (
+                    f"SELECT id, in.id AS in_id, out.id AS out_id FROM fact "
+                    f"WHERE source_event = {event_id};"
+                )
                 facts_result = await _query_surreal(facts_sql)
                 derived = _extract_result(facts_result, 1) or []
+                candidate_entities: set = set()
                 for fact in derived:
                     fid = fact.get("id")
+                    for key in ("in_id", "out_id"):
+                        eid = fact.get(key)
+                        if eid and _is_record_id(str(eid)):
+                            candidate_entities.add(str(eid))
                     if fid and _is_record_id(str(fid)):
                         await _query_surreal(f"DELETE {fid};")
                         forgotten_items.append(
@@ -1178,6 +1412,25 @@ async def memory_forget(
                 forgotten_items.append(
                     {"id": event_id, "type": "event", "status": "deleted"}
                 )
+                for eid in sorted(candidate_entities):
+                    try:
+                        remaining = _extract_result(
+                            await _query_surreal(
+                                f"SELECT id FROM fact WHERE in = {eid} "
+                                f"OR out = {eid} LIMIT 1;"
+                            ),
+                            1,
+                        )
+                        if not remaining:
+                            await _query_surreal(f"DELETE {eid};")
+                            forgotten_items.append(
+                                {"id": eid, "type": "entity", "status": "deleted"}
+                            )
+                    except Exception:
+                        # Orphan cleanup is best-effort: the event and its
+                        # facts are already gone, a surviving orphan harms
+                        # nothing and is picked up by the next consolidate.
+                        continue
                 return {
                     "forgotten_items": forgotten_items,
                     "count": len(forgotten_items),
@@ -1193,6 +1446,16 @@ async def memory_forget(
         try:
             update_sql = f"UPDATE {event_id} SET forgotten = true, forgotten_reason = '{escape_surrealql(reason)}';"
             await _query_surreal(update_sql)
+            # Verify the flag actually persisted: a silent no-op UPDATE
+            # would otherwise leave the event retrievable despite reporting
+            # success (privacy-relevant). Re-read and fail loudly.
+            verify_result = await _query_surreal(f"SELECT forgotten FROM {event_id};")
+            verify_items = _extract_result(verify_result, 1)
+            if not verify_items or not verify_items[0].get("forgotten"):
+                return {
+                    "status": "error",
+                    "message": f"Failed to forget event {event_id}: forgotten flag did not persist",
+                }
             forgotten_items.append(
                 {"id": event_id, "type": "event", "status": "forgotten"}
             )
@@ -1286,6 +1549,13 @@ async def memory_forget(
         try:
             entity_update_sql = f"UPDATE {entity_id} SET forgotten = true, forget_reason = '{escape_surrealql(reason)}';"
             await _query_surreal(entity_update_sql)
+            verify_result = await _query_surreal(f"SELECT forgotten FROM {entity_id};")
+            verify_items = _extract_result(verify_result, 1)
+            if not verify_items or not verify_items[0].get("forgotten"):
+                return {
+                    "status": "error",
+                    "message": f"Failed to forget entity {entity}: forgotten flag did not persist",
+                }
             forgotten_items.append(
                 {"id": entity_id, "type": "entity", "status": "forgotten"}
             )
@@ -1370,7 +1640,10 @@ async def memory_unforget(
 async def memory_consolidate(
     entity: Optional[str] = None, scope: str = "local", delete_stale: bool = False
 ) -> dict:
-    """Consolidates memory entries. When delete_stale=True, physically removes stale facts from the database."""
+    """Consolidates memory entries. When delete_stale=True, physically removes stale facts from the database.
+    Default (delete_stale=False) is report-only: stale facts are listed in
+    stale_facts_sample but kept, duplicate active facts are auto-invalidated.
+    Pass delete_stale=True to hard-delete expired facts."""
 
     # Step 1: Find stale facts (valid_until in der Vergangenheit)
     time_clause = "valid_until != NONE AND valid_until < time::now()"
@@ -1528,13 +1801,53 @@ async def memory_find_duplicates(
 ) -> dict:
     """Finds likely duplicate entities (incl. cross-lingual, e.g. Deutschland/Germany).
 
-    Compares stored entity embeddings pairwise (cosine) and returns candidate
-    pairs above threshold. READ-ONLY and fail-closed: nothing is merged here.
-    Pass a pair to memory_merge_entities (dry_run first) to act on it.
+    Two-stage: embedding cosine is the recall gate (pairs above threshold),
+    then a lexical precision gate assigns tiers. Pure cosine cannot separate
+    true duplicates from same-type neighbours (measured with
+    Qwen3-Embedding-0.6B: Hamburg/Munich 0.926 > Sieveon/Sieveon Labs 0.861),
+    so embedding-only pairs are NOT reported anymore.
+    Tiers: "strong" (lexically grounded, merge candidate after dry_run
+    review), "review" (ambiguous, e.g. single-contrast tokens like
+    Alpha/Beta — needs a human). Cross-lingual synonyms without lexical
+    overlap are intentionally dropped: cosine cannot tell them apart from
+    related-but-distinct entities. READ-ONLY and fail-closed: nothing is
+    merged here. Pass a pair to memory_merge_entities (dry_run first).
     same_type_only=True (default) requires equal entity types, which removes
     most false positives; cross-lingual synonyms usually share their type.
     """
     import math
+
+    def _lex_norm(n: str) -> str:
+        return re.sub(r"\s+", " ", (n or "").lower().strip())
+
+    def _lexical_tier(na: str, nb: str) -> tuple[str, float, str] | tuple[None, float, str]:
+        """Returns (tier, token_overlap, detail). tier is None when rejected."""
+        if not na or not nb:
+            return None, 0.0, "empty_or_identical"
+        if na == nb:
+            return "strong", 1.0, "normalized_equal"
+        ta, tb = set(na.split()), set(nb.split())
+        overlap = len(ta & tb) / max(len(ta | tb), 1)
+        if na in nb or nb in na:
+            if abs(len(na) - len(nb)) > 20:
+                return None, overlap, "substring_length_mismatch"
+            # A raw substring without a shared token ("prodtest" in
+            # "prodtest_unicorn_2026") is related, not identical: the
+            # underscore-joined suffix carries meaning. Strong requires a
+            # shared word token ("sieveon" in "sieveon labs").
+            if overlap > 0:
+                return "strong", overlap, "substring"
+            return "review", overlap, "substring_no_token_overlap"
+        only_a, only_b = ta - tb, tb - ta
+        if len(only_a) == 1 and len(only_b) == 1 and len(ta & tb) >= 1:
+            # Same shape, one contrasting token (Alpha/Beta, 2025/2026):
+            # genuinely ambiguous, never auto-merge.
+            return "review", overlap, "single_contrast_token"
+        if overlap >= 0.5:
+            return "strong", overlap, "token_overlap"
+        if overlap >= 0.34:
+            return "review", overlap, "token_overlap_weak"
+        return None, overlap, "no_lexical_grounding"
 
     try:
         limit = max(2, min(int(limit), 1000))
@@ -1569,13 +1882,27 @@ async def memory_find_duplicates(
                 continue
             nb = math.sqrt(sum(v * v for v in eb)) or 1.0
             sim = sum(x * y for x, y in zip(ea, eb)) / (na * nb)
-            if sim >= threshold:
-                pairs.append({
-                    "a": {"id": a.get("id"), "name": a.get("name"), "type": a.get("type")},
-                    "b": {"id": b.get("id"), "name": b.get("name"), "type": b.get("type")},
-                    "similarity": round(sim, 4),
-                })
-    pairs.sort(key=lambda p: p["similarity"], reverse=True)
+            if sim < threshold:
+                continue
+            # Precision gate: embedding is recall only. Without lexical
+            # grounding (substring / token overlap) the pair is dropped —
+            # same-type neighbours (cities, person names) score HIGHER than
+            # real duplicates, so cosine alone is not evidence of identity.
+            tier, overlap, detail = _lexical_tier(
+                _lex_norm(a.get("name", "")), _lex_norm(b.get("name", ""))
+            )
+            if tier is None:
+                continue
+            pairs.append({
+                "a": {"id": a.get("id"), "name": a.get("name"), "type": a.get("type")},
+                "b": {"id": b.get("id"), "name": b.get("name"), "type": b.get("type")},
+                "similarity": round(sim, 4),
+                "tier": tier,
+                "method": detail,
+                "token_overlap": round(overlap, 3),
+            })
+    # Strong candidates first, then review-tier, each by embedding similarity.
+    pairs.sort(key=lambda p: (0 if p["tier"] == "strong" else 1, -p["similarity"]))
     return {
         "status": "ok",
         "scanned": len(entities),
@@ -1583,7 +1910,9 @@ async def memory_find_duplicates(
         "same_type_only": same_type_only,
         "pairs": pairs[:max_pairs],
         "pair_count": len(pairs),
-        "note": "Candidates only -- nothing merged. Use memory_merge_entities(dry_run=True) to preview a merge.",
+        "strong_count": sum(1 for p in pairs if p["tier"] == "strong"),
+        "review_count": sum(1 for p in pairs if p["tier"] == "review"),
+        "note": "Candidates only -- nothing merged. 'strong' pairs are merge candidates (verify with memory_merge_entities dry_run first); 'review' pairs need a human. Use memory_merge_entities(dry_run=True) to preview a merge.",
     }
 
 
@@ -1819,10 +2148,10 @@ async def graph_traverse(
     seen_edge_keys: set = set()
 
     queue: deque = deque()
-    queue.append((start["id"], start["name"], 0, []))
+    queue.append((start["id"], start["name"], 0, [], None))
 
     while queue:
-        eid, ename, depth, path = queue.popleft()
+        eid, ename, depth, path, parent_id = queue.popleft()
 
         if depth >= max_depth:
             continue
@@ -1867,6 +2196,13 @@ async def graph_traverse(
             if not neighbor_id or not neighbor_name:
                 continue
 
+            # Skip the immediate back-edge to the parent: with direction=both
+            # the hop query from B re-finds the same fact row that led A->B,
+            # emitting a redundant B->A edge and an A->B->A walk at depth 2.
+            # Genuine longer cycles (A->B->C->A) are unaffected.
+            if neighbor_id == parent_id:
+                continue
+
             if neighbor_id not in all_nodes:
                 all_nodes[neighbor_id] = {
                     "id": neighbor_id, "name": neighbor_name, "type": neighbor_type or "",
@@ -1891,7 +2227,7 @@ async def graph_traverse(
 
             if neighbor_id not in visited and (depth + 1) < max_depth:
                 visited.add(neighbor_id)
-                queue.append((neighbor_id, neighbor_name, depth + 1, new_path))
+                queue.append((neighbor_id, neighbor_name, depth + 1, new_path, eid))
 
     seen = set()
     unique_paths = []

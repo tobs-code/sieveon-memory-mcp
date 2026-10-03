@@ -139,6 +139,7 @@ async def memory_store_markdown_endpoint(request_data: dict):
         parse_front_matter=request_data.get("parse_front_matter", True),
         max_concurrent=request_data.get("max_concurrent", 3),
         metadata=request_data.get("metadata"),
+        trust=request_data.get("trust"),
     )
 
 
@@ -231,7 +232,8 @@ async def memory_forget_endpoint(request_data: dict):
     return await memory_forget(
         entity=request_data.get("entity"),
         event_id=request_data.get("event_id"),
-        reason=request_data.get("reason", "")
+        reason=request_data.get("reason", ""),
+        hard=request_data.get("hard", False),
     )
 
 
