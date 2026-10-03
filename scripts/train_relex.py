@@ -24,7 +24,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CONTRACT = json.loads((ROOT / "docs" / "eval_relex_training_contract_v1_2.json").read_text())
+CONTRACT = json.loads((ROOT / "docs" / "eval_relex_training_contract_v1_3.json").read_text())
 
 LABELS = tuple(CONTRACT["labels"])
 FORBIDDEN = tuple(CONTRACT["forbidden_model_features"])
@@ -159,6 +159,17 @@ def run_training(rows: list[dict], digest: str, args) -> int:
     seed = CONTRACT["reproducibility"]["seed"]
     print(f"  loading base {base}")
     model = GLiNER.from_pretrained(base)
+    pattern = REGIME.get("trainable_name_pattern")
+    if pattern:
+        frozen, kept = 0, 0
+        for name, param in model.named_parameters():
+            if pattern in name:
+                param.requires_grad = True
+                kept += 1
+            else:
+                param.requires_grad = False
+                frozen += 1
+        print(f"  head-only: {kept} trainable / {frozen} frozen (pattern {pattern!r})")
     tokenizer = getattr(model, "tokenizer", None)
     if tokenizer is None:
         from transformers import AutoTokenizer
@@ -253,6 +264,7 @@ def run_training(rows: list[dict], digest: str, args) -> int:
         "training_examples": len(rows),
         "epochs": args.epochs,
         "checkpoint_digest": ckpt_digest,
+        "trainable_name_pattern": REGIME.get("trainable_name_pattern"),
     }
     (out / "training_manifest.json").write_text(
         json.dumps(manifest, indent=2), encoding="utf-8")

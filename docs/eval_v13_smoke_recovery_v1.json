@@ -1,0 +1,7 @@
+{"config": "v1.3 head-only (4 trainable pair_rep_layer params / 230 frozen), LRs unchanged, seed 42, 5 epochs, production inventory, inclusive spans",
+  "gate3_entity_recovery": "0/4 operating; 2/4 lens (person/person pairs, no collapse)",
+  "gate4_provides_signal": "absent operating and raw; loss flat ~105-127, grad norms tiny",
+  "gate5_regression_v12": "no collapse vs v1.2 (same 2/4 lens pattern); nothing learned either",
+  "result": "head-only insufficient per pre-registered tree",
+  "train": "4 fresh SVO sentences, disjoint from all frozen sets",
+  "version": "v13_smoke_recovery_v1"}
