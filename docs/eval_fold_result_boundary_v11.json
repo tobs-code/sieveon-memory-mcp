@@ -1,0 +1,79 @@
+{
+  "protocol": {
+    "protocol_version": "eval_phase_a_heldout_protocol_v1.1"
+  },
+  "fold": {
+    "fold_id": "boundary_epistemic-to-np2",
+    "held_out_family": "nominal_possessive:desiderative_embedding",
+    "split_unit": "construction_family_id + pair_id"
+  },
+  "data": {
+    "train_digest": "067b8fecb8d0045e96423a5f0a808d585d562c42de404054be0cb74d87025915",
+    "train_count": 8,
+    "test_digest": "test=NP-2--01/02/03 (6 sentences, pilot excluded)",
+    "test_count": 6
+  },
+  "model": {
+    "base_model": "knowledgator/gliner-relex-multi-v1.0",
+    "checkpoint_digest": "3196eb20758ef0d4",
+    "seed": 42,
+    "label_map": [
+      "provides",
+      "no_relation"
+    ],
+    "epochs": 5,
+    "training_contract": "relex_training_contract_v1.1"
+  },
+  "predictions": {
+    "prediction_digest": "8a3432f3c67a19c3967912f05dbe1847d4e4fc8326828f0925088309ac603da6",
+    "prediction_count": 6,
+    "per_pair": [
+      {
+        "pair_id": "NP-2--01",
+        "clean_score": 0.0,
+        "hard_score": 0.0,
+        "consistent": false,
+        "n_pred_clean": 0,
+        "n_pred_hard": 0
+      },
+      {
+        "pair_id": "NP-2--02",
+        "clean_score": 0.0,
+        "hard_score": 0.0,
+        "consistent": false,
+        "n_pred_clean": 0,
+        "n_pred_hard": 0
+      },
+      {
+        "pair_id": "NP-2--03",
+        "clean_score": 0.0,
+        "hard_score": 0.06065394729375839,
+        "consistent": false,
+        "n_pred_clean": 11,
+        "n_pred_hard": 11
+      }
+    ]
+  },
+  "metrics": {
+    "pair_consistency": "0/3 at operating thresholds",
+    "clean_vs_hard_discrimination": "unmeasurable: entity recovery 0/8 on train",
+    "relation_precision": null,
+    "relation_recall": null,
+    "relation_f1": null,
+    "low_threshold_note": "0.05 lens: train still 0/8; single provides blip 0.06 on a hard (wrong direction)"
+  },
+  "boundary": {
+    "reference_family": "nominal_possessive:epistemic",
+    "test_set": "NP-2--01/02/03",
+    "collapse_indicator": null
+  },
+  "cue": {
+    "hard_cue": "hoped for / wished for",
+    "cue_disjoint_from_train": true
+  },
+  "decision": {
+    "status": "inconclusive",
+    "rule_id": "boundary-inconclusive-no-train-recovery",
+    "notes": "Step-1 gate failed: 0/8 entity recovery on train at operating thresholds and at 0.05 lens. Possessive-nominal copular sentences segment worse than smoke SVO; loss plateaued ~50. Test uninterpretable by pre-registered order. No tuning performed."
+  }
+}
