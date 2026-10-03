@@ -1,0 +1,116 @@
+{"key": "expansion|AA-1--00|clean", "n_candidates": 1, "triples": [{"subject": "Maria", "relation": "provides", "object": "Tim", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "expansion|AA-1--00|hard", "n_candidates": 1, "triples": [{"subject": "Tim", "relation": "provides", "object": "Maria", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "expansion|AA-1--01|clean", "n_candidates": 1, "triples": []}
+{"key": "expansion|AA-1--01|hard", "n_candidates": 1, "triples": []}
+{"key": "expansion|AA-1--02|clean", "n_candidates": 0, "triples": []}
+{"key": "expansion|AA-1--02|hard", "n_candidates": 0, "triples": []}
+{"key": "expansion|AA-1--03|clean", "n_candidates": 1, "triples": [{"subject": "The meetup", "relation": "provides", "object": "Tom", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "expansion|AA-1--03|hard", "n_candidates": 1, "triples": []}
+{"key": "expansion|AP-1--00|clean", "n_candidates": 1, "triples": [{"subject": "The organizer", "relation": "provides", "object": "the venue", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "expansion|AP-1--00|hard", "n_candidates": 0, "triples": []}
+{"key": "expansion|AP-1--01|clean", "n_candidates": 1, "triples": [{"subject": "Maria", "relation": "provides", "object": "the nonprofit", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "expansion|AP-1--01|hard", "n_candidates": 0, "triples": []}
+{"key": "expansion|AP-1--02|clean", "n_candidates": 1, "triples": [{"subject": "The team", "relation": "provides", "object": "the app", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "expansion|AP-1--02|hard", "n_candidates": 0, "triples": []}
+{"key": "expansion|AP-1--03|clean", "n_candidates": 1, "triples": [{"subject": "The meetup", "relation": "provides", "object": "Tom", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "expansion|AP-1--03|hard", "n_candidates": 0, "triples": []}
+{"key": "expansion|IN-1--00|clean", "n_candidates": 1, "triples": [{"subject": "The coach", "relation": "provides", "object": "the club", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "expansion|IN-1--00|hard", "n_candidates": 1, "triples": []}
+{"key": "expansion|IN-1--01|clean", "n_candidates": 1, "triples": [{"subject": "Maria", "relation": "provides", "object": "the nonprofit", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "expansion|IN-1--01|hard", "n_candidates": 1, "triples": []}
+{"key": "expansion|IN-1--02|clean", "n_candidates": 1, "triples": [{"subject": "The organizer", "relation": "provides", "object": "the venue", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "expansion|IN-1--02|hard", "n_candidates": 1, "triples": []}
+{"key": "expansion|IN-1--03|clean", "n_candidates": 1, "triples": [{"subject": "The team", "relation": "provides", "object": "the app", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "expansion|IN-1--03|hard", "n_candidates": 1, "triples": []}
+{"key": "expansion|AE-1--v2|clean", "n_candidates": 1, "triples": [{"subject": "The coach", "relation": "provides", "object": "the club", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "expansion|AE-1--v2|hard", "n_candidates": 1, "triples": [{"subject": "The coach", "relation": "provides", "object": "the crowd", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "expansion|AE-1--01|clean", "n_candidates": 1, "triples": [{"subject": "Maria", "relation": "provides", "object": "the nonprofit", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "expansion|AE-1--01|hard", "n_candidates": 1, "triples": [{"subject": "Maria", "relation": "provides", "object": "the donors", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "expansion|AE-1--02|clean", "n_candidates": 1, "triples": [{"subject": "The meetup", "relation": "provides", "object": "Tom", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "expansion|AE-1--02|hard", "n_candidates": 1, "triples": []}
+{"key": "expansion|AE-1--03|clean", "n_candidates": 1, "triples": [{"subject": "The team", "relation": "provides", "object": "the app", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "expansion|AE-1--03|hard", "n_candidates": 1, "triples": [{"subject": "The team", "relation": "provides", "object": "the users", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "expansion|AP-2--00|clean", "n_candidates": 1, "triples": [{"subject": "The team", "relation": "provides", "object": "the app", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "expansion|AP-2--00|hard", "n_candidates": 1, "triples": []}
+{"key": "expansion|AP-2--01|clean", "n_candidates": 1, "triples": [{"subject": "Maria", "relation": "provides", "object": "Tim", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "expansion|AP-2--01|hard", "n_candidates": 1, "triples": []}
+{"key": "expansion|AP-2--02|clean", "n_candidates": 1, "triples": [{"subject": "The coach", "relation": "provides", "object": "the club", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "expansion|AP-2--02|hard", "n_candidates": 1, "triples": []}
+{"key": "expansion|AP-2--03|clean", "n_candidates": 1, "triples": [{"subject": "The organizer", "relation": "provides", "object": "the venue", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "expansion|AP-2--03|hard", "n_candidates": 1, "triples": []}
+{"key": "expansion|NP-2--00|clean", "n_candidates": 1, "triples": [{"subject": "Maria", "relation": "provides", "object": "the nonprofit", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "expansion|NP-2--00|hard", "n_candidates": 1, "triples": []}
+{"key": "expansion|NP-2--01|clean", "n_candidates": 1, "triples": [{"subject": "The coach", "relation": "provides", "object": "the club", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "expansion|NP-2--01|hard", "n_candidates": 1, "triples": []}
+{"key": "expansion|NP-2--02|clean", "n_candidates": 1, "triples": [{"subject": "The project", "relation": "provides", "object": "the sponsor", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "expansion|NP-2--02|hard", "n_candidates": 1, "triples": []}
+{"key": "expansion|NP-2--03|clean", "n_candidates": 1, "triples": [{"subject": "Maria", "relation": "provides", "object": "Tim", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "expansion|NP-2--03|hard", "n_candidates": 1, "triples": []}
+{"key": "epistemic|nominal_possessive:epistemic--00|clean", "n_candidates": 1, "triples": [{"subject": "Maria", "relation": "provides", "object": "the nonprofit", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "epistemic|nominal_possessive:epistemic--00|hard", "n_candidates": 1, "triples": []}
+{"key": "epistemic|nominal_possessive:epistemic--01|clean", "n_candidates": 1, "triples": [{"subject": "the organizer", "relation": "provides", "object": "the venue", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "epistemic|nominal_possessive:epistemic--01|hard", "n_candidates": 1, "triples": []}
+{"key": "epistemic|nominal_possessive:epistemic--02|clean", "n_candidates": 0, "triples": []}
+{"key": "epistemic|nominal_possessive:epistemic--02|hard", "n_candidates": 1, "triples": []}
+{"key": "epistemic|nominal_possessive:epistemic--03|clean", "n_candidates": 1, "triples": [{"subject": "the meetup", "relation": "provides", "object": "Tom", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "epistemic|nominal_possessive:epistemic--03|hard", "n_candidates": 1, "triples": []}
+{"key": "blind|conv-26/session_10_observation/Caroline/D10:7", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-26/session_14_observation/Caroline/D14:7", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-26/session_18_observation/Caroline/D18:22", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-26/session_3_observation/Melanie/D3:20", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-26/session_8_observation/Melanie/D8:16", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-30/session_13_observation/Jon/D13:3", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-30/session_17_observation/Jon/D17:8", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-30/session_3_observation/Gina/D3:8", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-30/session_8_observation/Jon/D8:13", "n_candidates": 1, "triples": []}
+{"key": "blind|conv-41/session_12_observation/Maria/D12:18", "n_candidates": 1, "triples": [{"subject": "Maria", "relation": "provides", "object": "homeless shelter", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "blind|conv-41/session_16_observation/John/D16:7", "n_candidates": 1, "triples": []}
+{"key": "blind|conv-41/session_1_observation/John/D1:14", "n_candidates": 2, "triples": []}
+{"key": "blind|conv-41/session_23_observation/Maria/D23:14", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-41/session_28_observation/Maria/D28:10", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-41/session_31_observation/Maria/D31:4", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-41/session_6_observation/John/D6:12", "n_candidates": 1, "triples": [{"subject": "John", "relation": "provides", "object": "the community", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "blind|conv-41/session_9_observation/Maria/D9:9", "n_candidates": 1, "triples": []}
+{"key": "blind|conv-42/session_13_observation/Nate/D13:9", "n_candidates": 1, "triples": []}
+{"key": "blind|conv-42/session_19_observation/Nate/D19:1", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-42/session_22_observation/Nate/D22:18", "n_candidates": 1, "triples": []}
+{"key": "blind|conv-42/session_26_observation/Nate/D26:12", "n_candidates": 1, "triples": [{"subject": "Nate", "relation": "provides", "object": "friends", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "blind|conv-42/session_2_observation/Nate/D2:18", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-42/session_8_observation/Joanna/D8:18", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-43/session_13_observation/John/D13:6", "n_candidates": 1, "triples": [{"subject": "they", "relation": "provides", "object": "each other", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "blind|conv-43/session_18_observation/John/D18:6", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-43/session_22_observation/John/D22:4", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-43/session_26_observation/John/D26:1", "n_candidates": 1, "triples": []}
+{"key": "blind|conv-43/session_2_observation/John/D2:2", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-43/session_7_observation/Tim/D7:4", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-44/session_12_observation/Andrew/D12:13", "n_candidates": 1, "triples": []}
+{"key": "blind|conv-44/session_17_observation/Andrew/D17:5", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-44/session_20_observation/Audrey/D20:28", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-44/session_26_observation/Andrew/D26:10", "n_candidates": 1, "triples": []}
+{"key": "blind|conv-44/session_2_observation/Audrey/D2:5", "n_candidates": 1, "triples": []}
+{"key": "blind|conv-44/session_6_observation/Andrew/D6:1", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-47/session_11_observation/James/D11:14", "n_candidates": 1, "triples": [{"subject": "James", "relation": "provides", "object": "John", "candidate_source": "nuextract3", "validator": "stepfun", "assertion": "supported"}]}
+{"key": "blind|conv-47/session_15_observation/James/D15:15", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-47/session_19_observation/John/D19:5", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-47/session_24_observation/James/D24:2", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-47/session_28_observation/James/D28:3", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-47/session_3_observation/James/D3:18", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-47/session_8_observation/James/D8:23", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-48/session_12_observation/Deborah/D12:3", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-48/session_15_observation/Jolene/D15:8", "n_candidates": 1, "triples": []}
+{"key": "blind|conv-48/session_1_observation/Jolene/D1:8", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-48/session_25_observation/Jolene/D25:3", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-48/session_29_observation/Deborah/D29:9", "n_candidates": 1, "triples": []}
+{"key": "blind|conv-48/session_4_observation/Jolene/D4:33", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-48/session_8_observation/Jolene/D8:8", "n_candidates": 1, "triples": []}
+{"key": "blind|conv-49/session_13_observation/Evan/D13:9", "n_candidates": 1, "triples": []}
+{"key": "blind|conv-49/session_17_observation/Evan/D17:2", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-49/session_21_observation/Evan/D21:6", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-49/session_25_observation/Evan/D25:16", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-49/session_6_observation/Evan/D6:1", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-50/session_10_observation/Dave/D10:1", "n_candidates": 1, "triples": []}
+{"key": "blind|conv-50/session_15_observation/Dave/D15:13", "n_candidates": 1, "triples": []}
+{"key": "blind|conv-50/session_20_observation/Dave/D20:1", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-50/session_24_observation/Calvin/D24:21", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-50/session_28_observation/Calvin/D28:7", "n_candidates": 0, "triples": []}
+{"key": "blind|conv-50/session_4_observation/Calvin/D4:2", "n_candidates": 1, "triples": []}
