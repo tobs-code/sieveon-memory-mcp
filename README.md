@@ -364,6 +364,34 @@ A memory server that returns stored text into LLM context is a
   surfaces in `memory_explain_routing`/diagnostics only; no retrieval strategy
   ranks on it.
 
+## provides Extraction Program (Tracks A/B)
+
+Separate from the MCP extraction chain above, a dedicated program builds
+reliable `(X, provides, Y)` graph edges. Status: Track B v1.2.1 is the
+frozen production baseline; Track A is archived research.
+
+- **Track A (frozen):** controlled provides training data
+  (`docs/eval_phase_a_manifest.json`, `controlled_seed_expanded_v2`),
+  counterfactual schema tests, pre-registered held-out protocol
+  (`docs/eval_phase_a_heldout_protocol_v1*.json`). GLiNER relation-learning
+  experiments ended inconclusive at the entity stage; records kept, no
+  further runs.
+- **Track B (production v1.2.1):** NuExtract3 candidate extraction +
+  stepfun assertion validation → pair-scoped acceptance → normalization /
+  entity linking (ACCEPT/ABSTAIN) → SurrealDB materialization into
+  `trackb_entity` / `trackb_provides` / `trackb_evidence` (NS/DB `strata`).
+  Current state: 16 edges, 34 evidence records, 1 real ABSTAIN.
+- **Baseline manifest:** `docs/trackb_baseline_v121.json` (graph digest).
+- **Regression:** `python scripts/trackb_regression.py` — 8/8 GREEN required
+  before any new run (edges, evidence, direction pair, blind-FP provenance,
+  linker ABSTAIN, controlled FNs, import idempotency).
+- **Scope freeze:** benefit/effect relations are explicitly out of `provides`
+  scope (`docs/scope_taxonomy_freeze_v1.json`); new relations ship as
+  separate tracks, never as silent `provides` extensions.
+- **Production corpus:** `docs/production_corpus_v1.json` (150 sentences,
+  digest-pinned) with annotated error matrix
+  (`docs/production_error_matrix_v1.json`).
+
 ## License
 
 This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
