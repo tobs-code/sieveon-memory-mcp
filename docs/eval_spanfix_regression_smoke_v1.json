@@ -1,0 +1,6 @@
+{"config": "v1.1 unchanged (full encoder, seed 42, 5 epochs, production inventory, inclusive spans fixed)",
+  "loss": "103->~40 plateau",
+  "result": "0/4 entity recovery on own training data at operating thresholds",
+  "train": "4 fresh SVO sentences, all provides/no_relation mixed, disjoint from all frozen sets",
+  "verdict": "span bug was not the sole blocker; full-encoder few-shot hypothesis experimentally supported",
+  "version": "spanfix_regression_smoke_v1"}
