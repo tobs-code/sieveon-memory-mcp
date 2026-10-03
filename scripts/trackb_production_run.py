@@ -1,0 +1,80 @@
+"""Production corpus v1 run: frozen v1.2.1 pipeline, full provenance, no changes."""
+
+import json
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from trackb_two_stage import nu_candidates, validate
+from trackb_production import normalize, link
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def main() -> int:
+    corpus = json.loads((ROOT / "docs" / "production_corpus_v1.json").read_text())
+    rec_path = ROOT / "docs" / "production_run_v1.jsonl"
+    done = set()
+    if rec_path.exists():
+        for line in rec_path.read_text().splitlines():
+            if line.strip():
+                done.add(json.loads(line)["sentence_id"])
+    fh = open(rec_path, "a", encoding="utf-8")
+    cache_path = ROOT / "docs" / "production_cands_v1.jsonl"
+    cached = {}
+    if cache_path.exists():
+        for line in cache_path.read_text().splitlines():
+            if line.strip():
+                r = json.loads(line)
+                cached[r["sentence_id"]] = r["candidates"]
+    cands_by_id = {}
+    with open(cache_path, "a", encoding="utf-8") as ch:
+        for s in corpus["sentences"]:
+            if s["sentence_id"] not in cached:
+                c = nu_candidates(s["text"])
+                ch.write(json.dumps({"sentence_id": s["sentence_id"],
+                                     "candidates": c}) + "\n")
+                ch.flush()
+                cached[s["sentence_id"]] = c
+            cands_by_id[s["sentence_id"]] = cached[s["sentence_id"]]
+    norms = set()
+    for cl in cands_by_id.values():
+        for x, y in cl:
+            norms.add(normalize(x))
+            norms.add(normalize(y))
+    n_new = 0
+    for s in corpus["sentences"]:
+        if s["sentence_id"] in done:
+            continue
+        cands = cands_by_id[s["sentence_id"]]
+        for x, y in cands:
+            sup, _ = validate(s["text"], x, y)
+            sl, ol = link(x, norms), link(y, norms)
+            final = "ACCEPT" if (sup and sl["status"] == "resolved"
+                                 and ol["status"] == "resolved") else \
+                "ABSTAIN" if sup else "REJECT"
+            fh.write(json.dumps({
+                "document_id": s["document_id"], "sentence_id": s["sentence_id"],
+                "text": s["text"], "subject_mention": x, "object_mention": y,
+                "candidate_status": "candidate", "assertion_status": "supported" if sup else "not_supported",
+                "link_status": f"{sl['status']}/{ol['status']}", "final_status": final,
+                "canonical_subject": sl.get("entity_id"), "canonical_object": ol.get("entity_id"),
+                "pipeline_version": "trackb_two_stage_v1", "evidence": s["sentence_id"],
+            }, ensure_ascii=False) + "\n")
+            fh.flush()
+        if not cands:
+            fh.write(json.dumps({"document_id": s["document_id"], "sentence_id": s["sentence_id"],
+                                 "text": s["text"], "candidate_status": "no_candidate",
+                                 "final_status": "REJECT",
+                                 "pipeline_version": "trackb_two_stage_v1"},
+                                ensure_ascii=False) + "\n")
+            fh.flush()
+        n_new += 1
+        print(s["sentence_id"], "cands:", len(cands), flush=True)
+    print("new sentences processed:", n_new)
+    fh.close()
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
