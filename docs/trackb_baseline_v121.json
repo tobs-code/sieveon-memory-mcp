@@ -1,0 +1,11 @@
+{
+  "version": "v1.2.1-operational",
+  "graph_digest": "540183ca3683968108d185510104b0a8fce1a65b7b5d42d804891dac4e29b314",
+  "edges": 16,
+  "evidence": 34,
+  "extraction": "trackb_two_stage_v1",
+  "linking": "v1.2",
+  "import_commit": "f514d19",
+  "abstains": 1,
+  "fails": []
+}
