@@ -1,0 +1,7 @@
+{"abstain_semantics": "text relation may be correct; graph identity not safe for import",
+  "accept_rule": "assertion = supported AND subject = resolved AND object = resolved; else ABSTAIN",
+  "forbidden": ["implicit entity resolution", "best-match fallback under ambiguity", "edges on unresolved subject/object"],
+  "production_regression_pack": ["maria->tim vs tim->maria (direction)", "john->community (false-positive provenance)", "AA-1--01/02, epistemic--02 (controlled misses)"],
+  "required": ["original evidence always preserved", "text-level extraction stored separately from canonical edges"],
+  "status": "frozen",
+  "version": "acceptance_gate_v1"}

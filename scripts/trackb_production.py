@@ -16,6 +16,7 @@ STOP = {"the", "a", "an"}
 def normalize(mention: str) -> str:
     s = mention.strip().lower()
     s = re.sub(r"^(the|a|an)\s+", "", s)
+    s = re.sub(r"['\u2019]s$", "", s)
     s = re.sub(r"[^\w\s]", "", s)
     return re.sub(r"\s+", " ", s).strip()
 
