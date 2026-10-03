@@ -1,0 +1,8 @@
+{
+  "version": "relations_breadth_population_v1",
+  "provides": 12,
+  "no_relation": 12,
+  "prior_provides": 4,
+  "new_provides": 8,
+  "note": "training-side breadth population only; no fold or test data"
+}

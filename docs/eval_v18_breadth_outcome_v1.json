@@ -1,0 +1,7 @@
+{"config": "v1.6 regime (differential LR, loss coefs 1.0, seed 42, 5 epochs, production inventory, inclusive spans); single factor vs prior smokes: relations breadth",
+  "gate3_entity_recovery": "0/12 operating; 2/12 lens, both prior person/person pairs",
+  "gate4_provides_signal": "max provides 0.0 everywhere incl lens; pairs align with created/leads priors instead",
+  "prior_vs_new": "only the 2 previously-seen person/person patterns show pair alignment; all 8 new breadth examples silent even at lens",
+  "result": "relations breadth alone insufficient per pre-registered tree; no fold",
+  "train": "12 provides (4 prior + 8 new) + 12 no_relation, digest 3854f8b8",
+  "version": "v18_breadth_outcome_v1"}
