@@ -105,9 +105,17 @@ def _words_with_offsets(sentence: str) -> list[tuple[str, int, int]]:
 
 
 def _word_index(words: list[tuple[str, int, int]], start: int, end: int) -> tuple[int, int]:
+    """Char span -> INCLUSIVE word span.
+
+    The gliner processor indexes entity spans inclusively on both ends
+    (token labels mark st:ed+1, span mapping drops end >= num_tokens),
+    so the exclusive char end converts to last-word index, not one past it.
+    Getting this wrong silently drops sentence-final entities and their
+    relations.
+    """
     lo = next(i for i, (_, ws, we) in enumerate(words) if ws <= start < we)
     hi = next(i for i, (_, ws, we) in enumerate(words) if ws < end <= we)
-    return lo, hi + 1
+    return lo, hi
 
 
 def to_gliner_sample(ex: dict) -> dict:

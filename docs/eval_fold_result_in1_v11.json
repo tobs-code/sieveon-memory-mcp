@@ -1,0 +1,72 @@
+{
+  "protocol": {
+    "protocol_version": "eval_phase_a_heldout_protocol_v1.1"
+  },
+  "fold": {
+    "fold_id": "in1",
+    "held_out_family": "intentional:conditional_hypothetical",
+    "split_unit": "construction_family_id + pair_id"
+  },
+  "data": {
+    "train_digest": "b11acb27c3690003c22c22c0a9309024c8f0cde714e6919d5a8ad0c64c60a9e0",
+    "train_count": 48,
+    "test_digest": "040a57c829b2be23",
+    "test_count": 8
+  },
+  "model": {
+    "base_model": "knowledgator/gliner-relex-multi-v1.0",
+    "checkpoint_digest": "07cd6496d9f2713ebb7a331f0dfba8973237064dbe1b349a98307da0b5033c54",
+    "seed": 42,
+    "label_map": [
+      "provides",
+      "no_relation"
+    ],
+    "epochs": 5,
+    "training_contract": "relex_training_contract_v1.1"
+  },
+  "predictions": {
+    "per_pair": [
+      {
+        "pair_id": "IN-1--00",
+        "clean_score": 0.0,
+        "hard_score": 0.0,
+        "consistent": false,
+        "n_pred_clean": 0,
+        "n_pred_hard": 0
+      },
+      {
+        "pair_id": "IN-1--01",
+        "clean_score": 0.0,
+        "hard_score": 0.0,
+        "consistent": false,
+        "n_pred_clean": 0,
+        "n_pred_hard": 0
+      },
+      {
+        "pair_id": "IN-1--02",
+        "clean_score": 0.0,
+        "hard_score": 0.0,
+        "consistent": false,
+        "n_pred_clean": 0,
+        "n_pred_hard": 0
+      },
+      {
+        "pair_id": "IN-1--03",
+        "clean_score": 0.0,
+        "hard_score": 0.0,
+        "consistent": false,
+        "n_pred_clean": 0,
+        "n_pred_hard": 0
+      }
+    ]
+  },
+  "metrics": {
+    "train_recovery": "0/48",
+    "pair_consistency": "0/4"
+  },
+  "decision": {
+    "status": "inconclusive",
+    "rule_id": "gate1-recovery-then-consistency",
+    "notes": "entity recovery failed on train; test uninterpretable"
+  }
+}

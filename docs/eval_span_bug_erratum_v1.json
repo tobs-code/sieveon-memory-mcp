@@ -1,0 +1,6 @@
+{"affects": "all training runs before the inclusive-span fix (smoke v1.0, boundary 897bcad/5a61b63/5b6e6d0, recovery v1/v2, five-fold driver run)",
+  "bug": "to_gliner_sample emitted exclusive word ends; the gliner processor indexes inclusively. Sentence-final entities were silently dropped with their relations; other spans covered one extra word.",
+  "consequence": "inconclusive verdicts stand (no boundary evidence existed either way); mechanism attributions in prior records are confounded by this bug and must not be cited without this erratum",
+  "fix": "scripts/train_relex.py _word_index returns inclusive end; verified: both spans kept, relation present",
+  "status": "disclosed_not_rewritten",
+  "version": "span_bug_erratum_v1"}
