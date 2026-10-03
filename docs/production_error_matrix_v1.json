@@ -17,8 +17,9 @@
   "recall_sample": {
     "fn_clear": 1,
     "fn_case": "prodc1-051 non-agentive subject (Running)",
-    "unclear_benefit_cluster": 4,
-    "tn": 25
+    "unclear_benefit_cluster": 0,
+    "tn": 29,
+    "benefit_scope_excluded_TN": 4
   },
   "haeufung": {
     "systematic_class_ge2": [
@@ -31,6 +32,8 @@
       "non-agentive-subject-recall"
     ],
     "linking": "no errors; abstains correct",
-    "v13": "not warranted; only open question is benefit-scope definition"
-  }
+    "v13": "not warranted"
+  },
+  "benefit_scope_decision": "(b): benefit/effect excluded from provides (scope definition, not a linguistic claim)",
+  "status": "closed_benefit_excluded"
 }

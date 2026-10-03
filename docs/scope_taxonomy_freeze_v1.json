@@ -1,0 +1,9 @@
+{"abstain": "own class, never merged into FN/reject",
+  "benefit_effect": "EXCLUDED from provides (scope definition v1); kept as regression set benefit_effect_excluded_from_provides for a possible future benefits/supports_wellbeing/has_positive_effect_on relation",
+  "fp_mechanisms": ["purpose-as-recipient (1, observe)", "ambient-context-as-provider (1, observe)"],
+  "fn_mechanisms": ["non-agentive subject (1, observe)"],
+  "frozen_provides_semantics": ["supports", "helps", "guides", "encourages", "mentors", "provides X", "gives Y support/courage/..."],
+  "linking": "no errors; abstains correct",
+  "status": "frozen",
+  "v13": "not warranted",
+  "version": "scope_taxonomy_freeze_v1"}
