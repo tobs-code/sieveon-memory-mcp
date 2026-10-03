@@ -1,0 +1,7 @@
+{"config": "v1.4 loss weighting only (rel 5.0, span/adj 1.0); v1.2 LRs, seed 42, 5 epochs, production inventory, inclusive spans",
+  "gate3_entity_recovery": "0/4 operating; 2/4 lens (person/person)",
+  "gate4_provides_signal": "max provides score 0.0 everywhere incl lens; no measurable learning signal vs v1.2 baseline; other predicates fire (leads 0.554 on clean)",
+  "gate5_regression_v12": "no calibration collapse; no gain either",
+  "result": "loss weighting alone insufficient per pre-registered tree",
+  "train": "4 fresh SVO sentences, disjoint from all frozen sets",
+  "version": "v14_smoke_recovery_v1"}

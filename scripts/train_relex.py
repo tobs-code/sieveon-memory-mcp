@@ -24,7 +24,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CONTRACT = json.loads((ROOT / "docs" / "eval_relex_training_contract_v1_3.json").read_text())
+CONTRACT = json.loads((ROOT / "docs" / "eval_relex_training_contract_v1_4.json").read_text())
 
 LABELS = tuple(CONTRACT["labels"])
 FORBIDDEN = tuple(CONTRACT["forbidden_model_features"])
@@ -159,6 +159,12 @@ def run_training(rows: list[dict], digest: str, args) -> int:
     seed = CONTRACT["reproducibility"]["seed"]
     print(f"  loading base {base}")
     model = GLiNER.from_pretrained(base)
+    for key in ("span_loss_coef", "adjacency_loss_coef", "relation_loss_coef"):
+        if key in REGIME:
+            setattr(model.config, key, REGIME[key])
+    print(f"  loss coefs: span={model.config.span_loss_coef} "
+          f"adj={getattr(model.config, 'adjacency_loss_coef', None)} "
+          f"rel={getattr(model.config, 'relation_loss_coef', None)}")
     pattern = REGIME.get("trainable_name_pattern")
     if pattern:
         frozen, kept = 0, 0
@@ -265,6 +271,8 @@ def run_training(rows: list[dict], digest: str, args) -> int:
         "epochs": args.epochs,
         "checkpoint_digest": ckpt_digest,
         "trainable_name_pattern": REGIME.get("trainable_name_pattern"),
+        "loss_coefs": {k: getattr(model.config, k, None) for k in
+                       ("span_loss_coef", "adjacency_loss_coef", "relation_loss_coef")},
     }
     (out / "training_manifest.json").write_text(
         json.dumps(manifest, indent=2), encoding="utf-8")
