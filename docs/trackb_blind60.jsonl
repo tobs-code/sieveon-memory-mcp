@@ -1,0 +1,60 @@
+{"id": "conv-26/session_10_observation/Caroline/D10:7", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-26/session_14_observation/Caroline/D14:7", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-26/session_18_observation/Caroline/D18:22", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-26/session_3_observation/Melanie/D3:20", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-26/session_8_observation/Melanie/D8:16", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-30/session_13_observation/Jon/D13:3", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-30/session_17_observation/Jon/D17:8", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-30/session_3_observation/Gina/D3:8", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-30/session_8_observation/Jon/D8:13", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-41/session_12_observation/Maria/D12:18", "cls": "hard_negative", "mark": "FP", "triples": [{"subject": "Maria", "relation": "provides", "object": "homeless shelter"}]}
+{"id": "conv-41/session_16_observation/John/D16:7", "cls": "hard_negative", "mark": "TN", "triples": []}
+{"id": "conv-41/session_1_observation/John/D1:14", "cls": "hard_negative", "mark": "TN", "triples": []}
+{"id": "conv-41/session_23_observation/Maria/D23:14", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-41/session_28_observation/Maria/D28:10", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-41/session_31_observation/Maria/D31:4", "cls": "ambiguous_positive", "mark": "FN", "triples": []}
+{"id": "conv-41/session_6_observation/John/D6:12", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-41/session_9_observation/Maria/D9:9", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-42/session_13_observation/Nate/D13:9", "cls": "no_signal", "mark": "FP", "triples": [{"subject": "Nate", "relation": "provides", "object": "a stuffed animal"}]}
+{"id": "conv-42/session_19_observation/Nate/D19:1", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-42/session_22_observation/Nate/D22:18", "cls": "hard_negative", "mark": "TN", "triples": []}
+{"id": "conv-42/session_26_observation/Nate/D26:12", "cls": "clean_positive", "mark": "TP", "triples": [{"subject": "Nate", "relation": "provides", "object": "friends"}]}
+{"id": "conv-42/session_2_observation/Nate/D2:18", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-42/session_8_observation/Joanna/D8:18", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-43/session_13_observation/John/D13:6", "cls": "clean_positive", "mark": "FN", "triples": []}
+{"id": "conv-43/session_18_observation/John/D18:6", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-43/session_22_observation/John/D22:4", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-43/session_26_observation/John/D26:1", "cls": "hard_negative", "mark": "FP", "triples": [{"subject": "John", "relation": "provides", "object": "people with sports and marketing"}]}
+{"id": "conv-43/session_2_observation/John/D2:2", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-43/session_7_observation/Tim/D7:4", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-44/session_12_observation/Andrew/D12:13", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-44/session_17_observation/Andrew/D17:5", "cls": "hard_negative", "mark": "TN", "triples": []}
+{"id": "conv-44/session_20_observation/Audrey/D20:28", "cls": "hard_negative", "mark": "TN", "triples": []}
+{"id": "conv-44/session_26_observation/Andrew/D26:10", "cls": "clean_positive", "mark": "FN", "triples": []}
+{"id": "conv-44/session_2_observation/Audrey/D2:5", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-44/session_6_observation/Andrew/D6:1", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-47/session_11_observation/James/D11:14", "cls": "clean_positive", "mark": "TP", "triples": [{"subject": "James", "relation": "provides", "object": "John"}]}
+{"id": "conv-47/session_15_observation/James/D15:15", "cls": "hard_negative", "mark": "TN", "triples": []}
+{"id": "conv-47/session_19_observation/John/D19:5", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-47/session_24_observation/James/D24:2", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-47/session_28_observation/James/D28:3", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-47/session_3_observation/James/D3:18", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-47/session_8_observation/James/D8:23", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-48/session_12_observation/Deborah/D12:3", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-48/session_15_observation/Jolene/D15:8", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-48/session_1_observation/Jolene/D1:8", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-48/session_25_observation/Jolene/D25:3", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-48/session_29_observation/Deborah/D29:9", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-48/session_4_observation/Jolene/D4:33", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-48/session_8_observation/Jolene/D8:8", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-49/session_13_observation/Evan/D13:9", "cls": "hard_negative", "mark": "TN", "triples": []}
+{"id": "conv-49/session_17_observation/Evan/D17:2", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-49/session_21_observation/Evan/D21:6", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-49/session_25_observation/Evan/D25:16", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-49/session_6_observation/Evan/D6:1", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-50/session_10_observation/Dave/D10:1", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-50/session_15_observation/Dave/D15:13", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-50/session_20_observation/Dave/D20:1", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-50/session_24_observation/Calvin/D24:21", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-50/session_28_observation/Calvin/D28:7", "cls": "no_signal", "mark": "TN", "triples": []}
+{"id": "conv-50/session_4_observation/Calvin/D4:2", "cls": "no_signal", "mark": "TN", "triples": []}

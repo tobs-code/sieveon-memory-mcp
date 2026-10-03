@@ -48,8 +48,14 @@ def call(sentence: str) -> str:
     req = urllib.request.Request(GATEWAY, data=body,
                                  headers={"Authorization": f"Bearer {key}",
                                           "Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=120) as r:
-        return json.loads(r.read())["choices"][0]["message"]["content"]
+    last = None
+    for _ in range(3):
+        try:
+            with urllib.request.urlopen(req, timeout=180) as r:
+                return json.loads(r.read())["choices"][0]["message"]["content"]
+        except Exception as e:
+            last = e
+    raise RuntimeError(f"llm call failed 3x: {last}")
 
 
 def main() -> int:
