@@ -1,0 +1,8 @@
+{"config": "v1.2 differential LR (encoder 1e-6, heads 5e-5), seed 42, 5 epochs, production inventory, inclusive spans",
+  "loss": "111->~61 plateau",
+  "operating_recovery": "0/4",
+  "result": "recovery gate NOT PASSED at operating thresholds",
+  "score_lens_0.05": "2/4 entity pairs found (person/person); relation head emits pretrained priors (created/discovered/leads), provides absent; tech/org silent",
+  "train": "4 fresh SVO sentences, disjoint from all frozen sets",
+  "verdict": "v1.2 preserves entity calibration (no v1.1-style collapse) but does not install provides above noise in 4 examples; relation-head strength remains open",
+  "version": "v12_smoke_recovery_v1"}

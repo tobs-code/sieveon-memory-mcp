@@ -24,11 +24,12 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CONTRACT = json.loads((ROOT / "docs" / "eval_relex_training_contract_v1_1.json").read_text())
+CONTRACT = json.loads((ROOT / "docs" / "eval_relex_training_contract_v1_2.json").read_text())
 
 LABELS = tuple(CONTRACT["labels"])
 FORBIDDEN = tuple(CONTRACT["forbidden_model_features"])
 ENTITY_INVENTORY = list(CONTRACT["entity_inventory"])
+REGIME = CONTRACT.get("training_regime", {})
 
 
 def validate_example(ex: dict, lineno: int) -> list[str]:
@@ -229,6 +230,8 @@ def run_training(rows: list[dict], digest: str, args) -> int:
         output_dir=args.out, seed=seed, do_train=True,
         num_train_epochs=args.epochs,
         per_device_train_batch_size=args.batch_size,
+        learning_rate=REGIME.get("learning_rate", 5e-5),
+        others_lr=REGIME.get("others_lr"),
         save_strategy="no", logging_steps=1, report_to="none",
         use_cpu=use_cpu, dataloader_drop_last=False,
     )
