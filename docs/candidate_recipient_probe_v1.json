@@ -1,0 +1,25 @@
+{
+  "version": "candidate_recipient_probe_v1",
+  "status": "preregistered_before_inference",
+  "date": "2026-10-04",
+  "pipeline_changes": "none",
+  "name": "recipient-realization probe (NOT a simple recipientless probe)",
+  "hypothesis": {
+    "H-R": "The generator's candidate rule structurally requires an explicit recipient argument instance; recipientless realizations therefore yield no candidate.",
+    "H0": "Candidate generation does not depend on recipient realization."
+  },
+  "conditions": {
+    "R0": "provider + recipient-object + theme (ditransitive)",
+    "R1": "provider + theme, recipient implicit (bare transitive)",
+    "R2": "provider + theme + recipient in to-PP (prepositional dative)"
+  },
+  "gold_outcome_rule": "R1 gold relation is YES (legitimate provision); R1 expected_candidate is CHECK (not pre-defined as FN). Item outcome absent/present only. SCHEMA-UNREALIZABLE vs TRUE SILENCE is an analysis-level verdict on the pattern, never an item label: R0/R2 present-with-recipient + R1 absent = schema-unrealizable pattern; R1 present = H-R dead; R0 failing too = uninterpretable as schema.",
+  "decision_rule": {
+    "R0_8_R1_8_R2_8": "H-R dead",
+    "R0_8_R1_0_R2_8": "specific realization matters (ditransitive vs bare), not mere recipient presence",
+    "R0_8_R1_0_R2_0": "explicit-recipient dependency (strong H-R)"
+  },
+  "material_shape": "8 sets x 3 conditions x YES/NO with deny = 48 sentences; recipient position is the only structural difference (R2 keeps recipient in to-PP)",
+  "primary_metrics": ["candidate_present_per_condition_YES", "false_candidate_rate_NO"],
+  "forbidden_during_probe": ["no trigger additions", "no prompt changes", "no thresholds", "no assertion changes", "no PostFilter changes", "no new linking rules"]
+}

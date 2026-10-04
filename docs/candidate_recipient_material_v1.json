@@ -1,0 +1,657 @@
+{
+ "version": "candidate_recipient_material_v1",
+ "status": "frozen_for_probe (validated; fresh triplets, zero prior overlap)",
+ "date": "2026-10-04",
+ "protocol": "docs/candidate_recipient_probe_v1.json",
+ "builder": "scripts/build_recipient_material.py",
+ "pairs": [
+  {
+   "pair_id": "r001",
+   "condition": "R0",
+   "set": 1,
+   "yes": {
+    "sentence_id": "r001yes",
+    "sentence": "The stadium provides fans anthems.",
+    "expected_provides": "YES",
+    "gold_provider": "The stadium",
+    "gold_recipient": "fans",
+    "gold_theme": "anthems",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "r001no",
+    "sentence": "The stadium denies fans anthems.",
+    "expected_provides": "NO",
+    "gold_provider": "The stadium",
+    "gold_recipient": "fans",
+    "gold_theme": "anthems",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "r101",
+   "condition": "R1",
+   "set": 1,
+   "yes": {
+    "sentence_id": "r101yes",
+    "sentence": "The stadium provides anthems.",
+    "expected_provides": "YES",
+    "gold_provider": "The stadium",
+    "gold_recipient": null,
+    "gold_theme": "anthems",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "expected_candidate": "CHECK"
+   },
+   "no": {
+    "sentence_id": "r101no",
+    "sentence": "The stadium denies anthems.",
+    "expected_provides": "NO",
+    "gold_provider": "The stadium",
+    "gold_recipient": null,
+    "gold_theme": "anthems",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "r201",
+   "condition": "R2",
+   "set": 1,
+   "yes": {
+    "sentence_id": "r201yes",
+    "sentence": "The stadium provides anthems to fans.",
+    "expected_provides": "YES",
+    "gold_provider": "The stadium",
+    "gold_recipient": "fans",
+    "gold_theme": "anthems",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "r201no",
+    "sentence": "The stadium denies anthems to fans.",
+    "expected_provides": "NO",
+    "gold_provider": "The stadium",
+    "gold_recipient": "fans",
+    "gold_theme": "anthems",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "r002",
+   "condition": "R0",
+   "set": 2,
+   "yes": {
+    "sentence_id": "r002yes",
+    "sentence": "The kennel provides owners puppies.",
+    "expected_provides": "YES",
+    "gold_provider": "The kennel",
+    "gold_recipient": "owners",
+    "gold_theme": "puppies",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "r002no",
+    "sentence": "The kennel denies owners puppies.",
+    "expected_provides": "NO",
+    "gold_provider": "The kennel",
+    "gold_recipient": "owners",
+    "gold_theme": "puppies",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "r102",
+   "condition": "R1",
+   "set": 2,
+   "yes": {
+    "sentence_id": "r102yes",
+    "sentence": "The kennel provides puppies.",
+    "expected_provides": "YES",
+    "gold_provider": "The kennel",
+    "gold_recipient": null,
+    "gold_theme": "puppies",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "expected_candidate": "CHECK"
+   },
+   "no": {
+    "sentence_id": "r102no",
+    "sentence": "The kennel denies puppies.",
+    "expected_provides": "NO",
+    "gold_provider": "The kennel",
+    "gold_recipient": null,
+    "gold_theme": "puppies",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "r202",
+   "condition": "R2",
+   "set": 2,
+   "yes": {
+    "sentence_id": "r202yes",
+    "sentence": "The kennel provides puppies to owners.",
+    "expected_provides": "YES",
+    "gold_provider": "The kennel",
+    "gold_recipient": "owners",
+    "gold_theme": "puppies",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "r202no",
+    "sentence": "The kennel denies puppies to owners.",
+    "expected_provides": "NO",
+    "gold_provider": "The kennel",
+    "gold_recipient": "owners",
+    "gold_theme": "puppies",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "r003",
+   "condition": "R0",
+   "set": 3,
+   "yes": {
+    "sentence_id": "r003yes",
+    "sentence": "The observatory provides astronomers images.",
+    "expected_provides": "YES",
+    "gold_provider": "The observatory",
+    "gold_recipient": "astronomers",
+    "gold_theme": "images",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "r003no",
+    "sentence": "The observatory denies astronomers images.",
+    "expected_provides": "NO",
+    "gold_provider": "The observatory",
+    "gold_recipient": "astronomers",
+    "gold_theme": "images",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "r103",
+   "condition": "R1",
+   "set": 3,
+   "yes": {
+    "sentence_id": "r103yes",
+    "sentence": "The observatory provides images.",
+    "expected_provides": "YES",
+    "gold_provider": "The observatory",
+    "gold_recipient": null,
+    "gold_theme": "images",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "expected_candidate": "CHECK"
+   },
+   "no": {
+    "sentence_id": "r103no",
+    "sentence": "The observatory denies images.",
+    "expected_provides": "NO",
+    "gold_provider": "The observatory",
+    "gold_recipient": null,
+    "gold_theme": "images",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "r203",
+   "condition": "R2",
+   "set": 3,
+   "yes": {
+    "sentence_id": "r203yes",
+    "sentence": "The observatory provides images to astronomers.",
+    "expected_provides": "YES",
+    "gold_provider": "The observatory",
+    "gold_recipient": "astronomers",
+    "gold_theme": "images",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "r203no",
+    "sentence": "The observatory denies images to astronomers.",
+    "expected_provides": "NO",
+    "gold_provider": "The observatory",
+    "gold_recipient": "astronomers",
+    "gold_theme": "images",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "r004",
+   "condition": "R0",
+   "set": 4,
+   "yes": {
+    "sentence_id": "r004yes",
+    "sentence": "The garage provides drivers repairs.",
+    "expected_provides": "YES",
+    "gold_provider": "The garage",
+    "gold_recipient": "drivers",
+    "gold_theme": "repairs",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "r004no",
+    "sentence": "The garage denies drivers repairs.",
+    "expected_provides": "NO",
+    "gold_provider": "The garage",
+    "gold_recipient": "drivers",
+    "gold_theme": "repairs",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "r104",
+   "condition": "R1",
+   "set": 4,
+   "yes": {
+    "sentence_id": "r104yes",
+    "sentence": "The garage provides repairs.",
+    "expected_provides": "YES",
+    "gold_provider": "The garage",
+    "gold_recipient": null,
+    "gold_theme": "repairs",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "expected_candidate": "CHECK"
+   },
+   "no": {
+    "sentence_id": "r104no",
+    "sentence": "The garage denies repairs.",
+    "expected_provides": "NO",
+    "gold_provider": "The garage",
+    "gold_recipient": null,
+    "gold_theme": "repairs",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "r204",
+   "condition": "R2",
+   "set": 4,
+   "yes": {
+    "sentence_id": "r204yes",
+    "sentence": "The garage provides repairs to drivers.",
+    "expected_provides": "YES",
+    "gold_provider": "The garage",
+    "gold_recipient": "drivers",
+    "gold_theme": "repairs",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "r204no",
+    "sentence": "The garage denies repairs to drivers.",
+    "expected_provides": "NO",
+    "gold_provider": "The garage",
+    "gold_recipient": "drivers",
+    "gold_theme": "repairs",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "r005",
+   "condition": "R0",
+   "set": 5,
+   "yes": {
+    "sentence_id": "r005yes",
+    "sentence": "The hostel provides travelers bunks.",
+    "expected_provides": "YES",
+    "gold_provider": "The hostel",
+    "gold_recipient": "travelers",
+    "gold_theme": "bunks",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "r005no",
+    "sentence": "The hostel denies travelers bunks.",
+    "expected_provides": "NO",
+    "gold_provider": "The hostel",
+    "gold_recipient": "travelers",
+    "gold_theme": "bunks",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "r105",
+   "condition": "R1",
+   "set": 5,
+   "yes": {
+    "sentence_id": "r105yes",
+    "sentence": "The hostel provides bunks.",
+    "expected_provides": "YES",
+    "gold_provider": "The hostel",
+    "gold_recipient": null,
+    "gold_theme": "bunks",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "expected_candidate": "CHECK"
+   },
+   "no": {
+    "sentence_id": "r105no",
+    "sentence": "The hostel denies bunks.",
+    "expected_provides": "NO",
+    "gold_provider": "The hostel",
+    "gold_recipient": null,
+    "gold_theme": "bunks",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "r205",
+   "condition": "R2",
+   "set": 5,
+   "yes": {
+    "sentence_id": "r205yes",
+    "sentence": "The hostel provides bunks to travelers.",
+    "expected_provides": "YES",
+    "gold_provider": "The hostel",
+    "gold_recipient": "travelers",
+    "gold_theme": "bunks",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "r205no",
+    "sentence": "The hostel denies bunks to travelers.",
+    "expected_provides": "NO",
+    "gold_provider": "The hostel",
+    "gold_recipient": "travelers",
+    "gold_theme": "bunks",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "r006",
+   "condition": "R0",
+   "set": 6,
+   "yes": {
+    "sentence_id": "r006yes",
+    "sentence": "The nursery provides parents seedlings.",
+    "expected_provides": "YES",
+    "gold_provider": "The nursery",
+    "gold_recipient": "parents",
+    "gold_theme": "seedlings",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "r006no",
+    "sentence": "The nursery denies parents seedlings.",
+    "expected_provides": "NO",
+    "gold_provider": "The nursery",
+    "gold_recipient": "parents",
+    "gold_theme": "seedlings",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "r106",
+   "condition": "R1",
+   "set": 6,
+   "yes": {
+    "sentence_id": "r106yes",
+    "sentence": "The nursery provides seedlings.",
+    "expected_provides": "YES",
+    "gold_provider": "The nursery",
+    "gold_recipient": null,
+    "gold_theme": "seedlings",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "expected_candidate": "CHECK"
+   },
+   "no": {
+    "sentence_id": "r106no",
+    "sentence": "The nursery denies seedlings.",
+    "expected_provides": "NO",
+    "gold_provider": "The nursery",
+    "gold_recipient": null,
+    "gold_theme": "seedlings",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "r206",
+   "condition": "R2",
+   "set": 6,
+   "yes": {
+    "sentence_id": "r206yes",
+    "sentence": "The nursery provides seedlings to parents.",
+    "expected_provides": "YES",
+    "gold_provider": "The nursery",
+    "gold_recipient": "parents",
+    "gold_theme": "seedlings",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "r206no",
+    "sentence": "The nursery denies seedlings to parents.",
+    "expected_provides": "NO",
+    "gold_provider": "The nursery",
+    "gold_recipient": "parents",
+    "gold_theme": "seedlings",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "r007",
+   "condition": "R0",
+   "set": 7,
+   "yes": {
+    "sentence_id": "r007yes",
+    "sentence": "The arcade provides players tokens.",
+    "expected_provides": "YES",
+    "gold_provider": "The arcade",
+    "gold_recipient": "players",
+    "gold_theme": "tokens",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "r007no",
+    "sentence": "The arcade denies players tokens.",
+    "expected_provides": "NO",
+    "gold_provider": "The arcade",
+    "gold_recipient": "players",
+    "gold_theme": "tokens",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "r107",
+   "condition": "R1",
+   "set": 7,
+   "yes": {
+    "sentence_id": "r107yes",
+    "sentence": "The arcade provides tokens.",
+    "expected_provides": "YES",
+    "gold_provider": "The arcade",
+    "gold_recipient": null,
+    "gold_theme": "tokens",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "expected_candidate": "CHECK"
+   },
+   "no": {
+    "sentence_id": "r107no",
+    "sentence": "The arcade denies tokens.",
+    "expected_provides": "NO",
+    "gold_provider": "The arcade",
+    "gold_recipient": null,
+    "gold_theme": "tokens",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "r207",
+   "condition": "R2",
+   "set": 7,
+   "yes": {
+    "sentence_id": "r207yes",
+    "sentence": "The arcade provides tokens to players.",
+    "expected_provides": "YES",
+    "gold_provider": "The arcade",
+    "gold_recipient": "players",
+    "gold_theme": "tokens",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "r207no",
+    "sentence": "The arcade denies tokens to players.",
+    "expected_provides": "NO",
+    "gold_provider": "The arcade",
+    "gold_recipient": "players",
+    "gold_theme": "tokens",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "r008",
+   "condition": "R0",
+   "set": 8,
+   "yes": {
+    "sentence_id": "r008yes",
+    "sentence": "The apiary provides beekeepers smokers.",
+    "expected_provides": "YES",
+    "gold_provider": "The apiary",
+    "gold_recipient": "beekeepers",
+    "gold_theme": "smokers",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "r008no",
+    "sentence": "The apiary denies beekeepers smokers.",
+    "expected_provides": "NO",
+    "gold_provider": "The apiary",
+    "gold_recipient": "beekeepers",
+    "gold_theme": "smokers",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "r108",
+   "condition": "R1",
+   "set": 8,
+   "yes": {
+    "sentence_id": "r108yes",
+    "sentence": "The apiary provides smokers.",
+    "expected_provides": "YES",
+    "gold_provider": "The apiary",
+    "gold_recipient": null,
+    "gold_theme": "smokers",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "expected_candidate": "CHECK"
+   },
+   "no": {
+    "sentence_id": "r108no",
+    "sentence": "The apiary denies smokers.",
+    "expected_provides": "NO",
+    "gold_provider": "The apiary",
+    "gold_recipient": null,
+    "gold_theme": "smokers",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "r208",
+   "condition": "R2",
+   "set": 8,
+   "yes": {
+    "sentence_id": "r208yes",
+    "sentence": "The apiary provides smokers to beekeepers.",
+    "expected_provides": "YES",
+    "gold_provider": "The apiary",
+    "gold_recipient": "beekeepers",
+    "gold_theme": "smokers",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "r208no",
+    "sentence": "The apiary denies smokers to beekeepers.",
+    "expected_provides": "NO",
+    "gold_provider": "The apiary",
+    "gold_recipient": "beekeepers",
+    "gold_theme": "smokers",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "expected_candidate": false
+   }
+  }
+ ]
+}
