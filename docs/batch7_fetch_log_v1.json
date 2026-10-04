@@ -1,6 +1,6 @@
 {
  "version": "batch7_fetch_log_v1",
- "status": "blocked_on_threshold_feasibility",
+ "status": "fetch_in_progress",
  "date": "2026-10-04",
  "rule_reference": "docs/batch7_source_selection_v1.json (a2fcb33, unchanged)",
  "pre_fetch_events": [
@@ -134,5 +134,121 @@
   "Keep 1200 and accept 12 documented shortfalls (no corpus)?",
   "Lower the per-document minimum to a feasible value (rule change: requires a new frozen version of batch7_source_selection_v1)?",
   "Change the fetch target type to long-form documents (e.g. full PDF reports) and keep the threshold (rule change: same requirement)?"
+ ],
+ "rule_version": "batch7_source_selection_v2 (ec017a5)",
+ "audit_trail": [
+  {
+   "domain": "public administration / government reports",
+   "candidates": [
+    {
+     "rank": 1,
+     "url": "https://www.acus.gov/sites/default/files/documents/IIB-001%20Federal%20Register%20Publication%20Requirements.pdf",
+     "fetch": "ok",
+     "usable_sentences": 30,
+     "sections": 17,
+     "verdict": "FAIL",
+     "reason": "1-page bulletin, far below 300 usable sentences"
+    },
+    {
+     "rank": 2,
+     "url": "https://www.huduser.gov/portal/About/style-guide-for-reports.pdf",
+     "fetch": "not attempted",
+     "verdict": "pending"
+    },
+    {
+     "rank": 3,
+     "url": "https://grants.nih.gov/sites/default/files/rppr_instruction_guide.pdf",
+     "fetch": "not attempted",
+     "verdict": "pending"
+    }
+   ],
+   "selected": [],
+   "shortfall": "in progress"
+  },
+  {
+   "domain": "health / public health",
+   "candidates": [
+    {
+     "rank": 1,
+     "url": "https://www.who.int/docs/default-source/documents/gs4dhdaa2a9f352b0445bafbc79ca799dce4d.pdf",
+     "fetch": "ok",
+     "usable_sentences": 248,
+     "sections": 17,
+     "verdict": "FAIL",
+     "reason": "248 usable sentences, below the 300 minimum",
+     "raw_sha256": "f31be5fcade1098963e0710085b956fd"
+    },
+    {
+     "rank": 2,
+     "url": "https://syntheticdrugs.unodc.org/uploads/syntheticdrugs/res/library/access_html/WHO_good_distribution_practices_for_pharmaceutical_products_WHO_Technical_Report_Series_No._957.pdf",
+     "fetch": "not attempted",
+     "verdict": "pending"
+    },
+    {
+     "rank": 3,
+     "url": "https://publichealth.uams.edu/wp-content/uploads/2022/02/Integrative-Learning-Experience-Product-EXAMPLE-Guidelines-for-techinical-report.pdf",
+     "fetch": "not attempted",
+     "verdict": "pending"
+    }
+   ],
+   "selected": [],
+   "shortfall": "in progress"
+  },
+  {
+   "domain": "agriculture",
+   "candidates": [
+    {
+     "rank": 1,
+     "url": "https://www.agriculture.go.ug/wp-content/uploads/2019/04/Agricultural-Extension-Services-Guidelines.pdf",
+     "fetch": "ERROR: scraper does not support this site",
+     "verdict": "FETCH_FAILED"
+    },
+    {
+     "rank": 2,
+     "url": "https://fsrp.go.ke/sites/default/files/2025-08/Agriculture%20Extension%20Manual%20v1%20final.pdf",
+     "fetch": "not attempted",
+     "verdict": "pending"
+    },
+    {
+     "rank": 3,
+     "url": "https://farm-d.org/wp-content/uploads/2024/03/Improving-AgEx.-FAO.pdf",
+     "fetch": "not attempted",
+     "verdict": "pending"
+    }
+   ],
+   "selected": [],
+   "shortfall": "in progress"
+  },
+  {
+   "domain": "industry / technical",
+   "candidates": [
+    {
+     "rank": 1,
+     "url": "https://boss.cen.eu/media/yypjl3mn/iso_iec_directives_part2.pdf",
+     "fetch": "ok",
+     "usable_sentences": 584,
+     "sections": 9,
+     "verdict": "PASS",
+     "reason": "584 usable sentences, 9 sections",
+     "raw_sha256": "5d4ba148b9938f91bbee1d3aa2fa41c0"
+    }
+   ],
+   "selected": [
+    "https://boss.cen.eu/media/yypjl3mn/iso_iec_directives_part2.pdf"
+   ],
+   "selected_sha256": "5d4ba148b9938f91bbee1d3aa2fa41c0",
+   "shortfall": "1 of 2 documents still needed"
+  }
+ ],
+ "progress": {
+  "documents_selected": 1,
+  "documents_needed": 24,
+  "domains_started": 4,
+  "domains_complete": 0
+ },
+ "observations": [
+  "qualification works as an objective gate: it rejected a 1-page bulletin and a 248-sentence WHO document without analyst judgement",
+  "one scraper failure so far (unreachable host), handled as a recorded FETCH_FAILED rather than a substitution",
+  "pass rate so far is low; the 300-sentence minimum plus scrape reachability is the practical bottleneck, not document availability"
  ]
 }
