@@ -26,7 +26,10 @@ def scope_gate(sentence: str) -> dict:
         if any(c in low for c in cues):
             return {"verdict": "REJECT", "reason": reason}
     if any(re.search(r"\b" + n.strip() + r"\b", low) for n in NEG):
-        return {"verdict": "REJECT", "reason": "NEGATED"}
+        # Batch-2 finding: bare negation cues hit complements
+        # ("not to give up"), not the trigger. NEGATED stays OBSERVATION
+        # until scope resolution (negation_scope(trigger)) exists.
+        return {"verdict": "OBSERVE", "reason": "NEGATED_UNSCOPED"}
     return {"verdict": "PASS", "reason": None}
 
 
