@@ -1,6 +1,6 @@
 {
  "version": "batch7_fetch_log_v1",
- "status": "fetch_in_progress",
+ "status": "CHECKPOINT_INCOMPLETE",
  "date": "2026-10-04",
  "rule_reference": "docs/batch7_source_selection_v1.json (a2fcb33, unchanged)",
  "pre_fetch_events": [
@@ -250,5 +250,31 @@
   "qualification works as an objective gate: it rejected a 1-page bulletin and a 248-sentence WHO document without analyst judgement",
   "one scraper failure so far (unreachable host), handled as a recorded FETCH_FAILED rather than a substitution",
   "pass rate so far is low; the 300-sentence minimum plus scrape reachability is the practical bottleneck, not document availability"
- ]
+ ],
+ "checkpoint": {
+  "reason": "fetch stopped deliberately to avoid a half-built corpus; the qualification mechanic is proven and fully reproducible in the repo, so the remainder can resume cleanly",
+  "resume_point": "docs/batch7_fetch_log_v1.json audit_trail",
+  "how_to_resume": "for every domain in audit_trail, continue at the first candidate whose verdict is 'pending'; FETCH_FAILED hosts are retried in rank order, never substituted by another domain",
+  "must_not_change": [
+   "rule ec017a5 (long-form institutional documents, >=300 usable sentences, >=3 sections, 2 documents per domain, global ratio for a ~200-sentence corpus)",
+   "candidate rank order already recorded",
+   "mechanical qualification gate in scripts/batch7_qualify.py"
+  ],
+  "what_is_already_done": [
+   "12 domain queries issued (fixed queries, K=3 collected)",
+   "mechanical allowlist filter applied",
+   "4 candidate scrapes attempted, outcomes recorded",
+   "1 document qualified and is pinned with its raw sha256"
+  ],
+  "what_remains": [
+   "finish 8 untouched domains (queries already issued, candidates recorded)",
+   "finish the 3 started domains (ranks 2-3 pending, agriculture rank 1 retry)",
+   "reach 2 qualifying documents per domain (23 still needed)",
+   "section-wise sampling with the single global ratio",
+   "corpus digest and disjointness check vs corpora v1-v6 and frozen test material",
+   "corpus freeze, then the unchanged production pipeline run",
+   "seeded N=80 sample, then blind annotation"
+  ],
+  "bottleneck_honest": "pass rate is low (1 of 4 first candidates): the constraint is the 300-sentence minimum combined with scraper reachability, not document availability. If the next session wants a smaller fetch, that requires a NEW frozen rule version, not a silent threshold change"
+ }
 }
