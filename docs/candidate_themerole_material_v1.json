@@ -96,16 +96,16 @@
       "concrete": {
         "sentence": "The court serves meals.",
         "gold": [
-          "The company",
-          "dinner"
+          "The court",
+          "meals"
         ],
         "relation": "provides"
       },
       "nonproto": {
         "sentence": "The court serves justice.",
         "gold": [
-          "The company",
-          "transportation"
+          "The court",
+          "justice"
         ],
         "relation": "provides"
       }
@@ -117,16 +117,16 @@
       "concrete": {
         "sentence": "The church serves dinner.",
         "gold": [
-          "The company",
-          "breakfast"
+          "The church",
+          "dinner"
         ],
         "relation": "provides"
       },
       "nonproto": {
         "sentence": "The church serves communion.",
         "gold": [
-          "The company",
-          "childcare"
+          "The church",
+          "communion"
         ],
         "relation": "provides"
       }
@@ -138,16 +138,16 @@
       "concrete": {
         "sentence": "The clerk serves forms.",
         "gold": [
-          "The company",
-          "meals"
+          "The clerk",
+          "forms"
         ],
         "relation": "provides"
       },
       "nonproto": {
         "sentence": "The clerk serves notices.",
         "gold": [
-          "The company",
-          "maintenance"
+          "The clerk",
+          "notices"
         ],
         "relation": "provides"
       }
@@ -160,7 +160,7 @@
         "sentence": "The company serves breakfast.",
         "gold": [
           "The company",
-          "refreshments"
+          "breakfast"
         ],
         "relation": "provides"
       },
@@ -168,7 +168,7 @@
         "sentence": "The company serves accounts.",
         "gold": [
           "The company",
-          "consulting"
+          "accounts"
         ],
         "relation": "provides"
       }
