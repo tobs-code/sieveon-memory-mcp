@@ -1,0 +1,52 @@
+{
+ "version": "batch6_metrics_v1",
+ "date": "2026-10-04",
+ "gold": "docs/batch6_gold_v1.json",
+ "accept_gold": "docs/batch6_accept_annotation_v1.json",
+ "sentence_gold": {
+  "YES": 17,
+  "UNCLEAR": 7,
+  "NO": 126
+ },
+ "candidate_recall_sentence": {
+  "definition": "YES sentences with >=1 candidate / YES sentences",
+  "primary": "8/17 = 0.471",
+  "unclear_as_yes": "10/24 = 0.417"
+ },
+ "candidate_miss_true_silence_loss": [
+  "prodc6-012",
+  "prodc6-027",
+  "prodc6-030",
+  "prodc6-032",
+  "prodc6-055",
+  "prodc6-112",
+  "prodc6-120",
+  "prodc6-130",
+  "prodc6-132"
+ ],
+ "overgeneration_no_sentence_with_candidate": 13,
+ "assertion_recall_matched_candidates": {
+  "definition": "supported among gold-matched candidates (step2 YES x3 + accept TP x1)",
+  "primary": "1/4 = 0.25",
+  "excl_modal_149": "1/3 = 0.333"
+ },
+ "assertion_errors": [
+  "prodc6-005",
+  "prodc6-033",
+  "prodc6-149(modal)"
+ ],
+ "end_to_end_recall": {
+  "definition": "correct ACCEPT edges / YES sentences",
+  "primary": "1/17 = 0.059",
+  "unclear_as_yes": "1/24 = 0.042"
+ },
+ "precision": {
+  "definition": "frozen accept gold",
+  "value": "1/6 = 0.167"
+ },
+ "reading": "largest loss mass is candidate silence (9/17 YES sentences missed incl. 120/130/132 funding/community cases); assertion additionally lost 2 clear + 1 modal matched candidates (005/033/149); assertion contained 13 NO-sentence candidates at REJECT but supported 4 NO-sentence FPs + 1 wrong-recipient FP",
+ "assertion_precision_supported": {
+  "definition": "TP among assertion-supported candidates",
+  "value": "1/6 = 0.167 (supported: 129 TP; 035/057/091/121 FP on NO sentences; 133 FP wrong-recipient on YES sentence)"
+ }
+}
