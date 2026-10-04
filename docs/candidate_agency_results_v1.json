@@ -1,0 +1,524 @@
+{
+ "version": "candidate_agency_results_v1",
+ "protocol": "docs/candidate_agency_probe_v1.json",
+ "material": "docs/candidate_agency_material_v1.json",
+ "stage": "candidate_generation_only (nu_candidates, no validator, no linking)",
+ "match_rule": "normalized span equality or containment, either direction",
+ "pairs": [
+  {
+   "pair_id": "g01",
+   "class": "R0",
+   "theme_domain": "reading_material",
+   "sides": {
+    "yes": {
+     "sentence_id": "g01yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The mentor",
+       "pupils"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "g01no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The mentor",
+       "pupils"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "g02",
+   "class": "R0",
+   "theme_domain": "medical_resource",
+   "sides": {
+    "yes": {
+     "sentence_id": "g02yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The doctor",
+       "clients"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "g02no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The doctor",
+       "clients"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "g03",
+   "class": "R0",
+   "theme_domain": "information",
+   "sides": {
+    "yes": {
+     "sentence_id": "g03yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The usher",
+       "guests"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "g03no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": false,
+     "recipient": false,
+     "theme": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "g04",
+   "class": "R0",
+   "theme_domain": "food_resource",
+   "sides": {
+    "yes": {
+     "sentence_id": "g04yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The baker",
+       "neighbors"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "g04no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The baker",
+       "neighbors"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "g05",
+   "class": "R1",
+   "theme_domain": "information",
+   "sides": {
+    "yes": {
+     "sentence_id": "g05yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The school",
+       "pupils"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "g05no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": false,
+     "recipient": false,
+     "theme": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "g06",
+   "class": "R1",
+   "theme_domain": "medical_resource",
+   "sides": {
+    "yes": {
+     "sentence_id": "g06yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "g06no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": false,
+     "recipient": false,
+     "theme": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "g07",
+   "class": "R1",
+   "theme_domain": "physical_resource",
+   "sides": {
+    "yes": {
+     "sentence_id": "g07yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "crews"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "g07no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "crews"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "g08",
+   "class": "R1",
+   "theme_domain": "tour_service",
+   "sides": {
+    "yes": {
+     "sentence_id": "g08yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The center",
+       "guests"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "g08no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": false,
+     "recipient": false,
+     "theme": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "g09",
+   "class": "R2",
+   "theme_domain": "information",
+   "sides": {
+    "yes": {
+     "sentence_id": "g09yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The server",
+       "clients"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "g09no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": false,
+     "recipient": false,
+     "theme": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "g10",
+   "class": "R2",
+   "theme_domain": "medical_resource",
+   "sides": {
+    "yes": {
+     "sentence_id": "g10yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "dispenser",
+       "patients"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "g10no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "dispenser",
+       "patients"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "g11",
+   "class": "R2",
+   "theme_domain": "physical_resource",
+   "sides": {
+    "yes": {
+     "sentence_id": "g11yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The pump",
+       "fields"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "g11no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": false,
+     "recipient": false,
+     "theme": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "g12",
+   "class": "R2",
+   "theme_domain": "energy_output",
+   "sides": {
+    "yes": {
+     "sentence_id": "g12yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The generator",
+       "homes"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "g12no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The generator",
+       "homes"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "g13",
+   "class": "R3",
+   "theme_domain": "physical_resource",
+   "sides": {
+    "yes": {
+     "sentence_id": "g13yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The spring",
+       "village"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "g13no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The spring",
+       "village"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "g14",
+   "class": "R3",
+   "theme_domain": "physical_resource",
+   "sides": {
+    "yes": {
+     "sentence_id": "g14yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The forest",
+       "mill"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "g14no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": false,
+     "recipient": false,
+     "theme": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "g15",
+   "class": "R3",
+   "theme_domain": "protection_service",
+   "sides": {
+    "yes": {
+     "sentence_id": "g15yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The reef",
+       "divers"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "g15no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": false,
+     "recipient": false,
+     "theme": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "g16",
+   "class": "R3",
+   "theme_domain": "remedy_resource",
+   "sides": {
+    "yes": {
+     "sentence_id": "g16yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The garden",
+       "families"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "g16no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": false,
+     "recipient": false,
+     "theme": false,
+     "outcome": "absent"
+    }
+   }
+  }
+ ]
+}
