@@ -1,0 +1,519 @@
+{
+ "version": "candidate_benefactive_results_v1",
+ "protocol": "docs/candidate_benefactive_probe_v1.json",
+ "material": "docs/candidate_benefactive_material_v1.json",
+ "stage": "candidate_generation_only (nu_candidates, no validator, no linking)",
+ "match_rule": "normalized span equality or containment, either direction",
+ "pairs": [
+  {
+   "pair_id": "t0med",
+   "construction": "T0",
+   "set": "med",
+   "sides": {
+    "yes": {
+     "sentence_id": "t0medyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "partial_span"
+    },
+    "no": {
+     "sentence_id": "t0medno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "t1med",
+   "construction": "T1",
+   "set": "med",
+   "sides": {
+    "yes": {
+     "sentence_id": "t1medyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "partial_span"
+    },
+    "no": {
+     "sentence_id": "t1medno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "target_recovered": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "t2med",
+   "construction": "T2",
+   "set": "med",
+   "sides": {
+    "yes": {
+     "sentence_id": "t2medyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "partial_span"
+    },
+    "no": {
+     "sentence_id": "t2medno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "t3med",
+   "construction": "T3",
+   "set": "med",
+   "sides": {
+    "yes": {
+     "sentence_id": "t3medyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "partial_span"
+    },
+    "no": {
+     "sentence_id": "t3medno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "t0fuel",
+   "construction": "T0",
+   "set": "fuel",
+   "sides": {
+    "yes": {
+     "sentence_id": "t0fuelyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "units"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "partial_span"
+    },
+    "no": {
+     "sentence_id": "t0fuelno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "units"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "t1fuel",
+   "construction": "T1",
+   "set": "fuel",
+   "sides": {
+    "yes": {
+     "sentence_id": "t1fuelyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "units"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "partial_span"
+    },
+    "no": {
+     "sentence_id": "t1fuelno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "units"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "t2fuel",
+   "construction": "T2",
+   "set": "fuel",
+   "sides": {
+    "yes": {
+     "sentence_id": "t2fuelyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "units"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "partial_span"
+    },
+    "no": {
+     "sentence_id": "t2fuelno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "units"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "t3fuel",
+   "construction": "T3",
+   "set": "fuel",
+   "sides": {
+    "yes": {
+     "sentence_id": "t3fuelyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "units"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "partial_span"
+    },
+    "no": {
+     "sentence_id": "t3fuelno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "units"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "t0badge",
+   "construction": "T0",
+   "set": "badge",
+   "sides": {
+    "yes": {
+     "sentence_id": "t0badgeyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clerk",
+       "visitors"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "partial_span"
+    },
+    "no": {
+     "sentence_id": "t0badgeno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "target_recovered": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "t1badge",
+   "construction": "T1",
+   "set": "badge",
+   "sides": {
+    "yes": {
+     "sentence_id": "t1badgeyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clerk",
+       "visitors"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "partial_span"
+    },
+    "no": {
+     "sentence_id": "t1badgeno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "target_recovered": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "t2badge",
+   "construction": "T2",
+   "set": "badge",
+   "sides": {
+    "yes": {
+     "sentence_id": "t2badgeyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clerk",
+       "visitors"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "partial_span"
+    },
+    "no": {
+     "sentence_id": "t2badgeno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clerk",
+       "visitors"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "t3badge",
+   "construction": "T3",
+   "set": "badge",
+   "sides": {
+    "yes": {
+     "sentence_id": "t3badgeyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clerk",
+       "visitors"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "partial_span"
+    },
+    "no": {
+     "sentence_id": "t3badgeno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clerk",
+       "visitors"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "t0lesson",
+   "construction": "T0",
+   "set": "lesson",
+   "sides": {
+    "yes": {
+     "sentence_id": "t0lessonyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "students"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "partial_span"
+    },
+    "no": {
+     "sentence_id": "t0lessonno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "students"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "t1lesson",
+   "construction": "T1",
+   "set": "lesson",
+   "sides": {
+    "yes": {
+     "sentence_id": "t1lessonyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "students"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "partial_span"
+    },
+    "no": {
+     "sentence_id": "t1lessonno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "target_recovered": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "t2lesson",
+   "construction": "T2",
+   "set": "lesson",
+   "sides": {
+    "yes": {
+     "sentence_id": "t2lessonyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "students"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "partial_span"
+    },
+    "no": {
+     "sentence_id": "t2lessonno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "students"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "t3lesson",
+   "construction": "T3",
+   "set": "lesson",
+   "sides": {
+    "yes": {
+     "sentence_id": "t3lessonyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "students"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "partial_span"
+    },
+    "no": {
+     "sentence_id": "t3lessonno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "students"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": false,
+     "outcome": "false_candidate"
+    }
+   }
+  }
+ ],
+ "beneficiary_analysis": "16/16 YES candidates carry provider+beneficiary (animate) in slots, 0/16 carry the theme; identical in T0 control, so no benefactive-specific effect; per protocol this misrouting must NOT count as benefactive-silence evidence",
+ "interpretation": "H1 not supported: zero TRUE SILENCE in T0-T3 (16/16 present). Systematic animate-recipient selection preference (cf. E2 of-bypass). Benefactive framing does not cause candidate absence."
+}
