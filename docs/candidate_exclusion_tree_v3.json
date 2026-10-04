@@ -1,0 +1,36 @@
+{
+  "version": "candidate_exclusion_tree_v3",
+  "date": "2026-10-04",
+  "status": "frozen interim balance",
+  "supersedes": "candidate_exclusion_tree_v2 (5112211, unchanged)",
+  "wording_rule": "single hypotheses show no systematic silence effect; span/selection errors found locally; a null on one factor does not exclude interactions",
+  "rejected": [
+    {"n": 1, "factor": "position/argument realization", "result": "b5644f8", "finding": "40/40 incl. PP, passive, nonfinite"},
+    {"n": 2, "factor": "lexical coverage", "result": "a4eea29", "finding": "YES 22/22 across L1-L4; generator permissive"},
+    {"n": 3, "factor": "finite syntactic complexity", "result": "54f9809", "finding": "C0-C4 20/20; C5 3/4 (1 span error)"},
+    {"n": 4, "factor": "anaphora/coreference", "result": "b613ff0", "finding": "27/28 present; pronoun spans are linking matter"},
+    {"n": 5, "factor": "event nominalization", "result": "4d3a930", "finding": "16/16 present; E2 of-bypass is selection, not silence"},
+    {"n": 6, "factor": "benefactive realization", "result": "d951923", "finding": "16/16 present; animate-recipient preference incl. T0"},
+    {"n": 7, "factor": "metaphorical realization", "result": "4a85e37", "finding": "M0 8/8; M1 YES* 2/3; M3 11/12; no class effect"},
+    {"n": 8, "factor": "passive x nominal interaction", "result": "107a946", "finding": "16/16 correct in all cells A/B/C/D"},
+    {"n": 9, "factor": "provider agency", "result": "8888a38", "finding": "16/16 correct across R0-R3"},
+    {"n": 10, "factor": "recipient realization", "result": "0f6f883",
+     "finding": "R0 8/8; R2 8/8; R1 5/8 present with provider+theme, 3/8 absent (anthems, repairs, bunks)",
+     "verdict": "explicit recipient required: REJECTED; recipientless implies systematic silence: REJECTED; residual 3/8: UNEXPLAINED (n=8, no shared lexical feature; no new mechanism derived from it)"}
+  ],
+  "cluster_R_status": "rejected as a sufficient/general silence mechanism. Recipientlessness may accompany silence in single cases but is not a necessary condition for candidate silence (5/8 recipientless cases produce candidates).",
+  "microprofile_remaining_FNs": {
+    "cluster_R_recipientless": {"status": "general mechanism rejected; 3 residual cases unexplained", "note": "do not reimport residuals as a new hypothesis"},
+    "cluster_N_noncanonical_recipient": {"status": "still open; explicitly untouched, not renamed", "members": ["prodc6-032", "prodc6-112", "prodc6-120", "prodc6-130", "prodc6-132"]},
+    "figurative_055": {"status": "separate"}
+  },
+  "positive_side_findings_separate": [
+    "E2 of-bypass: entity preferred over event nominal (3/4)",
+    "benefactive: animate recipient preferred over theme (16/16 incl. T0)",
+    "metaphor: item-level misses only (ammunition, options)",
+    "C5: span fusion in nonfinite (Providing units as subject span)",
+    "R1: provider+theme produced in 5/8 recipientless cases",
+    "NO-side: deny/refuse/charge produce candidates (permissive generator; validator territory)"
+  ],
+  "next": "pairwise profiling of the 9 FNs against successful control cases (relation-worthiness direction: which internal/semantic property separates the 22 successful probe cases from the 9 silent FNs). No generator change. No new surface-factor probe before that."
+}
