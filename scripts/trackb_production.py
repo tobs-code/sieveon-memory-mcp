@@ -40,9 +40,9 @@ def link(mention: str, all_norms: set, doc_norms: set | None = None):
     """
     n = normalize(mention)
     pool = set(doc_norms) if doc_norms else set(all_norms)
-    if n in pool:
-        return {"entity_id": f"entity:{n}", "status": "resolved",
-                "normalized": n, "scope": "doc" if doc_norms else "global"}
+    # No exact-match shortcut: presence in the pool must never skip the
+    # collision check, or ambiguity detection silently dies (every mention
+    # trivially matches itself). Same gate in both scopes.
     near = sorted({m for m in pool if m != n
                    and difflib.SequenceMatcher(None, n, m).ratio() > 0.85})
     if near:
