@@ -1,0 +1,75 @@
+{
+  "version": "batch7_source_selection_v1",
+  "status": "preregistered_before_fetch",
+  "date": "2026-10-04",
+  "purpose": "Fix the corpus-source rule BEFORE any document is chosen, so corpus selection is independent of the silences later observed.",
+
+  "exclusions": [
+    "Wikipedia and Wikipedia-derived texts",
+    "news articles",
+    "blogs and personal pages",
+    "marketing and vendor pages",
+    "opinionated, editorial or advocacy-heavy texts",
+    "texts deliberately chosen for frequent provide/support/serve/assist constructions"
+  ],
+  "last_exclusion_rationale": "selecting texts by construction frequency would smuggle a batch-6 hypothesis into the corpus; domain choice defines text diversity only, and predicate/construction statistics stay unobserved until annotation.",
+
+  "domains": [
+    "public administration / government reports",
+    "health / public health",
+    "agriculture",
+    "industry / technical",
+    "energy / environment",
+    "transport / infrastructure",
+    "museums / cultural institutions",
+    "scientific institutions / research organisations",
+    "education / teaching materials",
+    "earth and natural sciences",
+    "economy / labour market",
+    "international organisations / NGOs"
+  ],
+  "quota": "12 domains, 1-2 documents per domain, 150-250 pipeline records before the deterministic N=80 sample",
+
+  "mechanical_selection_rule": {
+    "step_1": "domain list fixed (above); no domain added, dropped or reordered",
+    "step_2": "per domain, take the FIRST K candidate documents returned by a fixed query against a fixed institutional-domain allowlist (see query_template); K = 3",
+    "step_3": "from the K candidates take the FIRST document whose main text is long enough (>= 1200 usable sentences after cleaning) and passes the boilerplate check; if none qualifies, take the next domain position and record the shortfall",
+    "step_4": "pin document URL + fetch date + raw markdown sha256",
+    "step_5": "section-wise sentence sampling (new method, NOT the batch-6 whole-article stride)",
+    "step_6": "freeze the corpus",
+    "step_7": "run the pipeline over ALL records of the selected documents",
+    "step_8": "deterministic seeded N=80 sample from the frozen record list"
+  },
+  "query_template": {
+    "engine": "web search via the available search tool",
+    "pattern": "<domain keyword> official report filetype:pdf OR official site report",
+    "constraint": "domain allowlist per domain must be institutional (.gov, .int, national/institutional domains, university or museum domains) and NOT wikipedia",
+    "note": "the exact allowlist per domain is recorded with the fetch log; the query is fixed before fetching, never re-issued to find easier documents"
+  },
+
+  "sampling_method": {
+    "name": "section-wise",
+    "difference_from_batch6": "batch 6 sampled with an even stride over the whole article; batch 7 samples per section so that different section types (definitions, process descriptions, statistics, provisions) are represented proportionally to their occurrence",
+    "algorithm": "split the cleaned text into top-level sections; within each section take sentences at an even stride (same stride formula as batch 6 but applied per section, never per document); concatenate sections in document order; drop structural sections (references, external links, see also, notes) BEFORE sampling; no per-document cap",
+    "no_equilibration_rule": "documents are NOT trimmed to a fixed sentence count; if one document yields 80 usable sentences and another 12, that imbalance is kept. Equalisation happens only at the deterministic N=80 sample step.",
+    "mechanical_filters_only": "character length 40-400, >= 6 tokens, terminal punctuation, boilerplate/hatnote/markup removal; no content or keyword criterion"
+  },
+
+  "mechanical_filters_unchanged_from_batch6": true,
+
+  "pinning": {
+    "per_document": ["url", "fetch_date", "raw_markdown_sha256"],
+    "corpus": "digest over newline-joined sentence texts in order, computed before inference",
+    "disjointness": "0 overlap vs corpora v1-v6 and frozen test material, checked mechanically before the run"
+  },
+
+  "forbidden": [
+    "no document re-selection after seeing pipeline output",
+    "no difficulty-targeted document search",
+    "no per-document sentence balancing",
+    "no keyword-driven sentence filtering",
+    "no corpus edits after the digest is pinned"
+  ],
+
+  "status_note": "this file fixes the rule; the concrete candidate URLs and the allowlists are recorded in a separate fetch log at fetch time, before any pipeline run"
+}
