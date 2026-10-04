@@ -1,0 +1,24 @@
+{
+  "version": "candidate_interaction_probe_v1",
+  "status": "preregistered_before_inference",
+  "date": "2026-10-04",
+  "pipeline_changes": "none",
+  "motivation": "all seven single-factor probes show no systematic silence effect; interactions were never tested. 132-shape (passive by-agent + event-nominal patient) is the sharpest candidate.",
+  "design": "2x2 active/passive x verbal-complement/nominal-theme, 4 scenarios, YES(supports)/NO(stop) mirrors. NO verb is stop (aspectual negative): deny does not license the participial-complement frame, stop does in all four cells.",
+  "cells": {
+    "A": "active + verbal complement (The foundation supports teams digitizing records.)",
+    "B": "active + nominal theme (The foundation supports the digitization of records.)",
+    "C": "passive + verbal complement (Teams digitizing records are supported by the foundation.)",
+    "D": "passive + nominal theme (The digitization of records is supported by the foundation.)"
+  },
+  "gold_target_per_cell": "A/C: the team NP; B/D: the full nominal (span diagnostic kept separate from presence)",
+  "primary_metrics": ["candidate_present_per_cell", "provider_recovered_per_cell", "target_span_note_per_cell", "false_candidate_rate_NO"],
+  "decision_rule": {
+    "interaction_support": "A/B/C stable while D degrades, reproducing across scenarios",
+    "additive_passive": "C and D degrade vs A and B",
+    "nominal_only": "B and D degrade vs A and C",
+    "negative_result": "no cell effect; interaction excluded for this shape"
+  },
+  "forbidden_during_probe": ["no trigger additions", "no prompt changes", "no thresholds", "no assertion changes", "no PostFilter changes", "no new linking rules"],
+  "test_material": "built by script; validation + freeze below"
+}

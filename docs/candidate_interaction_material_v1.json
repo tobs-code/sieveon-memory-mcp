@@ -1,0 +1,409 @@
+{
+ "version": "candidate_interaction_material_v1",
+ "status": "frozen_for_probe (validated; hosp scenario re-tripled to avoid E2 duplicate)",
+ "date": "2026-10-04",
+ "protocol": "docs/candidate_interaction_probe_v1.json",
+ "builder": "scripts/build_interaction_material.py",
+ "pairs": [
+  {
+   "pair_id": "arec",
+   "cell": "A",
+   "scenario": "rec",
+   "yes": {
+    "sentence_id": "arecyes",
+    "sentence": "The foundation supports teams digitizing records.",
+    "expected_provides": "YES",
+    "gold_provider": "The foundation",
+    "gold_target": "teams",
+    "gold_relation": "provides",
+    "source_trigger": "supports",
+    "semantic_basis": "support/provision"
+   },
+   "no": {
+    "sentence_id": "arecno",
+    "sentence": "The foundation stops teams digitizing records.",
+    "expected_provides": "NO",
+    "gold_provider": "The foundation",
+    "gold_target": "teams",
+    "gold_relation": "none",
+    "source_trigger": "stop",
+    "semantic_basis": "control: cessation, no provision"
+   }
+  },
+  {
+   "pair_id": "brec",
+   "cell": "B",
+   "scenario": "rec",
+   "yes": {
+    "sentence_id": "brecyes",
+    "sentence": "The foundation supports the digitization of records.",
+    "expected_provides": "YES",
+    "gold_provider": "The foundation",
+    "gold_target": "the digitization of records",
+    "gold_relation": "provides",
+    "source_trigger": "supports",
+    "semantic_basis": "support/provision"
+   },
+   "no": {
+    "sentence_id": "brecno",
+    "sentence": "The foundation stops the digitization of records.",
+    "expected_provides": "NO",
+    "gold_provider": "The foundation",
+    "gold_target": "the digitization of records",
+    "gold_relation": "none",
+    "source_trigger": "stop",
+    "semantic_basis": "control: cessation, no provision"
+   }
+  },
+  {
+   "pair_id": "crec",
+   "cell": "C",
+   "scenario": "rec",
+   "yes": {
+    "sentence_id": "crecyes",
+    "sentence": "Teams digitizing records are supported by the foundation.",
+    "expected_provides": "YES",
+    "gold_provider": "The foundation",
+    "gold_target": "teams",
+    "gold_relation": "provides",
+    "source_trigger": "supports",
+    "semantic_basis": "support/provision"
+   },
+   "no": {
+    "sentence_id": "crecno",
+    "sentence": "Teams digitizing records are stopped by the foundation.",
+    "expected_provides": "NO",
+    "gold_provider": "The foundation",
+    "gold_target": "teams",
+    "gold_relation": "none",
+    "source_trigger": "stop",
+    "semantic_basis": "control: cessation, no provision"
+   }
+  },
+  {
+   "pair_id": "drec",
+   "cell": "D",
+   "scenario": "rec",
+   "yes": {
+    "sentence_id": "drecyes",
+    "sentence": "The digitization of records is supported by the foundation.",
+    "expected_provides": "YES",
+    "gold_provider": "The foundation",
+    "gold_target": "the digitization of records",
+    "gold_relation": "provides",
+    "source_trigger": "supports",
+    "semantic_basis": "support/provision"
+   },
+   "no": {
+    "sentence_id": "drecno",
+    "sentence": "The digitization of records is stopped by the foundation.",
+    "expected_provides": "NO",
+    "gold_provider": "The foundation",
+    "gold_target": "the digitization of records",
+    "gold_relation": "none",
+    "source_trigger": "stop",
+    "semantic_basis": "control: cessation, no provision"
+   }
+  },
+  {
+   "pair_id": "athea",
+   "cell": "A",
+   "scenario": "thea",
+   "yes": {
+    "sentence_id": "atheayes",
+    "sentence": "The donors supports staff restoring the theater.",
+    "expected_provides": "YES",
+    "gold_provider": "The donors",
+    "gold_target": "staff",
+    "gold_relation": "provides",
+    "source_trigger": "supports",
+    "semantic_basis": "support/provision"
+   },
+   "no": {
+    "sentence_id": "atheano",
+    "sentence": "The donors stops staff restoring the theater.",
+    "expected_provides": "NO",
+    "gold_provider": "The donors",
+    "gold_target": "staff",
+    "gold_relation": "none",
+    "source_trigger": "stop",
+    "semantic_basis": "control: cessation, no provision"
+   }
+  },
+  {
+   "pair_id": "bthea",
+   "cell": "B",
+   "scenario": "thea",
+   "yes": {
+    "sentence_id": "btheayes",
+    "sentence": "The donors supports the restoration of the theater.",
+    "expected_provides": "YES",
+    "gold_provider": "The donors",
+    "gold_target": "the restoration of the theater",
+    "gold_relation": "provides",
+    "source_trigger": "supports",
+    "semantic_basis": "support/provision"
+   },
+   "no": {
+    "sentence_id": "btheano",
+    "sentence": "The donors stops the restoration of the theater.",
+    "expected_provides": "NO",
+    "gold_provider": "The donors",
+    "gold_target": "the restoration of the theater",
+    "gold_relation": "none",
+    "source_trigger": "stop",
+    "semantic_basis": "control: cessation, no provision"
+   }
+  },
+  {
+   "pair_id": "cthea",
+   "cell": "C",
+   "scenario": "thea",
+   "yes": {
+    "sentence_id": "ctheayes",
+    "sentence": "Staff restoring the theater are supported by the donors.",
+    "expected_provides": "YES",
+    "gold_provider": "The donors",
+    "gold_target": "staff",
+    "gold_relation": "provides",
+    "source_trigger": "supports",
+    "semantic_basis": "support/provision"
+   },
+   "no": {
+    "sentence_id": "ctheano",
+    "sentence": "Staff restoring the theater are stopped by the donors.",
+    "expected_provides": "NO",
+    "gold_provider": "The donors",
+    "gold_target": "staff",
+    "gold_relation": "none",
+    "source_trigger": "stop",
+    "semantic_basis": "control: cessation, no provision"
+   }
+  },
+  {
+   "pair_id": "dthea",
+   "cell": "D",
+   "scenario": "thea",
+   "yes": {
+    "sentence_id": "dtheayes",
+    "sentence": "The restoration of the theater is supported by the donors.",
+    "expected_provides": "YES",
+    "gold_provider": "The donors",
+    "gold_target": "the restoration of the theater",
+    "gold_relation": "provides",
+    "source_trigger": "supports",
+    "semantic_basis": "support/provision"
+   },
+   "no": {
+    "sentence_id": "dtheano",
+    "sentence": "The restoration of the theater is stopped by the donors.",
+    "expected_provides": "NO",
+    "gold_provider": "The donors",
+    "gold_target": "the restoration of the theater",
+    "gold_relation": "none",
+    "source_trigger": "stop",
+    "semantic_basis": "control: cessation, no provision"
+   }
+  },
+  {
+   "pair_id": "ahosp",
+   "cell": "A",
+   "scenario": "hosp",
+   "yes": {
+    "sentence_id": "ahospyes",
+    "sentence": "The city supports crews rebuilding the bridge.",
+    "expected_provides": "YES",
+    "gold_provider": "The city",
+    "gold_target": "crews",
+    "gold_relation": "provides",
+    "source_trigger": "supports",
+    "semantic_basis": "support/provision"
+   },
+   "no": {
+    "sentence_id": "ahospno",
+    "sentence": "The city stops crews rebuilding the bridge.",
+    "expected_provides": "NO",
+    "gold_provider": "The city",
+    "gold_target": "crews",
+    "gold_relation": "none",
+    "source_trigger": "stop",
+    "semantic_basis": "control: cessation, no provision"
+   }
+  },
+  {
+   "pair_id": "bhosp",
+   "cell": "B",
+   "scenario": "hosp",
+   "yes": {
+    "sentence_id": "bhospyes",
+    "sentence": "The city supports the rebuilding of the bridge.",
+    "expected_provides": "YES",
+    "gold_provider": "The city",
+    "gold_target": "the rebuilding of the bridge",
+    "gold_relation": "provides",
+    "source_trigger": "supports",
+    "semantic_basis": "support/provision"
+   },
+   "no": {
+    "sentence_id": "bhospno",
+    "sentence": "The city stops the rebuilding of the bridge.",
+    "expected_provides": "NO",
+    "gold_provider": "The city",
+    "gold_target": "the rebuilding of the bridge",
+    "gold_relation": "none",
+    "source_trigger": "stop",
+    "semantic_basis": "control: cessation, no provision"
+   }
+  },
+  {
+   "pair_id": "chosp",
+   "cell": "C",
+   "scenario": "hosp",
+   "yes": {
+    "sentence_id": "chospyes",
+    "sentence": "Crews rebuilding the bridge are supported by the city.",
+    "expected_provides": "YES",
+    "gold_provider": "The city",
+    "gold_target": "crews",
+    "gold_relation": "provides",
+    "source_trigger": "supports",
+    "semantic_basis": "support/provision"
+   },
+   "no": {
+    "sentence_id": "chospno",
+    "sentence": "Crews rebuilding the bridge are stopped by the city.",
+    "expected_provides": "NO",
+    "gold_provider": "The city",
+    "gold_target": "crews",
+    "gold_relation": "none",
+    "source_trigger": "stop",
+    "semantic_basis": "control: cessation, no provision"
+   }
+  },
+  {
+   "pair_id": "dhosp",
+   "cell": "D",
+   "scenario": "hosp",
+   "yes": {
+    "sentence_id": "dhospyes",
+    "sentence": "The rebuilding of the bridge is supported by the city.",
+    "expected_provides": "YES",
+    "gold_provider": "The city",
+    "gold_target": "the rebuilding of the bridge",
+    "gold_relation": "provides",
+    "source_trigger": "supports",
+    "semantic_basis": "support/provision"
+   },
+   "no": {
+    "sentence_id": "dhospno",
+    "sentence": "The rebuilding of the bridge is stopped by the city.",
+    "expected_provides": "NO",
+    "gold_provider": "The city",
+    "gold_target": "the rebuilding of the bridge",
+    "gold_relation": "none",
+    "source_trigger": "stop",
+    "semantic_basis": "control: cessation, no provision"
+   }
+  },
+  {
+   "pair_id": "amus",
+   "cell": "A",
+   "scenario": "mus",
+   "yes": {
+    "sentence_id": "amusyes",
+    "sentence": "The trust supports artists recording songs.",
+    "expected_provides": "YES",
+    "gold_provider": "The trust",
+    "gold_target": "artists",
+    "gold_relation": "provides",
+    "source_trigger": "supports",
+    "semantic_basis": "support/provision"
+   },
+   "no": {
+    "sentence_id": "amusno",
+    "sentence": "The trust stops artists recording songs.",
+    "expected_provides": "NO",
+    "gold_provider": "The trust",
+    "gold_target": "artists",
+    "gold_relation": "none",
+    "source_trigger": "stop",
+    "semantic_basis": "control: cessation, no provision"
+   }
+  },
+  {
+   "pair_id": "bmus",
+   "cell": "B",
+   "scenario": "mus",
+   "yes": {
+    "sentence_id": "bmusyes",
+    "sentence": "The trust supports the recording of songs.",
+    "expected_provides": "YES",
+    "gold_provider": "The trust",
+    "gold_target": "the recording of songs",
+    "gold_relation": "provides",
+    "source_trigger": "supports",
+    "semantic_basis": "support/provision"
+   },
+   "no": {
+    "sentence_id": "bmusno",
+    "sentence": "The trust stops the recording of songs.",
+    "expected_provides": "NO",
+    "gold_provider": "The trust",
+    "gold_target": "the recording of songs",
+    "gold_relation": "none",
+    "source_trigger": "stop",
+    "semantic_basis": "control: cessation, no provision"
+   }
+  },
+  {
+   "pair_id": "cmus",
+   "cell": "C",
+   "scenario": "mus",
+   "yes": {
+    "sentence_id": "cmusyes",
+    "sentence": "Artists recording songs are supported by the trust.",
+    "expected_provides": "YES",
+    "gold_provider": "The trust",
+    "gold_target": "artists",
+    "gold_relation": "provides",
+    "source_trigger": "supports",
+    "semantic_basis": "support/provision"
+   },
+   "no": {
+    "sentence_id": "cmusno",
+    "sentence": "Artists recording songs are stopped by the trust.",
+    "expected_provides": "NO",
+    "gold_provider": "The trust",
+    "gold_target": "artists",
+    "gold_relation": "none",
+    "source_trigger": "stop",
+    "semantic_basis": "control: cessation, no provision"
+   }
+  },
+  {
+   "pair_id": "dmus",
+   "cell": "D",
+   "scenario": "mus",
+   "yes": {
+    "sentence_id": "dmusyes",
+    "sentence": "The recording of songs is supported by the trust.",
+    "expected_provides": "YES",
+    "gold_provider": "The trust",
+    "gold_target": "the recording of songs",
+    "gold_relation": "provides",
+    "source_trigger": "supports",
+    "semantic_basis": "support/provision"
+   },
+   "no": {
+    "sentence_id": "dmusno",
+    "sentence": "The recording of songs is stopped by the trust.",
+    "expected_provides": "NO",
+    "gold_provider": "The trust",
+    "gold_target": "the recording of songs",
+    "gold_relation": "none",
+    "source_trigger": "stop",
+    "semantic_basis": "control: cessation, no provision"
+   }
+  }
+ ]
+}

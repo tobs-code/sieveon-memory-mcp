@@ -1,0 +1,27 @@
+{
+  "version": "candidate_exclusion_tree_v1",
+  "date": "2026-10-04",
+  "status": "frozen",
+  "wording_rule": "seven single hypotheses show no systematic silence effect; span/selection errors were found locally, and a null on one factor does not exclude interactions",
+  "probes": [
+    {"probe": "position/PP-role", "result": "b5644f8", "finding": "40/40 candidates incl. PP_PROVIDER, PP_RECIPIENT, PASSIVE, NONFINITE", "reading": "no position effect"},
+    {"probe": "lexical coverage (L)", "result": "a4eea29", "finding": "YES 22/22 across L1-L4; generator permissive, not restrictive", "reading": "no lexical/verb-coverage effect"},
+    {"probe": "finite complexity (C)", "result": "54f9809", "finding": "C0-C4 20/20; C5 3/4 with 1 span error (Providing units fused)", "reading": "no general complexity effect"},
+    {"probe": "anaphora (D)", "result": "b613ff0", "finding": "27/28 present; local anaphora yields pronoun spans (linking matter); cross-sentence yields explicit spans", "reading": "no systematic anaphora silence"},
+    {"probe": "event nominal (E)", "result": "4d3a930", "finding": "16/16 present; E2 bypasses nominal to of-complement in 3/4 (span preference)", "reading": "no silence effect; selection bias noted"},
+    {"probe": "benefactive (T)", "result": "d951923", "finding": "16/16 present; 16/16 provider+beneficiary, 0/16 theme (incl. T0 control)", "reading": "no silence effect; animate-recipient selection preference"},
+    {"probe": "metaphor (M)", "result": "4a85e37", "finding": "M0 8/8; M1 YES* 2/3 (ammunition absent); M3 11/12 (options absent); effect-NOs all produce candidates", "reading": "no class effect; two item-level misses"}
+  ],
+  "batch6_FN_state": {
+    "true_silence_reproduced": 9,
+    "selection_explained": 0,
+    "literal_unexplained": ["prodc6-012", "prodc6-027", "prodc6-030", "prodc6-032", "prodc6-112", "prodc6-120", "prodc6-130", "prodc6-132"],
+    "figurative": ["prodc6-055"],
+    "rule": "8 literal + 1 figurative carried separately; no retroactive reclassification to fit new hypotheses"
+  },
+  "open_fronts": {
+    "interactions": "passive x nominalization (132-shape): not excluded by any single-factor probe",
+    "role_semantics": "instrument / non-canonical provider (027-shape): not excluded",
+    "staging_note": "P(selection | candidate exists) can be strong while P(candidate exists) goes to zero for some constructions; different stages, no contradiction"
+  }
+}
