@@ -1,0 +1,40 @@
+{
+  "version": "candidate_metaphor_probe_v1",
+  "status": "preregistered_before_inference",
+  "date": "2026-10-04",
+  "pipeline_changes": "none",
+  "starting_state": {
+    "batch6_FN_reproduction": "9/9 TRUE SILENCE reproduced with unchanged generator",
+    "selection_remap": "0/9 explained by selection bias (no alternative ever emitted)",
+    "literal_unexplained": 8,
+    "figurative": 1,
+    "figurative_case": "prodc6-055 (tales opened Western eyes: awareness causation)"
+  },
+  "negative_anchors": [
+    "b5644f8: position no effect",
+    "a4eea29: lexicon no effect",
+    "54f9809: finite complexity no effect",
+    "b613ff0: anaphora no effect (27/28)",
+    "4d3a930: event nominals no effect (16/16)",
+    "d951923: benefactive framing causes no silence (16/16 present)",
+    "remap: selection preference explains 0/9 FNs"
+  ],
+  "staging_note": "benefactive selection (16/16) and FN-130 silence are compatible: P(selection | candidate exists) can be strong while P(candidate exists) goes to zero for some semantic constructions. Different stages, no contradiction.",
+  "hypothesis": {
+    "H1": "Candidate Generation loses provides relations when the provision predicate is used figuratively (requiring a literal-to-figurative mapping), even with syntax, verb, arity, and entity types held constant.",
+    "H0": "Candidate recall does not depend on literality given constant structure."
+  },
+  "metaphor_operationalization": "a predicate occurrence counts as figurative only if (a) its literal reading denotes a non-provision physical event, (b) the provision reading requires a conventional mapping (e.g. vision/light to knowledge/awareness), and (c) the mapping is fixed per pair before inference. Figurative must NOT become a bucket for merely unusual semantics.",
+  "test_design": {
+    "kind": "minimal_pairs with controlled literality switch",
+    "constant": ["syntax", "verb", "argument count", "entity types (approximately)", "gold relation (explicitly defined per pair)"],
+    "varied": "literality only"
+  },
+  "primary_metrics": ["candidate_recall_literal_vs_figurative", "provider_recovery", "recipient_recovery"],
+  "decision_rule": {
+    "metaphor_support": "figurative variants materially lower with literal controls stable, reproducing across independent mappings",
+    "negative_result": "literality does not explain silence; remaining 8 literal FNs need a non-metaphorical account"
+  },
+  "forbidden_during_probe": ["no trigger additions", "no prompt changes", "no thresholds", "no assertion changes", "no PostFilter changes", "no new linking rules"],
+  "test_material": "not yet built; pairs to be generated once, validated, pair_id-split, and frozen in a separate step"
+}
