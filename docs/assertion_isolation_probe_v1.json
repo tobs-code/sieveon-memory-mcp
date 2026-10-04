@@ -61,5 +61,29 @@
   "interpretation_rule": "A pooled directional difference WITHOUT a concordant directional pattern in the lexical within-source comparison is NOT evidence for an Assertion-layer effect; such a pattern would instead indicate a source/material artifact. Concordant direction in both analyses is a diagnostic signal, not a causal claim, given the small lexical sample."
  },
  "design_limitation": "framing label is confounded with source by construction (eventnominal and recipient are SUPPORT-only); accepted knowingly, not balanced by deleting material, per methodological decision",
- "no_change_after_freeze": "labels, source assignment and condition definitions are frozen; no rebalancing, no re-labelling, no prompt/rule/threshold change"
+ "no_change_after_freeze": "labels, source assignment and condition definitions are frozen; no rebalancing, no re-labelling, no prompt/rule/threshold change",
+ "results": {
+  "run_commit_pending": true,
+  "overall_by_condition": {
+   "SUPPORT_FRAMING": "25/45",
+   "NON_SUPPORT_FRAMING": "3/11",
+   "MODAL": "0/1",
+   "NEGATIVE_DENY": "0/22"
+  },
+  "primary_lexical_within_source": {
+   "SUPPORT": "3/5",
+   "NON_SUPPORT": "3/9"
+  },
+  "descriptive_single_condition_sources": {
+   "eventnominal_SUPPORT": "15/15",
+   "recipient_SUPPORT": "6/24"
+  },
+  "context_batch6": "1/4 (prodc6-129 ACCEPT; 005/033/149 REJECT)",
+  "pooled_orientation_only": "25/45 vs 3/11 shows a directional difference",
+  "interpretation_per_frozen_rule": "NOT an Assertion-layer effect. The pooled difference (25/45 vs 3/11) has no concordant directional pattern in the primary lexical within-source comparison (3/5 vs 3/9), so by the frozen interpretation rule this is a source/material artifact, not a framing effect.",
+  "secondary_finding": "eventnominal (explicit-support predicates, all 15) 15/15 ACCEPT vs recipient (access_display framing, all 24) 6/24 - the split tracks the explicit support verb vs the show/provide-access pattern, not the SUPPORT label itself.",
+  "false_accept_control": "NEGATIVE_DENY 0/22 ACCEPT - validator rejects all denial controls, no false accepts observed.",
+  "boundary_note": "of the 3 NON_SUPPORT accepts, 2 were flagged boundary cases (lesson_provision, towel_service); the third is fuel_supply.",
+  "residual": "3/4 batch-6 gold matches still rejected (005 electron->electron acceptors, 033 fuel->burner, 149 modal beekeeper->hive); the assertion layer continues to reject correct extractions but the rejection does not track the coded support/non-support framing."
+ }
 }
