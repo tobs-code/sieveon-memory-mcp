@@ -1,0 +1,252 @@
+{
+ "version": "candidate_themerole_results_v1",
+ "material": "docs/candidate_themerole_material_v1.json",
+ "stage": "candidate_generation_only (nu_candidates, no validator, no linking)",
+ "match_rule": "normalized span equality or containment, either direction; gold slots are provider+second-argument",
+ "pairs": [
+  {
+   "pair_id": "t101",
+   "subprobe": "T1",
+   "verb": "assist",
+   "sides": {
+    "concrete": {
+     "sentence_id": "t101c",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The guide",
+       "the traveler"
+      ]
+     ],
+     "provider": true,
+     "second": true,
+     "outcome": "correct"
+    },
+    "nonproto": {
+     "sentence_id": "t101n",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The guide",
+       "aerial navigation"
+      ]
+     ],
+     "provider": true,
+     "second": true,
+     "outcome": "correct"
+    }
+   }
+  },
+  {
+   "pair_id": "t102",
+   "subprobe": "T1",
+   "verb": "assist",
+   "sides": {
+    "concrete": {
+     "sentence_id": "t102c",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "technician",
+       "operator"
+      ]
+     ],
+     "provider": true,
+     "second": true,
+     "outcome": "correct"
+    },
+    "nonproto": {
+     "sentence_id": "t102n",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The technician",
+       "equipment"
+      ]
+     ],
+     "provider": true,
+     "second": true,
+     "outcome": "correct"
+    }
+   }
+  },
+  {
+   "pair_id": "t103",
+   "subprobe": "T1",
+   "verb": "assist",
+   "sides": {
+    "concrete": {
+     "sentence_id": "t103c",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The nurse",
+       "the patient"
+      ]
+     ],
+     "provider": true,
+     "second": true,
+     "outcome": "correct"
+    },
+    "nonproto": {
+     "sentence_id": "t103n",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The nurse",
+       "patient"
+      ]
+     ],
+     "provider": true,
+     "second": true,
+     "outcome": "correct"
+    }
+   }
+  },
+  {
+   "pair_id": "t104",
+   "subprobe": "T1",
+   "verb": "assist",
+   "sides": {
+    "concrete": {
+     "sentence_id": "t104c",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The engineer",
+       "the team"
+      ]
+     ],
+     "provider": true,
+     "second": true,
+     "outcome": "correct"
+    },
+    "nonproto": {
+     "sentence_id": "t104n",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The engineer",
+       "system integration"
+      ]
+     ],
+     "provider": true,
+     "second": true,
+     "outcome": "correct"
+    }
+   }
+  },
+  {
+   "pair_id": "t201",
+   "subprobe": "T2",
+   "verb": "serve",
+   "sides": {
+    "concrete": {
+     "sentence_id": "t201c",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": false,
+     "second": false,
+     "outcome": "absent"
+    },
+    "nonproto": {
+     "sentence_id": "t201n",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": false,
+     "second": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "t202",
+   "subprobe": "T2",
+   "verb": "serve",
+   "sides": {
+    "concrete": {
+     "sentence_id": "t202c",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The church",
+       "dinner"
+      ]
+     ],
+     "provider": true,
+     "second": true,
+     "outcome": "correct"
+    },
+    "nonproto": {
+     "sentence_id": "t202n",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The church",
+       "communion"
+      ]
+     ],
+     "provider": true,
+     "second": true,
+     "outcome": "correct"
+    }
+   }
+  },
+  {
+   "pair_id": "t203",
+   "subprobe": "T2",
+   "verb": "serve",
+   "sides": {
+    "concrete": {
+     "sentence_id": "t203c",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": false,
+     "second": false,
+     "outcome": "absent"
+    },
+    "nonproto": {
+     "sentence_id": "t203n",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clerk",
+       "notices"
+      ]
+     ],
+     "provider": true,
+     "second": true,
+     "outcome": "correct"
+    }
+   }
+  },
+  {
+   "pair_id": "t204",
+   "subprobe": "T2",
+   "verb": "serve",
+   "sides": {
+    "concrete": {
+     "sentence_id": "t204c",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": false,
+     "second": false,
+     "outcome": "absent"
+    },
+    "nonproto": {
+     "sentence_id": "t204n",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The company",
+       "accounts"
+      ]
+     ],
+     "provider": true,
+     "second": true,
+     "outcome": "correct"
+    }
+   }
+  }
+ ]
+}
