@@ -406,6 +406,10 @@ frozen production baseline; Track A is archived research.
 - **Production corpus:** `docs/production_corpus_v1.json` (150 sentences,
   digest-pinned) with annotated error matrix
   (`docs/production_error_matrix_v1.json`).
+- **MCP integration:** Track B is an opt-in backend
+  (`EXTRACTION_METHOD=trackb`, needs local Ollama + `KILO_API_KEY`);
+  triples carry `extractor="trackb"` plus candidate/validator provenance.
+  Not in the `auto` chain — default behavior unchanged.
 
 ## License
 
