@@ -1,0 +1,436 @@
+{
+ "version": "candidate_implicit_theme_results_v1",
+ "material": "docs/candidate_implicit_theme_material_v1.json",
+ "stage": "candidate_generation_only (nu_candidates, no validator, no linking)",
+ "match_rule": "normalized span equality or containment, either direction",
+ "pairs": [
+  {
+   "pair_id": "b01",
+   "sides": {
+    "overt": {
+     "sentence_id": "b01overt_yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The company",
+       "the workers"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "overt_no": {
+     "sentence_id": "b01overt_no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The company",
+       "the workers"
+      ]
+     ],
+     "provider": null,
+     "recipient": false,
+     "theme": false,
+     "outcome": "false_candidate"
+    },
+    "dropped": {
+     "sentence_id": "b01dropped_yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The company",
+       "the workers"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "dropped_no": {
+     "sentence_id": "b01dropped_no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The company",
+       "the workers"
+      ]
+     ],
+     "provider": null,
+     "recipient": false,
+     "theme": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "b02",
+   "sides": {
+    "overt": {
+     "sentence_id": "b02overt_yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The firm",
+       "contractors"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "overt_no": {
+     "sentence_id": "b02overt_no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": null,
+     "recipient": false,
+     "theme": false,
+     "outcome": "absent"
+    },
+    "dropped": {
+     "sentence_id": "b02dropped_yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The firm",
+       "contractors"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "dropped_no": {
+     "sentence_id": "b02dropped_no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": null,
+     "recipient": false,
+     "theme": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "b03",
+   "sides": {
+    "overt": {
+     "sentence_id": "b03overt_yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The instructor",
+       "the students"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "overt_no": {
+     "sentence_id": "b03overt_no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The instructor",
+       "the students"
+      ]
+     ],
+     "provider": null,
+     "recipient": false,
+     "theme": false,
+     "outcome": "false_candidate"
+    },
+    "dropped": {
+     "sentence_id": "b03dropped_yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The instructor",
+       "the students"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "dropped_no": {
+     "sentence_id": "b03dropped_no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The instructor",
+       "the students"
+      ]
+     ],
+     "provider": null,
+     "recipient": false,
+     "theme": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "b04",
+   "sides": {
+    "overt": {
+     "sentence_id": "b04overt_yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "pupils"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "overt_no": {
+     "sentence_id": "b04overt_no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "pupils"
+      ]
+     ],
+     "provider": null,
+     "recipient": false,
+     "theme": false,
+     "outcome": "false_candidate"
+    },
+    "dropped": {
+     "sentence_id": "b04dropped_yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "pupils"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "dropped_no": {
+     "sentence_id": "b04dropped_no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "pupils"
+      ]
+     ],
+     "provider": null,
+     "recipient": false,
+     "theme": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "b05",
+   "sides": {
+    "overt": {
+     "sentence_id": "b05overt_yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The chef",
+       "the guests"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "overt_no": {
+     "sentence_id": "b05overt_no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": null,
+     "recipient": false,
+     "theme": false,
+     "outcome": "absent"
+    },
+    "dropped": {
+     "sentence_id": "b05dropped_yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The chef",
+       "the guests"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "dropped_no": {
+     "sentence_id": "b05dropped_no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": null,
+     "recipient": false,
+     "theme": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "b06",
+   "sides": {
+    "overt": {
+     "sentence_id": "b06overt_yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The host",
+       "diners"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "overt_no": {
+     "sentence_id": "b06overt_no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": null,
+     "recipient": false,
+     "theme": false,
+     "outcome": "absent"
+    },
+    "dropped": {
+     "sentence_id": "b06dropped_yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The host",
+       "diners"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "dropped_no": {
+     "sentence_id": "b06dropped_no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": null,
+     "recipient": false,
+     "theme": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "b07",
+   "sides": {
+    "overt": {
+     "sentence_id": "b07overt_yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The farmer",
+       "the horses"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "overt_no": {
+     "sentence_id": "b07overt_no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": null,
+     "recipient": false,
+     "theme": false,
+     "outcome": "absent"
+    },
+    "dropped": {
+     "sentence_id": "b07dropped_yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The farmer",
+       "the horses"
+      ]
+     ],
+     "provider": true,
+     "recipient": true,
+     "theme": false,
+     "outcome": "correct"
+    },
+    "dropped_no": {
+     "sentence_id": "b07dropped_no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": null,
+     "recipient": false,
+     "theme": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "b08",
+   "sides": {
+    "overt": {
+     "sentence_id": "b08overt_yes",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": false,
+     "recipient": false,
+     "theme": false,
+     "outcome": "absent"
+    },
+    "overt_no": {
+     "sentence_id": "b08overt_no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": null,
+     "recipient": false,
+     "theme": false,
+     "outcome": "absent"
+    },
+    "dropped": {
+     "sentence_id": "b08dropped_yes",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": false,
+     "recipient": false,
+     "theme": false,
+     "outcome": "absent"
+    },
+    "dropped_no": {
+     "sentence_id": "b08dropped_no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": null,
+     "recipient": false,
+     "theme": false,
+     "outcome": "absent"
+    }
+   }
+  }
+ ]
+}

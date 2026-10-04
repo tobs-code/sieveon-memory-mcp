@@ -1,0 +1,353 @@
+{
+ "version": "candidate_implicit_agent_results_v1",
+ "material": "docs/candidate_implicit_agent_material_v1.json",
+ "stage": "candidate_generation_only (nu_candidates, no validator, no linking)",
+ "match_rule": "normalized span equality or containment, either direction",
+ "pairs": [
+  {
+   "pair_id": "a1inf",
+   "sides": {
+    "yes": {
+     "sentence_id": "a1infyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "infirmary",
+       "patients"
+      ]
+     ],
+     "provider": true,
+     "outcome": "correct",
+     "recipient": true,
+     "theme": false
+    },
+    "no": {
+     "sentence_id": "a1infno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "infirmary",
+       "patients"
+      ]
+     ],
+     "provider": true,
+     "second": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "a2inf",
+   "sides": {
+    "yes": {
+     "sentence_id": "a2infyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "infirmary",
+       "patients"
+      ]
+     ],
+     "provider": true,
+     "outcome": "correct",
+     "recipient": true,
+     "theme": false
+    },
+    "no": {
+     "sentence_id": "a2infno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "infirmary",
+       "patients"
+      ]
+     ],
+     "provider": true,
+     "second": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "a3inf",
+   "sides": {
+    "yes": {
+     "sentence_id": "a3infyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "Doses",
+       "patients"
+      ]
+     ],
+     "provider": false,
+     "outcome": "partial",
+     "recipient": true,
+     "theme": false
+    },
+    "no": {
+     "sentence_id": "a3infno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": false,
+     "second": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "a1ldg",
+   "sides": {
+    "yes": {
+     "sentence_id": "a1ldgyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The lodge",
+       "hikers"
+      ]
+     ],
+     "provider": true,
+     "outcome": "correct",
+     "recipient": true,
+     "theme": false
+    },
+    "no": {
+     "sentence_id": "a1ldgno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": false,
+     "second": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "a2ldg",
+   "sides": {
+    "yes": {
+     "sentence_id": "a2ldgyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the lodge",
+       "hikers"
+      ]
+     ],
+     "provider": true,
+     "outcome": "correct",
+     "recipient": true,
+     "theme": false
+    },
+    "no": {
+     "sentence_id": "a2ldgno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the lodge",
+       "hikers"
+      ]
+     ],
+     "provider": true,
+     "second": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "a3ldg",
+   "sides": {
+    "yes": {
+     "sentence_id": "a3ldgyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "Maps",
+       "hikers"
+      ]
+     ],
+     "provider": false,
+     "outcome": "partial",
+     "recipient": true,
+     "theme": false
+    },
+    "no": {
+     "sentence_id": "a3ldgno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": false,
+     "second": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "a1std",
+   "sides": {
+    "yes": {
+     "sentence_id": "a1stdyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The studio",
+       "members"
+      ]
+     ],
+     "provider": true,
+     "outcome": "correct",
+     "recipient": true,
+     "theme": false
+    },
+    "no": {
+     "sentence_id": "a1stdno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": false,
+     "second": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "a2std",
+   "sides": {
+    "yes": {
+     "sentence_id": "a2stdyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the studio",
+       "members"
+      ]
+     ],
+     "provider": true,
+     "outcome": "correct",
+     "recipient": true,
+     "theme": false
+    },
+    "no": {
+     "sentence_id": "a2stdno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the studio",
+       "members"
+      ]
+     ],
+     "provider": true,
+     "second": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "a3std",
+   "sides": {
+    "yes": {
+     "sentence_id": "a3stdyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "Manuals",
+       "members"
+      ]
+     ],
+     "provider": false,
+     "outcome": "partial",
+     "recipient": true,
+     "theme": false
+    },
+    "no": {
+     "sentence_id": "a3stdno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": false,
+     "second": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "a1gal",
+   "sides": {
+    "yes": {
+     "sentence_id": "a1galyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The gallery",
+       "visitors"
+      ]
+     ],
+     "provider": true,
+     "outcome": "correct",
+     "recipient": true,
+     "theme": false
+    },
+    "no": {
+     "sentence_id": "a1galno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": false,
+     "second": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "a2gal",
+   "sides": {
+    "yes": {
+     "sentence_id": "a2galyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the gallery",
+       "visitors"
+      ]
+     ],
+     "provider": true,
+     "outcome": "correct",
+     "recipient": true,
+     "theme": false
+    },
+    "no": {
+     "sentence_id": "a2galno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": false,
+     "second": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "a3gal",
+   "sides": {
+    "yes": {
+     "sentence_id": "a3galyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "Catalogs",
+       "visitors"
+      ]
+     ],
+     "provider": false,
+     "outcome": "partial",
+     "recipient": true,
+     "theme": false
+    },
+    "no": {
+     "sentence_id": "a3galno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider": false,
+     "second": false,
+     "outcome": "absent"
+    }
+   }
+  }
+ ],
+ "classifier": "v2 recipient-convention (analysis-only rescore; recorded candidates unchanged)"
+}
