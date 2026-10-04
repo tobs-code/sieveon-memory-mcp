@@ -1,0 +1,491 @@
+{
+  "version": "candidate_probe_material_v1",
+  "status": "draft_for_review (NOT frozen, NO generator run)",
+  "date": "2026-10-04",
+  "protocol": "docs/candidate_argument_realization_probe_v1.json",
+  "design": "20 pairs x 2 variants. Fully crossed verb x class: provide/supply/offer/give appear once per class. Non-canonical pairs: same verb, minimal realization change from a ditransitive canonical control. CANONICAL pairs: ditransitive vs prepositional-dative frame stability control (both canonical). Note: CANONICAL-B surfaces coincide with PP_RECIPIENT-B surfaces by construction (same alternation); pairs stay independent via pair_id and distinct entities. PP_PROVIDER operationalized as nominalized provision (finite-active same-verb provider-PP is ungrammatical); documented limitation. Batch-6 FN sentences never reused; no proper names; no donation/CTA content.",
+  "pairs": [
+    {
+      "pair_id": "probe01",
+      "class": "CANONICAL",
+      "verb": "provide",
+      "semantic_subtype": "medical_provision",
+      "a": {
+        "sentence_id": "probe01a",
+        "text": "The clinic provides patients with medication.",
+        "surface_form": "provide + ditransitive",
+        "syntactic_class": "canonical_ditransitive",
+        "semantic_class": "medical_provision"
+      },
+      "b": {
+        "sentence_id": "probe01b",
+        "text": "The clinic provides medication to patients.",
+        "surface_form": "provide + prepositional-dative",
+        "syntactic_class": "canonical_prepositional_dative",
+        "semantic_class": "medical_provision"
+      },
+      "provider_gold": "The clinic",
+      "recipient_gold": "patients",
+      "relation_gold": "provides",
+      "expected_candidate": true
+    },
+    {
+      "pair_id": "probe02",
+      "class": "CANONICAL",
+      "verb": "supply",
+      "semantic_subtype": "fuel_supply",
+      "a": {
+        "sentence_id": "probe02a",
+        "text": "The depot supplies the base with fuel.",
+        "surface_form": "supply + ditransitive",
+        "syntactic_class": "canonical_ditransitive",
+        "semantic_class": "fuel_supply"
+      },
+      "b": {
+        "sentence_id": "probe02b",
+        "text": "The depot supplies fuel to the base.",
+        "surface_form": "supply + prepositional-dative",
+        "syntactic_class": "canonical_prepositional_dative",
+        "semantic_class": "fuel_supply"
+      },
+      "provider_gold": "The depot",
+      "recipient_gold": "the base",
+      "relation_gold": "provides",
+      "expected_candidate": true
+    },
+    {
+      "pair_id": "probe03",
+      "class": "CANONICAL",
+      "verb": "offer",
+      "semantic_subtype": "training_provision",
+      "a": {
+        "sentence_id": "probe03a",
+        "text": "The center offers applicants training.",
+        "surface_form": "offer + ditransitive",
+        "syntactic_class": "canonical_ditransitive",
+        "semantic_class": "training_provision"
+      },
+      "b": {
+        "sentence_id": "probe03b",
+        "text": "The center offers training to applicants.",
+        "surface_form": "offer + prepositional-dative",
+        "syntactic_class": "canonical_prepositional_dative",
+        "semantic_class": "training_provision"
+      },
+      "provider_gold": "The center",
+      "recipient_gold": "applicants",
+      "relation_gold": "provides",
+      "expected_candidate": true
+    },
+    {
+      "pair_id": "probe04",
+      "class": "CANONICAL",
+      "verb": "give",
+      "semantic_subtype": "book_provision",
+      "a": {
+        "sentence_id": "probe04a",
+        "text": "The foundation gives schools computers.",
+        "surface_form": "give + ditransitive",
+        "syntactic_class": "canonical_ditransitive",
+        "semantic_class": "book_provision"
+      },
+      "b": {
+        "sentence_id": "probe04b",
+        "text": "The foundation gives computers to schools.",
+        "surface_form": "give + prepositional-dative",
+        "syntactic_class": "canonical_prepositional_dative",
+        "semantic_class": "book_provision"
+      },
+      "provider_gold": "The foundation",
+      "recipient_gold": "schools",
+      "relation_gold": "provides",
+      "expected_candidate": true
+    },
+    {
+      "pair_id": "probe05",
+      "class": "PP_PROVIDER",
+      "verb": "supply",
+      "semantic_subtype": "food_supply",
+      "a": {
+        "sentence_id": "probe05a",
+        "text": "The bakery supplies shops with flour.",
+        "surface_form": "supply + ditransitive",
+        "syntactic_class": "canonical_subject_object",
+        "semantic_class": "food_supply"
+      },
+      "b": {
+        "sentence_id": "probe05b",
+        "text": "The supply of flour to shops by the bakery remains stable.",
+        "surface_form": "supply + nominalization + by-PP",
+        "syntactic_class": "provider_in_PP",
+        "semantic_class": "food_supply"
+      },
+      "provider_gold": "the bakery",
+      "recipient_gold": "shops",
+      "relation_gold": "provides",
+      "expected_candidate": true
+    },
+    {
+      "pair_id": "probe06",
+      "class": "PP_PROVIDER",
+      "verb": "provide",
+      "semantic_subtype": "medical_provision",
+      "a": {
+        "sentence_id": "probe06a",
+        "text": "The hospital provides therapy to children.",
+        "surface_form": "provide + prepositional-dative",
+        "syntactic_class": "canonical_subject_object",
+        "semantic_class": "medical_provision"
+      },
+      "b": {
+        "sentence_id": "probe06b",
+        "text": "The provision of therapy to children by the hospital continues this year.",
+        "surface_form": "provide + nominalization + by-PP",
+        "syntactic_class": "provider_in_PP",
+        "semantic_class": "medical_provision"
+      },
+      "provider_gold": "the hospital",
+      "recipient_gold": "children",
+      "relation_gold": "provides",
+      "expected_candidate": true
+    },
+    {
+      "pair_id": "probe07",
+      "class": "PP_PROVIDER",
+      "verb": "offer",
+      "semantic_subtype": "training_provision",
+      "a": {
+        "sentence_id": "probe07a",
+        "text": "The studio offers classes to beginners.",
+        "surface_form": "offer + prepositional-dative",
+        "syntactic_class": "canonical_subject_object",
+        "semantic_class": "training_provision"
+      },
+      "b": {
+        "sentence_id": "probe07b",
+        "text": "The offering of classes to beginners by the studio continues this term.",
+        "surface_form": "offer + nominalization + by-PP",
+        "syntactic_class": "provider_in_PP",
+        "semantic_class": "training_provision"
+      },
+      "provider_gold": "the studio",
+      "recipient_gold": "beginners",
+      "relation_gold": "provides",
+      "expected_candidate": true
+    },
+    {
+      "pair_id": "probe08",
+      "class": "PP_PROVIDER",
+      "verb": "give",
+      "semantic_subtype": "food_provision",
+      "a": {
+        "sentence_id": "probe08a",
+        "text": "The charity gives meals to shelters.",
+        "surface_form": "give + prepositional-dative",
+        "syntactic_class": "canonical_subject_object",
+        "semantic_class": "food_provision"
+      },
+      "b": {
+        "sentence_id": "probe08b",
+        "text": "The giving of meals to shelters by the charity continues this winter.",
+        "surface_form": "give + nominalization + by-PP",
+        "syntactic_class": "provider_in_PP",
+        "semantic_class": "food_provision"
+      },
+      "provider_gold": "the charity",
+      "recipient_gold": "shelters",
+      "relation_gold": "provides",
+      "expected_candidate": true
+    },
+    {
+      "pair_id": "probe09",
+      "class": "PP_RECIPIENT",
+      "verb": "provide",
+      "semantic_subtype": "medical_provision",
+      "a": {
+        "sentence_id": "probe09a",
+        "text": "The pharmacy provides customers with vaccines.",
+        "surface_form": "provide + ditransitive",
+        "syntactic_class": "canonical_subject_object",
+        "semantic_class": "medical_provision"
+      },
+      "b": {
+        "sentence_id": "probe09b",
+        "text": "The pharmacy provides vaccines to customers.",
+        "surface_form": "provide + prepositional-dative",
+        "syntactic_class": "recipient_in_PP",
+        "semantic_class": "medical_provision"
+      },
+      "provider_gold": "The pharmacy",
+      "recipient_gold": "customers",
+      "relation_gold": "provides",
+      "expected_candidate": true
+    },
+    {
+      "pair_id": "probe10",
+      "class": "PP_RECIPIENT",
+      "verb": "supply",
+      "semantic_subtype": "food_supply",
+      "a": {
+        "sentence_id": "probe10a",
+        "text": "The mill supplies bakeries with flour.",
+        "surface_form": "supply + ditransitive",
+        "syntactic_class": "canonical_subject_object",
+        "semantic_class": "food_supply"
+      },
+      "b": {
+        "sentence_id": "probe10b",
+        "text": "The mill supplies flour to bakeries.",
+        "surface_form": "supply + prepositional-dative",
+        "syntactic_class": "recipient_in_PP",
+        "semantic_class": "food_supply"
+      },
+      "provider_gold": "The mill",
+      "recipient_gold": "bakeries",
+      "relation_gold": "provides",
+      "expected_candidate": true
+    },
+    {
+      "pair_id": "probe11",
+      "class": "PP_RECIPIENT",
+      "verb": "offer",
+      "semantic_subtype": "tutoring_provision",
+      "a": {
+        "sentence_id": "probe11a",
+        "text": "The school offers students tutoring.",
+        "surface_form": "offer + ditransitive",
+        "syntactic_class": "canonical_subject_object",
+        "semantic_class": "tutoring_provision"
+      },
+      "b": {
+        "sentence_id": "probe11b",
+        "text": "The school offers tutoring to students.",
+        "surface_form": "offer + prepositional-dative",
+        "syntactic_class": "recipient_in_PP",
+        "semantic_class": "tutoring_provision"
+      },
+      "provider_gold": "The school",
+      "recipient_gold": "students",
+      "relation_gold": "provides",
+      "expected_candidate": true
+    },
+    {
+      "pair_id": "probe12",
+      "class": "PP_RECIPIENT",
+      "verb": "give",
+      "semantic_subtype": "art_provision",
+      "a": {
+        "sentence_id": "probe12a",
+        "text": "The donor gives museums paintings.",
+        "surface_form": "give + ditransitive",
+        "syntactic_class": "canonical_subject_object",
+        "semantic_class": "art_provision"
+      },
+      "b": {
+        "sentence_id": "probe12b",
+        "text": "The donor gives paintings to museums.",
+        "surface_form": "give + prepositional-dative",
+        "syntactic_class": "recipient_in_PP",
+        "semantic_class": "art_provision"
+      },
+      "provider_gold": "The donor",
+      "recipient_gold": "museums",
+      "relation_gold": "provides",
+      "expected_candidate": true
+    },
+    {
+      "pair_id": "probe13",
+      "class": "PASSIVE",
+      "verb": "provide",
+      "semantic_subtype": "medical_provision",
+      "a": {
+        "sentence_id": "probe13a",
+        "text": "The clinic provides vaccines to patients.",
+        "surface_form": "provide + prepositional-dative",
+        "syntactic_class": "canonical_subject_object",
+        "semantic_class": "medical_provision"
+      },
+      "b": {
+        "sentence_id": "probe13b",
+        "text": "Vaccines are provided to patients by the clinic.",
+        "surface_form": "provide + finite passive + by-PP",
+        "syntactic_class": "passive",
+        "semantic_class": "medical_provision"
+      },
+      "provider_gold": "the clinic",
+      "recipient_gold": "patients",
+      "relation_gold": "provides",
+      "expected_candidate": true
+    },
+    {
+      "pair_id": "probe14",
+      "class": "PASSIVE",
+      "verb": "supply",
+      "semantic_subtype": "fuel_supply",
+      "a": {
+        "sentence_id": "probe14a",
+        "text": "The terminal supplies diesel to the fleet.",
+        "surface_form": "supply + prepositional-dative",
+        "syntactic_class": "canonical_subject_object",
+        "semantic_class": "fuel_supply"
+      },
+      "b": {
+        "sentence_id": "probe14b",
+        "text": "Diesel is supplied to the fleet by the terminal.",
+        "surface_form": "supply + finite passive + by-PP",
+        "syntactic_class": "passive",
+        "semantic_class": "fuel_supply"
+      },
+      "provider_gold": "the terminal",
+      "recipient_gold": "the fleet",
+      "relation_gold": "provides",
+      "expected_candidate": true
+    },
+    {
+      "pair_id": "probe15",
+      "class": "PASSIVE",
+      "verb": "offer",
+      "semantic_subtype": "training_provision",
+      "a": {
+        "sentence_id": "probe15a",
+        "text": "The institute offers courses to trainees.",
+        "surface_form": "offer + prepositional-dative",
+        "syntactic_class": "canonical_subject_object",
+        "semantic_class": "training_provision"
+      },
+      "b": {
+        "sentence_id": "probe15b",
+        "text": "Courses are offered to trainees by the institute.",
+        "surface_form": "offer + finite passive + by-PP",
+        "syntactic_class": "passive",
+        "semantic_class": "training_provision"
+      },
+      "provider_gold": "the institute",
+      "recipient_gold": "trainees",
+      "relation_gold": "provides",
+      "expected_candidate": true
+    },
+    {
+      "pair_id": "probe16",
+      "class": "PASSIVE",
+      "verb": "give",
+      "semantic_subtype": "book_provision",
+      "a": {
+        "sentence_id": "probe16a",
+        "text": "The foundation gives books to the school.",
+        "surface_form": "give + prepositional-dative",
+        "syntactic_class": "canonical_subject_object",
+        "semantic_class": "book_provision"
+      },
+      "b": {
+        "sentence_id": "probe16b",
+        "text": "Books are given to the school by the foundation.",
+        "surface_form": "give + finite passive + by-PP",
+        "syntactic_class": "passive",
+        "semantic_class": "book_provision"
+      },
+      "provider_gold": "the foundation",
+      "recipient_gold": "the school",
+      "relation_gold": "provides",
+      "expected_candidate": true
+    },
+    {
+      "pair_id": "probe17",
+      "class": "NONFINITE",
+      "verb": "provide",
+      "semantic_subtype": "medical_provision",
+      "a": {
+        "sentence_id": "probe17a",
+        "text": "The practice provides treatment to clients.",
+        "surface_form": "provide + prepositional-dative",
+        "syntactic_class": "canonical_subject_object",
+        "semantic_class": "medical_provision"
+      },
+      "b": {
+        "sentence_id": "probe17b",
+        "text": "Treatment provided to clients by the practice aids healing.",
+        "surface_form": "provide + participial modifier + by-PP",
+        "syntactic_class": "non_finite_or_embedded",
+        "semantic_class": "medical_provision"
+      },
+      "provider_gold": "the practice",
+      "recipient_gold": "clients",
+      "relation_gold": "provides",
+      "expected_candidate": true
+    },
+    {
+      "pair_id": "probe18",
+      "class": "NONFINITE",
+      "verb": "supply",
+      "semantic_subtype": "parts_supply",
+      "a": {
+        "sentence_id": "probe18a",
+        "text": "The supplier supplies parts to factories.",
+        "surface_form": "supply + prepositional-dative",
+        "syntactic_class": "canonical_subject_object",
+        "semantic_class": "parts_supply"
+      },
+      "b": {
+        "sentence_id": "probe18b",
+        "text": "Parts supplied to factories by the supplier arrived late.",
+        "surface_form": "supply + participial modifier + by-PP",
+        "syntactic_class": "non_finite_or_embedded",
+        "semantic_class": "parts_supply"
+      },
+      "provider_gold": "the supplier",
+      "recipient_gold": "factories",
+      "relation_gold": "provides",
+      "expected_candidate": true
+    },
+    {
+      "pair_id": "probe19",
+      "class": "NONFINITE",
+      "verb": "offer",
+      "semantic_subtype": "housing_provision",
+      "a": {
+        "sentence_id": "probe19a",
+        "text": "The agency offers housing to refugees.",
+        "surface_form": "offer + prepositional-dative",
+        "syntactic_class": "canonical_subject_object",
+        "semantic_class": "housing_provision"
+      },
+      "b": {
+        "sentence_id": "probe19b",
+        "text": "Housing offered to refugees by the agency eased the crisis.",
+        "surface_form": "offer + participial modifier + by-PP",
+        "syntactic_class": "non_finite_or_embedded",
+        "semantic_class": "housing_provision"
+      },
+      "provider_gold": "The agency",
+      "recipient_gold": "refugees",
+      "relation_gold": "provides",
+      "expected_candidate": true
+    },
+    {
+      "pair_id": "probe20",
+      "class": "NONFINITE",
+      "verb": "give",
+      "semantic_subtype": "grant_provision",
+      "a": {
+        "sentence_id": "probe20a",
+        "text": "The program gives stipends to artists.",
+        "surface_form": "give + prepositional-dative",
+        "syntactic_class": "canonical_subject_object",
+        "semantic_class": "grant_provision"
+      },
+      "b": {
+        "sentence_id": "probe20b",
+        "text": "Stipends given to artists by the program fund new work.",
+        "surface_form": "give + participial modifier + by-PP",
+        "syntactic_class": "non_finite_or_embedded",
+        "semantic_class": "grant_provision"
+      },
+      "provider_gold": "The program",
+      "recipient_gold": "artists",
+      "relation_gold": "provides",
+      "expected_candidate": true
+    }
+  ],
+  "class_mapping": "protocol class A (canonical_subject_object) covers canonical_ditransitive + canonical_prepositional_dative; CANONICAL pairs are frame-stability controls, not a primary realization class",
+  "pp_provider_limitation": "PP_PROVIDER is an operationalized construction (nominalization + by-PP), not a pure PP-position test; a deficit here must not be read as PP-arguments-are-hard without further decomposition"
+}
