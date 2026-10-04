@@ -1,0 +1,39 @@
+{
+  "version": "candidate_eventnominal_probe_v1",
+  "status": "preregistered_before_inference",
+  "date": "2026-10-04",
+  "pipeline_changes": "none",
+  "negative_anchors": [
+    "b5644f8: argument position alone does not explain candidate silence",
+    "a4eea29: lexical realization does not explain candidate silence",
+    "54f9809: finite syntactic complexity does not explain candidate silence",
+    "b613ff0: anaphora does not explain candidate silence (27/28 present)"
+  ],
+  "scope_note": "NOT nominalization in general (PP_PROVIDER nominals were found 8/8 in the position probe). Only: does Candidate Generation lose a relation when the argument itself is an event/process nominal?",
+  "lexical_constant": "YES=supports (broadly accepted support trigger with established mapping to canonical provides), NO=deny",
+  "classes": {
+    "E0": "ordinary entity as object",
+    "E1": "event nominal as object",
+    "E2": "event nominal + of-argument",
+    "E3": "result/artifact nominal as nominal-sanity control (ordinary noun, complex NP)"
+  },
+  "example": {
+    "E0": "The foundation supports the museum.",
+    "E1": "The foundation supports the renovation.",
+    "E2": "The foundation supports the renovation of the museum.",
+    "E3": "The foundation supports the renovated museum."
+  },
+  "why_not_funding_frame": "avoids 'provides funding for digitization' where digitization may be purpose/benefactive (purpose-as-recipient trap)",
+  "worthness_separation": "node-worthiness verdicts are recorded per target span but MUST NOT influence the primary candidate metric. Generator-correct + worthiness-reject = ontology question, not a candidate FN.",
+  "target_type_field": "entity | event_nominal | event_nominal_of | result_nominal (stored per item for later ontology analysis, e.g. batch-6 case prodc6-132)",
+  "primary_metrics": ["candidate_present_per_class", "correct_provider_per_class", "correct_target_span_per_class", "worthiness_verdict_per_target_separate"],
+  "decision_rule": {
+    "E1_E2_eq_E0": "event nominals do not explain batch-6 silence",
+    "E1_E2_worse": "event nominal confirmed as candidate-generation factor",
+    "present_but_worthiness_reject": "not a candidate problem; investigate node-worthiness/ontology",
+    "present_but_wrong_span": "span/role problem, not silence"
+  },
+  "excluded": ["metaphor", "benefactives"],
+  "material_shape": "16 pairs (4 per class) x YES/NO with deny = 32 sentences; same provider+frame within pair, verb differs only",
+  "test_material": "draft built alongside; freeze + single generator run on explicit go"
+}
