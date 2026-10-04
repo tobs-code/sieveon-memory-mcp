@@ -1,5 +1,5 @@
 {
- "version": "handoff_v8",
+ "version": "handoff_v8b",
  "date": "2026-10-04",
  "role": "evidence-chain handoff, not a new scientific factor",
  "head": "b0ab64d",
@@ -174,9 +174,9 @@
   "r6_validator_recipient": "recipient-source rejections (A-REJECT, 10 valid items) survive scope removal; mechanism OPEN, deliberately not further decomposed inside batch-6 material"
  },
  "next_candidate_agreed": {
-  "primary": "batch 7 external replication on fresh material with frozen production pipeline v1.2.1, no batch-6 hypothesis transfer",
-  "first_question": "does the silence finding reproduce at all on new material",
-  "after_replication": "recipient gets its own probe only if it reproduces outside batch-6 material"
+  "primary": "resume the batch 7 fetch from the audit trail (ec017a5 stays in force)",
+  "then": "corpus freeze -> production pipeline v1.2.1 run -> seeded N=80 sample -> blind annotation -> replication verdict",
+  "not_now": "no rule change, no partial corpus, no mechanism work on batch-6 material"
  },
  "do_not_repeat": [
   "any single-factor candidate probe listed above",
@@ -219,5 +219,41 @@
   "validator": "two separate phenomena: (1) support-scope phrase is load-bearing for explicit support predicates, (2) recipient rejections unexplained by scope removal",
   "postfilter": "no hard drop; 15 ACCEPT / 10 WARN / 3 ABSTAIN / 0 REJECT of 28",
   "linker_worthiness": "no drop; selection preferences only"
+ },
+ "batch7_state": {
+  "chain": [
+   "f607716 batch 7 replication protocol (one primary question, no mechanism analysis)",
+   "a2fcb33 source selection v1 (superseded before any document was selected)",
+   "20e029d aborted pre-fetch (no document selected, not corpus-forming)",
+   "ec017a5 source selection v2 (long-form institutional documents, >=300 usable sentences, >=3 sections, 2 documents per domain, single global ratio for a ~200-sentence corpus)",
+   "b02ecb0 fetch audit trail (mechanical qualification gate demonstrated)",
+   "b898648 fetch checkpoint (incomplete on purpose)"
+  ],
+  "status": "FETCH INCOMPLETE",
+  "headline": "Fetch unvollstaendig; keine Aussage ueber Replikation, Materialqualitaet oder Regelangemessenheit. Nur die technische Ausfuehrbarkeit des eingefrorenen Qualifikationsgates wurde bislang demonstriert.",
+  "progress": {
+   "documents_selected": 1,
+   "documents_needed": 24,
+   "domains_started": 4,
+   "domains_complete": 0,
+   "qualified": "ISO/IEC Directives Part 2 (CEN), 584 usable sentences, 9 sections, sha256 pinned"
+  },
+  "mechanics_validated": [
+   "qualification gate is deterministic and needs no analyst judgement",
+   "FAIL (below minimum) and FETCH_FAILED (unreachable host) are recorded separately",
+   "candidates are never substituted or re-evaluated",
+   "the gate demonstrably finds qualifying documents"
+  ],
+  "low_pass_rate_is_not_a_finding": "1 of 4 first candidates passed; the constraint is the 300-sentence minimum combined with scraper reachability, not document availability. No corpus hypothesis is derived from it",
+  "resume_point": "docs/batch7_fetch_log_v1.json -> audit_trail; continue at the first candidate whose verdict is 'pending'",
+  "not_allowed": [
+   "change the 300-sentence threshold",
+   "change 2 documents per domain",
+   "replace a domain",
+   "re-evaluate already rejected candidates",
+   "use pipeline output for document selection",
+   "derive a corpus hypothesis from the pass rate so far"
+  ],
+  "repro_infrastructure": "scripts/batch7_qualify.py (mechanical gate), scripts/build_batch7_corpus.py (section-wise sampling with the single global ratio)"
  }
 }
