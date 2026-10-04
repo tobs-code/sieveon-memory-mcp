@@ -1,0 +1,698 @@
+{
+ "version": "candidate_recipient_results_v1",
+ "protocol": "docs/candidate_recipient_probe_v1.json",
+ "material": "docs/candidate_recipient_material_v1.json",
+ "stage": "candidate_generation_only (nu_candidates, no validator, no linking)",
+ "match_rule": "normalized span equality or containment, either direction",
+ "pairs": [
+  {
+   "pair_id": "r001",
+   "condition": "R0",
+   "set": 1,
+   "sides": {
+    "yes": {
+     "sentence_id": "r001yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The stadium",
+       "fans"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct",
+     "theme_recovered": false
+    },
+    "no": {
+     "sentence_id": "r001no",
+     "n_candidates": 0,
+     "candidates": [],
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "r101",
+   "condition": "R1",
+   "set": 1,
+   "sides": {
+    "yes": {
+     "sentence_id": "r101yes",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "outcome": "absent",
+     "theme_recovered": false
+    },
+    "no": {
+     "sentence_id": "r101no",
+     "n_candidates": 0,
+     "candidates": [],
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "r201",
+   "condition": "R2",
+   "set": 1,
+   "sides": {
+    "yes": {
+     "sentence_id": "r201yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The stadium",
+       "fans"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct",
+     "theme_recovered": false
+    },
+    "no": {
+     "sentence_id": "r201no",
+     "n_candidates": 0,
+     "candidates": [],
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "r002",
+   "condition": "R0",
+   "set": 2,
+   "sides": {
+    "yes": {
+     "sentence_id": "r002yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The kennel",
+       "owners"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct",
+     "theme_recovered": false
+    },
+    "no": {
+     "sentence_id": "r002no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The kennel",
+       "owners"
+      ]
+     ],
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "r102",
+   "condition": "R1",
+   "set": 2,
+   "sides": {
+    "yes": {
+     "sentence_id": "r102yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The kennel",
+       "puppies"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": false,
+     "outcome": "correct",
+     "theme_recovered": true
+    },
+    "no": {
+     "sentence_id": "r102no",
+     "n_candidates": 0,
+     "candidates": [],
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "r202",
+   "condition": "R2",
+   "set": 2,
+   "sides": {
+    "yes": {
+     "sentence_id": "r202yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The kennel",
+       "owners"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct",
+     "theme_recovered": false
+    },
+    "no": {
+     "sentence_id": "r202no",
+     "n_candidates": 0,
+     "candidates": [],
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "r003",
+   "condition": "R0",
+   "set": 3,
+   "sides": {
+    "yes": {
+     "sentence_id": "r003yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The observatory",
+       "astronomers"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct",
+     "theme_recovered": false
+    },
+    "no": {
+     "sentence_id": "r003no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The observatory",
+       "astronomers"
+      ]
+     ],
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "r103",
+   "condition": "R1",
+   "set": 3,
+   "sides": {
+    "yes": {
+     "sentence_id": "r103yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The observatory",
+       "images"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": false,
+     "outcome": "correct",
+     "theme_recovered": true
+    },
+    "no": {
+     "sentence_id": "r103no",
+     "n_candidates": 0,
+     "candidates": [],
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "r203",
+   "condition": "R2",
+   "set": 3,
+   "sides": {
+    "yes": {
+     "sentence_id": "r203yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The observatory",
+       "astronomers"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct",
+     "theme_recovered": false
+    },
+    "no": {
+     "sentence_id": "r203no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The observatory",
+       "astronomers"
+      ]
+     ],
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "r004",
+   "condition": "R0",
+   "set": 4,
+   "sides": {
+    "yes": {
+     "sentence_id": "r004yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The garage",
+       "drivers"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct",
+     "theme_recovered": false
+    },
+    "no": {
+     "sentence_id": "r004no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The garage",
+       "drivers"
+      ]
+     ],
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "r104",
+   "condition": "R1",
+   "set": 4,
+   "sides": {
+    "yes": {
+     "sentence_id": "r104yes",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "outcome": "absent",
+     "theme_recovered": false
+    },
+    "no": {
+     "sentence_id": "r104no",
+     "n_candidates": 0,
+     "candidates": [],
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "r204",
+   "condition": "R2",
+   "set": 4,
+   "sides": {
+    "yes": {
+     "sentence_id": "r204yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The garage",
+       "drivers"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct",
+     "theme_recovered": false
+    },
+    "no": {
+     "sentence_id": "r204no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The garage",
+       "drivers"
+      ]
+     ],
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "r005",
+   "condition": "R0",
+   "set": 5,
+   "sides": {
+    "yes": {
+     "sentence_id": "r005yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The hostel",
+       "travelers"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct",
+     "theme_recovered": false
+    },
+    "no": {
+     "sentence_id": "r005no",
+     "n_candidates": 0,
+     "candidates": [],
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "r105",
+   "condition": "R1",
+   "set": 5,
+   "sides": {
+    "yes": {
+     "sentence_id": "r105yes",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "outcome": "absent",
+     "theme_recovered": false
+    },
+    "no": {
+     "sentence_id": "r105no",
+     "n_candidates": 0,
+     "candidates": [],
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "r205",
+   "condition": "R2",
+   "set": 5,
+   "sides": {
+    "yes": {
+     "sentence_id": "r205yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The hostel",
+       "travelers"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct",
+     "theme_recovered": false
+    },
+    "no": {
+     "sentence_id": "r205no",
+     "n_candidates": 0,
+     "candidates": [],
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "r006",
+   "condition": "R0",
+   "set": 6,
+   "sides": {
+    "yes": {
+     "sentence_id": "r006yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The nursery",
+       "parents"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct",
+     "theme_recovered": false
+    },
+    "no": {
+     "sentence_id": "r006no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The nursery",
+       "parents"
+      ]
+     ],
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "r106",
+   "condition": "R1",
+   "set": 6,
+   "sides": {
+    "yes": {
+     "sentence_id": "r106yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The nursery",
+       "seedlings"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": false,
+     "outcome": "correct",
+     "theme_recovered": true
+    },
+    "no": {
+     "sentence_id": "r106no",
+     "n_candidates": 0,
+     "candidates": [],
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "r206",
+   "condition": "R2",
+   "set": 6,
+   "sides": {
+    "yes": {
+     "sentence_id": "r206yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The nursery",
+       "parents"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct",
+     "theme_recovered": false
+    },
+    "no": {
+     "sentence_id": "r206no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "nursery",
+       "parents"
+      ]
+     ],
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "r007",
+   "condition": "R0",
+   "set": 7,
+   "sides": {
+    "yes": {
+     "sentence_id": "r007yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The arcade",
+       "players"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct",
+     "theme_recovered": false
+    },
+    "no": {
+     "sentence_id": "r007no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The arcade",
+       "players"
+      ]
+     ],
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "r107",
+   "condition": "R1",
+   "set": 7,
+   "sides": {
+    "yes": {
+     "sentence_id": "r107yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The arcade",
+       "tokens"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": false,
+     "outcome": "correct",
+     "theme_recovered": true
+    },
+    "no": {
+     "sentence_id": "r107no",
+     "n_candidates": 0,
+     "candidates": [],
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "r207",
+   "condition": "R2",
+   "set": 7,
+   "sides": {
+    "yes": {
+     "sentence_id": "r207yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The arcade",
+       "players"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct",
+     "theme_recovered": false
+    },
+    "no": {
+     "sentence_id": "r207no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The arcade",
+       "players"
+      ]
+     ],
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "r008",
+   "condition": "R0",
+   "set": 8,
+   "sides": {
+    "yes": {
+     "sentence_id": "r008yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The apiary",
+       "beekeepers"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct",
+     "theme_recovered": false
+    },
+    "no": {
+     "sentence_id": "r008no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "apiary",
+       "beekeepers"
+      ]
+     ],
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "r108",
+   "condition": "R1",
+   "set": 8,
+   "sides": {
+    "yes": {
+     "sentence_id": "r108yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The apiary",
+       "smokers"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": false,
+     "outcome": "correct",
+     "theme_recovered": true
+    },
+    "no": {
+     "sentence_id": "r108no",
+     "n_candidates": 0,
+     "candidates": [],
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "r208",
+   "condition": "R2",
+   "set": 8,
+   "sides": {
+    "yes": {
+     "sentence_id": "r208yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "apiary",
+       "beekeepers"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct",
+     "theme_recovered": false
+    },
+    "no": {
+     "sentence_id": "r208no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "apiary",
+       "smokers"
+      ]
+     ],
+     "outcome": "false_candidate"
+    }
+   }
+  }
+ ],
+ "classifier": "v2 R1-aware (provider+theme counts correct for recipientless gold; analysis-only rescore, recorded candidates unchanged)"
+}
