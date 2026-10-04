@@ -1,0 +1,54 @@
+{
+  "version": "candidate_lexical_probe_v1",
+  "status": "preregistered_before_inference",
+  "date": "2026-10-04",
+  "pipeline_changes": "none",
+  "negative_anchor": "b5644f8: argument position alone does not explain candidate silence (40/40 provider, 40/40 recipient, 40/40 candidate across all realization classes)",
+  "phases": {
+    "Phase_L": "active: lexical-semantic coverage with syntax held constant",
+    "Phase_C": "gated: discourse/complexity ONLY after Phase L is evaluated; same-verb design; metaphor excluded to a later figurative-semantics class"
+  },
+  "hypothesis": {
+    "H1": "Candidate Generation loses genuine provides relations disproportionately for lexical realizations outside the established trigger core, even in simple syntax.",
+    "H0": "Candidate recall does not materially depend on lexical realization given simple syntax."
+  },
+  "test_design": {
+    "kind": "minimal_pairs varying lexicon only",
+    "frame": "identical syntactic frame within pair (ditransitive or prepositional-dative, both canonical)",
+    "split_unit": "pair_id",
+    "tuning": "none",
+    "pair_membership": "fixed before inference",
+    "frozen_after_first_result": "no sentence additions or removals"
+  },
+  "lexical_groups": {
+    "L1": "established core (provide, supply, offer, give: proven 40/40 in argument-realization probe)",
+    "L2": "clear synonyms / semantic neighbours (fresh lexemes)",
+    "L3": "functional verbs with provides-reading (fresh lexemes)",
+    "L4": "relational/nominal constructions (fresh constructions)"
+  },
+  "freshness_rule": "test lexemes must NOT be copied from batch-6 FN sentences (no give off, leaven, assist, serve as, fund, provide access, bring); batch-6 FNs stay held-out validation, never construction material",
+  "no_controls": "matched NO sentences: same frame, predicate with clearly no provides-reading; measures false-candidate rate so a permissive generator cannot fake recall",
+  "primary_metrics": ["candidate_recall_per_group", "provider_recovery_per_group", "recipient_recovery_per_group"],
+  "secondary_metrics": ["false_candidate_rate_on_NO_controls", "pairwise_variant_delta"],
+  "decision_rule": {
+    "lexical_support": "test groups materially lower than L1 in identical frames, reproducing across multiple independent lexemes",
+    "inconclusive": "differences depend on individual lexical items",
+    "negative_result": "open Phase C (discourse/complexity); do not modify candidate generation"
+  },
+  "phase_C_sketch_gated": {
+    "classes": ["C1 simple one-clause", "C2 anaphoric object", "C3 cross-clausal relation", "C4 nominal/event patient", "C5 coordination"],
+    "constraint": "same licensed/recognized verb throughout, so only complexity varies",
+    "excluded": "metaphor/figurative semantics (own later class, e.g. batch-6 case 055)"
+  },
+  "forbidden_during_probe": [
+    "no trigger additions",
+    "no prompt changes",
+    "no thresholds",
+    "no assertion changes",
+    "no PostFilter changes",
+    "no new linking rules",
+    "no candidate-generator fix after Phase L before asking why"
+  ],
+  "research_question": "Is candidate silence a problem of lexical-semantic coverage (Phase L) or of discourse/structural complexity (Phase C)?",
+  "test_material": "not yet built; pairs to be generated once, validated, pair_id-split, and frozen in a separate step"
+}
