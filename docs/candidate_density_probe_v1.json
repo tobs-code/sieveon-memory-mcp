@@ -1,0 +1,27 @@
+{
+  "version": "candidate_density_probe_v1",
+  "status": "preregistered_before_inference",
+  "date": "2026-10-04",
+  "pipeline_changes": "none",
+  "motivation": "FN/CONTROL profiling found density 7/9 vs 0/27, but the control pool holds density structurally constant, so no causal claim is licensed. This probe manipulates density with minimal pairs.",
+  "hypothesis": {
+    "H1": "Added propositional structure (relative clause / adverbial clause) around a constant target frame systematically produces candidate failure.",
+    "H0": "Candidate generation is unaffected by added propositional density given a constant target frame."
+  },
+  "conditions": {
+    "SINGLE": "bare target frame only",
+    "REL": "target frame + relative clause on the theme (MULTIPLE_EMBEDDED)",
+    "ADV": "target frame + adverbial clause with own subject (MULTIPLE_EMBEDDED)"
+  },
+  "invariants": "same predicate, roles, entity types, target frame; YES=give/provide-class verbs, NO=deny mirrors; no new lexical triggers",
+  "axes_per_item": ["proposition_density", "canonicality", "event_vs_state", "implicit_argument_count", "syntax_pattern", "predicate_argument_compatibility", "proposition_completeness"],
+  "primary_metrics": ["candidate_present_per_condition_YES (target frame)", "false_candidate_rate_NO"],
+  "decision_rule": {
+    "density_support": "REL/ADV materially below SINGLE with identical frames, reproducing across sets",
+    "negative_result": "density does not systematically cause failure; profiling separation stays descriptive"
+  },
+  "profiling_separation": "the 36 profiling items stay untouched; this is an independent test, not a re-analysis",
+  "forbidden_during_probe": ["no trigger additions", "no prompt changes", "no thresholds", "no assertion changes", "no PostFilter changes", "no new linking rules"],
+  "material_shape": "4 sets x 3 conditions x YES/NO = 24 sentences",
+  "test_material": "built by script; validation + freeze below"
+}
