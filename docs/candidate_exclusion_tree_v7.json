@@ -1,0 +1,40 @@
+{
+  "version": "candidate_exclusion_tree_v7",
+  "date": "2026-10-04",
+  "status": "frozen interim balance",
+  "supersedes": "candidate_exclusion_tree_v6 (5f0b7c7, unchanged)",
+  "wording_rule": "candidates were excluded, not proven absent: no linguistically motivated factor was found that reproduces the batch-6 silences; remaining errors are not localized at pipeline level",
+
+  "material_defect_ledger": [
+    {
+      "id": "DEFECT-ASSERTION-R1-NULL",
+      "found_in": "23846d4 (assertion-isolation material)",
+      "detected_in": "bbaff05 (postfilter replay surfaced it)",
+      "what": "8 of 79 frozen assertion-probe items carry a NULL gold recipient (recipient-probe R1 condition). The validator was asked '... to None' for those.",
+      "handling": "excluded from valid recipient analysis and from the postfilter replay; NO rerun, NO prompt change, NO result rewriting",
+      "scope_of_correction": "validity correction of the denominator, not a result optimization",
+      "headline_correction": "recipient-source figure is 6/16, not 6/24; pooled SUPPORT is 25/37, not 25/45",
+      "production_relevance": "none - all 8 are validator-REJECT and never reach postfilter in production"
+    }
+  ],
+
+  "pipeline_localization": {
+    "extractor": "not explained (14 controlled factors show no systematic silence effect)",
+    "validator": "UNEXPLAINED - eventnominal 15/15 vs recipient 6/16 on valid items; lexical within-source 3/5 vs 3/9 (no framing effect)",
+    "postfilter": "no hard drop: of 28 validator-ACCEPT items 15 ACCEPT, 10 WARN (UNKNOWN_TRIGGER), 3 ABSTAIN (entity gate), 0 REJECT; deny controls 18 WARN / 4 ABSTAIN / 0 ACCEPT",
+    "linker_worthiness": "no corresponding drop; documented selection preferences only"
+  },
+
+  "rejected_factors_n": 13,
+  "probes_total_n": 14,
+  "probe_addendum": [
+    {"n": 14, "factor": "assertion support/non-support framing", "result": "df4098c",
+     "finding": "pooled 25/37 vs 3/11 directional, but primary lexical within-source 3/5 vs 3/9 shows none; per frozen rule this is a source/material artifact, not an Assertion effect"},
+    {"n": 15, "factor": "postfilter removal of accepted gold relations", "result": "bbaff05",
+     "finding": "0 hard rejects of 28 validator-ACCEPT items; H-PF-DROP not supported; deny controls produce no edges"}
+  ],
+
+  "standing_statement": "14 controlled factors and the assertion-scope test do not explain the batch-6 silences. The validator stage carries the one unexplained split (15/15 vs 6/16). The PostFilter and linker/worthiness stages remove no correct extraction. These are candidate exclusions, not a proof that no linguistic factor remains.",
+
+  "next": "A/B prompt-scope probe: same frozen valid inputs, same extractor, same thresholds, only the semantic question changes. A/B definition frozen before the run. No new material scope."
+}

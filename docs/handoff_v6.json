@@ -1,114 +1,215 @@
 {
-  "version": "handoff_v6",
-  "date": "2026-10-04",
-  "role": "evidence-chain handoff, not a new scientific factor",
-  "head": "b0ab64d",
-  "working_tree": "clean",
-  "regression": "scripts/trackb_regression.py 8/8 GREEN, v1.2.1 baseline digest 540183ca3683968108d185510104b0a8fce1a65b7b5d42d804891dac4e29b314",
-  "audit": "scripts/consistency_audit.py 20/20 invariants, exit 0 (extend contract when a new probe adds headline numbers)",
-
-  "production_baseline": {
-    "version": "v1.2.1-operational",
-    "pipeline": "NuExtract3 candidates + stepfun assertion validator + pair-scoped acceptance + linking v1.3 (doc-scoped, gate 0.85) + node-worthiness v1 (W1/W2/W3, W3/W1 seed provisional) + postfilter v1.1",
-    "surreal": "16 edges, 34 evidence, digest 540183ca",
-    "unchanged_throughout": "no model, prompt, rule, threshold or pipeline change was made in any probe"
-  },
-
-  "chain_batch6": {
-    "corpus": "docs/production_corpus_v6.json, 150 sentences, 10 heterogeneous Wikipedia articles, digest 1b3d5608..., overlap 0 vs corpora v1-v5 and frozen test material",
-    "run": "docs/production_run_v6.jsonl, 156 records, 6 ACCEPT",
-    "gold": "docs/batch6_gold_v1.json, sentence-level 17 YES / 7 UNCLEAR / 126 NO",
-    "metrics": "docs/batch6_metrics_v1.json: candidate recall 0.47, assertion recall 0.25, end-to-end 0.06, precision 0.167",
-    "accept_gold": "docs/batch6_accept_annotation_v1.json: 1 TP, 5 FP, 5 distinct FP mechanisms",
-    "fn_truth": "9 sentence-level true silences reproduced with the unchanged generator (temperature 0, byte-identical to the batch-6 cache)"
-  },
-
-  "profiling_step": {
-    "matching_freeze": "e762051, 9 FNs x 3 structurally matched successful controls = 36 items, deterministic score 4/3/2/2/1, scores are match quality only",
-    "blind_audit_file": "docs/fn_profiling_blind_v1.json (mapping-free by design; blind_id -> role mapping lives OUTSIDE the repo, uncommitted)",
-    "independent_annotation": "docs/fn_profiling_blind_annotation_v1.json, 36 x 19 axes, supplemented verbatim, b35 transcription noise flagged not repaired",
-    "descriptive_separators": ["proposition_density 7/9 vs 0/27", "canonicality 0/9 P0 vs 23/27", "implicit_argument_count 5/9 vs 0/27", "event_vs_state MIXED 6/9 vs 0/27", "theme_role non-THEME 5/9 vs 0/27"],
-    "caveat": "the control pool holds density and canonicality constant by construction (minimal-pair probe sentences); the profiling separation licenses hypotheses, never causal claims"
-  },
-
-  "probes_run": [
-    {"n": 1, "factor": "position/argument realization", "result": "40/40 incl. PP, passive, nonfinite", "commit": "b5644f8", "verdict": "no effect"},
-    {"n": 2, "factor": "lexical coverage L1-L4", "result": "22/22; generator permissive, not restrictive", "commit": "a4eea29", "verdict": "no effect"},
-    {"n": 3, "factor": "finite syntactic complexity C0-C4/C5", "result": "20/20; C5 3/4 with 1 span fusion", "commit": "54f9809", "verdict": "no effect"},
-    {"n": 4, "factor": "anaphora/coreference D0-D6", "result": "27/28 relation-present; local anaphora yields pronoun spans", "commit": "b613ff0", "verdict": "no systematic silence"},
-    {"n": 5, "factor": "event nominal target E0-E3", "result": "16/16; E2 bypasses nominal for of-complement 3/4", "commit": "4d3a930", "verdict": "no silence; selection pattern"},
-    {"n": 6, "factor": "benefactive realization T0-T3", "result": "16/16 present; 16/16 provider+beneficiary, 0/16 theme incl. T0 control", "commit": "d951923", "verdict": "no silence; recipient-selection pattern"},
-    {"n": 7, "factor": "metaphorical realization M0/M1/M3", "result": "M0 8/8; M1 YES* 2/3; M3 11/12", "commit": "4a85e37", "verdict": "no class effect; item misses only"},
-    {"n": 8, "factor": "passive x nominal interaction (2x2)", "result": "16/16 correct in all cells", "commit": "107a946", "verdict": "no interaction"},
-    {"n": 9, "factor": "provider agency R0-R3", "result": "16/16 incl. systems and natural sources", "commit": "8888a38", "verdict": "no effect"},
-    {"n": 10, "factor": "recipient realization R0/R1/R2", "result": "R0 8/8, R2 8/8, R1 5/8 present, 3/8 residual", "commit": "0f6f883", "verdict": "explicit recipient not required; residual unexplained"},
-    {"n": 11, "factor": "proposition density SINGLE/REL/ADV", "result": "12/12 correct", "commit": "770a5d1", "verdict": "density NOT adopted as mechanism"},
-    {"n": 12, "factor": "implicit arguments (agent/theme/recipient separately)", "result": "agent 12/12 present; theme 7/8 vs 7/8; recipient 5/8", "commit": "e491eb4", "verdict": "no systematic effect (H-IMPLICIT rejected)"},
-    {"n": 13, "factor": "theme role T1 assist / T2 serve", "result": "T1 8/8 (confounded); T2 1/4 vs 3/4 against hypothesis direction", "commit": "675e5c4", "verdict": "H-THEME-ROLE not supported"}
+ "version": "handoff_v7",
+ "date": "2026-10-04",
+ "role": "evidence-chain handoff, not a new scientific factor",
+ "head": "b0ab64d",
+ "working_tree": "clean",
+ "regression": "scripts/trackb_regression.py 8/8 GREEN, v1.2.1 baseline digest 540183ca3683968108d185510104b0a8fce1a65b7b5d42d804891dac4e29b314",
+ "audit": "scripts/consistency_audit.py 20/20 invariants, exit 0 (extend contract when a new probe adds headline numbers)",
+ "production_baseline": {
+  "version": "v1.2.1-operational",
+  "pipeline": "NuExtract3 candidates + stepfun assertion validator + pair-scoped acceptance + linking v1.3 (doc-scoped, gate 0.85) + node-worthiness v1 (W1/W2/W3, W3/W1 seed provisional) + postfilter v1.1",
+  "surreal": "16 edges, 34 evidence, digest 540183ca",
+  "unchanged_throughout": "no model, prompt, rule, threshold or pipeline change was made in any probe"
+ },
+ "chain_batch6": {
+  "corpus": "docs/production_corpus_v6.json, 150 sentences, 10 heterogeneous Wikipedia articles, digest 1b3d5608..., overlap 0 vs corpora v1-v5 and frozen test material",
+  "run": "docs/production_run_v6.jsonl, 156 records, 6 ACCEPT",
+  "gold": "docs/batch6_gold_v1.json, sentence-level 17 YES / 7 UNCLEAR / 126 NO",
+  "metrics": "docs/batch6_metrics_v1.json: candidate recall 0.47, assertion recall 0.25, end-to-end 0.06, precision 0.167",
+  "accept_gold": "docs/batch6_accept_annotation_v1.json: 1 TP, 5 FP, 5 distinct FP mechanisms",
+  "fn_truth": "9 sentence-level true silences reproduced with the unchanged generator (temperature 0, byte-identical to the batch-6 cache)"
+ },
+ "profiling_step": {
+  "matching_freeze": "e762051, 9 FNs x 3 structurally matched successful controls = 36 items, deterministic score 4/3/2/2/1, scores are match quality only",
+  "blind_audit_file": "docs/fn_profiling_blind_v1.json (mapping-free by design; blind_id -> role mapping lives OUTSIDE the repo, uncommitted)",
+  "independent_annotation": "docs/fn_profiling_blind_annotation_v1.json, 36 x 19 axes, supplemented verbatim, b35 transcription noise flagged not repaired",
+  "descriptive_separators": [
+   "proposition_density 7/9 vs 0/27",
+   "canonicality 0/9 P0 vs 23/27",
+   "implicit_argument_count 5/9 vs 0/27",
+   "event_vs_state MIXED 6/9 vs 0/27",
+   "theme_role non-THEME 5/9 vs 0/27"
   ],
-
-  "standing_statement": "13 tested factors yield no reproduced systematic silence mechanism. The 8 literal batch-6 true silences survive every isolated factor. Remaining signals are span/selection patterns and single lexical/verb-level findings.",
-
-  "hypothesis_status": {
-    "H_position": "REJECTED",
-    "H_lexical": "REJECTED",
-    "H_finite_complexity": "REJECTED",
-    "H_anaphora": "REJECTED",
-    "H_event_nominal": "REJECTED",
-    "H_benefactive_silence": "REJECTED",
-    "H_metaphor": "NO CLASS EFFECT",
-    "H_passive_nominal_interaction": "REJECTED",
-    "H_provider_agency": "REJECTED",
-    "H_explicit_recipient_required": "REJECTED",
-    "H_density": "NOT ADOPTED (profiling separation stays descriptive)",
-    "H_IMPLICIT": "REJECTED AS SYSTEMATIC MECHANISM",
-    "H_THEME_ROLE": "NOT SUPPORTED",
-    "candidate_generator_hypothesis": "H001 (pair->provides binding blocked) remains ACTIVE but untested by the probes above"
+  "caveat": "the control pool holds density and canonicality constant by construction (minimal-pair probe sentences); the profiling separation licenses hypotheses, never causal claims"
+ },
+ "probes_run": [
+  {
+   "n": 1,
+   "factor": "position/argument realization",
+   "result": "40/40 incl. PP, passive, nonfinite",
+   "commit": "b5644f8",
+   "verdict": "no effect"
   },
-
-  "open_residuals_do_not_recycle": {
-    "r1_recipientless_3_8": "anthems, repairs, bunks silent; n=8, no shared feature, no mechanism derived",
-    "r2_metaphor_items": "ammunition absent, options absent; spread-maps inverted vs spread-rumors",
-    "r3_serve_lexicon": "T2 serve unstable across concrete/service items",
-    "r4_d2badge": "only true miss in anaphora probe (It provides visitors badges)",
-    "r5_prodc6_032": "implicit_argument_count=1 but the implicit role is UNKNOWN; not assigned to any probe",
-    "rule": "do not promote any residual to a hypothesis without independent new material"
+  {
+   "n": 2,
+   "factor": "lexical coverage L1-L4",
+   "result": "22/22; generator permissive, not restrictive",
+   "commit": "a4eea29",
+   "verdict": "no effect"
   },
-
-  "next_candidate_agreed": {
-    "primary": "assertion-layer probe (NOT batch 7 yet)",
-    "rationale": "assertion recall 0.25 (3/4 gold matches rejected) is the only measured intervention after extraction; a controlled probe must separate extractor gold match / assertion verdict / which assertion condition fires / resulting silent-looking outcome",
-    "secondary": "span/selection probe (E2 bypass, animate-recipient preference), only if assertion shows no systematic effect",
-    "external_check": "batch 7 on new real material after the controlled probes"
+  {
+   "n": 3,
+   "factor": "finite syntactic complexity C0-C4/C5",
+   "result": "20/20; C5 3/4 with 1 span fusion",
+   "commit": "54f9809",
+   "verdict": "no effect"
   },
-
-  "do_not_repeat": [
-    "any single-factor candidate probe listed above",
-    "re-litigating density, implicit arguments or theme role",
-    "modifying frozen corpora, golds, manifests or probe results",
-    "pooling T1/T2 or metaphoric/figurative controls",
-    "batch-6 FN sentences as probe construction material"
-  ],
-
-  "do_not_change": [
-    "docs/trackb_baseline_v121.json, all scope_taxonomy_freeze_v1.json, eval_phase_a_* manifests and protocols",
-    "probe materials, golds and results files (new versions only)",
-    "docs/fn_profiling_blind_v1.json must stay mapping-free"
-  ],
-
-  "operational_rules": {
-    "conversation": "German with user; all repo artefacts in English",
-    "gpu": "CUDA_VISIBLE_DEVICES=\"\" for every test/inference run",
-    "splits": "pair_id / construction_family_id + pair_id, never rows",
-    "commits": "only on explicit user request; no pushes without request",
-    "new_probe_order": "profile -> preregister (frozen material + gold + QC) -> single run -> record -> extend consistency_audit contract"
+  {
+   "n": 4,
+   "factor": "anaphora/coreference D0-D6",
+   "result": "27/28 relation-present; local anaphora yields pronoun spans",
+   "commit": "b613ff0",
+   "verdict": "no systematic silence"
   },
-
-  "key_invariants": [
-    "candidate stage is intentionally assertion-blind: deny/refuse/charge produce candidates",
-    "generator convention across all probes: provider + animate recipient in slots (theme usually NOT recovered)",
-    "TRUE SILENCE vs ARGUMENT SELECTION ERROR vs SCHEMA-UNREALIZABLE must stay separate outcome classes",
-    "profiling separation never licenses a causal claim; only a controlled minimal-pair probe may",
-    "two pre-run gold corrections are documented (8438219 T2 re-anchoring, classifier rescoring after receiver-convention fix); no post-hoc fitting"
-  ]
+  {
+   "n": 5,
+   "factor": "event nominal target E0-E3",
+   "result": "16/16; E2 bypasses nominal for of-complement 3/4",
+   "commit": "4d3a930",
+   "verdict": "no silence; selection pattern"
+  },
+  {
+   "n": 6,
+   "factor": "benefactive realization T0-T3",
+   "result": "16/16 present; 16/16 provider+beneficiary, 0/16 theme incl. T0 control",
+   "commit": "d951923",
+   "verdict": "no silence; recipient-selection pattern"
+  },
+  {
+   "n": 7,
+   "factor": "metaphorical realization M0/M1/M3",
+   "result": "M0 8/8; M1 YES* 2/3; M3 11/12",
+   "commit": "4a85e37",
+   "verdict": "no class effect; item misses only"
+  },
+  {
+   "n": 8,
+   "factor": "passive x nominal interaction (2x2)",
+   "result": "16/16 correct in all cells",
+   "commit": "107a946",
+   "verdict": "no interaction"
+  },
+  {
+   "n": 9,
+   "factor": "provider agency R0-R3",
+   "result": "16/16 incl. systems and natural sources",
+   "commit": "8888a38",
+   "verdict": "no effect"
+  },
+  {
+   "n": 10,
+   "factor": "recipient realization R0/R1/R2",
+   "result": "R0 8/8, R2 8/8, R1 5/8 present, 3/8 residual",
+   "commit": "0f6f883",
+   "verdict": "explicit recipient not required; residual unexplained"
+  },
+  {
+   "n": 11,
+   "factor": "proposition density SINGLE/REL/ADV",
+   "result": "12/12 correct",
+   "commit": "770a5d1",
+   "verdict": "density NOT adopted as mechanism"
+  },
+  {
+   "n": 12,
+   "factor": "implicit arguments (agent/theme/recipient separately)",
+   "result": "agent 12/12 present; theme 7/8 vs 7/8; recipient 5/8",
+   "commit": "e491eb4",
+   "verdict": "no systematic effect (H-IMPLICIT rejected)"
+  },
+  {
+   "n": 13,
+   "factor": "theme role T1 assist / T2 serve",
+   "result": "T1 8/8 (confounded); T2 1/4 vs 3/4 against hypothesis direction",
+   "commit": "675e5c4",
+   "verdict": "H-THEME-ROLE not supported"
+  },
+  {
+   "n": 14,
+   "factor": "assertion support/non-support framing",
+   "result": "df4098c",
+   "verdict": "no framing effect (primary 3/5 vs 3/9); pooled difference is a source artifact per frozen rule"
+  },
+  {
+   "n": 15,
+   "factor": "postfilter removal of accepted gold relations",
+   "result": "bbaff05",
+   "verdict": "no hard drop; H-PF-DROP not supported"
+  }
+ ],
+ "standing_statement": "14 controlled factors plus the assertion-scope test do not explain the batch-6 silences. The validator stage carries the one unexplained split (15/15 vs 6/16 on valid items). The PostFilter removes no correct extraction (0 hard rejects of 28 validator-ACCEPT items). These are candidate exclusions, not a proof that no linguistic factor remains.",
+ "hypothesis_status": {
+  "H_position": "REJECTED",
+  "H_lexical": "REJECTED",
+  "H_finite_complexity": "REJECTED",
+  "H_anaphora": "REJECTED",
+  "H_event_nominal": "REJECTED",
+  "H_benefactive_silence": "REJECTED",
+  "H_metaphor": "NO CLASS EFFECT",
+  "H_passive_nominal_interaction": "REJECTED",
+  "H_provider_agency": "REJECTED",
+  "H_explicit_recipient_required": "REJECTED",
+  "H_density": "NOT ADOPTED (profiling separation stays descriptive)",
+  "H_IMPLICIT": "REJECTED AS SYSTEMATIC MECHANISM",
+  "H_THEME_ROLE": "NOT SUPPORTED",
+  "candidate_generator_hypothesis": "H001 (pair->provides binding blocked) remains ACTIVE but untested by the probes above",
+  "H_ASSERT_SCOPE": "REJECTED (primary within-source null; pooled direction is a source artifact)",
+  "H_PF_DROP": "REJECTED (0 hard rejects of 28 validator-ACCEPT items)"
+ },
+ "open_residuals_do_not_recycle": {
+  "r1_recipientless_3_8": "anthems, repairs, bunks silent; n=8, no shared feature, no mechanism derived",
+  "r2_metaphor_items": "ammunition absent, options absent; spread-maps inverted vs spread-rumors",
+  "r3_serve_lexicon": "T2 serve unstable across concrete/service items",
+  "r4_d2badge": "only true miss in anaphora probe (It provides visitors badges)",
+  "r5_prodc6_032": "implicit_argument_count=1 but the implicit role is UNKNOWN; not assigned to any probe",
+  "rule": "do not promote any residual to a hypothesis without independent new material"
+ },
+ "next_candidate_agreed": {
+  "primary": "A/B prompt-scope probe (same frozen valid inputs, only the semantic question changes; A/B frozen before run)",
+  "secondary": "batch 7 as external reality check AFTER the pipeline boundary is known",
+  "not_now": "no new material scope for the A/B test; reuse the 71 valid items"
+ },
+ "do_not_repeat": [
+  "any single-factor candidate probe listed above",
+  "re-litigating density, implicit arguments or theme role",
+  "modifying frozen corpora, golds, manifests or probe results",
+  "pooling T1/T2 or metaphoric/figurative controls",
+  "batch-6 FN sentences as probe construction material",
+  "recomputing the assertion probe; df4098c stays the frozen run"
+ ],
+ "do_not_change": [
+  "docs/trackb_baseline_v121.json, all scope_taxonomy_freeze_v1.json, eval_phase_a_* manifests and protocols",
+  "probe materials, golds and results files (new versions only)",
+  "docs/fn_profiling_blind_v1.json must stay mapping-free"
+ ],
+ "operational_rules": {
+  "conversation": "German with user; all repo artefacts in English",
+  "gpu": "CUDA_VISIBLE_DEVICES=\"\" for every test/inference run",
+  "splits": "pair_id / construction_family_id + pair_id, never rows",
+  "commits": "only on explicit user request; no pushes without request",
+  "new_probe_order": "profile -> preregister (frozen material + gold + QC) -> single run -> record -> extend consistency_audit contract"
+ },
+ "key_invariants": [
+  "candidate stage is intentionally assertion-blind: deny/refuse/charge produce candidates",
+  "generator convention across all probes: provider + animate recipient in slots (theme usually NOT recovered)",
+  "TRUE SILENCE vs ARGUMENT SELECTION ERROR vs SCHEMA-UNREALIZABLE must stay separate outcome classes",
+  "profiling separation never licenses a causal claim; only a controlled minimal-pair probe may",
+  "two pre-run gold corrections are documented (8438219 T2 re-anchoring, classifier rescoring after receiver-convention fix); no post-hoc fitting"
+ ],
+ "material_defect_ledger": [
+  {
+   "id": "DEFECT-ASSERTION-R1-NULL",
+   "what": "8 of 79 assertion-probe items have a NULL gold recipient; the validator was asked '... to None' for those",
+   "handling": "excluded from valid recipient analysis and postfilter replay; NO rerun, NO prompt change, NO result rewriting",
+   "correction": "recipient 6/16 not 6/24; pooled SUPPORT 25/37 not 25/45",
+   "production_relevance": "none - all 8 are validator-REJECT"
+  }
+ ],
+ "pipeline_localization": {
+  "extractor": "not explained",
+  "validator": "unexplained split 15/15 (eventnominal) vs 6/16 (recipient)",
+  "postfilter": "no hard drop; 15 ACCEPT / 10 WARN / 3 ABSTAIN / 0 REJECT of 28",
+  "linker_worthiness": "no drop; selection preferences only"
+ }
 }
