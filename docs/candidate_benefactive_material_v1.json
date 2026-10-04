@@ -1,0 +1,506 @@
+{
+ "version": "candidate_benefactive_material_v1",
+ "status": "frozen_for_probe (validated; t0med YES shares surface with probe01b: cross-probe calibration, not independent evidence)",
+ "calibration_note": "t0med YES 'The clinic provides medication to patients.' duplicates probe01b surface; report T0 with and without med",
+ "date": "2026-10-04",
+ "protocol": "docs/candidate_benefactive_probe_v1.json",
+ "builder": "scripts/build_benefactive_material.py",
+ "pairs": [
+  {
+   "pair_id": "t0med",
+   "construction": "T0",
+   "set": "med",
+   "yes": {
+    "sentence_id": "t0medyes",
+    "sentence": "The clinic provides medication to patients.",
+    "expected_provides": "YES",
+    "gold_provider": "The clinic",
+    "gold_target": "medication",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "direct transfer provision",
+    "construction": "T0",
+    "gold_candidate_expected": true,
+    "expected_outcome": "CANDIDATE_PRESENT"
+   },
+   "no": {
+    "sentence_id": "t0medno",
+    "sentence": "The clinic denies medication to patients.",
+    "expected_provides": "NO",
+    "gold_provider": "The clinic",
+    "gold_target": "medication",
+    "gold_relation": "none",
+    "source_trigger": "denies",
+    "semantic_basis": "control: denial, no provision",
+    "construction": "T0",
+    "gold_candidate_expected": false,
+    "expected_outcome": "NO_CANDIDATE"
+   }
+  },
+  {
+   "pair_id": "t1med",
+   "construction": "T1",
+   "set": "med",
+   "yes": {
+    "sentence_id": "t1medyes",
+    "sentence": "The clinic provides medication for patients.",
+    "expected_provides": "YES",
+    "gold_provider": "The clinic",
+    "gold_target": "medication",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "benefactive-for provision",
+    "construction": "T1",
+    "gold_candidate_expected": true,
+    "expected_outcome": "CANDIDATE_PRESENT"
+   },
+   "no": {
+    "sentence_id": "t1medno",
+    "sentence": "The clinic refuses medication for patients.",
+    "expected_provides": "NO",
+    "gold_provider": "The clinic",
+    "gold_target": "medication",
+    "gold_relation": "none",
+    "source_trigger": "refuses",
+    "semantic_basis": "control: denial, no provision",
+    "construction": "T1",
+    "gold_candidate_expected": false,
+    "expected_outcome": "NO_CANDIDATE"
+   }
+  },
+  {
+   "pair_id": "t2med",
+   "construction": "T2",
+   "set": "med",
+   "yes": {
+    "sentence_id": "t2medyes",
+    "sentence": "The clinic secures medication for patients.",
+    "expected_provides": "YES",
+    "gold_provider": "The clinic",
+    "gold_target": "medication",
+    "gold_relation": "provides",
+    "source_trigger": "secures",
+    "semantic_basis": "procurement-for provision",
+    "construction": "T2",
+    "gold_candidate_expected": true,
+    "expected_outcome": "CANDIDATE_PRESENT"
+   },
+   "no": {
+    "sentence_id": "t2medno",
+    "sentence": "The clinic withholds medication for patients.",
+    "expected_provides": "NO",
+    "gold_provider": "The clinic",
+    "gold_target": "medication",
+    "gold_relation": "none",
+    "source_trigger": "withholds",
+    "semantic_basis": "control: denial, no provision",
+    "construction": "T2",
+    "gold_candidate_expected": false,
+    "expected_outcome": "NO_CANDIDATE"
+   }
+  },
+  {
+   "pair_id": "t3med",
+   "construction": "T3",
+   "set": "med",
+   "yes": {
+    "sentence_id": "t3medyes",
+    "sentence": "The clinic provides medication so that patients recover.",
+    "expected_provides": "YES",
+    "gold_provider": "The clinic",
+    "gold_target": "medication",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "purpose-oriented provision",
+    "construction": "T3",
+    "gold_candidate_expected": true,
+    "expected_outcome": "CANDIDATE_PRESENT"
+   },
+   "no": {
+    "sentence_id": "t3medno",
+    "sentence": "The clinic denies medication so that patients recover.",
+    "expected_provides": "NO",
+    "gold_provider": "The clinic",
+    "gold_target": "medication",
+    "gold_relation": "none",
+    "source_trigger": "denies",
+    "semantic_basis": "control: denial, no provision",
+    "construction": "T3",
+    "gold_candidate_expected": false,
+    "expected_outcome": "NO_CANDIDATE"
+   }
+  },
+  {
+   "pair_id": "t0fuel",
+   "construction": "T0",
+   "set": "fuel",
+   "yes": {
+    "sentence_id": "t0fuelyes",
+    "sentence": "The depot provides fuel to units.",
+    "expected_provides": "YES",
+    "gold_provider": "The depot",
+    "gold_target": "fuel",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "direct transfer provision",
+    "construction": "T0",
+    "gold_candidate_expected": true,
+    "expected_outcome": "CANDIDATE_PRESENT"
+   },
+   "no": {
+    "sentence_id": "t0fuelno",
+    "sentence": "The depot denies fuel to units.",
+    "expected_provides": "NO",
+    "gold_provider": "The depot",
+    "gold_target": "fuel",
+    "gold_relation": "none",
+    "source_trigger": "denies",
+    "semantic_basis": "control: denial, no provision",
+    "construction": "T0",
+    "gold_candidate_expected": false,
+    "expected_outcome": "NO_CANDIDATE"
+   }
+  },
+  {
+   "pair_id": "t1fuel",
+   "construction": "T1",
+   "set": "fuel",
+   "yes": {
+    "sentence_id": "t1fuelyes",
+    "sentence": "The depot provides fuel for units.",
+    "expected_provides": "YES",
+    "gold_provider": "The depot",
+    "gold_target": "fuel",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "benefactive-for provision",
+    "construction": "T1",
+    "gold_candidate_expected": true,
+    "expected_outcome": "CANDIDATE_PRESENT"
+   },
+   "no": {
+    "sentence_id": "t1fuelno",
+    "sentence": "The depot refuses fuel for units.",
+    "expected_provides": "NO",
+    "gold_provider": "The depot",
+    "gold_target": "fuel",
+    "gold_relation": "none",
+    "source_trigger": "refuses",
+    "semantic_basis": "control: denial, no provision",
+    "construction": "T1",
+    "gold_candidate_expected": false,
+    "expected_outcome": "NO_CANDIDATE"
+   }
+  },
+  {
+   "pair_id": "t2fuel",
+   "construction": "T2",
+   "set": "fuel",
+   "yes": {
+    "sentence_id": "t2fuelyes",
+    "sentence": "The depot secures fuel for units.",
+    "expected_provides": "YES",
+    "gold_provider": "The depot",
+    "gold_target": "fuel",
+    "gold_relation": "provides",
+    "source_trigger": "secures",
+    "semantic_basis": "procurement-for provision",
+    "construction": "T2",
+    "gold_candidate_expected": true,
+    "expected_outcome": "CANDIDATE_PRESENT"
+   },
+   "no": {
+    "sentence_id": "t2fuelno",
+    "sentence": "The depot withholds fuel for units.",
+    "expected_provides": "NO",
+    "gold_provider": "The depot",
+    "gold_target": "fuel",
+    "gold_relation": "none",
+    "source_trigger": "withholds",
+    "semantic_basis": "control: denial, no provision",
+    "construction": "T2",
+    "gold_candidate_expected": false,
+    "expected_outcome": "NO_CANDIDATE"
+   }
+  },
+  {
+   "pair_id": "t3fuel",
+   "construction": "T3",
+   "set": "fuel",
+   "yes": {
+    "sentence_id": "t3fuelyes",
+    "sentence": "The depot provides fuel so that units operate.",
+    "expected_provides": "YES",
+    "gold_provider": "The depot",
+    "gold_target": "fuel",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "purpose-oriented provision",
+    "construction": "T3",
+    "gold_candidate_expected": true,
+    "expected_outcome": "CANDIDATE_PRESENT"
+   },
+   "no": {
+    "sentence_id": "t3fuelno",
+    "sentence": "The depot denies fuel so that units operate.",
+    "expected_provides": "NO",
+    "gold_provider": "The depot",
+    "gold_target": "fuel",
+    "gold_relation": "none",
+    "source_trigger": "denies",
+    "semantic_basis": "control: denial, no provision",
+    "construction": "T3",
+    "gold_candidate_expected": false,
+    "expected_outcome": "NO_CANDIDATE"
+   }
+  },
+  {
+   "pair_id": "t0badge",
+   "construction": "T0",
+   "set": "badge",
+   "yes": {
+    "sentence_id": "t0badgeyes",
+    "sentence": "The clerk provides badges to visitors.",
+    "expected_provides": "YES",
+    "gold_provider": "The clerk",
+    "gold_target": "badges",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "direct transfer provision",
+    "construction": "T0",
+    "gold_candidate_expected": true,
+    "expected_outcome": "CANDIDATE_PRESENT"
+   },
+   "no": {
+    "sentence_id": "t0badgeno",
+    "sentence": "The clerk denies badges to visitors.",
+    "expected_provides": "NO",
+    "gold_provider": "The clerk",
+    "gold_target": "badges",
+    "gold_relation": "none",
+    "source_trigger": "denies",
+    "semantic_basis": "control: denial, no provision",
+    "construction": "T0",
+    "gold_candidate_expected": false,
+    "expected_outcome": "NO_CANDIDATE"
+   }
+  },
+  {
+   "pair_id": "t1badge",
+   "construction": "T1",
+   "set": "badge",
+   "yes": {
+    "sentence_id": "t1badgeyes",
+    "sentence": "The clerk provides badges for visitors.",
+    "expected_provides": "YES",
+    "gold_provider": "The clerk",
+    "gold_target": "badges",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "benefactive-for provision",
+    "construction": "T1",
+    "gold_candidate_expected": true,
+    "expected_outcome": "CANDIDATE_PRESENT"
+   },
+   "no": {
+    "sentence_id": "t1badgeno",
+    "sentence": "The clerk refuses badges for visitors.",
+    "expected_provides": "NO",
+    "gold_provider": "The clerk",
+    "gold_target": "badges",
+    "gold_relation": "none",
+    "source_trigger": "refuses",
+    "semantic_basis": "control: denial, no provision",
+    "construction": "T1",
+    "gold_candidate_expected": false,
+    "expected_outcome": "NO_CANDIDATE"
+   }
+  },
+  {
+   "pair_id": "t2badge",
+   "construction": "T2",
+   "set": "badge",
+   "yes": {
+    "sentence_id": "t2badgeyes",
+    "sentence": "The clerk secures badges for visitors.",
+    "expected_provides": "YES",
+    "gold_provider": "The clerk",
+    "gold_target": "badges",
+    "gold_relation": "provides",
+    "source_trigger": "secures",
+    "semantic_basis": "procurement-for provision",
+    "construction": "T2",
+    "gold_candidate_expected": true,
+    "expected_outcome": "CANDIDATE_PRESENT"
+   },
+   "no": {
+    "sentence_id": "t2badgeno",
+    "sentence": "The clerk withholds badges for visitors.",
+    "expected_provides": "NO",
+    "gold_provider": "The clerk",
+    "gold_target": "badges",
+    "gold_relation": "none",
+    "source_trigger": "withholds",
+    "semantic_basis": "control: denial, no provision",
+    "construction": "T2",
+    "gold_candidate_expected": false,
+    "expected_outcome": "NO_CANDIDATE"
+   }
+  },
+  {
+   "pair_id": "t3badge",
+   "construction": "T3",
+   "set": "badge",
+   "yes": {
+    "sentence_id": "t3badgeyes",
+    "sentence": "The clerk provides badges so that visitors enter.",
+    "expected_provides": "YES",
+    "gold_provider": "The clerk",
+    "gold_target": "badges",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "purpose-oriented provision",
+    "construction": "T3",
+    "gold_candidate_expected": true,
+    "expected_outcome": "CANDIDATE_PRESENT"
+   },
+   "no": {
+    "sentence_id": "t3badgeno",
+    "sentence": "The clerk denies badges so that visitors enter.",
+    "expected_provides": "NO",
+    "gold_provider": "The clerk",
+    "gold_target": "badges",
+    "gold_relation": "none",
+    "source_trigger": "denies",
+    "semantic_basis": "control: denial, no provision",
+    "construction": "T3",
+    "gold_candidate_expected": false,
+    "expected_outcome": "NO_CANDIDATE"
+   }
+  },
+  {
+   "pair_id": "t0lesson",
+   "construction": "T0",
+   "set": "lesson",
+   "yes": {
+    "sentence_id": "t0lessonyes",
+    "sentence": "The tutor provides lessons to students.",
+    "expected_provides": "YES",
+    "gold_provider": "The tutor",
+    "gold_target": "lessons",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "direct transfer provision",
+    "construction": "T0",
+    "gold_candidate_expected": true,
+    "expected_outcome": "CANDIDATE_PRESENT"
+   },
+   "no": {
+    "sentence_id": "t0lessonno",
+    "sentence": "The tutor denies lessons to students.",
+    "expected_provides": "NO",
+    "gold_provider": "The tutor",
+    "gold_target": "lessons",
+    "gold_relation": "none",
+    "source_trigger": "denies",
+    "semantic_basis": "control: denial, no provision",
+    "construction": "T0",
+    "gold_candidate_expected": false,
+    "expected_outcome": "NO_CANDIDATE"
+   }
+  },
+  {
+   "pair_id": "t1lesson",
+   "construction": "T1",
+   "set": "lesson",
+   "yes": {
+    "sentence_id": "t1lessonyes",
+    "sentence": "The tutor provides lessons for students.",
+    "expected_provides": "YES",
+    "gold_provider": "The tutor",
+    "gold_target": "lessons",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "benefactive-for provision",
+    "construction": "T1",
+    "gold_candidate_expected": true,
+    "expected_outcome": "CANDIDATE_PRESENT"
+   },
+   "no": {
+    "sentence_id": "t1lessonno",
+    "sentence": "The tutor refuses lessons for students.",
+    "expected_provides": "NO",
+    "gold_provider": "The tutor",
+    "gold_target": "lessons",
+    "gold_relation": "none",
+    "source_trigger": "refuses",
+    "semantic_basis": "control: denial, no provision",
+    "construction": "T1",
+    "gold_candidate_expected": false,
+    "expected_outcome": "NO_CANDIDATE"
+   }
+  },
+  {
+   "pair_id": "t2lesson",
+   "construction": "T2",
+   "set": "lesson",
+   "yes": {
+    "sentence_id": "t2lessonyes",
+    "sentence": "The tutor secures lessons for students.",
+    "expected_provides": "YES",
+    "gold_provider": "The tutor",
+    "gold_target": "lessons",
+    "gold_relation": "provides",
+    "source_trigger": "secures",
+    "semantic_basis": "procurement-for provision",
+    "construction": "T2",
+    "gold_candidate_expected": true,
+    "expected_outcome": "CANDIDATE_PRESENT"
+   },
+   "no": {
+    "sentence_id": "t2lessonno",
+    "sentence": "The tutor withholds lessons for students.",
+    "expected_provides": "NO",
+    "gold_provider": "The tutor",
+    "gold_target": "lessons",
+    "gold_relation": "none",
+    "source_trigger": "withholds",
+    "semantic_basis": "control: denial, no provision",
+    "construction": "T2",
+    "gold_candidate_expected": false,
+    "expected_outcome": "NO_CANDIDATE"
+   }
+  },
+  {
+   "pair_id": "t3lesson",
+   "construction": "T3",
+   "set": "lesson",
+   "yes": {
+    "sentence_id": "t3lessonyes",
+    "sentence": "The tutor provides lessons so that students learn.",
+    "expected_provides": "YES",
+    "gold_provider": "The tutor",
+    "gold_target": "lessons",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "purpose-oriented provision",
+    "construction": "T3",
+    "gold_candidate_expected": true,
+    "expected_outcome": "CANDIDATE_PRESENT"
+   },
+   "no": {
+    "sentence_id": "t3lessonno",
+    "sentence": "The tutor denies lessons so that students learn.",
+    "expected_provides": "NO",
+    "gold_provider": "The tutor",
+    "gold_target": "lessons",
+    "gold_relation": "none",
+    "source_trigger": "denies",
+    "semantic_basis": "control: denial, no provision",
+    "construction": "T3",
+    "gold_candidate_expected": false,
+    "expected_outcome": "NO_CANDIDATE"
+   }
+  }
+ ]
+}
