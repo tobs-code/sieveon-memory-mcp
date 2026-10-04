@@ -1,0 +1,66 @@
+{
+  "version": "candidate_argument_realization_probe_v1",
+  "status": "preregistered_before_inference",
+  "date": "2026-10-04",
+  "pipeline_changes": "none",
+  "hypothesis": {
+    "H1": "Candidate Generation loses genuine provides relations disproportionately when provider or recipient is realized outside canonical subject/object positions.",
+    "H0": "Candidate recall does not materially depend on argument realization class."
+  },
+  "test_design": {
+    "kind": "controlled_minimal_pairs",
+    "split_unit": "pair_id",
+    "tuning": "none",
+    "pair_membership": "fixed before inference",
+    "frozen_after_first_result": "no sentence additions or removals"
+  },
+  "argument_classes": {
+    "A": "canonical_subject_object",
+    "B": "provider_in_PP",
+    "C": "recipient_in_PP",
+    "D": "passive (kept separate from PP: passive changes syntactic mapping fundamentally)",
+    "E": "benefactive_or_recipient_PP",
+    "F": "source_by_from_PP",
+    "G": "non_finite_or_embedded_realization"
+  },
+  "provider_recipient_separation": "measure provider recovery and recipient recovery per class separately, so that extraction failure (PP not extracted) is not conflated with misassignment (PP extracted, roles swapped)",
+  "controls": [
+    "same lexical provision predicate where possible",
+    "same entities across paired variants",
+    "minimal wording change",
+    "semantic relation held constant"
+  ],
+  "primary_metric": "candidate_recall_per_class",
+  "secondary_metrics": [
+    "provider_recovery_per_class",
+    "recipient_recovery_per_class",
+    "direction_accuracy",
+    "pairwise_variant_delta"
+  ],
+  "decision_rule": {
+    "structural_support": [
+      "non-canonical classes show materially lower recall than canonical control class",
+      "effect reproduces across multiple independent pairs",
+      "effect is not explained by one lexical item or one article/domain"
+    ],
+    "inconclusive": [
+      "class differences are small",
+      "results depend on individual lexical items",
+      "provider/recipient recovery does not explain candidate loss"
+    ],
+    "negative_result": "H1 not supported; do not modify candidate generation"
+  },
+  "natural_validation": {
+    "batch6_FNs": "held-out; used only after probe results; never used to construct probe pairs; never used for tuning"
+  },
+  "forbidden_during_probe": [
+    "no trigger additions",
+    "no prompt changes",
+    "no thresholds",
+    "no assertion changes",
+    "no PostFilter changes",
+    "no new linking rules"
+  ],
+  "research_question": "Is candidate silence a problem of missing semantic coverage, or primarily a problem of argument realization?",
+  "test_material": "not yet built; illustrative examples in discussion are NOT test material; pairs to be generated once, validated, pair_id-split, and frozen in a separate step"
+}
