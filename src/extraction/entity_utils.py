@@ -769,7 +769,7 @@ def extract_entities(text: str) -> list[dict]:
         entities = extract_entities_with_groq(text)
         if entities:
             return entities
-    if method == "trackb":
+    if method in ("trackb", "auto") and os.getenv("TRACKB_IN_AUTO", "1") == "1":
         entities = extract_entities_with_trackb(text)
         if entities:
             return entities
@@ -1449,6 +1449,21 @@ def extract_triples(text: str) -> list[dict]:
 
     method = os.getenv("EXTRACTION_METHOD", "auto")
 
+    if method == "auto" and os.getenv("TRACKB_IN_AUTO", "1") == "1":
+        # Standard pipe: union of the classic chain with trackb provides.
+        # Track B covers only provides; all other predicates still come
+        # from relex/gliner. Failures degrade to the classic result.
+        triples = extract_triples_with_relex(text) or []
+        if not triples:
+            triples = extract_triples_with_gliner(text) or []
+        seen = {f"{t['subject'].lower()}|{t['predicate']}|{t['object'].lower()}"
+                for t in triples}
+        for t in extract_triples_with_trackb(text):
+            key = f"{t['subject'].lower()}|{t['predicate']}|{t['object'].lower()}"
+            if key not in seen:
+                seen.add(key)
+                triples.append(t)
+        return triples
     if method in ("relex", "auto"):
         triples = extract_triples_with_relex(text)
         if triples:
