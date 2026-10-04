@@ -1,0 +1,379 @@
+{
+ "version": "candidate_density_results_v1",
+ "protocol": "docs/candidate_density_probe_v1.json",
+ "material": "docs/candidate_density_material_v1.json",
+ "stage": "candidate_generation_only (nu_candidates, no validator, no linking)",
+ "match_rule": "normalized span equality or containment, either direction",
+ "pairs": [
+  {
+   "pair_id": "singletut",
+   "condition": "SINGLE",
+   "set": "tut",
+   "sides": {
+    "yes": {
+     "sentence_id": "singletutyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "mentor",
+       "pupils"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "singletutno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The mentor",
+       "pupils"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "reltut",
+   "condition": "REL",
+   "set": "tut",
+   "sides": {
+    "yes": {
+     "sentence_id": "reltutyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The mentor",
+       "pupils"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "reltutno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The mentor",
+       "pupils"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "advtut",
+   "condition": "ADV",
+   "set": "tut",
+   "sides": {
+    "yes": {
+     "sentence_id": "advtutyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The mentor",
+       "pupils"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "advtutno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The mentor",
+       "pupils"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "singleclk",
+   "condition": "SINGLE",
+   "set": "clk",
+   "sides": {
+    "yes": {
+     "sentence_id": "singleclkyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The usher",
+       "guests"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "singleclkno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "relclk",
+   "condition": "REL",
+   "set": "clk",
+   "sides": {
+    "yes": {
+     "sentence_id": "relclkyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The usher",
+       "guests"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "relclkno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "advclk",
+   "condition": "ADV",
+   "set": "clk",
+   "sides": {
+    "yes": {
+     "sentence_id": "advclkyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The usher",
+       "guests"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "advclkno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "singlechf",
+   "condition": "SINGLE",
+   "set": "chf",
+   "sides": {
+    "yes": {
+     "sentence_id": "singlechfyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The chef",
+       "patrons"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "singlechfno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "relchf",
+   "condition": "REL",
+   "set": "chf",
+   "sides": {
+    "yes": {
+     "sentence_id": "relchfyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The chef",
+       "patrons"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "relchfno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "advchf",
+   "condition": "ADV",
+   "set": "chf",
+   "sides": {
+    "yes": {
+     "sentence_id": "advchfyes",
+     "n_candidates": 2,
+     "candidates": [
+      [
+       "the chef",
+       "patrons"
+      ],
+      [
+       "the staff",
+       "the tables"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "advchfno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the staff",
+       "the tables"
+      ]
+     ],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "singlehrb",
+   "condition": "SINGLE",
+   "set": "hrb",
+   "sides": {
+    "yes": {
+     "sentence_id": "singlehrbyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The harbor",
+       "pilots"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "singlehrbno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The harbor",
+       "pilots"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "relhrb",
+   "condition": "REL",
+   "set": "hrb",
+   "sides": {
+    "yes": {
+     "sentence_id": "relhrbyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The harbor",
+       "pilots"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "relhrbno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The harbor",
+       "pilots"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "advhrb",
+   "condition": "ADV",
+   "set": "hrb",
+   "sides": {
+    "yes": {
+     "sentence_id": "advhrbyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The harbor",
+       "pilots"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "advhrbno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "outcome": "absent"
+    }
+   }
+  }
+ ]
+}
