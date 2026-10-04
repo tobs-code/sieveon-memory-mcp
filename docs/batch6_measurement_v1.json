@@ -1,0 +1,45 @@
+{
+  "version": "batch6_measurement_v1",
+  "status": "measured_only",
+  "date": "2026-10-04",
+  "protocol": "docs/batch6_protocol_v1.json",
+  "corpus": {"file": "docs/production_corpus_v6.json", "n": 150,
+             "digest": "1b3d560807b57a27cdc8c5d531d1367e912d1ae77df2f9d2c6f48308cb5e062a",
+             "overlap_vs_v1_v5": 0, "overlap_vs_frozen_tests": 0},
+  "pipeline": "trackb_two_stage_v1 + linking v1.3 + worthiness v1 + postfilter v1.1 (no changes)",
+  "records": 156,
+  "verdicts": {"ACCEPT": 6, "ABSTAIN": 0, "REJECT": 150},
+  "candidate_stage": {"no_candidate": 127, "candidate": 29},
+  "assertion_stage": {"supported": 6, "not_supported": 23},
+  "identity_source": {
+    "local_document/local_document": 29,
+    "global_fallback": 0,
+    "ambiguous": 0,
+    "unresolved": 0,
+    "not_linked": 0
+  },
+  "linking": {"collisions": 0, "cross": 0, "doc_scope_decisive": 0},
+  "node_worthiness": {"WORTHY/WORTHY": 29, "blocked": 0},
+  "postfilter": {"WARN_ACCEPT": 26, "ACCEPT": 3, "unlicensed_trigger": 26},
+  "accepts_pending_annotation": [
+    {"sentence_id": "prodc6-035", "edge": "Poe -> General William Tecumseh Sherman", "postfilter": "WARN_ACCEPT"},
+    {"sentence_id": "prodc6-057", "edge": "Parthian scholars -> Buddhist text", "postfilter": "WARN_ACCEPT"},
+    {"sentence_id": "prodc6-091", "edge": "Your donation -> our nonprofit", "postfilter": "ACCEPT"},
+    {"sentence_id": "prodc6-121", "edge": "donation -> Public libraries", "postfilter": "WARN_ACCEPT"},
+    {"sentence_id": "prodc6-129", "edge": "libraries -> children and adults on the autism spectrum", "postfilter": "WARN_ACCEPT"},
+    {"sentence_id": "prodc6-133", "edge": "libraries -> communities", "postfilter": "WARN_ACCEPT"}
+  ],
+  "known_corpus_warts": [
+    "2 donation-banner sentences passed boilerplate filter (prodc6-091, prodc6-121); kept frozen, flagged for annotation",
+    "source mojibake in prodc6-026 (en-dash); kept frozen as measured"
+  ],
+  "error_budget_first_cut": {
+    "candidate_silence": "127/150 sentences yield no candidate (correctness unknown without annotation; largest mass)",
+    "assertion_rejection": "23/29 candidates rejected by validator",
+    "scope_posture": "unchanged (OBSERVE/SHADOW/WARN), no gating effect measured",
+    "worthiness": "0 blocks on this material (mechanism unexercised, not disproven)",
+    "linking": "0 collisions, 0 fallbacks (doc-scope neither needed nor decisive here)",
+    "postfilter_coverage": "26/29 candidates carry unlicensed triggers (WARN_ACCEPT dominates, as in v5)"
+  },
+  "verdict": "no pipeline change; annotation of 6 ACCEPTs and error-budget decision are the next steps"
+}
