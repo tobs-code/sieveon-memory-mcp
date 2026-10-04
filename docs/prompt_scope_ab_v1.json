@@ -55,5 +55,72 @@
   "recovery_gt_0": "B changes decisions on previously rejected recipient cases; the safety control decides the reading",
   "note": "no numeric effect-size threshold; n=10 makes any such threshold arbitrary"
  },
- "evidentiary_limit": "RECOVERY > 0 with FALSE_ACCEPT_B = 0 is evidence FOR the scope hypothesis, but not proof that the removed support scope is the only mechanism."
+ "evidentiary_limit": "RECOVERY > 0 with FALSE_ACCEPT_B = 0 is evidence FOR the scope hypothesis, but not proof that the removed support scope is the only mechanism.",
+ "results": {
+  "arm_A_reproduces_frozen_run": "yes, 71/71 identical to df4098c",
+  "primary_recovery": {
+   "definition": "B-ACCEPT among the 10 valid recipient A-REJECTs",
+   "value": "0/10",
+   "verdict": "no evidence that the removed support scope explains the recipient rejections"
+  },
+  "safety_control_false_accept_b": {
+   "definition": "B-ACCEPT among the 22 NEGATIVE_DENY items",
+   "value": "0/22",
+   "verdict": "recovery-compatible control holds; not needed for the primary verdict because recovery is 0"
+  },
+  "contingency_AxB": {
+   "ACCEPT/ACCEPT": 2,
+   "ACCEPT/REJECT": 26,
+   "REJECT/ACCEPT": 5,
+   "REJECT/REJECT": 38
+  },
+  "per_condition_accepts": {
+   "SUPPORT_FRAMING": {
+    "n": 37,
+    "A": 25,
+    "B": 1
+   },
+   "NON_SUPPORT_FRAMING": {
+    "n": 11,
+    "A": 3,
+    "B": 5
+   },
+   "MODAL": {
+    "n": 1,
+    "A": 0,
+    "B": 1
+   },
+   "NEGATIVE_DENY": {
+    "n": 22,
+    "A": 0,
+    "B": 0
+   }
+  },
+  "per_source_accepts": {
+   "lexical": {
+    "n": 36,
+    "A": 6,
+    "B": 5
+   },
+   "eventnominal": {
+    "n": 15,
+    "A": 15,
+    "B": 0
+   },
+   "recipient": {
+    "n": 16,
+    "A": 6,
+    "B": 0
+   },
+   "batch6": {
+    "n": 4,
+    "A": 1,
+    "B": 2
+   }
+  },
+  "unexpected_direction": "Prompt B is not a laxer validator: it is STRICTER on exactly the items arm A accepted. eventnominal collapses 15/15 -> 0/15 and recipient 6/16 -> 0/16, while 5 previously rejected items flip to ACCEPT. The support-scope phrase was load-bearing for accepting explicit support predicates, and removing it moves the validator toward the model's own default reading of 'provides Y'.",
+  "interpretation": "H-SCOPE not supported in the predicted direction, and the reverse effect is stronger than the predicted one. Per the frozen rules this is not evidence for the scope hypothesis. The recipient rejections (A-REJECT) are NOT explained by the support scope: none recovered. A separate and larger effect exists in the opposite direction and is recorded as an observation, not as a post-hoc hypothesis.",
+  "evidentiary_limit": "This run does not identify the mechanism behind the recipient rejections. It only rules out the removed support scope as that mechanism, and shows that the scope phrase is what lets the shipped validator accept explicit support predicates at all.",
+  "not_concluded": "Do not read the 26 A-ACCEPT -> B-REJECT transitions as evidence for prompt tuning: no prompt change is proposed or made here."
+ }
 }
