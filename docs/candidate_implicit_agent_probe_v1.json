@@ -1,0 +1,23 @@
+{
+  "version": "candidate_implicit_agent_probe_v1",
+  "status": "preregistered_before_inference",
+  "date": "2026-10-04",
+  "pipeline_changes": "none",
+  "factor": "agent realization (explicit vs omitted)",
+  "conditions": {
+    "A1": "active, agent explicit",
+    "A2": "passive, agent explicit (by-phrase)",
+    "A3": "passive, agent omitted"
+  },
+  "primary_contrast": "A2 vs A3 (voice constant; only the by-phrase disappears). A1 vs A2 is a voice-control contrast, not evidence for implicit-agent effects.",
+  "held_constant": ["predicate", "target frame", "theme", "recipient", "tense/aspect", "polarity"],
+  "gold": "all YES are provides; NO mirrors with deny",
+  "primary_metric": "candidate_present per condition; decision on A2-vs-A3 gap given A1-vs-A2 voice baseline",
+  "decision_rule": {
+    "agent_support": "A3 materially below A2 with A1-vs-A2 stable, reproducing across sets",
+    "negative_result": "agent omission does not systematically cause silence"
+  },
+  "forbidden_during_probe": ["no trigger additions", "no prompt changes", "no thresholds", "no assertion changes", "no PostFilter changes", "no new linking rules"],
+  "material_shape": "4 sets x 3 conditions x YES/NO with deny = 24 sentences",
+  "test_material": "built by script; validation + freeze below"
+}

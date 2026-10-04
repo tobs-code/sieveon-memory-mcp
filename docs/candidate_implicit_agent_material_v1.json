@@ -1,0 +1,309 @@
+{
+ "version": "candidate_implicit_agent_material_v1",
+ "status": "frozen_for_probe (validated)",
+ "date": "2026-10-04",
+ "protocol": "docs/candidate_implicit_agent_probe_v1.json",
+ "builder": "scripts/build_implicit_material.py",
+ "pairs": [
+  {
+   "pair_id": "a1inf",
+   "condition": "A1",
+   "set": "inf",
+   "yes": {
+    "sentence_id": "a1infyes",
+    "sentence": "The infirmary provides patients doses.",
+    "expected_provides": "YES",
+    "gold_provider": "The infirmary",
+    "gold_recipient": "patients",
+    "gold_theme": "doses",
+    "gold_relation": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "a1infno",
+    "sentence": "The infirmary denies patients doses.",
+    "expected_provides": "NO",
+    "gold_provider": "The infirmary",
+    "gold_recipient": "patients",
+    "gold_theme": "doses",
+    "gold_relation": "none",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "a2inf",
+   "condition": "A2",
+   "set": "inf",
+   "yes": {
+    "sentence_id": "a2infyes",
+    "sentence": "Doses are provided to patients by the infirmary.",
+    "expected_provides": "YES",
+    "gold_provider": "The infirmary",
+    "gold_recipient": "patients",
+    "gold_theme": "doses",
+    "gold_relation": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "a2infno",
+    "sentence": "Doses are denied to patients by the infirmary.",
+    "expected_provides": "NO",
+    "gold_provider": "The infirmary",
+    "gold_recipient": "patients",
+    "gold_theme": "doses",
+    "gold_relation": "none",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "a3inf",
+   "condition": "A3",
+   "set": "inf",
+   "yes": {
+    "sentence_id": "a3infyes",
+    "sentence": "Doses are provided to patients.",
+    "expected_provides": "YES",
+    "gold_provider": "The infirmary",
+    "gold_recipient": "patients",
+    "gold_theme": "doses",
+    "gold_relation": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "a3infno",
+    "sentence": "Doses are denied to patients.",
+    "expected_provides": "NO",
+    "gold_provider": "The infirmary",
+    "gold_recipient": "patients",
+    "gold_theme": "doses",
+    "gold_relation": "none",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "a1ldg",
+   "condition": "A1",
+   "set": "ldg",
+   "yes": {
+    "sentence_id": "a1ldgyes",
+    "sentence": "The lodge provides hikers maps.",
+    "expected_provides": "YES",
+    "gold_provider": "The lodge",
+    "gold_recipient": "hikers",
+    "gold_theme": "maps",
+    "gold_relation": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "a1ldgno",
+    "sentence": "The lodge denies hikers maps.",
+    "expected_provides": "NO",
+    "gold_provider": "The lodge",
+    "gold_recipient": "hikers",
+    "gold_theme": "maps",
+    "gold_relation": "none",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "a2ldg",
+   "condition": "A2",
+   "set": "ldg",
+   "yes": {
+    "sentence_id": "a2ldgyes",
+    "sentence": "Maps are provided to hikers by the lodge.",
+    "expected_provides": "YES",
+    "gold_provider": "The lodge",
+    "gold_recipient": "hikers",
+    "gold_theme": "maps",
+    "gold_relation": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "a2ldgno",
+    "sentence": "Maps are denied to hikers by the lodge.",
+    "expected_provides": "NO",
+    "gold_provider": "The lodge",
+    "gold_recipient": "hikers",
+    "gold_theme": "maps",
+    "gold_relation": "none",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "a3ldg",
+   "condition": "A3",
+   "set": "ldg",
+   "yes": {
+    "sentence_id": "a3ldgyes",
+    "sentence": "Maps are provided to hikers.",
+    "expected_provides": "YES",
+    "gold_provider": "The lodge",
+    "gold_recipient": "hikers",
+    "gold_theme": "maps",
+    "gold_relation": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "a3ldgno",
+    "sentence": "Maps are denied to hikers.",
+    "expected_provides": "NO",
+    "gold_provider": "The lodge",
+    "gold_recipient": "hikers",
+    "gold_theme": "maps",
+    "gold_relation": "none",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "a1std",
+   "condition": "A1",
+   "set": "std",
+   "yes": {
+    "sentence_id": "a1stdyes",
+    "sentence": "The studio provides members manuals.",
+    "expected_provides": "YES",
+    "gold_provider": "The studio",
+    "gold_recipient": "members",
+    "gold_theme": "manuals",
+    "gold_relation": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "a1stdno",
+    "sentence": "The studio denies members manuals.",
+    "expected_provides": "NO",
+    "gold_provider": "The studio",
+    "gold_recipient": "members",
+    "gold_theme": "manuals",
+    "gold_relation": "none",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "a2std",
+   "condition": "A2",
+   "set": "std",
+   "yes": {
+    "sentence_id": "a2stdyes",
+    "sentence": "Manuals are provided to members by the studio.",
+    "expected_provides": "YES",
+    "gold_provider": "The studio",
+    "gold_recipient": "members",
+    "gold_theme": "manuals",
+    "gold_relation": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "a2stdno",
+    "sentence": "Manuals are denied to members by the studio.",
+    "expected_provides": "NO",
+    "gold_provider": "The studio",
+    "gold_recipient": "members",
+    "gold_theme": "manuals",
+    "gold_relation": "none",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "a3std",
+   "condition": "A3",
+   "set": "std",
+   "yes": {
+    "sentence_id": "a3stdyes",
+    "sentence": "Manuals are provided to members.",
+    "expected_provides": "YES",
+    "gold_provider": "The studio",
+    "gold_recipient": "members",
+    "gold_theme": "manuals",
+    "gold_relation": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "a3stdno",
+    "sentence": "Manuals are denied to members.",
+    "expected_provides": "NO",
+    "gold_provider": "The studio",
+    "gold_recipient": "members",
+    "gold_theme": "manuals",
+    "gold_relation": "none",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "a1gal",
+   "condition": "A1",
+   "set": "gal",
+   "yes": {
+    "sentence_id": "a1galyes",
+    "sentence": "The gallery provides visitors catalogs.",
+    "expected_provides": "YES",
+    "gold_provider": "The gallery",
+    "gold_recipient": "visitors",
+    "gold_theme": "catalogs",
+    "gold_relation": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "a1galno",
+    "sentence": "The gallery denies visitors catalogs.",
+    "expected_provides": "NO",
+    "gold_provider": "The gallery",
+    "gold_recipient": "visitors",
+    "gold_theme": "catalogs",
+    "gold_relation": "none",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "a2gal",
+   "condition": "A2",
+   "set": "gal",
+   "yes": {
+    "sentence_id": "a2galyes",
+    "sentence": "Catalogs are provided to visitors by the gallery.",
+    "expected_provides": "YES",
+    "gold_provider": "The gallery",
+    "gold_recipient": "visitors",
+    "gold_theme": "catalogs",
+    "gold_relation": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "a2galno",
+    "sentence": "Catalogs are denied to visitors by the gallery.",
+    "expected_provides": "NO",
+    "gold_provider": "The gallery",
+    "gold_recipient": "visitors",
+    "gold_theme": "catalogs",
+    "gold_relation": "none",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "a3gal",
+   "condition": "A3",
+   "set": "gal",
+   "yes": {
+    "sentence_id": "a3galyes",
+    "sentence": "Catalogs are provided to visitors.",
+    "expected_provides": "YES",
+    "gold_provider": "The gallery",
+    "gold_recipient": "visitors",
+    "gold_theme": "catalogs",
+    "gold_relation": "provides",
+    "expected_candidate": true
+   },
+   "no": {
+    "sentence_id": "a3galno",
+    "sentence": "Catalogs are denied to visitors.",
+    "expected_provides": "NO",
+    "gold_provider": "The gallery",
+    "gold_recipient": "visitors",
+    "gold_theme": "catalogs",
+    "gold_relation": "none",
+    "expected_candidate": false
+   }
+  }
+ ]
+}

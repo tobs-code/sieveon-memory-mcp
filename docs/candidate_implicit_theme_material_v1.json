@@ -1,0 +1,329 @@
+{
+ "version": "candidate_implicit_theme_material_v1",
+ "status": "frozen_for_probe (validated)",
+ "date": "2026-10-04",
+ "protocol": "docs/candidate_implicit_theme_probe_v1.json",
+ "builder": "scripts/build_implicit_material.py",
+ "pairs": [
+  {
+   "pair_id": "b01",
+   "verb": "pay",
+   "overt": {
+    "sentence_id": "b01overt_yes",
+    "sentence": "The company paid the workers their wages.",
+    "expected_provides": "YES",
+    "gold_provider": "The company",
+    "gold_recipient": "the workers",
+    "gold_theme": "their wages",
+    "gold_relation": "provides",
+    "expected_candidate": true,
+    "theme_status": "overt"
+   },
+   "overt_no": {
+    "sentence_id": "b01overt_no",
+    "sentence": "The company denied the workers their wages.",
+    "expected_provides": "NO",
+    "gold_relation": "none",
+    "expected_candidate": false
+   },
+   "dropped": {
+    "sentence_id": "b01dropped_yes",
+    "sentence": "The company paid the workers.",
+    "expected_provides": "YES",
+    "gold_provider": "The company",
+    "gold_recipient": "the workers",
+    "gold_theme": null,
+    "gold_relation": "provides",
+    "expected_candidate": "CHECK",
+    "theme_status": "dropped"
+   },
+   "dropped_no": {
+    "sentence_id": "b01dropped_no",
+    "sentence": "The company denied the workers.",
+    "expected_provides": "NO",
+    "gold_relation": "none",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "b02",
+   "verb": "pay",
+   "overt": {
+    "sentence_id": "b02overt_yes",
+    "sentence": "The firm paid contractors bonuses.",
+    "expected_provides": "YES",
+    "gold_provider": "The firm",
+    "gold_recipient": "contractors",
+    "gold_theme": "bonuses",
+    "gold_relation": "provides",
+    "expected_candidate": true,
+    "theme_status": "overt"
+   },
+   "overt_no": {
+    "sentence_id": "b02overt_no",
+    "sentence": "The firm denied contractors bonuses.",
+    "expected_provides": "NO",
+    "gold_relation": "none",
+    "expected_candidate": false
+   },
+   "dropped": {
+    "sentence_id": "b02dropped_yes",
+    "sentence": "The firm paid contractors.",
+    "expected_provides": "YES",
+    "gold_provider": "The firm",
+    "gold_recipient": "contractors",
+    "gold_theme": null,
+    "gold_relation": "provides",
+    "expected_candidate": "CHECK",
+    "theme_status": "dropped"
+   },
+   "dropped_no": {
+    "sentence_id": "b02dropped_no",
+    "sentence": "The firm denied contractors.",
+    "expected_provides": "NO",
+    "gold_relation": "none",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "b03",
+   "verb": "teach",
+   "overt": {
+    "sentence_id": "b03overt_yes",
+    "sentence": "The instructor taught the students the procedure.",
+    "expected_provides": "YES",
+    "gold_provider": "The instructor",
+    "gold_recipient": "the students",
+    "gold_theme": "the procedure",
+    "gold_relation": "provides",
+    "expected_candidate": true,
+    "theme_status": "overt"
+   },
+   "overt_no": {
+    "sentence_id": "b03overt_no",
+    "sentence": "The instructor denied the students the procedure.",
+    "expected_provides": "NO",
+    "gold_relation": "none",
+    "expected_candidate": false
+   },
+   "dropped": {
+    "sentence_id": "b03dropped_yes",
+    "sentence": "The instructor taught the students.",
+    "expected_provides": "YES",
+    "gold_provider": "The instructor",
+    "gold_recipient": "the students",
+    "gold_theme": null,
+    "gold_relation": "provides",
+    "expected_candidate": "CHECK",
+    "theme_status": "dropped"
+   },
+   "dropped_no": {
+    "sentence_id": "b03dropped_no",
+    "sentence": "The instructor denied the students.",
+    "expected_provides": "NO",
+    "gold_relation": "none",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "b04",
+   "verb": "teach",
+   "overt": {
+    "sentence_id": "b04overt_yes",
+    "sentence": "The tutor taught pupils grammar.",
+    "expected_provides": "YES",
+    "gold_provider": "The tutor",
+    "gold_recipient": "pupils",
+    "gold_theme": "grammar",
+    "gold_relation": "provides",
+    "expected_candidate": true,
+    "theme_status": "overt"
+   },
+   "overt_no": {
+    "sentence_id": "b04overt_no",
+    "sentence": "The tutor denied pupils grammar.",
+    "expected_provides": "NO",
+    "gold_relation": "none",
+    "expected_candidate": false
+   },
+   "dropped": {
+    "sentence_id": "b04dropped_yes",
+    "sentence": "The tutor taught pupils.",
+    "expected_provides": "YES",
+    "gold_provider": "The tutor",
+    "gold_recipient": "pupils",
+    "gold_theme": null,
+    "gold_relation": "provides",
+    "expected_candidate": "CHECK",
+    "theme_status": "dropped"
+   },
+   "dropped_no": {
+    "sentence_id": "b04dropped_no",
+    "sentence": "The tutor denied pupils.",
+    "expected_provides": "NO",
+    "gold_relation": "none",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "b05",
+   "verb": "serve",
+   "overt": {
+    "sentence_id": "b05overt_yes",
+    "sentence": "The chef served the guests soup.",
+    "expected_provides": "YES",
+    "gold_provider": "The chef",
+    "gold_recipient": "the guests",
+    "gold_theme": "soup",
+    "gold_relation": "provides",
+    "expected_candidate": true,
+    "theme_status": "overt"
+   },
+   "overt_no": {
+    "sentence_id": "b05overt_no",
+    "sentence": "The chef denied the guests soup.",
+    "expected_provides": "NO",
+    "gold_relation": "none",
+    "expected_candidate": false
+   },
+   "dropped": {
+    "sentence_id": "b05dropped_yes",
+    "sentence": "The chef served the guests.",
+    "expected_provides": "YES",
+    "gold_provider": "The chef",
+    "gold_recipient": "the guests",
+    "gold_theme": null,
+    "gold_relation": "provides",
+    "expected_candidate": "CHECK",
+    "theme_status": "dropped"
+   },
+   "dropped_no": {
+    "sentence_id": "b05dropped_no",
+    "sentence": "The chef denied the guests.",
+    "expected_provides": "NO",
+    "gold_relation": "none",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "b06",
+   "verb": "serve",
+   "overt": {
+    "sentence_id": "b06overt_yes",
+    "sentence": "The host served diners courses.",
+    "expected_provides": "YES",
+    "gold_provider": "The host",
+    "gold_recipient": "diners",
+    "gold_theme": "courses",
+    "gold_relation": "provides",
+    "expected_candidate": true,
+    "theme_status": "overt"
+   },
+   "overt_no": {
+    "sentence_id": "b06overt_no",
+    "sentence": "The host denied diners courses.",
+    "expected_provides": "NO",
+    "gold_relation": "none",
+    "expected_candidate": false
+   },
+   "dropped": {
+    "sentence_id": "b06dropped_yes",
+    "sentence": "The host served diners.",
+    "expected_provides": "YES",
+    "gold_provider": "The host",
+    "gold_recipient": "diners",
+    "gold_theme": null,
+    "gold_relation": "provides",
+    "expected_candidate": "CHECK",
+    "theme_status": "dropped"
+   },
+   "dropped_no": {
+    "sentence_id": "b06dropped_no",
+    "sentence": "The host denied diners.",
+    "expected_provides": "NO",
+    "gold_relation": "none",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "b07",
+   "verb": "feed",
+   "overt": {
+    "sentence_id": "b07overt_yes",
+    "sentence": "The farmer fed the horses grain.",
+    "expected_provides": "YES",
+    "gold_provider": "The farmer",
+    "gold_recipient": "the horses",
+    "gold_theme": "grain",
+    "gold_relation": "provides",
+    "expected_candidate": true,
+    "theme_status": "overt"
+   },
+   "overt_no": {
+    "sentence_id": "b07overt_no",
+    "sentence": "The farmer denied the horses grain.",
+    "expected_provides": "NO",
+    "gold_relation": "none",
+    "expected_candidate": false
+   },
+   "dropped": {
+    "sentence_id": "b07dropped_yes",
+    "sentence": "The farmer fed the horses.",
+    "expected_provides": "YES",
+    "gold_provider": "The farmer",
+    "gold_recipient": "the horses",
+    "gold_theme": null,
+    "gold_relation": "provides",
+    "expected_candidate": "CHECK",
+    "theme_status": "dropped"
+   },
+   "dropped_no": {
+    "sentence_id": "b07dropped_no",
+    "sentence": "The farmer denied the horses.",
+    "expected_provides": "NO",
+    "gold_relation": "none",
+    "expected_candidate": false
+   }
+  },
+  {
+   "pair_id": "b08",
+   "verb": "feed",
+   "overt": {
+    "sentence_id": "b08overt_yes",
+    "sentence": "The groom fed horses oats.",
+    "expected_provides": "YES",
+    "gold_provider": "The groom",
+    "gold_recipient": "horses",
+    "gold_theme": "oats",
+    "gold_relation": "provides",
+    "expected_candidate": true,
+    "theme_status": "overt"
+   },
+   "overt_no": {
+    "sentence_id": "b08overt_no",
+    "sentence": "The groom denied horses oats.",
+    "expected_provides": "NO",
+    "gold_relation": "none",
+    "expected_candidate": false
+   },
+   "dropped": {
+    "sentence_id": "b08dropped_yes",
+    "sentence": "The groom fed horses.",
+    "expected_provides": "YES",
+    "gold_provider": "The groom",
+    "gold_recipient": "horses",
+    "gold_theme": null,
+    "gold_relation": "provides",
+    "expected_candidate": "CHECK",
+    "theme_status": "dropped"
+   },
+   "dropped_no": {
+    "sentence_id": "b08dropped_no",
+    "sentence": "The groom denied horses.",
+    "expected_provides": "NO",
+    "gold_relation": "none",
+    "expected_candidate": false
+   }
+  }
+ ]
+}

@@ -1,0 +1,19 @@
+{
+  "version": "candidate_implicit_theme_probe_v1",
+  "status": "preregistered_before_inference",
+  "date": "2026-10-04",
+  "pipeline_changes": "none",
+  "factor": "omission of an optional theme argument",
+  "design": "control has explicit theme, treatment drops exactly that theme; same predicate and same overt non-theme arguments. Four predicate blocks (pay/teach/serve/feed), analyzed per predicate AND aggregate; no single pooled mechanism claim across verbs.",
+  "theme_naturalness_note": "the omitted theme is naturally recoverable in each block (money/wages, content, meal, feed); B does not claim one identical cross-verb mechanism",
+  "fund_note": "fund unused for the minimal contrast (cannot drop its object); fund-specific money-implicitness stays a documented alternative observation, not primary material",
+  "gold": "overt-theme items YES; dropped-theme items YES with expected CHECK",
+  "primary_metric": "candidate_present overt vs dropped, per predicate block and aggregate",
+  "decision_rule": {
+    "theme_support": "dropped materially below overt, reproducing across predicate blocks",
+    "negative_result": "theme omission does not systematically cause silence"
+  },
+  "forbidden_during_probe": ["no trigger additions", "no prompt changes", "no thresholds", "no assertion changes", "no PostFilter changes", "no new linking rules"],
+  "material_shape": "4 verbs x 2 triples x YES/NO with deny = 16 sentences",
+  "test_material": "built by script; validation + freeze below"
+}
