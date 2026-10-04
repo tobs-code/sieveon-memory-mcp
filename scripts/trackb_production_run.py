@@ -8,6 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from trackb_two_stage import nu_candidates, validate
 from trackb_production import normalize, link
 from postfilter import judge as postfilter_judge
+from node_worthiness import node_worthy
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -64,10 +65,16 @@ def main() -> int:
         doc_bucket = doc_norms.get(s["document_id"])
         for x, y in cands:
             sup, _ = validate(s["text"], x, y)
+            nw_s, nw_o = node_worthy(x), node_worthy(y)
             sl, ol = link(x, norms, doc_bucket), link(y, norms, doc_bucket)
-            final = "ACCEPT" if (sup and sl["status"] == "resolved"
-                                 and ol["status"] == "resolved") else \
-                "ABSTAIN" if sup else "REJECT"
+            if nw_s["verdict"] != "WORTHY" or nw_o["verdict"] != "WORTHY":
+                final = "ABSTAIN"
+                node_reason = f"{nw_s.get('reason', '')}/{nw_o.get('reason', '')}"
+            else:
+                node_reason = None
+                final = "ACCEPT" if (sup and sl["status"] == "resolved"
+                                     and ol["status"] == "resolved") else \
+                    "ABSTAIN" if sup else "REJECT"
             pf = postfilter_judge(s["text"], x, y, norms)
             fh.write(json.dumps({
                 "document_id": s["document_id"], "sentence_id": s["sentence_id"],
@@ -76,6 +83,8 @@ def main() -> int:
                 "link_status": f"{sl['status']}/{ol['status']}", "final_status": final,
                 "canonical_subject": sl.get("entity_id"), "canonical_object": ol.get("entity_id"),
                 "pipeline_version": "trackb_two_stage_v1", "evidence": s["sentence_id"],
+                "node_worthy": f"{nw_s['verdict']}/{nw_o['verdict']}",
+                "node_reason": node_reason,
                 "postfilter_v1": {"final": pf["final"], "by": pf.get("by"),
                                   "reason": pf.get("reason"),
                                   "trigger": (pf.get("trigger") or {}).get("lemma")},

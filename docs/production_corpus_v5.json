@@ -1,0 +1,757 @@
+{
+ "version": "production_corpus_v5",
+ "n": 150,
+ "digest": "7efb25b6ed046dec5b5c2d8437bc794ce27cf7d7b474c3fd7355ac3ca900fc18",
+ "sentences": [
+  {
+   "document_id": "conv-42/session_3_observation/Joanna",
+   "text": "Joanna submitted a screenplay to a film festival and is hoping a producer or director falls in love with it to get it on the big screen.",
+   "sentence_id": "prodc5-000"
+  },
+  {
+   "document_id": "conv-42/session_3_observation/Joanna",
+   "text": "Joanna seems curious about trying dairy-free desserts and flavors after Nate mentions making coconut milk ice cream.",
+   "sentence_id": "prodc5-001"
+  },
+  {
+   "document_id": "conv-42/session_3_observation/Joanna",
+   "text": "Joanna enjoys the movie 'Little Women' and recommends it as a great story about sisterhood, love, and reaching for dreams.",
+   "sentence_id": "prodc5-002"
+  },
+  {
+   "document_id": "conv-42/session_3_observation/Joanna",
+   "text": "Joanna is open to giving movie recommendations and discussing movies.",
+   "sentence_id": "prodc5-003"
+  },
+  {
+   "document_id": "conv-42/session_3_observation/Nate",
+   "text": "Nate supports Joanna's screenplay submission to the film festival and sends positive vibes wishing for its success.",
+   "sentence_id": "prodc5-004"
+  },
+  {
+   "document_id": "conv-42/session_3_observation/Nate",
+   "text": "Nate tried making coconut milk ice cream, found it delicious, and is looking forward to trying different flavors and toppings.",
+   "sentence_id": "prodc5-005"
+  },
+  {
+   "document_id": "conv-42/session_3_observation/Nate",
+   "text": "Nate mentions enjoying chocolate and mixed berry flavors for dairy-free desserts.",
+   "sentence_id": "prodc5-006"
+  },
+  {
+   "document_id": "conv-42/session_3_observation/Nate",
+   "text": "Nate made a dairy-free chocolate cake with berries, showcasing his talent in the kitchen.",
+   "sentence_id": "prodc5-007"
+  },
+  {
+   "document_id": "conv-42/session_3_observation/Nate",
+   "text": "Nate appreciates Joanna's movie recommendation and expresses interest in watching 'Little Women'.",
+   "sentence_id": "prodc5-008"
+  },
+  {
+   "document_id": "conv-42/session_4_observation/Nate",
+   "text": "Nate made chocolate and vanilla swirl ice cream for a friend.",
+   "sentence_id": "prodc5-009"
+  },
+  {
+   "document_id": "conv-42/session_4_observation/Nate",
+   "text": "Nate enjoys baking desserts and is all about them.",
+   "sentence_id": "prodc5-010"
+  },
+  {
+   "document_id": "conv-42/session_4_observation/Nate",
+   "text": "Nate bakes desserts that Joanna loves.",
+   "sentence_id": "prodc5-011"
+  },
+  {
+   "document_id": "conv-42/session_4_observation/Joanna",
+   "text": "Joanna can't have dairy.",
+   "sentence_id": "prodc5-012"
+  },
+  {
+   "document_id": "conv-42/session_4_observation/Joanna",
+   "text": "Joanna is keen to try Nate's dairy-free dessert recipe.",
+   "sentence_id": "prodc5-013"
+  },
+  {
+   "document_id": "conv-42/session_4_observation/Joanna",
+   "text": "Joanna is a writer and has written a screenplay.",
+   "sentence_id": "prodc5-014"
+  },
+  {
+   "document_id": "conv-42/session_4_observation/Joanna",
+   "text": "Joanna has started writing another screenplay focused on self-discovery after a loss, inspired by personal experiences.",
+   "sentence_id": "prodc5-015"
+  },
+  {
+   "document_id": "conv-42/session_4_observation/Joanna",
+   "text": "Joanna's new screenplay is about a thirty-year-old woman on a journey of self-discovery after a loss, inspired by personal experiences.",
+   "sentence_id": "prodc5-016"
+  },
+  {
+   "document_id": "conv-42/session_4_observation/Joanna",
+   "text": "Joanna hopes her screenplay gets noticed and makes it to the screen.",
+   "sentence_id": "prodc5-017"
+  },
+  {
+   "document_id": "conv-42/session_5_observation/Joanna",
+   "text": "Joanna has completed her second script and is experiencing a mix of excitement and anxiety about its future.",
+   "sentence_id": "prodc5-018"
+  },
+  {
+   "document_id": "conv-42/session_5_observation/Joanna",
+   "text": "Joanna finds it hard to switch off and experiences a tug-of-war between hope and doubt.",
+   "sentence_id": "prodc5-019"
+  },
+  {
+   "document_id": "conv-42/session_5_observation/Joanna",
+   "text": "Joanna has done research and networking non-stop for her script and is determined to make it happen.",
+   "sentence_id": "prodc5-020"
+  },
+  {
+   "document_id": "conv-42/session_5_observation/Joanna",
+   "text": "Joanna feels supported and motivated by having someone throughout the process.",
+   "sentence_id": "prodc5-021"
+  },
+  {
+   "document_id": "conv-42/session_5_observation/Nate",
+   "text": "Nate finds turtles unique, calming, and low-maintenance as pets.",
+   "sentence_id": "prodc5-022"
+  },
+  {
+   "document_id": "conv-42/session_5_observation/Nate",
+   "text": "Nate believes in Joanna's hard work and passion for her scripts, encouraging her to believe in herself.",
+   "sentence_id": "prodc5-023"
+  },
+  {
+   "document_id": "conv-42/session_5_observation/Nate",
+   "text": "Nate suggests Joanna consider other animals due to her allergies, and offers to send her pictures of his turtles.",
+   "sentence_id": "prodc5-024"
+  },
+  {
+   "document_id": "conv-42/session_5_observation/Nate",
+   "text": "Nate supports and motivates Joanna throughout the conversation.",
+   "sentence_id": "prodc5-025"
+  },
+  {
+   "document_id": "conv-42/session_5_observation/Nate",
+   "text": "Nate emphasizes the importance of not quitting and assures Joanna that the next steps will become clearer.",
+   "sentence_id": "prodc5-026"
+  },
+  {
+   "document_id": "conv-42/session_5_observation/Nate",
+   "text": "Nate expresses that his support for Joanna is important and that he is there for her.",
+   "sentence_id": "prodc5-027"
+  },
+  {
+   "document_id": "conv-42/session_6_observation/Nate",
+   "text": "Nate is participating in a video game tournament that he finds intense.",
+   "sentence_id": "prodc5-028"
+  },
+  {
+   "document_id": "conv-42/session_6_observation/Joanna",
+   "text": "Joanna has a lot of books that she uses for writing inspiration.",
+   "sentence_id": "prodc5-029"
+  },
+  {
+   "document_id": "conv-42/session_6_observation/Joanna",
+   "text": "Joanna's advice for someone pursuing writing includes reading lots, trying different genres, building a solid understanding of literature, and not being afraid to write and share.",
+   "sentence_id": "prodc5-030"
+  },
+  {
+   "document_id": "conv-42/session_7_observation/Nate",
+   "text": "Nate dyed his hair a bright and bold color last week to stand out.",
+   "sentence_id": "prodc5-031"
+  },
+  {
+   "document_id": "conv-42/session_7_observation/Joanna",
+   "text": "Joanna finds Nate's boldness inspiring and relates it to a gorgeous sunset she saw while hiking.",
+   "sentence_id": "prodc5-032"
+  },
+  {
+   "document_id": "conv-42/session_7_observation/Joanna",
+   "text": "Joanna is currently consumed by her writing and is hoping for good news soon.",
+   "sentence_id": "prodc5-033"
+  },
+  {
+   "document_id": "conv-42/session_7_observation/Joanna",
+   "text": "Joanna appreciates Nate's support for her writing projects.",
+   "sentence_id": "prodc5-034"
+  },
+  {
+   "document_id": "conv-42/session_8_observation/Nate",
+   "text": "Nate's pets provide him with peaceful moments and help him take a break from reality.",
+   "sentence_id": "prodc5-035"
+  },
+  {
+   "document_id": "conv-42/session_8_observation/Nate",
+   "text": "Nate enjoys engaging in hobbies that revolve around spending time with his pets.",
+   "sentence_id": "prodc5-036"
+  },
+  {
+   "document_id": "conv-42/session_8_observation/Nate",
+   "text": "Nate makes dairy-free ice cream using coconut milk, vanilla extract, sugar, and a pinch of salt.",
+   "sentence_id": "prodc5-037"
+  },
+  {
+   "document_id": "conv-42/session_8_observation/Joanna",
+   "text": "Joanna has been reading a lot of books in the past week and rediscovered good books she owned.",
+   "sentence_id": "prodc5-038"
+  },
+  {
+   "document_id": "conv-42/session_8_observation/Joanna",
+   "text": "Joanna found an awesome hiking trail in her hometown that she considers gorgeous and inspiring.",
+   "sentence_id": "prodc5-039"
+  },
+  {
+   "document_id": "conv-42/session_8_observation/Joanna",
+   "text": "Joanna loves nature and considers it her haven, finding peace and enjoyment in walking in it and feeling its calming effects.",
+   "sentence_id": "prodc5-040"
+  },
+  {
+   "document_id": "conv-42/session_8_observation/Joanna",
+   "text": "Joanna is interested in trying Nate's dairy-free ice cream recipe made with coconut milk, vanilla extract, sugar, and salt.",
+   "sentence_id": "prodc5-041"
+  },
+  {
+   "document_id": "conv-42/session_9_observation/Joanna",
+   "text": "Joanna recently joined a writers group that she finds inspirational and supportive.",
+   "sentence_id": "prodc5-042"
+  },
+  {
+   "document_id": "conv-42/session_9_observation/Joanna",
+   "text": "Joanna is working on a script called 'Finding Home' with her writing group, which she finds rewarding and emotional.",
+   "sentence_id": "prodc5-043"
+  },
+  {
+   "document_id": "conv-42/session_9_observation/Joanna",
+   "text": "Joanna's first passion was acting, but now she feels she shines in writing.",
+   "sentence_id": "prodc5-044"
+  },
+  {
+   "document_id": "conv-42/session_9_observation/Joanna",
+   "text": "Joanna enjoys dramas and emotionally-driven films.",
+   "sentence_id": "prodc5-045"
+  },
+  {
+   "document_id": "conv-42/session_9_observation/Nate",
+   "text": "Nate is participating in a gaming tournament next month, which will be his 4th one.",
+   "sentence_id": "prodc5-046"
+  },
+  {
+   "document_id": "conv-42/session_9_observation/Nate",
+   "text": "Nate loves fantasy and sci-fi movies as they inspire his imagination.",
+   "sentence_id": "prodc5-047"
+  },
+  {
+   "document_id": "conv-42/session_9_observation/Nate",
+   "text": "Nate recommended a series with adventures, magic, and great characters to Joanna.",
+   "sentence_id": "prodc5-048"
+  },
+  {
+   "document_id": "conv-42/session_10_observation/Joanna",
+   "text": "Joanna watched 'The Lord of the Rings' Trilogy based on Nate's recommendation and found it awesome.",
+   "sentence_id": "prodc5-049"
+  },
+  {
+   "document_id": "conv-42/session_10_observation/Joanna",
+   "text": "Joanna made a dairy-free vanilla cake with strawberry filling and coconut cream frosting.",
+   "sentence_id": "prodc5-050"
+  },
+  {
+   "document_id": "conv-42/session_10_observation/Nate",
+   "text": "Nate believes 'The Lord of the Rings' Trilogy is probably the greatest trilogy of all time.",
+   "sentence_id": "prodc5-051"
+  },
+  {
+   "document_id": "conv-42/session_10_observation/Nate",
+   "text": "Nate's focus has been on gaming, practicing a lot and winning tournaments, including winning his second tournament last week.",
+   "sentence_id": "prodc5-052"
+  },
+  {
+   "document_id": "conv-42/session_10_observation/Nate",
+   "text": "Nate usually plays CS:GO but participated in a local Street Fighter tournament and discovered he is really good at it.",
+   "sentence_id": "prodc5-053"
+  },
+  {
+   "document_id": "conv-42/session_10_observation/Nate",
+   "text": "Nate recommended coconut to Joanna in the past which she liked and mentioned during the conversation.",
+   "sentence_id": "prodc5-054"
+  },
+  {
+   "document_id": "conv-42/session_11_observation/Joanna",
+   "text": "Joanna took a photo at Whispering Falls, a beautiful and peaceful location.",
+   "sentence_id": "prodc5-055"
+  },
+  {
+   "document_id": "conv-42/session_11_observation/Joanna",
+   "text": "Joanna feels calm and peaceful in nature, particularly during her hikes.",
+   "sentence_id": "prodc5-056"
+  },
+  {
+   "document_id": "conv-42/session_11_observation/Joanna",
+   "text": "Hiking has opened up a whole new world for Joanna, and she feels like a different person now.",
+   "sentence_id": "prodc5-057"
+  },
+  {
+   "document_id": "conv-42/session_11_observation/Joanna",
+   "text": "Joanna feels inspired by nature and finds it calming to be surrounded by its beauty.",
+   "sentence_id": "prodc5-058"
+  },
+  {
+   "document_id": "conv-42/session_11_observation/Joanna",
+   "text": "Joanna feels like she could write a whole movie when she is in inspiring places like the trails she visits.",
+   "sentence_id": "prodc5-059"
+  },
+  {
+   "document_id": "conv-42/session_11_observation/Joanna",
+   "text": "In inspiring places like the trails, Joanna feels like writing a drama.",
+   "sentence_id": "prodc5-060"
+  },
+  {
+   "document_id": "conv-42/session_11_observation/Nate",
+   "text": "Nate is interested in Joanna's hiking experiences and the photos she takes.",
+   "sentence_id": "prodc5-061"
+  },
+  {
+   "document_id": "conv-42/session_11_observation/Nate",
+   "text": "Nate appreciates the calm and beauty of the nature spots Joanna visits.",
+   "sentence_id": "prodc5-062"
+  },
+  {
+   "document_id": "conv-42/session_11_observation/Nate",
+   "text": "Nate acknowledges that nature can provide a break from the craziness of life.",
+   "sentence_id": "prodc5-063"
+  },
+  {
+   "document_id": "conv-42/session_11_observation/Nate",
+   "text": "Nate gets deep in thought when he is out in nature and thinks about his life or new recipes.",
+   "sentence_id": "prodc5-064"
+  },
+  {
+   "document_id": "conv-42/session_11_observation/Nate",
+   "text": "Nate is open to the idea of going hiking together with Joanna and possibly finding inspiration for a screenplay.",
+   "sentence_id": "prodc5-065"
+  },
+  {
+   "document_id": "conv-42/session_12_observation/Nate",
+   "text": "Nate believes that pets bring happiness and joy into people's lives.",
+   "sentence_id": "prodc5-066"
+  },
+  {
+   "document_id": "conv-42/session_12_observation/Nate",
+   "text": "Nate is supportive and encouraging towards Joanna's writing and creative projects.",
+   "sentence_id": "prodc5-067"
+  },
+  {
+   "document_id": "conv-42/session_12_observation/Nate",
+   "text": "Nate acknowledges that Joanna likes to write about topics like sadness and loss.",
+   "sentence_id": "prodc5-068"
+  },
+  {
+   "document_id": "conv-42/session_12_observation/Nate",
+   "text": "Nate is proud of Joanna for staying true to herself and exploring personal experiences in her writing.",
+   "sentence_id": "prodc5-069"
+  },
+  {
+   "document_id": "conv-42/session_12_observation/Nate",
+   "text": "Nate supports Joanna and cheers her on in her creative journey.",
+   "sentence_id": "prodc5-070"
+  },
+  {
+   "document_id": "conv-42/session_12_observation/Joanna",
+   "text": "Joanna finds comfort in writing and creative projects during tough times.",
+   "sentence_id": "prodc5-071"
+  },
+  {
+   "document_id": "conv-42/session_12_observation/Joanna",
+   "text": "Joanna has supportive friends who appreciate her work and with whom she can discuss and receive feedback.",
+   "sentence_id": "prodc5-072"
+  },
+  {
+   "document_id": "conv-42/session_12_observation/Joanna",
+   "text": "Joanna has written at least three personal stories, with the latest one being about loss, identity, and connection.",
+   "sentence_id": "prodc5-073"
+  },
+  {
+   "document_id": "conv-42/session_12_observation/Joanna",
+   "text": "Joanna values Nate's support and finds it encouraging in her creative endeavors.",
+   "sentence_id": "prodc5-074"
+  },
+  {
+   "document_id": "conv-42/session_13_observation/Nate",
+   "text": "Nate has a dog named Max that he enjoys taking for walks.",
+   "sentence_id": "prodc5-075"
+  },
+  {
+   "document_id": "conv-42/session_13_observation/Nate",
+   "text": "Nate met a super nice couple with a dog during a walk and decided to do doggy playdates with them.",
+   "sentence_id": "prodc5-076"
+  },
+  {
+   "document_id": "conv-42/session_13_observation/Nate",
+   "text": "Nate enjoys watching his dog play with other pets and finds joy in seeing his dog happy.",
+   "sentence_id": "prodc5-077"
+  },
+  {
+   "document_id": "conv-42/session_13_observation/Nate",
+   "text": "Nate believes in appreciating the little things in life that make it better.",
+   "sentence_id": "prodc5-078"
+  },
+  {
+   "document_id": "conv-42/session_13_observation/Joanna",
+   "text": "Joanna values the moments that bring happiness and remind her that life is great.",
+   "sentence_id": "prodc5-079"
+  },
+  {
+   "document_id": "conv-42/session_13_observation/Joanna",
+   "text": "Joanna finds having a peaceful presence or something to come home to for a sense of calm helpful for relaxation.",
+   "sentence_id": "prodc5-080"
+  },
+  {
+   "document_id": "conv-42/session_13_observation/Joanna",
+   "text": "Joanna cherishes the stuffed animal gifted to her by Nate with all her heart.",
+   "sentence_id": "prodc5-081"
+  },
+  {
+   "document_id": "conv-42/session_13_observation/Joanna",
+   "text": "Joanna reflects on the tough times finishing her screenplay and realizes that the joyful moments make the journey worth it.",
+   "sentence_id": "prodc5-082"
+  },
+  {
+   "document_id": "conv-42/session_13_observation/Joanna",
+   "text": "Joanna values Nate's opinion and looks forward to showing him something.",
+   "sentence_id": "prodc5-083"
+  },
+  {
+   "document_id": "conv-42/session_13_observation/Joanna",
+   "text": "Joanna appreciates Nate's support and expresses her gratitude for it.",
+   "sentence_id": "prodc5-084"
+  },
+  {
+   "document_id": "conv-42/session_14_observation/Joanna",
+   "text": "Joanna finished a screenplay but received a rejection letter from a major company.",
+   "sentence_id": "prodc5-085"
+  },
+  {
+   "document_id": "conv-42/session_14_observation/Joanna",
+   "text": "Joanna appreciates Nate's kind words and encouragement.",
+   "sentence_id": "prodc5-086"
+  },
+  {
+   "document_id": "conv-42/session_14_observation/Joanna",
+   "text": "Joanna is planning to go hiking with buddies to check out a new trail with a rad waterfall on the weekend.",
+   "sentence_id": "prodc5-087"
+  },
+  {
+   "document_id": "conv-42/session_14_observation/Nate",
+   "text": "Nate won a regional video game tournament last week and met new people.",
+   "sentence_id": "prodc5-088"
+  },
+  {
+   "document_id": "conv-42/session_14_observation/Nate",
+   "text": "Nate enjoys connecting with fellow gamers and helping them improve their game.",
+   "sentence_id": "prodc5-089"
+  },
+  {
+   "document_id": "conv-42/session_14_observation/Nate",
+   "text": "Nate is organizing a gaming party two weekends later and is getting custom controller decorations for everyone.",
+   "sentence_id": "prodc5-090"
+  },
+  {
+   "document_id": "conv-42/session_15_observation/Joanna",
+   "text": "Joanna wrote bits for a screenplay that appeared on the big screen, which was nerve-wracking but inspiring.",
+   "sentence_id": "prodc5-091"
+  },
+  {
+   "document_id": "conv-42/session_15_observation/Joanna",
+   "text": "Joanna has a Spider-Man pin on her purse, indicating she likes Spider-Man as a favorite superhero.",
+   "sentence_id": "prodc5-092"
+  },
+  {
+   "document_id": "conv-42/session_15_observation/Joanna",
+   "text": "Joanna's room has a cork board full of inspiring quotes and pictures for motivation and creativity.",
+   "sentence_id": "prodc5-093"
+  },
+  {
+   "document_id": "conv-42/session_15_observation/Joanna",
+   "text": "Joanna has a picture of her family on her cork board which serves as a reminder of their love and encouragement.",
+   "sentence_id": "prodc5-094"
+  },
+  {
+   "document_id": "conv-42/session_15_observation/Nate",
+   "text": "Nate has an Iron Man figure in his room which reminds him to keep working on his goals.",
+   "sentence_id": "prodc5-095"
+  },
+  {
+   "document_id": "conv-42/session_16_observation/Joanna",
+   "text": "Joanna submitted her screenplay to a film contest recently.",
+   "sentence_id": "prodc5-096"
+  },
+  {
+   "document_id": "conv-42/session_16_observation/Joanna",
+   "text": "Joanna showed interest in Nate's controller accessories for gaming.",
+   "sentence_id": "prodc5-097"
+  },
+  {
+   "document_id": "conv-42/session_16_observation/Joanna",
+   "text": "Joanna expressed excitement to receive Nate's vegan ice cream recipe.",
+   "sentence_id": "prodc5-098"
+  },
+  {
+   "document_id": "conv-42/session_16_observation/Joanna",
+   "text": "Joanna mentioned her family enjoys it when she makes them new things.",
+   "sentence_id": "prodc5-099"
+  },
+  {
+   "document_id": "conv-42/session_16_observation/Joanna",
+   "text": "Joanna appreciates Nate's support for her ice cream making.",
+   "sentence_id": "prodc5-100"
+  },
+  {
+   "document_id": "conv-42/session_16_observation/Nate",
+   "text": "Nate hosted a successful gaming party with 7 attendees.",
+   "sentence_id": "prodc5-101"
+  },
+  {
+   "document_id": "conv-42/session_16_observation/Nate",
+   "text": "Nate made vegan ice cream last Friday and shared it with his vegan diet group.",
+   "sentence_id": "prodc5-102"
+  },
+  {
+   "document_id": "conv-42/session_16_observation/Nate",
+   "text": "Nate offered to share the vegan ice cream recipe with Joanna the next day.",
+   "sentence_id": "prodc5-103"
+  },
+  {
+   "document_id": "conv-42/session_16_observation/Nate",
+   "text": "Nate expressed confidence that Joanna's family will love the ice cream.",
+   "sentence_id": "prodc5-104"
+  },
+  {
+   "document_id": "conv-42/session_17_observation/Nate",
+   "text": "Nate won his fourth video game tournament online and is proud to make money doing what he loves.",
+   "sentence_id": "prodc5-105"
+  },
+  {
+   "document_id": "conv-42/session_17_observation/Joanna",
+   "text": "Joanna took a road trip to Woodhaven, a small town in the Midwest, for research for her next movie.",
+   "sentence_id": "prodc5-106"
+  },
+  {
+   "document_id": "conv-42/session_17_observation/Joanna",
+   "text": "Joanna found a super cool book from the 1900s with stories and sketches during her trip, inspiring her next script.",
+   "sentence_id": "prodc5-107"
+  },
+  {
+   "document_id": "conv-42/session_17_observation/Joanna",
+   "text": "Joanna started working on a book recently after her movie did well.",
+   "sentence_id": "prodc5-108"
+  },
+  {
+   "document_id": "conv-42/session_17_observation/Joanna",
+   "text": "The book explores themes of loss, redemption, and forgiveness.",
+   "sentence_id": "prodc5-109"
+  },
+  {
+   "document_id": "conv-42/session_17_observation/Joanna",
+   "text": "Joanna mentioned that she has never really tried publishing a book, but this might be her first one.",
+   "sentence_id": "prodc5-110"
+  },
+  {
+   "document_id": "conv-42/session_18_observation/Joanna",
+   "text": "Joanna is heavily invested in writing projects and considers writing a huge part of her life.",
+   "sentence_id": "prodc5-111"
+  },
+  {
+   "document_id": "conv-42/session_18_observation/Joanna",
+   "text": "Joanna finds solace and creativity in writing, considering it an escape and a way to express her feelings.",
+   "sentence_id": "prodc5-112"
+  },
+  {
+   "document_id": "conv-42/session_18_observation/Joanna",
+   "text": "Someone wrote Joanna a touching letter after reading an online blog post she made about a difficult moment in her life.",
+   "sentence_id": "prodc5-113"
+  },
+  {
+   "document_id": "conv-42/session_18_observation/Joanna",
+   "text": "Joanna values the impact her writing has on others, mentioning that it keeps her going even on tough days.",
+   "sentence_id": "prodc5-114"
+  },
+  {
+   "document_id": "conv-42/session_18_observation/Joanna",
+   "text": "Joanna is appreciative of Nate's support and kind words.",
+   "sentence_id": "prodc5-115"
+  },
+  {
+   "document_id": "conv-42/session_18_observation/Joanna",
+   "text": "Joanna is excited to try Nate's dairy-free desserts and expresses gratitude for his willingness to share the recipe.",
+   "sentence_id": "prodc5-116"
+  },
+  {
+   "document_id": "conv-42/session_18_observation/Joanna",
+   "text": "Joanna plans to surprise her family with Nate's dairy-free dessert.",
+   "sentence_id": "prodc5-117"
+  },
+  {
+   "document_id": "conv-42/session_18_observation/Nate",
+   "text": "Nate started teaching people how to make dairy-free desserts and finds it fun and rewarding.",
+   "sentence_id": "prodc5-118"
+  },
+  {
+   "document_id": "conv-42/session_18_observation/Nate",
+   "text": "Nate has been making a creamy, rich, dairy-free dessert with a new recipe that he wants Joanna to try.",
+   "sentence_id": "prodc5-119"
+  },
+  {
+   "document_id": "conv-42/session_18_observation/Nate",
+   "text": "Nate wishes Joanna luck with surprising her family with the dessert and looks forward to hearing about the outcome.",
+   "sentence_id": "prodc5-120"
+  },
+  {
+   "document_id": "conv-42/session_19_observation/Nate",
+   "text": "Nate values taking time off to relax and chill with his pets.",
+   "sentence_id": "prodc5-121"
+  },
+  {
+   "document_id": "conv-42/session_19_observation/Nate",
+   "text": "Nate mentioned that taking care of ourselves helps in being more creative and happier.",
+   "sentence_id": "prodc5-122"
+  },
+  {
+   "document_id": "conv-42/session_19_observation/Joanna",
+   "text": "Joanna celebrates achievements by making delicious treats.",
+   "sentence_id": "prodc5-123"
+  },
+  {
+   "document_id": "conv-42/session_19_observation/Joanna",
+   "text": "Joanna enjoys relaxing and recharging with activities like long walks and reading.",
+   "sentence_id": "prodc5-124"
+  },
+  {
+   "document_id": "conv-42/session_20_observation/Nate",
+   "text": "Nate experienced a letdown in a video game tournament recently.",
+   "sentence_id": "prodc5-125"
+  },
+  {
+   "document_id": "conv-42/session_20_observation/Nate",
+   "text": "Nate tried to stay positive despite the setback in the video game tournament.",
+   "sentence_id": "prodc5-126"
+  },
+  {
+   "document_id": "conv-42/session_20_observation/Nate",
+   "text": "Nate finds comfort and gets creative by hanging out with cute turtles.",
+   "sentence_id": "prodc5-127"
+  },
+  {
+   "document_id": "conv-42/session_20_observation/Nate",
+   "text": "Nate enjoys helping with making desserts that suit everyone's diets.",
+   "sentence_id": "prodc5-128"
+  },
+  {
+   "document_id": "conv-42/session_20_observation/Nate",
+   "text": "Nate offers tips for dairy-free baking, such as using dairy-free margarine or coconut oil instead of butter.",
+   "sentence_id": "prodc5-129"
+  },
+  {
+   "document_id": "conv-42/session_20_observation/Nate",
+   "text": "Nate is willing to help anytime Joanna needs baking tips.",
+   "sentence_id": "prodc5-130"
+  },
+  {
+   "document_id": "conv-42/session_20_observation/Joanna",
+   "text": "Joanna revises recipes to find comfort and get creative.",
+   "sentence_id": "prodc5-131"
+  },
+  {
+   "document_id": "conv-42/session_20_observation/Joanna",
+   "text": "Joanna is experimenting with making dessert recipes yummier and more accessible.",
+   "sentence_id": "prodc5-132"
+  },
+  {
+   "document_id": "conv-42/session_20_observation/Joanna",
+   "text": "Joanna is lactose intolerant and is trying out dairy-free options like coconut or almond milk in her dessert recipes.",
+   "sentence_id": "prodc5-133"
+  },
+  {
+   "document_id": "conv-42/session_20_observation/Joanna",
+   "text": "Joanna makes desserts that work for everyone's diets, including dairy-free chocolate coconut cupcakes with raspberry frosting.",
+   "sentence_id": "prodc5-134"
+  },
+  {
+   "document_id": "conv-42/session_20_observation/Joanna",
+   "text": "Joanna enjoys the company of a fellow chef in the kitchen and believes it brings people together.",
+   "sentence_id": "prodc5-135"
+  },
+  {
+   "document_id": "conv-42/session_20_observation/Joanna",
+   "text": "Joanna is curious about more tips for dairy-free baking.",
+   "sentence_id": "prodc5-136"
+  },
+  {
+   "document_id": "conv-42/session_21_observation/Joanna",
+   "text": "Joanna's laptop crashed last week, causing her to lose all her work which was a major blow.",
+   "sentence_id": "prodc5-137"
+  },
+  {
+   "document_id": "conv-42/session_21_observation/Joanna",
+   "text": "Joanna now uses an external drive for backups to prevent losing work again.",
+   "sentence_id": "prodc5-138"
+  },
+  {
+   "document_id": "conv-42/session_21_observation/Joanna",
+   "text": "Joanna made a delicious dessert with almond milk last Friday.",
+   "sentence_id": "prodc5-139"
+  },
+  {
+   "document_id": "conv-42/session_21_observation/Joanna",
+   "text": "Joanna's favorite dairy-free sweet treat is a chocolate raspberry tart with almond flour crust, chocolate ganache, and fresh raspberries.",
+   "sentence_id": "prodc5-140"
+  },
+  {
+   "document_id": "conv-42/session_21_observation/Joanna",
+   "text": "Joanna loves making dairy-free chocolate cake with raspberries for special occasions, using almond flour, coconut oil, chocolate, and raspberries.",
+   "sentence_id": "prodc5-141"
+  },
+  {
+   "document_id": "conv-42/session_21_observation/Nate",
+   "text": "Nate recently taught vegan ice cream recipes on his cooking show and learned some new recipes.",
+   "sentence_id": "prodc5-142"
+  },
+  {
+   "document_id": "conv-42/session_21_observation/Nate",
+   "text": "Nate's favorite dish from his cooking show is coconut milk ice cream for its smooth, creamy, and dairy-free qualities.",
+   "sentence_id": "prodc5-143"
+  },
+  {
+   "document_id": "conv-42/session_21_observation/Nate",
+   "text": "Nate also loves dairy-free chocolate mousse as it is super creamy and tastes like the real thing.",
+   "sentence_id": "prodc5-144"
+  },
+  {
+   "document_id": "conv-42/session_21_observation/Nate",
+   "text": "Nate is interested in trying Joanna's dairy-free chocolate cake with raspberries and other recipes she likes making.",
+   "sentence_id": "prodc5-145"
+  },
+  {
+   "document_id": "conv-42/session_21_observation/Nate",
+   "text": "Nate expresses interest in Joanna's dairy-free dessert with blueberries, coconut milk, and a gluten-free crust mentioning it looks amazing.",
+   "sentence_id": "prodc5-146"
+  },
+  {
+   "document_id": "conv-42/session_22_observation/Joanna",
+   "text": "Joanna tried her newest dairy-free recipe and it was a winner with her family.",
+   "sentence_id": "prodc5-147"
+  },
+  {
+   "document_id": "conv-42/session_22_observation/Joanna",
+   "text": "Joanna finished writing her book last week after putting in a ton of late nights and edits.",
+   "sentence_id": "prodc5-148"
+  },
+  {
+   "document_id": "conv-42/session_22_observation/Joanna",
+   "text": "Joanna made a cute little bookmark for one of the ladies at her writing club.",
+   "sentence_id": "prodc5-149"
+  }
+ ]
+}
