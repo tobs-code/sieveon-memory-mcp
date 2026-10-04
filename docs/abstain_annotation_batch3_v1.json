@@ -18,10 +18,10 @@
    "subject_mention": "Dancing",
    "object_mention": "Jon",
    "link_status": "resolved/ambiguous",
-   "link_correct": null,
+   "link_correct": "yes",
    "should_link_to": null,
-   "error_class": null,
-   "rationale": null
+   "error_class": "activity_subject_non_entity",
+   "rationale": "Activity, not a canonical entity. Abstention correct."
   },
   {
    "sentence_id": "prodc3-004",
@@ -29,10 +29,10 @@
    "subject_mention": "Gina",
    "object_mention": "Jon",
    "link_status": "resolved/ambiguous",
-   "link_correct": null,
-   "should_link_to": null,
-   "error_class": null,
-   "rationale": null
+   "link_correct": "no",
+   "should_link_to": "Jon",
+   "error_class": "name_collision_context_resolvable",
+   "rationale": "Dance-work context distinguishes Jon from John."
   },
   {
    "sentence_id": "prodc3-005",
@@ -40,10 +40,10 @@
    "subject_mention": "Gina",
    "object_mention": "Jon",
    "link_status": "resolved/ambiguous",
-   "link_correct": null,
-   "should_link_to": null,
-   "error_class": null,
-   "rationale": null
+   "link_correct": "no",
+   "should_link_to": "Jon",
+   "error_class": "name_collision_context_resolvable",
+   "rationale": "Dance-studio dream matches Jon context."
   },
   {
    "sentence_id": "prodc3-019",
@@ -51,10 +51,10 @@
    "subject_mention": "John",
    "object_mention": "homeless shelter",
    "link_status": "ambiguous/resolved",
-   "link_correct": null,
-   "should_link_to": null,
-   "error_class": null,
-   "rationale": null
+   "link_correct": "no",
+   "should_link_to": "John",
+   "error_class": "name_collision_context_resolvable",
+   "rationale": "Food-drive/community context matches John, not Jon."
   },
   {
    "sentence_id": "prodc3-019",
@@ -62,10 +62,10 @@
    "subject_mention": "John",
    "object_mention": "kids in need",
    "link_status": "ambiguous/resolved",
-   "link_correct": null,
+   "link_correct": "yes",
    "should_link_to": null,
-   "error_class": null,
-   "rationale": null
+   "error_class": "generic_entity_unresolved",
+   "rationale": "Generic population, no canonical target."
   },
   {
    "sentence_id": "prodc3-028",
@@ -73,10 +73,10 @@
    "subject_mention": "Maria",
    "object_mention": "John",
    "link_status": "resolved/ambiguous",
-   "link_correct": null,
-   "should_link_to": null,
-   "error_class": null,
-   "rationale": null
+   "link_correct": "no",
+   "should_link_to": "John",
+   "error_class": "name_collision_context_resolvable",
+   "rationale": "Community work with Maria fits John."
   },
   {
    "sentence_id": "prodc3-037",
@@ -84,10 +84,10 @@
    "subject_mention": "Maria",
    "object_mention": "John",
    "link_status": "resolved/ambiguous",
-   "link_correct": null,
-   "should_link_to": null,
-   "error_class": null,
-   "rationale": null
+   "link_correct": "no",
+   "should_link_to": "John",
+   "error_class": "name_collision_context_resolvable",
+   "rationale": "Explicitly John, fits John narrative."
   },
   {
    "sentence_id": "prodc3-053",
@@ -95,10 +95,10 @@
    "subject_mention": "John",
    "object_mention": "people who lost their jobs",
    "link_status": "ambiguous/resolved",
-   "link_correct": null,
+   "link_correct": "yes",
    "should_link_to": null,
-   "error_class": null,
-   "rationale": null
+   "error_class": "generic_entity_unresolved",
+   "rationale": "Generic beneficiary population."
   },
   {
    "sentence_id": "prodc3-070",
@@ -106,10 +106,10 @@
    "subject_mention": "friends",
    "object_mention": "John",
    "link_status": "resolved/ambiguous",
-   "link_correct": null,
-   "should_link_to": null,
-   "error_class": null,
-   "rationale": null
+   "link_correct": "no",
+   "should_link_to": "John",
+   "error_class": "name_collision_context_resolvable",
+   "rationale": "Volunteering circle fits John entity."
   },
   {
    "sentence_id": "prodc3-072",
@@ -117,10 +117,10 @@
    "subject_mention": "Maria",
    "object_mention": "John",
    "link_status": "resolved/ambiguous",
-   "link_correct": null,
-   "should_link_to": null,
-   "error_class": null,
-   "rationale": null
+   "link_correct": "no",
+   "should_link_to": "John",
+   "error_class": "name_collision_context_resolvable",
+   "rationale": "Explicitly John with personal context."
   },
   {
    "sentence_id": "prodc3-081",
@@ -128,10 +128,10 @@
    "subject_mention": "Maria",
    "object_mention": "John",
    "link_status": "resolved/ambiguous",
-   "link_correct": null,
-   "should_link_to": null,
-   "error_class": null,
-   "rationale": null
+   "link_correct": "no",
+   "should_link_to": "John",
+   "error_class": "name_collision_context_resolvable",
+   "rationale": "Maria supporting John, contextually clear."
   },
   {
    "sentence_id": "prodc3-084",
@@ -139,10 +139,10 @@
    "subject_mention": "beginner yoga class",
    "object_mention": "John",
    "link_status": "resolved/ambiguous",
-   "link_correct": null,
+   "link_correct": "yes",
    "should_link_to": null,
-   "error_class": null,
-   "rationale": null
+   "error_class": "activity_subject_non_entity",
+   "rationale": "Activity/class context, not a canonical entity."
   },
   {
    "sentence_id": "prodc3-085",
@@ -150,10 +150,10 @@
    "subject_mention": "Yoga",
    "object_mention": "John",
    "link_status": "resolved/ambiguous",
-   "link_correct": null,
+   "link_correct": "yes",
    "should_link_to": null,
-   "error_class": null,
-   "rationale": null
+   "error_class": "activity_subject_non_entity",
+   "rationale": "Activity/practice, not a canonical entity."
   },
   {
    "sentence_id": "prodc3-087",
@@ -161,10 +161,10 @@
    "subject_mention": "John",
    "object_mention": "kids",
    "link_status": "ambiguous/resolved",
-   "link_correct": null,
-   "should_link_to": null,
-   "error_class": null,
-   "rationale": null
+   "link_correct": "no",
+   "should_link_to": "John",
+   "error_class": "name_collision_context_resolvable",
+   "rationale": "Volunteering/helping-kids context identifies John."
   },
   {
    "sentence_id": "prodc3-093",
@@ -172,10 +172,10 @@
    "subject_mention": "Maria",
    "object_mention": "John",
    "link_status": "resolved/ambiguous",
-   "link_correct": null,
-   "should_link_to": null,
-   "error_class": null,
-   "rationale": null
+   "link_correct": "no",
+   "should_link_to": "John",
+   "error_class": "name_collision_context_resolvable",
+   "rationale": "Explicitly John, helping-kids context."
   },
   {
    "sentence_id": "prodc3-113",
@@ -183,10 +183,10 @@
    "subject_mention": "John",
    "object_mention": "his family",
    "link_status": "ambiguous/resolved",
-   "link_correct": null,
+   "link_correct": "yes",
    "should_link_to": null,
-   "error_class": null,
-   "rationale": null
+   "error_class": "generic_entity_unresolved",
+   "rationale": "No stable canonical family entity."
   },
   {
    "sentence_id": "prodc3-113",
@@ -194,10 +194,10 @@
    "subject_mention": "his family",
    "object_mention": "John",
    "link_status": "resolved/ambiguous",
-   "link_correct": null,
-   "should_link_to": null,
-   "error_class": null,
-   "rationale": null
+   "link_correct": "no",
+   "should_link_to": "John",
+   "error_class": "name_collision_context_resolvable",
+   "rationale": "Object John contextually identifiable."
   }
  ]
 }

@@ -1,0 +1,8 @@
+{
+  "name_collision_context_resolvable": 11,
+  "generic_entity_unresolved": 3,
+  "activity_subject_non_entity": 3,
+  "genuinely_ambiguous": 0,
+  "true_ambiguity": 0,
+  "hypothesis": "linker fail-closed correct on generic/activity referents; loses recall on near-identical person names resolvable only from local/semantic context"
+}
