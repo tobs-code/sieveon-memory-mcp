@@ -1,0 +1,65 @@
+{
+ "version": "assertion_isolation_probe_v1",
+ "status": "preregistered_before_inference",
+ "date": "2026-10-04",
+ "pipeline_changes": "none",
+ "motivation": "Assertion recall is 0.25 on batch 6 (3/4 gold matches rejected: prodc6-005 electron->electron acceptors, prodc6-033 vaporised fuel->Bunsen burner, prodc6-149 beekeeper->reduced hive; 1 accepted: prodc6-129 libraries->children/adults). The validator asks a NARROWER question than the gold relation: 'Does this sentence assert that X provides support, help, funding or encouragement to Y?' (scripts/trackb_two_stage.py:28). Hypothesis: rejection is driven by that narrower semantic frame, not by extraction quality.",
+ "levels_kept_separate": {
+  "L1_extractor": "is the gold triple emitted? (already measured in all probes; fixed here)",
+  "L2_assertion": "ACCEPT vs REJECT on extractor-confirmed gold pairs",
+  "L3_rule": "which assertion condition fires (see conditions below)"
+ },
+ "hypothesis": {
+  "H-ASSERT-SCOPE": "The assertion stage rejects gold provides pairs whose relation is not support/help/funding/encouragement (physical transfer, emission, instrumentation, modal giving, raw resource supply), i.e. a semantic-scope mismatch between the validator prompt and the canonical relation.",
+  "H0": "Assertion verdicts are independent of the semantic frame of the provision."
+ },
+ "design": {
+  "material": "REUSE of frozen probe materials only; no new sentences. Every item is an extractor-confirmed gold pair from a previous probe (position, lexical, event-nominal, agency, recipient, density, interaction).",
+  "why": "isolates the assertion stage with zero new language design and zero new surface factors; L1 is already known-good for every item",
+  "conditions": [
+   "SUPPORT_FRAMING",
+   "NON_SUPPORT_FRAMING",
+   "MODAL",
+   "NEGATIVE_DENY"
+  ],
+  "labels": "assigned from the frozen material's documented semantic_subtype/target_type BEFORE any validator call",
+  "no_new_surfaces": "no sentence is authored, rewritten or reordered for this probe"
+ },
+ "predicted_pattern_if_H1": "SUPPORT_FRAMING accepted >> NON_SUPPORT_FRAMING accepted; MODAL rejected independent of frame",
+ "mechanism_readout": "L3 condition attribution: verdict + which prompt clause is implicated (support/help vs funding vs encouragement vs other) + whether the item carries modality in the sentence",
+ "primary_metrics": [
+  "assertion_accept_rate_per_condition",
+  "gold_match_throughput (L1 x L2)",
+  "false_accept_rate_on_NEGATIVE_DENY"
+ ],
+ "decision_rule": {
+  "scope_support": "support-framed accepted substantially more than non-support-framed with L1 fixed, reproducing across >=3 independent probe sources",
+  "inconclusive": "difference depends on one probe source or on one lexical family",
+  "negative_result": "no scope effect; assertion verdicts track something else and Batch 7 becomes the external check",
+  "within_source_required": "direction must appear in the lexical within-source comparison; pooled-only effects count as artifact"
+ },
+ "outcomes_must_stay_separate": [
+  "extractor_miss",
+  "assertion_reject",
+  "assertion_wrong_span",
+  "postfilter_reject_or_warn"
+ ],
+ "forbidden": [
+  "no prompt change",
+  "no threshold change",
+  "no new trigger",
+  "no PostFilter change",
+  "no assertion-prompt edit during the probe"
+ ],
+ "status_note": "material selection is a deterministic label transfer from frozen files; selection script and item list will be built next, then freeze on go",
+ "analysis_hierarchy": {
+  "primary": "within-source comparison in lexical (SUPPORT vs NON_SUPPORT, n=14) - the only source stratum containing both conditions; diagnostic controlled finding only, not a statistical generalization claim",
+  "secondary_orienting": "pooled SUPPORT vs NON_SUPPORT (45 vs 11), reported for orientation only; condition is strongly confounded with source and a pooled difference must NOT override a null/mixed lexical pattern",
+  "descriptive_only": "eventnominal (15 SUPPORT) and recipient (24 SUPPORT) contain one condition only and provide NO condition contrast; they describe validator behaviour but support no condition-effect inference",
+  "context_only": "batch6 known gold matches (1 SUPPORT, 2 NON_SUPPORT, 1 MODAL) are motivating examples, not evidence",
+  "excluded_from_contrast": "NEGATIVE_DENY (22) is the false-accept safety control; MODAL (n=1) is a separate single-case diagnostic",
+  "interpretation_rule": "A pooled directional difference WITHOUT a concordant directional pattern in the lexical within-source comparison is NOT evidence for an Assertion-layer effect; such a pattern would instead indicate a source/material artifact. Concordant direction in both analyses is a diagnostic signal, not a causal claim, given the small lexical sample."
+ },
+ "design_limitation": "framing label is confounded with source by construction (eventnominal and recipient are SUPPORT-only); accepted knowingly, not balanced by deleting material, per methodological decision",
+ "no_change_after_freeze": "labels, source assignment and condition definitions are frozen; no rebalancing, no re-labelling, no prompt/rule/threshold change"
+}
