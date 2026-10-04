@@ -1,0 +1,59 @@
+{
+ "version": "prompt_scope_ab_v1",
+ "status": "preregistered_before_inference",
+ "date": "2026-10-04",
+ "pipeline_changes": "none beyond the A/B prompt variant under test",
+ "question": "Is the unexplained validator behaviour (eventnominal 15/15 vs recipient 6/16) caused by the narrower semantic scope of the validator's question, rather than by extraction quality? L1 is fixed for every item, so the only manipulated variable is the semantic question asked.",
+ "prompts": {
+  "A_status_quo": {
+   "role": "control arm",
+   "text": "Decide one binary question about the sentence below.\nSentence: %s\nQuestion: Does this sentence assert that %s provides support, help, funding or encouragement to %s?\nConsider assertions only: offers, plans, intentions, wishes, questions, rumored/reported/alleged support, or encouragement directed at someone else do NOT count.\nReply with ONLY this JSON: {\"supported\": true} or {\"supported\": false}",
+   "source": "scripts/trackb_two_stage.py:VALIDATOR_PROMPT (unchanged, shipped text)"
+  },
+  "B_canonical": {
+   "role": "treatment arm",
+   "text": "Decide one binary question about the sentence below.\nSentence: %s\nQuestion: Does this sentence assert that %s provides %s?\nReply with ONLY this JSON: {\"supported\": true} or {\"supported\": false}",
+   "rationale": "removes ONLY the support/help/funding/encouragement scope AND the trigger exclusion list; the relation itself and the output contract are unchanged"
+  }
+ },
+ "manipulation_isolation": "same frozen inputs, same extraction, same JSON output contract, same temperature 0, same retries (3) and timeout (180s), same parsing path. Only the question text differs.",
+ "material": {
+  "inputs": "the 71 VALID items of the assertion-isolation material (docs/assertion_isolation_material_v1.json); gold triples and conditions unchanged",
+  "excluded": "the 8 NULL-recipient items (DEFECT-ASSERTION-R1-NULL) stay outside the A/B run and are NOT replaced by any new class",
+  "no_new_material": "no new sentences; no re-labeling"
+ },
+ "primary_endpoint": {
+  "metric": "RECOVERY",
+  "definition": "B-ACCEPT among items that were A-REJECT, restricted to the valid RECIPIENT-source items",
+  "baseline_available": "A verdicts are frozen in docs/assertion_isolation_results_v1.jsonl (recipient valid subset: 6 ACCEPT / 10 REJECT)"
+ },
+ "safety_control": {
+  "metric": "FALSE_ACCEPT_B",
+  "definition": "count(NEGATIVE_DENY items with B=ACCEPT); all 22 are A-REJECT",
+  "zero": "recovery is compatible with a specific scope effect",
+  "gt_zero": "B is more permissive; recovery cannot be read as clean scope causality"
+ },
+ "secondary_reporting": [
+  "full A vs B contingency per condition (SUPPORT, NON_SUPPORT, MODAL, NEGATIVE_DENY)",
+  "eventnominal subset (A was 15/15) as the stability reference",
+  "lexical within-source subset as the control stratum",
+  "every A-REJECT -> B-ACCEPT transition listed by subtype with the label boundary flag"
+ ],
+ "forbidden": [
+  "no prompt text change after freeze",
+  "no retry/timeout/threshold change",
+  "no intermediate interpretation between arm A and arm B",
+  "no adding items to reach a nicer number",
+  "no postfilter or linker involvement in this measurement"
+ ],
+ "execution_order": "arm A on all 71 inputs, then arm B on the same 71 inputs, single pass each; no post-hoc selection between arms",
+ "status_note": "prompt texts and interpretation rules above are the proposed freeze content; awaiting explicit go before freezing",
+ "primary_outcome": {
+  "metric": "RECOVERY",
+  "definition": "count(A=REJECT, B=ACCEPT) over the 10 valid recipient-source items that were A-REJECT",
+  "recovery_0": "no evidence that the removed support scope explains the recipient rejections",
+  "recovery_gt_0": "B changes decisions on previously rejected recipient cases; the safety control decides the reading",
+  "note": "no numeric effect-size threshold; n=10 makes any such threshold arbitrary"
+ },
+ "evidentiary_limit": "RECOVERY > 0 with FALSE_ACCEPT_B = 0 is evidence FOR the scope hypothesis, but not proof that the removed support scope is the only mechanism."
+}
