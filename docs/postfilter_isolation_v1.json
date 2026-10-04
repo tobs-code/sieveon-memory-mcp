@@ -1,0 +1,63 @@
+{
+ "version": "postfilter_isolation_v1",
+ "status": "preregistered_before_inference",
+ "date": "2026-10-04",
+ "pipeline_changes": "none",
+ "question": "Can the PostFilter remove an ALREADY ACCEPTED gold relation? This is a different question from every linguistic factor tested so far: not what the generator cannot extract, but whether a deterministic downstream stage drops correct extractions.",
+ "levels": [
+  "L1_extractor (fixed, all items gold-matched)",
+  "L2_validator verdict (frozen from df4098c)",
+  "L3_postfilter verdict (measured here)"
+ ],
+ "hypothesis": {
+  "H-PF-DROP": "PostFilter removes a substantial share of validator-ACCEPTed gold relations.",
+  "H0": "PostFilter passes validator-ACCEPTed gold relations unchanged."
+ },
+ "design": {
+  "material": "REPLAY of the frozen assertion-isolation material (79 items, df4098c). No new sentences, no new extractor calls, no new validator calls.",
+  "input_set": "the 28 validator-ACCEPT items (SUPPORT 25 + NON_SUPPORT 3 + batch6 1)",
+  "control_set": "the 22 NEGATIVE_DENY validator-REJECT items (PostFilter must not be the reason they are absent; they never reach PostFilter in production)",
+  "scope": "PostFilter v1.1 exactly as shipped (scope gate, argument grounding, entity gate, trigger gate incl. DIRECT_SUPPORT licensing). NLI stays shadow and is NOT part of this test.",
+  "linker_input": "global normalized pool built from the frozen gold triples of the material (probe material has no document_id); documented as an approximation of the production document-scoped pool",
+  "determinism": "no model call; verdict is a pure function of sentence + spans + pool"
+ },
+ "outcomes_kept_separate": [
+  "validator_reject (never reaches PostFilter)",
+  "postfilter_REJECT",
+  "postfilter_ABSTAIN",
+  "postfilter_WARN_ACCEPT",
+  "postfilter_ACCEPT"
+ ],
+ "primary_metric": "postfilter pass rate on validator-ACCEPT gold items, with drop reason breakdown (SCOPE / ARGUMENT_GROUNDING / ENTITY / TRIGGER)",
+ "decision_rule": {
+  "pf_support": "PostFilter drops a material share of validator-ACCEPTed gold relations with a reproducible reason pattern",
+  "negative_result": "PostFilter passes them; the 15/15 vs 6/24 split is then located entirely inside the validator, not downstream"
+ },
+ "forbidden": [
+  "no postfilter rule change",
+  "no trigger addition",
+  "no threshold change",
+  "no NLI promotion",
+  "no linker change",
+  "no re-labelling of the frozen material"
+ ],
+ "note": "Batch 7 remains the external reality check and is NOT run before this isolation.",
+ "results": {
+  "input_validator_accept": 28,
+  "postfilter_outcome": {
+   "ACCEPT": 15,
+   "WARN_ACCEPT": 10,
+   "ABSTAIN": 3,
+   "REJECT": 0
+  },
+  "drop_reasons": {
+   "TRIGGER (UNKNOWN_TRIGGER -> WARN_ACCEPT, review queue)": 10,
+   "ENTITY (ambiguous -> ABSTAIN)": 3
+  },
+  "hard_rejects": 0,
+  "material_defect_found": "8 of the 79 frozen assertion-probe items carry a NULL gold recipient (recipient-probe R1 condition); the validator was asked '... to None' for those. All 8 are validator-REJECT and never reach PostFilter in production. Excluded from this replay and listed in results.excluded_null_recipient. The assertion-probe recipient figure (6/24) is affected by this: without the NULL items it is 6/16, and the NULL items were never valid validator inputs.",
+  "verdict": "H-PF-DROP NOT supported. The PostFilter removes 0 of 28 validator-ACCEPTed gold relations by hard REJECT. 10 move to WARN_ACCEPT (UNKNOWN_TRIGGER: review queue per the frozen WARN policy, never auto-escalated) and 3 to ABSTAIN via the entity gate (linker ambiguity). Under the shipped policy neither WARN nor ABSTAIN equals a dropped edge.",
+  "localization": "The 15/15 vs 6/24 validator split is located inside the validator stage, not downstream. Downstream behaviour is stable and item-independent.",
+  "negative_control": "NEGATIVE_DENY 22 items: 18 WARN_ACCEPT, 4 ABSTAIN, 0 ACCEPT - the PostFilter manufactures no edges."
+ }
+}

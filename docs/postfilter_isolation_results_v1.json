@@ -1,0 +1,1228 @@
+{
+ "version": "postfilter_isolation_results_v1",
+ "protocol": "docs/postfilter_isolation_v1.json",
+ "material": "docs/assertion_isolation_material_v1.json",
+ "validator_input": "docs/assertion_isolation_results_v1.jsonl",
+ "stage": "postfilter v1.1 replay, no model call, shipped rules",
+ "linker_pool": "global normalized gold-triple pool (78 spans)",
+ "excluded_null_recipient": [
+  "r101yes",
+  "r102yes",
+  "r103yes",
+  "r104yes",
+  "r105yes",
+  "r106yes",
+  "r107yes",
+  "r108yes"
+ ],
+ "exclusion_reason": "NULL gold recipient in the frozen material (validator was asked '... to None'); these are validator-REJECT and never reach PostFilter in production",
+ "items": [
+  {
+   "item_id": "lex01yes",
+   "source_probe": "lexical:lex01",
+   "condition": "NON_SUPPORT_FRAMING",
+   "semantic_subtype": "medical_provision",
+   "gold_triple": [
+    "The clinic",
+    "provides",
+    "patients"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex01no_no",
+   "source_probe": "lexical:lex01",
+   "condition": "NEGATIVE_DENY",
+   "semantic_subtype": "medical_provision",
+   "gold_triple": [
+    "The clinic",
+    "provides",
+    "patients"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex02yes",
+   "source_probe": "lexical:lex02",
+   "condition": "NON_SUPPORT_FRAMING",
+   "semantic_subtype": "fuel_supply",
+   "gold_triple": [
+    "The depot",
+    "provides",
+    "units"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "lex02no_no",
+   "source_probe": "lexical:lex02",
+   "condition": "NEGATIVE_DENY",
+   "semantic_subtype": "fuel_supply",
+   "gold_triple": [
+    "The depot",
+    "provides",
+    "units"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex03yes",
+   "source_probe": "lexical:lex03",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "hospitality_provision",
+   "gold_triple": [
+    "The center",
+    "provides",
+    "guests"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "ABSTAIN",
+   "postfilter_by": "ENTITY",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex03no_no",
+   "source_probe": "lexical:lex03",
+   "condition": "NEGATIVE_DENY",
+   "semantic_subtype": "hospitality_provision",
+   "gold_triple": [
+    "The center",
+    "provides",
+    "guests"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "ABSTAIN",
+   "postfilter_by": "ENTITY",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex04yes",
+   "source_probe": "lexical:lex04",
+   "condition": "NON_SUPPORT_FRAMING",
+   "semantic_subtype": "lesson_provision",
+   "gold_triple": [
+    "The tutor",
+    "provides",
+    "students"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "lex04no_no",
+   "source_probe": "lexical:lex04",
+   "condition": "NEGATIVE_DENY",
+   "semantic_subtype": "lesson_provision",
+   "gold_triple": [
+    "The tutor",
+    "provides",
+    "students"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex05yes",
+   "source_probe": "lexical:lex05",
+   "condition": "NON_SUPPORT_FRAMING",
+   "semantic_subtype": "parcel_transfer",
+   "gold_triple": [
+    "The courier",
+    "provides",
+    "residents"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex05no_no",
+   "source_probe": "lexical:lex05",
+   "condition": "NEGATIVE_DENY",
+   "semantic_subtype": "parcel_transfer",
+   "gold_triple": [
+    "The courier",
+    "provides",
+    "residents"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex06yes",
+   "source_probe": "lexical:lex06",
+   "condition": "NON_SUPPORT_FRAMING",
+   "semantic_subtype": "badge_transfer",
+   "gold_triple": [
+    "The clerk",
+    "provides",
+    "visitors"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex06no_no",
+   "source_probe": "lexical:lex06",
+   "condition": "NEGATIVE_DENY",
+   "semantic_subtype": "badge_transfer",
+   "gold_triple": [
+    "The clerk",
+    "provides",
+    "visitors"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex07no_no",
+   "source_probe": "lexical:lex07",
+   "condition": "NEGATIVE_DENY",
+   "semantic_subtype": "tray_transfer",
+   "gold_triple": [
+    "The nurse",
+    "provides",
+    "patients"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex08no_no",
+   "source_probe": "lexical:lex08",
+   "condition": "NEGATIVE_DENY",
+   "semantic_subtype": "order_transfer",
+   "gold_triple": [
+    "The store",
+    "provides",
+    "customers"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex09no_no",
+   "source_probe": "lexical:lex09",
+   "condition": "NEGATIVE_DENY",
+   "semantic_subtype": "tool_transfer",
+   "gold_triple": [
+    "The neighbor",
+    "provides",
+    "families"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex10no_no",
+   "source_probe": "lexical:lex10",
+   "condition": "NEGATIVE_DENY",
+   "semantic_subtype": "fund_transfer",
+   "gold_triple": [
+    "The office",
+    "provides",
+    "branches"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex11yes",
+   "source_probe": "lexical:lex11",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "favor_service",
+   "gold_triple": [
+    "The clerk",
+    "provides",
+    "visitors"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "lex11no_no",
+   "source_probe": "lexical:lex11",
+   "condition": "NEGATIVE_DENY",
+   "semantic_subtype": "favor_service",
+   "gold_triple": [
+    "The clerk",
+    "provides",
+    "visitors"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex12yes",
+   "source_probe": "lexical:lex12",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "wage_service",
+   "gold_triple": [
+    "The firm",
+    "provides",
+    "workers"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "lex12no_no",
+   "source_probe": "lexical:lex12",
+   "condition": "NEGATIVE_DENY",
+   "semantic_subtype": "wage_service",
+   "gold_triple": [
+    "The firm",
+    "provides",
+    "workers"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex13yes",
+   "source_probe": "lexical:lex13",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "tip_service",
+   "gold_triple": [
+    "The guest",
+    "provides",
+    "porters"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "ABSTAIN",
+   "postfilter_by": "ENTITY",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "lex13no_no",
+   "source_probe": "lexical:lex13",
+   "condition": "NEGATIVE_DENY",
+   "semantic_subtype": "tip_service",
+   "gold_triple": [
+    "The guest",
+    "provides",
+    "porters"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "ABSTAIN",
+   "postfilter_by": "ENTITY",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex14yes",
+   "source_probe": "lexical:lex14",
+   "condition": "NON_SUPPORT_FRAMING",
+   "semantic_subtype": "fee_refund",
+   "gold_triple": [
+    "The clinic",
+    "provides",
+    "patients"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex14no_no",
+   "source_probe": "lexical:lex14",
+   "condition": "NEGATIVE_DENY",
+   "semantic_subtype": "fee_refund",
+   "gold_triple": [
+    "The clinic",
+    "provides",
+    "patients"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex15yes",
+   "source_probe": "lexical:lex15",
+   "condition": "NON_SUPPORT_FRAMING",
+   "semantic_subtype": "towel_service",
+   "gold_triple": [
+    "The porter",
+    "provides",
+    "guests"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "ABSTAIN",
+   "postfilter_by": "ENTITY",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "lex15no_no",
+   "source_probe": "lexical:lex15",
+   "condition": "NEGATIVE_DENY",
+   "semantic_subtype": "towel_service",
+   "gold_triple": [
+    "The porter",
+    "provides",
+    "guests"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "ABSTAIN",
+   "postfilter_by": "ENTITY",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex16yes",
+   "source_probe": "lexical:lex16",
+   "condition": "NON_SUPPORT_FRAMING",
+   "semantic_subtype": "meal_service",
+   "gold_triple": [
+    "The chef",
+    "provides",
+    "guests"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "ABSTAIN",
+   "postfilter_by": "ENTITY",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex16no_no",
+   "source_probe": "lexical:lex16",
+   "condition": "NEGATIVE_DENY",
+   "semantic_subtype": "meal_service",
+   "gold_triple": [
+    "The chef",
+    "provides",
+    "guests"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "ABSTAIN",
+   "postfilter_by": "ENTITY",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex17no_no",
+   "source_probe": "lexical:lex17",
+   "condition": "NEGATIVE_DENY",
+   "semantic_subtype": "budget_allocation",
+   "gold_triple": [
+    "The office",
+    "provides",
+    "departments"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex18no_no",
+   "source_probe": "lexical:lex18",
+   "condition": "NEGATIVE_DENY",
+   "semantic_subtype": "shift_assignment",
+   "gold_triple": [
+    "The manager",
+    "provides",
+    "workers"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex19no_no",
+   "source_probe": "lexical:lex19",
+   "condition": "NEGATIVE_DENY",
+   "semantic_subtype": "permission_grant",
+   "gold_triple": [
+    "The board",
+    "provides",
+    "teams"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex20yes",
+   "source_probe": "lexical:lex20",
+   "condition": "NON_SUPPORT_FRAMING",
+   "semantic_subtype": "key_issuance",
+   "gold_triple": [
+    "The office",
+    "provides",
+    "tenants"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex20no_no",
+   "source_probe": "lexical:lex20",
+   "condition": "NEGATIVE_DENY",
+   "semantic_subtype": "key_issuance",
+   "gold_triple": [
+    "The office",
+    "provides",
+    "tenants"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex21yes",
+   "source_probe": "lexical:lex21",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "skill_instruction",
+   "gold_triple": [
+    "The coach",
+    "provides",
+    "players"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex21no_no",
+   "source_probe": "lexical:lex21",
+   "condition": "NEGATIVE_DENY",
+   "semantic_subtype": "skill_instruction",
+   "gold_triple": [
+    "The coach",
+    "provides",
+    "players"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "lex22no_no",
+   "source_probe": "lexical:lex22",
+   "condition": "NEGATIVE_DENY",
+   "semantic_subtype": "plot_allotment",
+   "gold_triple": [
+    "The council",
+    "provides",
+    "families"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "en01yes",
+   "source_probe": "eventnominal:en01",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "museum_support",
+   "gold_triple": [
+    "The foundation",
+    "provides",
+    "the museum"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": "support",
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "en02yes",
+   "source_probe": "eventnominal:en02",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "library_support",
+   "gold_triple": [
+    "The city",
+    "provides",
+    "the library"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": "support",
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "en03yes",
+   "source_probe": "eventnominal:en03",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "school_support",
+   "gold_triple": [
+    "The company",
+    "provides",
+    "the school"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": "support",
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "en04yes",
+   "source_probe": "eventnominal:en04",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "park_support",
+   "gold_triple": [
+    "The club",
+    "provides",
+    "the park"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": "support",
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "en06yes",
+   "source_probe": "eventnominal:en06",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "digitization_support",
+   "gold_triple": [
+    "The archive",
+    "provides",
+    "the digitization"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": "support",
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "en07yes",
+   "source_probe": "eventnominal:en07",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "restoration_support",
+   "gold_triple": [
+    "The trust",
+    "provides",
+    "the restoration"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": "support",
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "en08yes",
+   "source_probe": "eventnominal:en08",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "expansion_support",
+   "gold_triple": [
+    "The board",
+    "provides",
+    "the expansion"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": "support",
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "en09yes",
+   "source_probe": "eventnominal:en09",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "museum_renovation_support",
+   "gold_triple": [
+    "The foundation",
+    "provides",
+    "the renovation of the museum"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": "support",
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "en10yes",
+   "source_probe": "eventnominal:en10",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "records_digitization_support",
+   "gold_triple": [
+    "The donors",
+    "provides",
+    "the digitization of the records"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": "support",
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "en11yes",
+   "source_probe": "eventnominal:en11",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "theater_restoration_support",
+   "gold_triple": [
+    "The trust",
+    "provides",
+    "the restoration of the theater"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": "support",
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "en12yes",
+   "source_probe": "eventnominal:en12",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "hospital_expansion_support",
+   "gold_triple": [
+    "The council",
+    "provides",
+    "the expansion of the hospital"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": "support",
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "en13yes",
+   "source_probe": "eventnominal:en13",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "renovated_museum_support",
+   "gold_triple": [
+    "The foundation",
+    "provides",
+    "the renovated museum"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": "support",
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "en14yes",
+   "source_probe": "eventnominal:en14",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "digitized_records_support",
+   "gold_triple": [
+    "The donors",
+    "provides",
+    "the digitized records"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": "support",
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "en15yes",
+   "source_probe": "eventnominal:en15",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "restored_theater_support",
+   "gold_triple": [
+    "The trust",
+    "provides",
+    "the restored theater"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": "support",
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "en16yes",
+   "source_probe": "eventnominal:en16",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "expanded_hospital_support",
+   "gold_triple": [
+    "The council",
+    "provides",
+    "the expanded hospital"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": "support",
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "r001yes",
+   "source_probe": "recipient:r001",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "access_display",
+   "gold_triple": [
+    "The stadium",
+    "provides",
+    "fans"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "r201yes",
+   "source_probe": "recipient:r201",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "access_display",
+   "gold_triple": [
+    "The stadium",
+    "provides",
+    "fans"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "r002yes",
+   "source_probe": "recipient:r002",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "access_display",
+   "gold_triple": [
+    "The kennel",
+    "provides",
+    "owners"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "r202yes",
+   "source_probe": "recipient:r202",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "access_display",
+   "gold_triple": [
+    "The kennel",
+    "provides",
+    "owners"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "r003yes",
+   "source_probe": "recipient:r003",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "access_display",
+   "gold_triple": [
+    "The observatory",
+    "provides",
+    "astronomers"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "r203yes",
+   "source_probe": "recipient:r203",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "access_display",
+   "gold_triple": [
+    "The observatory",
+    "provides",
+    "astronomers"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "r004yes",
+   "source_probe": "recipient:r004",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "access_display",
+   "gold_triple": [
+    "The garage",
+    "provides",
+    "drivers"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "r204yes",
+   "source_probe": "recipient:r204",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "access_display",
+   "gold_triple": [
+    "The garage",
+    "provides",
+    "drivers"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "r005yes",
+   "source_probe": "recipient:r005",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "access_display",
+   "gold_triple": [
+    "The hostel",
+    "provides",
+    "travelers"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "r205yes",
+   "source_probe": "recipient:r205",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "access_display",
+   "gold_triple": [
+    "The hostel",
+    "provides",
+    "travelers"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "r006yes",
+   "source_probe": "recipient:r006",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "access_display",
+   "gold_triple": [
+    "The nursery",
+    "provides",
+    "parents"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "r206yes",
+   "source_probe": "recipient:r206",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "access_display",
+   "gold_triple": [
+    "The nursery",
+    "provides",
+    "parents"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "r007yes",
+   "source_probe": "recipient:r007",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "access_display",
+   "gold_triple": [
+    "The arcade",
+    "provides",
+    "players"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "r207yes",
+   "source_probe": "recipient:r207",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "access_display",
+   "gold_triple": [
+    "The arcade",
+    "provides",
+    "players"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "r008yes",
+   "source_probe": "recipient:r008",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "access_display",
+   "gold_triple": [
+    "The apiary",
+    "provides",
+    "beekeepers"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "ABSTAIN",
+   "postfilter_by": "ENTITY",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "r208yes",
+   "source_probe": "recipient:r208",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "access_display",
+   "gold_triple": [
+    "The apiary",
+    "provides",
+    "beekeepers"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "ABSTAIN",
+   "postfilter_by": "ENTITY",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "prodc6-005",
+   "source_probe": "batch6:prodc6-005",
+   "condition": "NON_SUPPORT_FRAMING",
+   "semantic_subtype": "batch6_known_gold_match",
+   "gold_triple": [
+    "electron",
+    "provides",
+    "electron acceptors"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "prodc6-033",
+   "source_probe": "batch6:prodc6-033",
+   "condition": "NON_SUPPORT_FRAMING",
+   "semantic_subtype": "batch6_known_gold_match",
+   "gold_triple": [
+    "vaporised fuel",
+    "provides",
+    "Bunsen burner"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  },
+  {
+   "item_id": "prodc6-129",
+   "source_probe": "batch6:prodc6-129",
+   "condition": "SUPPORT_FRAMING",
+   "semantic_subtype": "batch6_known_gold_match",
+   "gold_triple": [
+    "libraries",
+    "provides",
+    "children and adults on the autism spectrum"
+   ],
+   "validator_result": "ACCEPT",
+   "postfilter_final": "WARN_ACCEPT",
+   "postfilter_by": "TRIGGER",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": true
+  },
+  {
+   "item_id": "prodc6-149",
+   "source_probe": "batch6:prodc6-149",
+   "condition": "MODAL",
+   "semantic_subtype": "batch6_known_gold_match",
+   "gold_triple": [
+    "the beekeeper",
+    "provides",
+    "the reduced hive"
+   ],
+   "validator_result": "REJECT",
+   "postfilter_final": "ABSTAIN",
+   "postfilter_by": "ENTITY",
+   "postfilter_reason": null,
+   "postfilter_trigger": null,
+   "reaches_postfilter_in_production": false
+  }
+ ]
+}
