@@ -1,0 +1,669 @@
+{
+ "version": "candidate_probe_results_v1",
+ "protocol": "docs/candidate_argument_realization_probe_v1.json",
+ "material": "docs/candidate_probe_material_v1.json",
+ "stage": "candidate_generation_only (nu_candidates, no validator)",
+ "match_rule": "normalized span equality or containment, either direction",
+ "pairs": [
+  {
+   "pair_id": "probe01",
+   "class": "CANONICAL",
+   "verb": "provide",
+   "variants": {
+    "a": {
+     "sentence_id": "probe01a",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    },
+    "b": {
+     "sentence_id": "probe01b",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    }
+   }
+  },
+  {
+   "pair_id": "probe02",
+   "class": "CANONICAL",
+   "verb": "supply",
+   "variants": {
+    "a": {
+     "sentence_id": "probe02a",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "the base"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    },
+    "b": {
+     "sentence_id": "probe02b",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "depot",
+       "base"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    }
+   }
+  },
+  {
+   "pair_id": "probe03",
+   "class": "CANONICAL",
+   "verb": "offer",
+   "variants": {
+    "a": {
+     "sentence_id": "probe03a",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The center",
+       "applicants"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    },
+    "b": {
+     "sentence_id": "probe03b",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The center",
+       "applicants"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    }
+   }
+  },
+  {
+   "pair_id": "probe04",
+   "class": "CANONICAL",
+   "verb": "give",
+   "variants": {
+    "a": {
+     "sentence_id": "probe04a",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The foundation",
+       "schools"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    },
+    "b": {
+     "sentence_id": "probe04b",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The foundation",
+       "schools"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    }
+   }
+  },
+  {
+   "pair_id": "probe05",
+   "class": "PP_PROVIDER",
+   "verb": "supply",
+   "variants": {
+    "a": {
+     "sentence_id": "probe05a",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The bakery",
+       "shops"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    },
+    "b": {
+     "sentence_id": "probe05b",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the bakery",
+       "shops"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    }
+   }
+  },
+  {
+   "pair_id": "probe06",
+   "class": "PP_PROVIDER",
+   "verb": "provide",
+   "variants": {
+    "a": {
+     "sentence_id": "probe06a",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The hospital",
+       "children"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    },
+    "b": {
+     "sentence_id": "probe06b",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the hospital",
+       "children"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    }
+   }
+  },
+  {
+   "pair_id": "probe07",
+   "class": "PP_PROVIDER",
+   "verb": "offer",
+   "variants": {
+    "a": {
+     "sentence_id": "probe07a",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The studio",
+       "beginners"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    },
+    "b": {
+     "sentence_id": "probe07b",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the studio",
+       "beginners"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    }
+   }
+  },
+  {
+   "pair_id": "probe08",
+   "class": "PP_PROVIDER",
+   "verb": "give",
+   "variants": {
+    "a": {
+     "sentence_id": "probe08a",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The charity",
+       "shelters"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    },
+    "b": {
+     "sentence_id": "probe08b",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the charity",
+       "shelters"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    }
+   }
+  },
+  {
+   "pair_id": "probe09",
+   "class": "PP_RECIPIENT",
+   "verb": "provide",
+   "variants": {
+    "a": {
+     "sentence_id": "probe09a",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The pharmacy",
+       "customers"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    },
+    "b": {
+     "sentence_id": "probe09b",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The pharmacy",
+       "customers"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    }
+   }
+  },
+  {
+   "pair_id": "probe10",
+   "class": "PP_RECIPIENT",
+   "verb": "supply",
+   "variants": {
+    "a": {
+     "sentence_id": "probe10a",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The mill",
+       "bakeries"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    },
+    "b": {
+     "sentence_id": "probe10b",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The mill",
+       "bakeries"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    }
+   }
+  },
+  {
+   "pair_id": "probe11",
+   "class": "PP_RECIPIENT",
+   "verb": "offer",
+   "variants": {
+    "a": {
+     "sentence_id": "probe11a",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The school",
+       "students"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    },
+    "b": {
+     "sentence_id": "probe11b",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The school",
+       "students"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    }
+   }
+  },
+  {
+   "pair_id": "probe12",
+   "class": "PP_RECIPIENT",
+   "verb": "give",
+   "variants": {
+    "a": {
+     "sentence_id": "probe12a",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The donor",
+       "museums"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    },
+    "b": {
+     "sentence_id": "probe12b",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The donor",
+       "museums"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    }
+   }
+  },
+  {
+   "pair_id": "probe13",
+   "class": "PASSIVE",
+   "verb": "provide",
+   "variants": {
+    "a": {
+     "sentence_id": "probe13a",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    },
+    "b": {
+     "sentence_id": "probe13b",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the clinic",
+       "patients"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    }
+   }
+  },
+  {
+   "pair_id": "probe14",
+   "class": "PASSIVE",
+   "verb": "supply",
+   "variants": {
+    "a": {
+     "sentence_id": "probe14a",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The terminal",
+       "the fleet"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    },
+    "b": {
+     "sentence_id": "probe14b",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the terminal",
+       "the fleet"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    }
+   }
+  },
+  {
+   "pair_id": "probe15",
+   "class": "PASSIVE",
+   "verb": "offer",
+   "variants": {
+    "a": {
+     "sentence_id": "probe15a",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The institute",
+       "trainees"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    },
+    "b": {
+     "sentence_id": "probe15b",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the institute",
+       "trainees"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    }
+   }
+  },
+  {
+   "pair_id": "probe16",
+   "class": "PASSIVE",
+   "verb": "give",
+   "variants": {
+    "a": {
+     "sentence_id": "probe16a",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The foundation",
+       "the school"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    },
+    "b": {
+     "sentence_id": "probe16b",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the foundation",
+       "the school"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    }
+   }
+  },
+  {
+   "pair_id": "probe17",
+   "class": "NONFINITE",
+   "verb": "provide",
+   "variants": {
+    "a": {
+     "sentence_id": "probe17a",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The practice",
+       "clients"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    },
+    "b": {
+     "sentence_id": "probe17b",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the practice",
+       "clients"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    }
+   }
+  },
+  {
+   "pair_id": "probe18",
+   "class": "NONFINITE",
+   "verb": "supply",
+   "variants": {
+    "a": {
+     "sentence_id": "probe18a",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The supplier",
+       "factories"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    },
+    "b": {
+     "sentence_id": "probe18b",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the supplier",
+       "factories"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    }
+   }
+  },
+  {
+   "pair_id": "probe19",
+   "class": "NONFINITE",
+   "verb": "offer",
+   "variants": {
+    "a": {
+     "sentence_id": "probe19a",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The agency",
+       "refugees"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    },
+    "b": {
+     "sentence_id": "probe19b",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the agency",
+       "refugees"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    }
+   }
+  },
+  {
+   "pair_id": "probe20",
+   "class": "NONFINITE",
+   "verb": "give",
+   "variants": {
+    "a": {
+     "sentence_id": "probe20a",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The program",
+       "artists"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    },
+    "b": {
+     "sentence_id": "probe20b",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "program fund",
+       "artists"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true
+    }
+   }
+  }
+ ]
+}
