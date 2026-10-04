@@ -1,0 +1,64 @@
+{
+  "version": "batch7_source_selection_v2",
+  "status": "preregistered_before_any_document_selected",
+  "date": "2026-10-04",
+  "supersedes": "batch7_source_selection_v1 (a2fcb33)",
+  "superseded_run": "20e029d = aborted pre-fetch, no document selected, no corpus derived from it",
+
+  "design_change_rationale": "The v1 defect was the DOCUMENT TYPE, not the sentence threshold: a long-form length requirement was applied to landing/index pages. v2 changes the corpus unit to institutional long-form documents. The 1200-sentence figure came from a corpus-size assumption, not a methodological necessity, so it is replaced by a realistic mechanical minimum plus an explicit corpus-size target.",
+
+  "unchanged": [
+    "12 domains, no domain added, dropped or reordered",
+    "no Wikipedia, no news, no blogs, no marketing, no advocacy/opinion",
+    "no keyword search for provide/support/serve and no construction-frequency targeting",
+    "no difficulty estimation, no selection by pipeline output",
+    "K=3 candidates per domain, first qualifying candidate wins",
+    "mechanical filters only: 40-400 chars, >=6 tokens, terminal punctuation, boilerplate/markup removal",
+    "section-wise sampling (stride per section, never per document)",
+    "no per-document sentence cap and no document-size balancing",
+    "pinning of url + fetch_date + raw sha256, corpus digest before inference",
+    "N=80 deterministic seeded sample drawn AFTER the full run",
+    "one variable changed at a time: v2 changes document type and minimum size only"
+  ],
+
+  "document_requirement": {
+    "type": "institutional long-form document (full report, standard, plan, guidance document, technical specification, results report) - NOT a landing page, index page, press release or news item",
+    "minimum_usable_sentences": 300,
+    "minimum_real_sections": 3,
+    "qualification_check": "after cleaning and structural-section removal, the document must expose at least 300 usable sentences AND at least 3 real content sections; else next K candidate; if none of K qualifies, the shortfall is recorded and the domain continues with the next K batch (never with a different domain)"
+  },
+
+  "documents_per_domain": 2,
+
+  "corpus_size": {
+    "target_sentences": 200,
+    "mechanism": "one global sampling ratio r = 200 / (sum of usable sentences across all selected documents), applied UNIFORMLY to every document and every section",
+    "why_not_per_document_cap": "a single global ratio keeps relative document sizes intact (a 1200-sentence document still contributes 6x a 200-sentence one) while hitting the corpus target; a per-document cap would be document balancing, which is forbidden",
+    "no_equilibration": "document size differences are preserved; the ratio is a corpus-size mechanism, not a balance mechanism",
+    "cost_note": "the full pipeline run is executed over the resulting ~200 sentences, so validator call volume stays comparable to batch 6; the N=80 sample is drawn from that run, not from the 24 raw documents"
+  },
+
+  "procedure": [
+    "1. per domain: fixed query restricted to long-form institutional documents, K=3",
+    "2. mechanical allowlist filter (institutional domains only; social/commercial excluded without judgement)",
+    "3. scrape candidates in K order; first with >=300 usable sentences and >=3 sections qualifies",
+    "4. take two qualifying documents per domain, recording any shortfall",
+    "5. pin url + fetch_date + raw markdown sha256 per document",
+    "6. section-wise stride with the single global ratio r",
+    "7. compute corpus digest and verify disjointness vs corpora v1-v6 and frozen test material",
+    "8. freeze the corpus",
+    "9. run the unchanged production pipeline v1.2.1 over the whole corpus",
+    "10. freeze all run records, then draw the seeded N=80 sample",
+    "11. blind annotation, then answer the replication question"
+  ],
+
+  "forbidden": [
+    "no document re-selection after seeing pipeline output",
+    "no difficulty-targeted search",
+    "no construction-frequency targeting",
+    "no per-document balancing or sentence caps",
+    "no keyword-driven sentence filtering",
+    "no corpus edits after the digest is pinned",
+    "no reuse of the aborted pre-fetch candidates as the corpus"
+  ]
+}
