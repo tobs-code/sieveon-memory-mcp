@@ -1,0 +1,33 @@
+{
+  "version": "candidate_exclusion_tree_v2",
+  "date": "2026-10-04",
+  "status": "frozen interim balance",
+  "supersedes": "candidate_exclusion_tree_v1 (1a3fe3f, unchanged)",
+  "wording_rule": "nine single hypotheses show no systematic silence effect; span/selection errors were found locally, and a null on one factor does not exclude interactions",
+  "excluded_single_factors": [
+    {"factor": "position/argument realization", "result": "b5644f8", "finding": "40/40 incl. PP, passive, nonfinite"},
+    {"factor": "lexical coverage", "result": "a4eea29", "finding": "YES 22/22 across L1-L4; generator permissive"},
+    {"factor": "finite syntactic complexity", "result": "54f9809", "finding": "C0-C4 20/20; C5 3/4 (1 span error)"},
+    {"factor": "anaphora/coreference", "result": "b613ff0", "finding": "27/28 present; pronoun spans are linking matter"},
+    {"factor": "event nominal target", "result": "4d3a930", "finding": "16/16 present"},
+    {"factor": "benefactive framing", "result": "d951923", "finding": "16/16 present"},
+    {"factor": "figurativeness/metaphor", "result": "4a85e37", "finding": "M0 8/8; M1 YES* 2/3; M3 11/12; no class effect"},
+    {"factor": "passive x nominal interaction", "result": "107a946", "finding": "16/16 correct in all cells A/B/C/D"},
+    {"factor": "provider agency", "result": "8888a38", "finding": "16/16 correct across R0-R3 incl. systems and natural sources"}
+  ],
+  "positive_side_findings_separate": [
+    "E2 of-bypass: event nominal skipped for of-complement entity (3/4)",
+    "benefactive: animate recipient preferred over theme (16/16 incl. T0)",
+    "metaphor: item-level misses only (ammunition, options)",
+    "C5: span fusion in nonfinite (Providing units as subject span)",
+    "NO-side: deny/refuse/charge produce candidates (permissive generator; validator territory)"
+  ],
+  "batch6_FN_state": {
+    "true_silence_reproduced": 9,
+    "selection_explained": 0,
+    "literal_unexplained": ["prodc6-012", "prodc6-027", "prodc6-030", "prodc6-032", "prodc6-112", "prodc6-120", "prodc6-130", "prodc6-132"],
+    "figurative": ["prodc6-055"],
+    "rule": "carried separately; no retroactive reclassification"
+  },
+  "next": "FN micro-profiling (docs/batch6_fn_microprofile_v1.json), then clusters, then probe #10 decision"
+}
