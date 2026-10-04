@@ -45,18 +45,26 @@ def main() -> int:
                 cached[s["sentence_id"]] = c
             cands_by_id[s["sentence_id"]] = cached[s["sentence_id"]]
     norms = set()
-    for cl in cands_by_id.values():
-        for x, y in cl:
+    doc_norms = {}
+    for s in corpus["sentences"]:
+        bucket = doc_norms.setdefault(s["document_id"], set())
+        sp = s["document_id"].split("/")[-1]
+        if sp:
+            bucket.add(normalize(sp))
+        for x, y in cands_by_id.get(s["sentence_id"], []):
             norms.add(normalize(x))
             norms.add(normalize(y))
+            bucket.add(normalize(x))
+            bucket.add(normalize(y))
     n_new = 0
     for s in corpus["sentences"]:
         if s["sentence_id"] in done:
             continue
         cands = cands_by_id[s["sentence_id"]]
+        doc_bucket = doc_norms.get(s["document_id"])
         for x, y in cands:
             sup, _ = validate(s["text"], x, y)
-            sl, ol = link(x, norms), link(y, norms)
+            sl, ol = link(x, norms, doc_bucket), link(y, norms, doc_bucket)
             final = "ACCEPT" if (sup and sl["status"] == "resolved"
                                  and ol["status"] == "resolved") else \
                 "ABSTAIN" if sup else "REJECT"

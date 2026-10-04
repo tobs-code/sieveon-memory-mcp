@@ -30,14 +30,27 @@ def load_triples():
     return recs
 
 
-def link(mention: str, all_norms: set):
+def link(mention: str, all_norms: set, doc_norms: set | None = None):
+    """Link a mention. v1.3: optional document-scoped candidate set.
+
+    Document scope restricts the candidate pool; the similarity mechanism
+    (0.85 gate) is unchanged. Without doc context (doc_norms None) the
+    behavior is exactly the legacy global link. Document scope never
+    auto-resolves: exact match or same gate, never looser.
+    """
     n = normalize(mention)
-    near = sorted({m for m in all_norms if m != n
+    pool = set(doc_norms) if doc_norms else set(all_norms)
+    if n in pool:
+        return {"entity_id": f"entity:{n}", "status": "resolved",
+                "normalized": n, "scope": "doc" if doc_norms else "global"}
+    near = sorted({m for m in pool if m != n
                    and difflib.SequenceMatcher(None, n, m).ratio() > 0.85})
     if near:
         return {"entity_id": None, "status": "ambiguous",
-                "collides_with": near, "normalized": n}
-    return {"entity_id": f"entity:{n}", "status": "resolved", "normalized": n}
+                "collides_with": near, "normalized": n,
+                "scope": "doc" if doc_norms else "global"}
+    return {"entity_id": f"entity:{n}", "status": "resolved", "normalized": n,
+            "scope": "doc" if doc_norms else "global"}
 
 
 def main() -> int:
