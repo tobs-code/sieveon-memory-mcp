@@ -1,0 +1,562 @@
+{
+ "version": "candidate_complexity_material_v1",
+ "status": "built_by_script (validation + freeze are separate steps)",
+ "date": "2026-10-04",
+ "protocol": "docs/candidate_complexity_probe_v1.json",
+ "builder": "scripts/build_complexity_material.py",
+ "c1_adjunct": "struggling with long queues",
+ "pairs": [
+  {
+   "pair_id": "c0med",
+   "condition": "C0",
+   "subtype": "med",
+   "yes": {
+    "sentence_id": "c0medyes",
+    "sentence": "The clinic provides patients medication.",
+    "expected_provides": "YES",
+    "provider": "The clinic",
+    "recipient": "patients",
+    "lexical_trigger": "provide",
+    "argument_frame": "double-object"
+   },
+   "no": {
+    "sentence_id": "c0medno",
+    "sentence": "The clinic denies patients medication.",
+    "expected_provides": "NO",
+    "provider": "The clinic",
+    "recipient": "patients",
+    "lexical_trigger": "deny",
+    "argument_frame": "double-object"
+   }
+  },
+  {
+   "pair_id": "c1med",
+   "condition": "C1",
+   "subtype": "med",
+   "yes": {
+    "sentence_id": "c1medyes",
+    "sentence": "The clinic, struggling with long queues, provides patients medication.",
+    "expected_provides": "YES",
+    "provider": "The clinic",
+    "recipient": "patients",
+    "lexical_trigger": "provide",
+    "argument_frame": "double-object"
+   },
+   "no": {
+    "sentence_id": "c1medno",
+    "sentence": "The clinic, struggling with long queues, denies patients medication.",
+    "expected_provides": "NO",
+    "provider": "The clinic",
+    "recipient": "patients",
+    "lexical_trigger": "deny",
+    "argument_frame": "double-object"
+   }
+  },
+  {
+   "pair_id": "c2med",
+   "condition": "C2",
+   "subtype": "med",
+   "yes": {
+    "sentence_id": "c2medyes",
+    "sentence": "The clinic that opened last year provides patients medication.",
+    "expected_provides": "YES",
+    "provider": "The clinic",
+    "recipient": "patients",
+    "lexical_trigger": "provide",
+    "argument_frame": "double-object"
+   },
+   "no": {
+    "sentence_id": "c2medno",
+    "sentence": "The clinic that opened last year denies patients medication.",
+    "expected_provides": "NO",
+    "provider": "The clinic",
+    "recipient": "patients",
+    "lexical_trigger": "deny",
+    "argument_frame": "double-object"
+   }
+  },
+  {
+   "pair_id": "c3med",
+   "condition": "C3",
+   "subtype": "med",
+   "yes": {
+    "sentence_id": "c3medyes",
+    "sentence": "The clinic provides patients who need treatment medication.",
+    "expected_provides": "YES",
+    "provider": "The clinic",
+    "recipient": "patients",
+    "lexical_trigger": "provide",
+    "argument_frame": "double-object"
+   },
+   "no": {
+    "sentence_id": "c3medno",
+    "sentence": "The clinic denies patients who need treatment medication.",
+    "expected_provides": "NO",
+    "provider": "The clinic",
+    "recipient": "patients",
+    "lexical_trigger": "deny",
+    "argument_frame": "double-object"
+   }
+  },
+  {
+   "pair_id": "c4med",
+   "condition": "C4",
+   "subtype": "med",
+   "yes": {
+    "sentence_id": "c4medyes",
+    "sentence": "The clinic, which provides patients medication, expanded the pharmacy.",
+    "expected_provides": "YES",
+    "provider": "The clinic",
+    "recipient": "patients",
+    "lexical_trigger": "provide",
+    "argument_frame": "double-object"
+   },
+   "no": {
+    "sentence_id": "c4medno",
+    "sentence": "The clinic, which denies patients medication, expanded the pharmacy.",
+    "expected_provides": "NO",
+    "provider": "The clinic",
+    "recipient": "patients",
+    "lexical_trigger": "deny",
+    "argument_frame": "double-object"
+   }
+  },
+  {
+   "pair_id": "c5med",
+   "condition": "C5",
+   "subtype": "med",
+   "yes": {
+    "sentence_id": "c5medyes",
+    "sentence": "Providing patients medication, the clinic expanded the pharmacy.",
+    "expected_provides": "YES",
+    "provider": "The clinic",
+    "recipient": "patients",
+    "lexical_trigger": "provide",
+    "argument_frame": "participial"
+   },
+   "no": {
+    "sentence_id": "c5medno",
+    "sentence": "Denying patients medication, the clinic expanded the pharmacy.",
+    "expected_provides": "NO",
+    "provider": "The clinic",
+    "recipient": "patients",
+    "lexical_trigger": "deny",
+    "argument_frame": "participial"
+   }
+  },
+  {
+   "pair_id": "c0fuel",
+   "condition": "C0",
+   "subtype": "fuel",
+   "yes": {
+    "sentence_id": "c0fuelyes",
+    "sentence": "The depot provides units fuel.",
+    "expected_provides": "YES",
+    "provider": "The depot",
+    "recipient": "units",
+    "lexical_trigger": "provide",
+    "argument_frame": "double-object"
+   },
+   "no": {
+    "sentence_id": "c0fuelno",
+    "sentence": "The depot denies units fuel.",
+    "expected_provides": "NO",
+    "provider": "The depot",
+    "recipient": "units",
+    "lexical_trigger": "deny",
+    "argument_frame": "double-object"
+   }
+  },
+  {
+   "pair_id": "c1fuel",
+   "condition": "C1",
+   "subtype": "fuel",
+   "yes": {
+    "sentence_id": "c1fuelyes",
+    "sentence": "The depot, struggling with long queues, provides units fuel.",
+    "expected_provides": "YES",
+    "provider": "The depot",
+    "recipient": "units",
+    "lexical_trigger": "provide",
+    "argument_frame": "double-object"
+   },
+   "no": {
+    "sentence_id": "c1fuelno",
+    "sentence": "The depot, struggling with long queues, denies units fuel.",
+    "expected_provides": "NO",
+    "provider": "The depot",
+    "recipient": "units",
+    "lexical_trigger": "deny",
+    "argument_frame": "double-object"
+   }
+  },
+  {
+   "pair_id": "c2fuel",
+   "condition": "C2",
+   "subtype": "fuel",
+   "yes": {
+    "sentence_id": "c2fuelyes",
+    "sentence": "The depot that opened last year provides units fuel.",
+    "expected_provides": "YES",
+    "provider": "The depot",
+    "recipient": "units",
+    "lexical_trigger": "provide",
+    "argument_frame": "double-object"
+   },
+   "no": {
+    "sentence_id": "c2fuelno",
+    "sentence": "The depot that opened last year denies units fuel.",
+    "expected_provides": "NO",
+    "provider": "The depot",
+    "recipient": "units",
+    "lexical_trigger": "deny",
+    "argument_frame": "double-object"
+   }
+  },
+  {
+   "pair_id": "c3fuel",
+   "condition": "C3",
+   "subtype": "fuel",
+   "yes": {
+    "sentence_id": "c3fuelyes",
+    "sentence": "The depot provides units that need refills fuel.",
+    "expected_provides": "YES",
+    "provider": "The depot",
+    "recipient": "units",
+    "lexical_trigger": "provide",
+    "argument_frame": "double-object"
+   },
+   "no": {
+    "sentence_id": "c3fuelno",
+    "sentence": "The depot denies units that need refills fuel.",
+    "expected_provides": "NO",
+    "provider": "The depot",
+    "recipient": "units",
+    "lexical_trigger": "deny",
+    "argument_frame": "double-object"
+   }
+  },
+  {
+   "pair_id": "c4fuel",
+   "condition": "C4",
+   "subtype": "fuel",
+   "yes": {
+    "sentence_id": "c4fuelyes",
+    "sentence": "The depot, which provides units fuel, expanded the warehouse.",
+    "expected_provides": "YES",
+    "provider": "The depot",
+    "recipient": "units",
+    "lexical_trigger": "provide",
+    "argument_frame": "double-object"
+   },
+   "no": {
+    "sentence_id": "c4fuelno",
+    "sentence": "The depot, which denies units fuel, expanded the warehouse.",
+    "expected_provides": "NO",
+    "provider": "The depot",
+    "recipient": "units",
+    "lexical_trigger": "deny",
+    "argument_frame": "double-object"
+   }
+  },
+  {
+   "pair_id": "c5fuel",
+   "condition": "C5",
+   "subtype": "fuel",
+   "yes": {
+    "sentence_id": "c5fuelyes",
+    "sentence": "Providing units fuel, the depot expanded the warehouse.",
+    "expected_provides": "YES",
+    "provider": "The depot",
+    "recipient": "units",
+    "lexical_trigger": "provide",
+    "argument_frame": "participial"
+   },
+   "no": {
+    "sentence_id": "c5fuelno",
+    "sentence": "Denying units fuel, the depot expanded the warehouse.",
+    "expected_provides": "NO",
+    "provider": "The depot",
+    "recipient": "units",
+    "lexical_trigger": "deny",
+    "argument_frame": "participial"
+   }
+  },
+  {
+   "pair_id": "c0badge",
+   "condition": "C0",
+   "subtype": "badge",
+   "yes": {
+    "sentence_id": "c0badgeyes",
+    "sentence": "The clerk provides visitors badges.",
+    "expected_provides": "YES",
+    "provider": "The clerk",
+    "recipient": "visitors",
+    "lexical_trigger": "provide",
+    "argument_frame": "double-object"
+   },
+   "no": {
+    "sentence_id": "c0badgeno",
+    "sentence": "The clerk denies visitors badges.",
+    "expected_provides": "NO",
+    "provider": "The clerk",
+    "recipient": "visitors",
+    "lexical_trigger": "deny",
+    "argument_frame": "double-object"
+   }
+  },
+  {
+   "pair_id": "c1badge",
+   "condition": "C1",
+   "subtype": "badge",
+   "yes": {
+    "sentence_id": "c1badgeyes",
+    "sentence": "The clerk, struggling with long queues, provides visitors badges.",
+    "expected_provides": "YES",
+    "provider": "The clerk",
+    "recipient": "visitors",
+    "lexical_trigger": "provide",
+    "argument_frame": "double-object"
+   },
+   "no": {
+    "sentence_id": "c1badgeno",
+    "sentence": "The clerk, struggling with long queues, denies visitors badges.",
+    "expected_provides": "NO",
+    "provider": "The clerk",
+    "recipient": "visitors",
+    "lexical_trigger": "deny",
+    "argument_frame": "double-object"
+   }
+  },
+  {
+   "pair_id": "c2badge",
+   "condition": "C2",
+   "subtype": "badge",
+   "yes": {
+    "sentence_id": "c2badgeyes",
+    "sentence": "The clerk that started last month provides visitors badges.",
+    "expected_provides": "YES",
+    "provider": "The clerk",
+    "recipient": "visitors",
+    "lexical_trigger": "provide",
+    "argument_frame": "double-object"
+   },
+   "no": {
+    "sentence_id": "c2badgeno",
+    "sentence": "The clerk that started last month denies visitors badges.",
+    "expected_provides": "NO",
+    "provider": "The clerk",
+    "recipient": "visitors",
+    "lexical_trigger": "deny",
+    "argument_frame": "double-object"
+   }
+  },
+  {
+   "pair_id": "c3badge",
+   "condition": "C3",
+   "subtype": "badge",
+   "yes": {
+    "sentence_id": "c3badgeyes",
+    "sentence": "The clerk provides visitors who need passes badges.",
+    "expected_provides": "YES",
+    "provider": "The clerk",
+    "recipient": "visitors",
+    "lexical_trigger": "provide",
+    "argument_frame": "double-object"
+   },
+   "no": {
+    "sentence_id": "c3badgeno",
+    "sentence": "The clerk denies visitors who need passes badges.",
+    "expected_provides": "NO",
+    "provider": "The clerk",
+    "recipient": "visitors",
+    "lexical_trigger": "deny",
+    "argument_frame": "double-object"
+   }
+  },
+  {
+   "pair_id": "c4badge",
+   "condition": "C4",
+   "subtype": "badge",
+   "yes": {
+    "sentence_id": "c4badgeyes",
+    "sentence": "The clerk, who provides visitors badges, extended the desk hours.",
+    "expected_provides": "YES",
+    "provider": "The clerk",
+    "recipient": "visitors",
+    "lexical_trigger": "provide",
+    "argument_frame": "double-object"
+   },
+   "no": {
+    "sentence_id": "c4badgeno",
+    "sentence": "The clerk, who denies visitors badges, extended the desk hours.",
+    "expected_provides": "NO",
+    "provider": "The clerk",
+    "recipient": "visitors",
+    "lexical_trigger": "deny",
+    "argument_frame": "double-object"
+   }
+  },
+  {
+   "pair_id": "c5badge",
+   "condition": "C5",
+   "subtype": "badge",
+   "yes": {
+    "sentence_id": "c5badgeyes",
+    "sentence": "Providing visitors badges, the clerk extended the desk hours.",
+    "expected_provides": "YES",
+    "provider": "The clerk",
+    "recipient": "visitors",
+    "lexical_trigger": "provide",
+    "argument_frame": "participial"
+   },
+   "no": {
+    "sentence_id": "c5badgeno",
+    "sentence": "Denying visitors badges, the clerk extended the desk hours.",
+    "expected_provides": "NO",
+    "provider": "The clerk",
+    "recipient": "visitors",
+    "lexical_trigger": "deny",
+    "argument_frame": "participial"
+   }
+  },
+  {
+   "pair_id": "c0lesson",
+   "condition": "C0",
+   "subtype": "lesson",
+   "yes": {
+    "sentence_id": "c0lessonyes",
+    "sentence": "The tutor provides students lessons.",
+    "expected_provides": "YES",
+    "provider": "The tutor",
+    "recipient": "students",
+    "lexical_trigger": "provide",
+    "argument_frame": "double-object"
+   },
+   "no": {
+    "sentence_id": "c0lessonno",
+    "sentence": "The tutor denies students lessons.",
+    "expected_provides": "NO",
+    "provider": "The tutor",
+    "recipient": "students",
+    "lexical_trigger": "deny",
+    "argument_frame": "double-object"
+   }
+  },
+  {
+   "pair_id": "c1lesson",
+   "condition": "C1",
+   "subtype": "lesson",
+   "yes": {
+    "sentence_id": "c1lessonyes",
+    "sentence": "The tutor, struggling with long queues, provides students lessons.",
+    "expected_provides": "YES",
+    "provider": "The tutor",
+    "recipient": "students",
+    "lexical_trigger": "provide",
+    "argument_frame": "double-object"
+   },
+   "no": {
+    "sentence_id": "c1lessonno",
+    "sentence": "The tutor, struggling with long queues, denies students lessons.",
+    "expected_provides": "NO",
+    "provider": "The tutor",
+    "recipient": "students",
+    "lexical_trigger": "deny",
+    "argument_frame": "double-object"
+   }
+  },
+  {
+   "pair_id": "c2lesson",
+   "condition": "C2",
+   "subtype": "lesson",
+   "yes": {
+    "sentence_id": "c2lessonyes",
+    "sentence": "The tutor that joined last term provides students lessons.",
+    "expected_provides": "YES",
+    "provider": "The tutor",
+    "recipient": "students",
+    "lexical_trigger": "provide",
+    "argument_frame": "double-object"
+   },
+   "no": {
+    "sentence_id": "c2lessonno",
+    "sentence": "The tutor that joined last term denies students lessons.",
+    "expected_provides": "NO",
+    "provider": "The tutor",
+    "recipient": "students",
+    "lexical_trigger": "deny",
+    "argument_frame": "double-object"
+   }
+  },
+  {
+   "pair_id": "c3lesson",
+   "condition": "C3",
+   "subtype": "lesson",
+   "yes": {
+    "sentence_id": "c3lessonyes",
+    "sentence": "The tutor provides students who need help lessons.",
+    "expected_provides": "YES",
+    "provider": "The tutor",
+    "recipient": "students",
+    "lexical_trigger": "provide",
+    "argument_frame": "double-object"
+   },
+   "no": {
+    "sentence_id": "c3lessonno",
+    "sentence": "The tutor denies students who need help lessons.",
+    "expected_provides": "NO",
+    "provider": "The tutor",
+    "recipient": "students",
+    "lexical_trigger": "deny",
+    "argument_frame": "double-object"
+   }
+  },
+  {
+   "pair_id": "c4lesson",
+   "condition": "C4",
+   "subtype": "lesson",
+   "yes": {
+    "sentence_id": "c4lessonyes",
+    "sentence": "The tutor, who provides students lessons, extended the course catalog.",
+    "expected_provides": "YES",
+    "provider": "The tutor",
+    "recipient": "students",
+    "lexical_trigger": "provide",
+    "argument_frame": "double-object"
+   },
+   "no": {
+    "sentence_id": "c4lessonno",
+    "sentence": "The tutor, who denies students lessons, extended the course catalog.",
+    "expected_provides": "NO",
+    "provider": "The tutor",
+    "recipient": "students",
+    "lexical_trigger": "deny",
+    "argument_frame": "double-object"
+   }
+  },
+  {
+   "pair_id": "c5lesson",
+   "condition": "C5",
+   "subtype": "lesson",
+   "yes": {
+    "sentence_id": "c5lessonyes",
+    "sentence": "Providing students lessons, the tutor extended the course catalog.",
+    "expected_provides": "YES",
+    "provider": "The tutor",
+    "recipient": "students",
+    "lexical_trigger": "provide",
+    "argument_frame": "participial"
+   },
+   "no": {
+    "sentence_id": "c5lessonno",
+    "sentence": "Denying students lessons, the tutor extended the course catalog.",
+    "expected_provides": "NO",
+    "provider": "The tutor",
+    "recipient": "students",
+    "lexical_trigger": "deny",
+    "argument_frame": "participial"
+   }
+  }
+ ]
+}

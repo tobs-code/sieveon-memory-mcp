@@ -1,0 +1,40 @@
+{
+  "version": "candidate_complexity_probe_v1",
+  "status": "preregistered_before_inference",
+  "date": "2026-10-04",
+  "pipeline_changes": "none",
+  "negative_anchors": [
+    "b5644f8: argument position alone does not explain candidate silence",
+    "a4eea29: lexical realization does not explain candidate silence (YES 22/22 across L1-L4)"
+  ],
+  "purpose": "Test whether Candidate Generation loses a known, already-covered lexical trigger when syntactic complexity increases. Lexical trigger held constant: YES=provide, NO=deny.",
+  "conditions": {
+    "C0": "canonical baseline (finite, local, single-clause, canonical double-object)",
+    "C1": "intervening material / argument distance (identical adjunct everywhere)",
+    "C2": "complex subject (subject relative clause; target stays finite and local)",
+    "C3": "complex recipient (recipient relative clause)",
+    "C4": "embedded finite target clause (target inside finite relative clause; matrix holds another event)",
+    "C5": "nonfinite target clause (participial; semantically asserted; evaluated as own condition)"
+  },
+  "explicitly_excluded": {
+    "anaphora_coreference": "separate discourse/linking probe",
+    "nominalization": "separate realization probe",
+    "metaphorical_provision": "separate semantic-interpretation probe (e.g. batch-6 case 055)",
+    "event_nominal_patients": "separate semantic-role probe"
+  },
+  "material_shape": "4 semantic subtypes x 6 conditions x YES/NO = 48 sentences / 24 YES-NO pairs; same triplets across C0-C5; pair differs only in verb",
+  "invariants": [
+    "same lexical YES trigger provide and NO trigger deny everywhere",
+    "same four triplets across conditions",
+    "no pronouns/anaphora (matrix tails use definite article, not possessives)",
+    "no modality, no negation, no conditionals, no metaphors",
+    "no nominalized target relation",
+    "no lexical trigger substitution"
+  ],
+  "primary_metrics": ["candidate_recall_per_condition_YES", "false_candidate_rate_per_condition_NO"],
+  "interpretation": {
+    "degradation_C0_to_C": "supports structural-complexity hypothesis",
+    "flat_YES_recall": "weakens hypothesis that ordinary syntactic complexity explains batch-6 FNs",
+    "NO_rise": "not a failure per se (candidate stage intentionally assertionsblind); relevant only as interaction effect"
+  }
+}
