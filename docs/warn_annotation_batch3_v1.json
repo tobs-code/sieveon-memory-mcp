@@ -1,0 +1,10 @@
+{"counts": {"NO": 7, "UNCLEAR": 3, "YES": 2},
+  "decision": "no licensing change; A=v3-candidate, B=observed family, 089 open",
+  "mechanisms": {"artifact_transfer_provision": ["prodc3-010 YES (+batch2-140 UNCLEAR boundary)"],
+                 "benefactive_charity_event": ["prodc3-089 UNCLEAR, kept open"],
+                 "direct_support_source_construction": ["prodc3-015 YES"],
+                 "known_classes": ["intent (135)", "direction/context (128, 101, 083)"],
+                 "volunteering_at": ["prodc3-056 NO", "prodc3-064 NO", "prodc3-099 NO (at != recipient)"]},
+  "re_annotation_needed": "prodc3-057 was judged on truncated text; full sentence provided separately",
+  "version": "warn_annotation_batch3_v1",
+  "yes_cases": ["prodc3-015", "prodc3-010"]}
