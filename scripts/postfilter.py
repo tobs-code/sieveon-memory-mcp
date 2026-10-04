@@ -19,6 +19,28 @@ from trackb_production import link
 
 NOT_PROVIDES_TRIGGERS = ["initiat"]
 
+# PostFilter v1.1 DIRECT_SUPPORT licensing (constructions with bound roles).
+# advises / roots-for / advice-transfer with resolved source.
+# Everything else unchanged; UNKNOWN stays WARN.
+
+
+def direct_support_licensing(sentence: str, subj: str, obj: str):
+    low = sentence.lower()
+    m = re.search(r"\b(advises|advised|advise|advising)\b", low)
+    if m and low.find(subj.lower()) < m.start() < low.find(obj.lower()):
+        return {"construction": "ACTIVE_advise"}
+    m = re.search(r"\broots?\s+for\b", low)
+    if m and low.find(subj.lower()) < m.start() < low.find(obj.lower()):
+        return {"construction": "ACTIVE_roots_for"}
+    m = re.search(r"\b(got|received|obtained)\b[^.]{0,40}\badvice\b", low)
+    if m:
+        # source explicit (from-phrase) or both candidate spans present;
+        # bare "X got advice." with the partner absent never licenses.
+        if re.search(r"\bfrom\s+[a-z]", low[m.start():]) or \
+                (subj.lower() in low and obj.lower() in low):
+            return {"construction": "NOMINAL_TRANSFER_advice"}
+    return None
+
 
 def scope_gate(sentence: str) -> dict:
     low = sentence.lower()
@@ -43,6 +65,9 @@ def trigger_gate(sentence: str, subj: str, obj: str) -> dict:
     if trig["status"] == "pass":
         return {"verdict": "PASS", "reason": None, "lemma": trig["lemma"],
                 "construction": trig.get("construction")}
+    lic = direct_support_licensing(sentence, subj, obj)
+    if lic is not None:
+        return {"verdict": "PASS", "reason": "DIRECT_SUPPORT_V2", **lic}
     return {"verdict": "WARN", "reason": "UNKNOWN_TRIGGER"}
 
 
