@@ -1,0 +1,84 @@
+{
+  "version": "batch7_replication_v1",
+  "status": "preregistered_before_inference",
+  "date": "2026-10-04",
+  "purpose": "REPLICATION ONLY. This is not a mechanism search.",
+
+  "primary_question": "Does the silence finding observed in batch 6 reproduce under an independently selected new English nonfiction corpus with the unchanged production pipeline v1.2.1?",
+
+  "frozen_pipeline": {
+    "version": "v1.2.1-operational",
+    "extractor": "numind/nuextract3:q4_k_m (unchanged)",
+    "validator": "stepfun/step-3.7-flash via Kilo gateway, shipped VALIDATOR_PROMPT (unchanged)",
+    "postfilter": "v1.1 (unchanged)",
+    "linking": "v1.3 document-scoped, gate 0.85 (unchanged)",
+    "node_worthiness": "v1 (unchanged)",
+    "thresholds": "unchanged",
+    "run_script": "scripts/trackb_production_run.py (unchanged)"
+  },
+
+  "no_transfer_rule": "No batch-6 hypothesis is transferred. Recipient rejections, assertion scope, serve-lexicon, implicit arguments, theme role, density and all other batch-6 findings stay out of the analysis. They are not predictors, not stratification variables and not exclusion criteria.",
+
+  "source_rules": {
+    "kind": "new heterogeneous English nonfiction, NOT another Wikipedia round",
+    "rationale": "batch 6 sampled Wikipedia; a second round would mostly re-test sampling conditions, whereas a heterogeneous corpus tests material independence",
+    "pre_registered": "source set defined BEFORE selection; no selection by expected difficulty",
+    "no_post_hoc_removal": "problematic texts are never removed afterwards",
+    "sampling": "different mechanism than the batch-6 mechanical stride; pre-defined, not selected by outcome"
+  },
+
+  "procedure": [
+    "1. define and digest-pin the new corpus",
+    "2. run the unchanged production pipeline over the whole corpus",
+    "3. freeze all records before any annotation",
+    "4. draw a pre-defined sample of ~80 records (NOT selected by silence status)",
+    "5. blind-annotate that sample (sentence + gold roles only)",
+    "6. unblind and answer the primary question"
+  ],
+
+  "operational_definition_of_silence": {
+    "rule": "reuse the existing frozen operational definition unchanged; no refinement at the transition",
+    "anchors": ["docs/batch6_gold_v1.json", "docs/batch6_candidate_fn_diagnosis_v1.json", "docs/batch6_fn_remap_v1.json"],
+    "note": "candidate generation produced no pair for a sentence that gold marks as containing a provides relation"
+  },
+
+  "sampling_rule": {
+    "size": 80,
+    "unit": "pipeline record (all records from the frozen run, pooled without outcome filtering)",
+    "method": "deterministic: seeded shuffle of the frozen record list, first 80",
+    "seed_to_fix_before_run": true,
+    "forbidden": ["outcome-stratified sampling", "silence-only sampling", "manual case picking", "dropping items after seeing the sample"]
+  },
+
+  "gold_annotation": {
+    "blind": true,
+    "annotator_view": "sentence + gold candidate roles only; no pipeline verdict, no batch-6 reference, no FN/CONTROL label",
+    "primary_label": "provides_gold YES / NO / UNCLEAR (UNCLEAR stays UNCLEAR)",
+    "secondary_labels": ["gold_provider", "gold_recipient", "mechanism (controlled vocabulary)", "notes"],
+    "purpose": "prevalence of true silences in the new material, not the mechanism behind them"
+  },
+
+  "outcome_semantics": {
+    "true_silence": "gold YES but the pipeline produced no candidate pair",
+    "over_generation": "pipeline produced candidates on gold NO sentences",
+    "silent_on_correct": "gold YES and the pipeline found the right pair",
+    "no_mechanism_analysis": "true silences found are counted and reported; they are NOT decomposed in this batch"
+  },
+
+  "interpretation_rules_frozen_before_run": {
+    "replication_found": "true silences of the batch-6 type occur in the new corpus -> cross-corpus replication; the recipient mechanism earns its own probe",
+    "not_replicated": "no true silences (or a clearly lower rate) in the new corpus -> the finding could not be replicated here; MATERIAL DEPENDENCY becomes a serious explanation class. This is not phrased as 'hypothesis refuted'",
+    "indeterminate": "sample too small or prevalence too low to distinguish -> report the observed counts and stop"
+  },
+
+  "reporting_requirements": [
+    "corpus digest and disjointness vs corpora v1-v6 and frozen test material",
+    "full run record counts before sampling",
+    "sample composition and seed",
+    "blind annotation completeness",
+    "silence prevalence with numerator and denominator, per source item",
+    "explicit statement that no mechanism analysis was performed"
+  ],
+
+  "forbidden": ["no pipeline change", "no prompt change", "no new factors", "no mechanism decomposition of batch-7 silences", "no retroactive corpus edits", "no commits without explicit request"]
+}
