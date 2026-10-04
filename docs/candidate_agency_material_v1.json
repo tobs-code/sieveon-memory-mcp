@@ -1,0 +1,473 @@
+{
+ "version": "candidate_agency_material_v1",
+ "status": "frozen_for_probe (validated; R0 re-tripled for independence)",
+ "date": "2026-10-04",
+ "protocol": "docs/candidate_agency_probe_v1.json",
+ "builder": "scripts/build_agency_material.py",
+ "pairs": [
+  {
+   "pair_id": "g01",
+   "class": "R0",
+   "theme_domain": "reading_material",
+   "yes": {
+    "sentence_id": "g01yes",
+    "sentence": "The mentor provides pupils novels.",
+    "expected_provides": "YES",
+    "gold_provider": "The mentor",
+    "gold_recipient": "pupils",
+    "gold_theme": "novels",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "provision with varied provider agency",
+    "gold_candidate_expected": true
+   },
+   "no": {
+    "sentence_id": "g01no",
+    "sentence": "The mentor denies pupils novels.",
+    "expected_provides": "NO",
+    "gold_provider": "The mentor",
+    "gold_recipient": "pupils",
+    "gold_theme": "novels",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "semantic_basis": "control: denial, no provision",
+    "gold_candidate_expected": false
+   }
+  },
+  {
+   "pair_id": "g02",
+   "class": "R0",
+   "theme_domain": "medical_resource",
+   "yes": {
+    "sentence_id": "g02yes",
+    "sentence": "The doctor provides clients treatment.",
+    "expected_provides": "YES",
+    "gold_provider": "The doctor",
+    "gold_recipient": "clients",
+    "gold_theme": "treatment",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "provision with varied provider agency",
+    "gold_candidate_expected": true
+   },
+   "no": {
+    "sentence_id": "g02no",
+    "sentence": "The doctor denies clients treatment.",
+    "expected_provides": "NO",
+    "gold_provider": "The doctor",
+    "gold_recipient": "clients",
+    "gold_theme": "treatment",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "semantic_basis": "control: denial, no provision",
+    "gold_candidate_expected": false
+   }
+  },
+  {
+   "pair_id": "g03",
+   "class": "R0",
+   "theme_domain": "information",
+   "yes": {
+    "sentence_id": "g03yes",
+    "sentence": "The usher provides guests leaflets.",
+    "expected_provides": "YES",
+    "gold_provider": "The usher",
+    "gold_recipient": "guests",
+    "gold_theme": "leaflets",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "provision with varied provider agency",
+    "gold_candidate_expected": true
+   },
+   "no": {
+    "sentence_id": "g03no",
+    "sentence": "The usher denies guests leaflets.",
+    "expected_provides": "NO",
+    "gold_provider": "The usher",
+    "gold_recipient": "guests",
+    "gold_theme": "leaflets",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "semantic_basis": "control: denial, no provision",
+    "gold_candidate_expected": false
+   }
+  },
+  {
+   "pair_id": "g04",
+   "class": "R0",
+   "theme_domain": "food_resource",
+   "yes": {
+    "sentence_id": "g04yes",
+    "sentence": "The baker provides neighbors bread.",
+    "expected_provides": "YES",
+    "gold_provider": "The baker",
+    "gold_recipient": "neighbors",
+    "gold_theme": "bread",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "provision with varied provider agency",
+    "gold_candidate_expected": true
+   },
+   "no": {
+    "sentence_id": "g04no",
+    "sentence": "The baker denies neighbors bread.",
+    "expected_provides": "NO",
+    "gold_provider": "The baker",
+    "gold_recipient": "neighbors",
+    "gold_theme": "bread",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "semantic_basis": "control: denial, no provision",
+    "gold_candidate_expected": false
+   }
+  },
+  {
+   "pair_id": "g05",
+   "class": "R1",
+   "theme_domain": "information",
+   "yes": {
+    "sentence_id": "g05yes",
+    "sentence": "The school provides pupils records.",
+    "expected_provides": "YES",
+    "gold_provider": "The school",
+    "gold_recipient": "pupils",
+    "gold_theme": "records",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "provision with varied provider agency",
+    "gold_candidate_expected": true
+   },
+   "no": {
+    "sentence_id": "g05no",
+    "sentence": "The school denies pupils records.",
+    "expected_provides": "NO",
+    "gold_provider": "The school",
+    "gold_recipient": "pupils",
+    "gold_theme": "records",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "semantic_basis": "control: denial, no provision",
+    "gold_candidate_expected": false
+   }
+  },
+  {
+   "pair_id": "g06",
+   "class": "R1",
+   "theme_domain": "medical_resource",
+   "yes": {
+    "sentence_id": "g06yes",
+    "sentence": "The clinic provides patients vaccines.",
+    "expected_provides": "YES",
+    "gold_provider": "The clinic",
+    "gold_recipient": "patients",
+    "gold_theme": "vaccines",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "provision with varied provider agency",
+    "gold_candidate_expected": true
+   },
+   "no": {
+    "sentence_id": "g06no",
+    "sentence": "The clinic denies patients vaccines.",
+    "expected_provides": "NO",
+    "gold_provider": "The clinic",
+    "gold_recipient": "patients",
+    "gold_theme": "vaccines",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "semantic_basis": "control: denial, no provision",
+    "gold_candidate_expected": false
+   }
+  },
+  {
+   "pair_id": "g07",
+   "class": "R1",
+   "theme_domain": "physical_resource",
+   "yes": {
+    "sentence_id": "g07yes",
+    "sentence": "The depot provides crews fuel.",
+    "expected_provides": "YES",
+    "gold_provider": "The depot",
+    "gold_recipient": "crews",
+    "gold_theme": "fuel",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "provision with varied provider agency",
+    "gold_candidate_expected": true
+   },
+   "no": {
+    "sentence_id": "g07no",
+    "sentence": "The depot denies crews fuel.",
+    "expected_provides": "NO",
+    "gold_provider": "The depot",
+    "gold_recipient": "crews",
+    "gold_theme": "fuel",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "semantic_basis": "control: denial, no provision",
+    "gold_candidate_expected": false
+   }
+  },
+  {
+   "pair_id": "g08",
+   "class": "R1",
+   "theme_domain": "tour_service",
+   "yes": {
+    "sentence_id": "g08yes",
+    "sentence": "The center provides guests tours.",
+    "expected_provides": "YES",
+    "gold_provider": "The center",
+    "gold_recipient": "guests",
+    "gold_theme": "tours",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "provision with varied provider agency",
+    "gold_candidate_expected": true
+   },
+   "no": {
+    "sentence_id": "g08no",
+    "sentence": "The center denies guests tours.",
+    "expected_provides": "NO",
+    "gold_provider": "The center",
+    "gold_recipient": "guests",
+    "gold_theme": "tours",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "semantic_basis": "control: denial, no provision",
+    "gold_candidate_expected": false
+   }
+  },
+  {
+   "pair_id": "g09",
+   "class": "R2",
+   "theme_domain": "information",
+   "yes": {
+    "sentence_id": "g09yes",
+    "sentence": "The server provides clients data.",
+    "expected_provides": "YES",
+    "gold_provider": "The server",
+    "gold_recipient": "clients",
+    "gold_theme": "data",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "provision with varied provider agency",
+    "gold_candidate_expected": true
+   },
+   "no": {
+    "sentence_id": "g09no",
+    "sentence": "The server denies clients data.",
+    "expected_provides": "NO",
+    "gold_provider": "The server",
+    "gold_recipient": "clients",
+    "gold_theme": "data",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "semantic_basis": "control: denial, no provision",
+    "gold_candidate_expected": false
+   }
+  },
+  {
+   "pair_id": "g10",
+   "class": "R2",
+   "theme_domain": "medical_resource",
+   "yes": {
+    "sentence_id": "g10yes",
+    "sentence": "The dispenser provides patients pills.",
+    "expected_provides": "YES",
+    "gold_provider": "The dispenser",
+    "gold_recipient": "patients",
+    "gold_theme": "pills",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "provision with varied provider agency",
+    "gold_candidate_expected": true
+   },
+   "no": {
+    "sentence_id": "g10no",
+    "sentence": "The dispenser denies patients pills.",
+    "expected_provides": "NO",
+    "gold_provider": "The dispenser",
+    "gold_recipient": "patients",
+    "gold_theme": "pills",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "semantic_basis": "control: denial, no provision",
+    "gold_candidate_expected": false
+   }
+  },
+  {
+   "pair_id": "g11",
+   "class": "R2",
+   "theme_domain": "physical_resource",
+   "yes": {
+    "sentence_id": "g11yes",
+    "sentence": "The pump provides fields water.",
+    "expected_provides": "YES",
+    "gold_provider": "The pump",
+    "gold_recipient": "fields",
+    "gold_theme": "water",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "provision with varied provider agency",
+    "gold_candidate_expected": true
+   },
+   "no": {
+    "sentence_id": "g11no",
+    "sentence": "The pump denies fields water.",
+    "expected_provides": "NO",
+    "gold_provider": "The pump",
+    "gold_recipient": "fields",
+    "gold_theme": "water",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "semantic_basis": "control: denial, no provision",
+    "gold_candidate_expected": false
+   }
+  },
+  {
+   "pair_id": "g12",
+   "class": "R2",
+   "theme_domain": "energy_output",
+   "yes": {
+    "sentence_id": "g12yes",
+    "sentence": "The generator provides homes power.",
+    "expected_provides": "YES",
+    "gold_provider": "The generator",
+    "gold_recipient": "homes",
+    "gold_theme": "power",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "provision with varied provider agency",
+    "gold_candidate_expected": true
+   },
+   "no": {
+    "sentence_id": "g12no",
+    "sentence": "The generator denies homes power.",
+    "expected_provides": "NO",
+    "gold_provider": "The generator",
+    "gold_recipient": "homes",
+    "gold_theme": "power",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "semantic_basis": "control: denial, no provision",
+    "gold_candidate_expected": false
+   }
+  },
+  {
+   "pair_id": "g13",
+   "class": "R3",
+   "theme_domain": "physical_resource",
+   "yes": {
+    "sentence_id": "g13yes",
+    "sentence": "The spring provides village water.",
+    "expected_provides": "YES",
+    "gold_provider": "The spring",
+    "gold_recipient": "village",
+    "gold_theme": "water",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "provision with varied provider agency",
+    "gold_candidate_expected": true
+   },
+   "no": {
+    "sentence_id": "g13no",
+    "sentence": "The spring denies village water.",
+    "expected_provides": "NO",
+    "gold_provider": "The spring",
+    "gold_recipient": "village",
+    "gold_theme": "water",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "semantic_basis": "control: denial, no provision",
+    "gold_candidate_expected": false
+   }
+  },
+  {
+   "pair_id": "g14",
+   "class": "R3",
+   "theme_domain": "physical_resource",
+   "yes": {
+    "sentence_id": "g14yes",
+    "sentence": "The forest provides mill timber.",
+    "expected_provides": "YES",
+    "gold_provider": "The forest",
+    "gold_recipient": "mill",
+    "gold_theme": "timber",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "provision with varied provider agency",
+    "gold_candidate_expected": true
+   },
+   "no": {
+    "sentence_id": "g14no",
+    "sentence": "The forest denies mill timber.",
+    "expected_provides": "NO",
+    "gold_provider": "The forest",
+    "gold_recipient": "mill",
+    "gold_theme": "timber",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "semantic_basis": "control: denial, no provision",
+    "gold_candidate_expected": false
+   }
+  },
+  {
+   "pair_id": "g15",
+   "class": "R3",
+   "theme_domain": "protection_service",
+   "yes": {
+    "sentence_id": "g15yes",
+    "sentence": "The reef provides divers shelter.",
+    "expected_provides": "YES",
+    "gold_provider": "The reef",
+    "gold_recipient": "divers",
+    "gold_theme": "shelter",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "provision with varied provider agency",
+    "gold_candidate_expected": true
+   },
+   "no": {
+    "sentence_id": "g15no",
+    "sentence": "The reef denies divers shelter.",
+    "expected_provides": "NO",
+    "gold_provider": "The reef",
+    "gold_recipient": "divers",
+    "gold_theme": "shelter",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "semantic_basis": "control: denial, no provision",
+    "gold_candidate_expected": false
+   }
+  },
+  {
+   "pair_id": "g16",
+   "class": "R3",
+   "theme_domain": "remedy_resource",
+   "yes": {
+    "sentence_id": "g16yes",
+    "sentence": "The garden provides families herbs.",
+    "expected_provides": "YES",
+    "gold_provider": "The garden",
+    "gold_recipient": "families",
+    "gold_theme": "herbs",
+    "gold_relation": "provides",
+    "source_trigger": "provides",
+    "semantic_basis": "provision with varied provider agency",
+    "gold_candidate_expected": true
+   },
+   "no": {
+    "sentence_id": "g16no",
+    "sentence": "The garden denies families herbs.",
+    "expected_provides": "NO",
+    "gold_provider": "The garden",
+    "gold_recipient": "families",
+    "gold_theme": "herbs",
+    "gold_relation": "none",
+    "source_trigger": "deny",
+    "semantic_basis": "control: denial, no provision",
+    "gold_candidate_expected": false
+   }
+  }
+ ]
+}

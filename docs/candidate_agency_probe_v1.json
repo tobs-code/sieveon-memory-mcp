@@ -1,0 +1,27 @@
+{
+  "version": "candidate_agency_probe_v1",
+  "status": "preregistered_before_inference",
+  "date": "2026-10-04",
+  "pipeline_changes": "none",
+  "name_note": "provider agency / source-role test (NOT agent-vs-instrument: instruments are never modeled as providers; agency of the subject provider varies)",
+  "motivation": "eight single-factor probes show no systematic silence effect; moving from surface/syntax factors to semantic role representation",
+  "hypothesis": {
+    "H1": "Candidate Generation shows higher TRUE-SILENCE rates for non-agentive source providers than for agentive providers, given identical frame/recipient/theme.",
+    "H0": "TRUE-SILENCE rate does not depend on provider agency."
+  },
+  "classes": {
+    "R0": "human provider (agent)",
+    "R1": "organisation provider (agent/institution)",
+    "R2": "device/system provider (non-agentive source)",
+    "R3": "natural/physical source provider (source)"
+  },
+  "frame": "ditransitive Provider + provides + Recipient + Theme; theme domains varied (information, medical, physical, service/output) and documented per item, not confounded with class",
+  "gold": "all YES items are provides (agency varies, relation constant); NO mirrors use deny",
+  "primary_endpoint": "TRUE_SILENCE = expected_candidate true AND candidate_absent, per class",
+  "secondary_outcomes": ["SPAN_ERROR", "SLOT_ERROR", "WRONG_PROVIDER", "WRONG_RECIPIENT", "WRONG_THEME"],
+  "outcome_separation_note": "no correct triple is not automatically silence (cf. OIE error classes: missing extraction vs wrong arguments vs wrong boundaries)",
+  "decision_rule": "H1 supported ONLY by a clearly elevated TRUE-SILENCE rate in non-agentive source classes vs agentive controls. A single miss is an item finding (e.g. R-classes 16/16, 16/16, 15/16, 16/16 does NOT confirm H1).",
+  "forbidden_during_probe": ["no trigger additions", "no prompt changes", "no thresholds", "no assertion changes", "no PostFilter changes", "no new linking rules"],
+  "material_shape": "16 pairs (4 per class) x YES/NO with deny = 32 sentences",
+  "test_material": "built by script; validation + freeze below"
+}
