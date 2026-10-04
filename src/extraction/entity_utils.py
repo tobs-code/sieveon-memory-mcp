@@ -769,6 +769,10 @@ def extract_entities(text: str) -> list[dict]:
         entities = extract_entities_with_groq(text)
         if entities:
             return entities
+    if method == "trackb":
+        entities = extract_entities_with_trackb(text)
+        if entities:
+            return entities
     return extract_entities_with_spacy(text)
 
 
@@ -1314,8 +1318,119 @@ def extract_triples_with_groq(text: str) -> list[dict]:
     return final
 
 
+# --- Track B backend (NuExtract3 candidates + stepfun assertion) ---
+# Frozen from trackb_two_stage_v1. Opt-in only via EXTRACTION_METHOD=trackb,
+# mirroring the groq precedent: never in the "auto" chain, strict method
+# semantics (explicit request returns this backend's output or nothing).
+# Only relation covered: provides.
+
+_TRACKB_NU_MODEL = "numind/nuextract3:q4_k_m"
+_TRACKB_KILO_MODEL = "stepfun/step-3.7-flash:free"
+_TRACKB_TEMPLATE = {"support_relations": [{"provider": "verbatim-string",
+                                           "receiver": "verbatim-string"}]}
+_TRACKB_VALIDATOR_PROMPT = (
+    "Decide one binary question about the sentence below.\n"
+    "Sentence: %s\n"
+    "Question: Does this sentence assert that %s provides support, help, "
+    "funding or encouragement to %s?\n"
+    "Consider assertions only: offers, plans, intentions, wishes, questions, "
+    "rumored/reported/alleged support, or encouragement directed at someone "
+    "else do NOT count.\n"
+    'Reply with ONLY this JSON: {"supported": true} or {"supported": false}'
+)
+
+
+def _get_kilo_key() -> str | None:
+    return os.getenv("KILO_API_KEY") or None
+
+
+def _trackb_normalize(mention: str) -> str:
+    s = mention.strip()
+    s = re.sub(r"^(the|a|an)\s+", "", s, flags=re.IGNORECASE)
+    return s.strip()
+
+
+def extract_triples_with_trackb(text: str) -> list[dict]:
+    """Two-stage provides extraction: local candidates + API assertion check."""
+    if not text or not text.strip():
+        return []
+    key = _get_kilo_key()
+    if not key:
+        sys.stderr.write("[trackb] KILO_API_KEY not set\n")
+        return []
+    ollama_url = os.getenv("OLLAMA_URL", "http://localhost:11434")
+    try:
+        import json as _json
+        payload = {
+            "model": os.getenv("TRACKB_NU_MODEL", _TRACKB_NU_MODEL),
+            "stream": False, "think": False,
+            "options": {"temperature": 0, "num_ctx": 4096, "num_predict": 256},
+            "messages": [
+                {"role": "template", "content": _json.dumps(_TRACKB_TEMPLATE)},
+                {"role": "user", "content": text},
+            ],
+        }
+        resp = requests.post(f"{ollama_url}/api/chat", json=payload, timeout=300)
+        resp.raise_for_status()
+        raw = resp.json()["message"]["content"]
+        start, end = raw.index("{"), raw.rindex("}") + 1
+        obj = _json.loads(raw[start:end])
+        candidates = [(r.get("provider", ""), r.get("receiver", ""))
+                      for r in obj.get("support_relations", []) or []
+                      if isinstance(r, dict) and r.get("provider") and r.get("receiver")]
+    except Exception as e:
+        sys.stderr.write(f"[trackb] candidate extraction failed: {e}\n")
+        return []
+    triples, seen = [], set()
+    for x, y in candidates:
+        xs, ys = _trackb_normalize(x), _trackb_normalize(y)
+        if len(xs) < 2 or len(ys) < 2 or xs.lower() == ys.lower():
+            continue
+        try:
+            body = {
+                "model": _TRACKB_KILO_MODEL, "stream": False, "temperature": 0,
+                "messages": [{"role": "user", "content": _TRACKB_VALIDATOR_PROMPT % (text, x, y)}],
+            }
+            vresp = requests.post(
+                "https://api.kilo.ai/api/gateway/chat/completions", json=body,
+                headers={"Authorization": f"Bearer {key}"}, timeout=180)
+            vresp.raise_for_status()
+            vraw = vresp.json()["choices"][0]["message"]["content"]
+            vs, ve = vraw.index("{"), vraw.rindex("}") + 1
+            supported = bool(_json.loads(vraw[vs:ve]).get("supported"))
+        except Exception as e:
+            sys.stderr.write(f"[trackb] assertion check failed for {x!r}->{y!r}: {e}\n")
+            continue
+        if not supported:
+            continue
+        dedup = f"{xs.lower()}|provides|{ys.lower()}"
+        if dedup in seen:
+            continue
+        seen.add(dedup)
+        triples.append({"subject": xs, "predicate": "provides", "object": ys,
+                        "confidence": 0.85,
+                        "extractor": "trackb",
+                        "provenance": {"candidate_source": "nuextract3",
+                                       "validator": "stepfun"}})
+    return triples
+
+
+def extract_entities_with_trackb(text: str) -> list[dict]:
+    """Entities from validated trackb triples (typed via infer_entity_type)."""
+    out, seen = [], set()
+    for t in extract_triples_with_trackb(text):
+        for name in (t["subject"], t["object"]):
+            key = name.lower()
+            if key in seen or len(name) < 2:
+                continue
+            seen.add(key)
+            out.append({"name": name, "type": infer_entity_type(name),
+                        "label": "TRACKB", "confidence": t["confidence"]})
+    return out
+
+
 def extract_triples(text: str) -> list[dict]:
-    """Dispatch triple extraction. Same chain as extract_entities (no Groq in auto).
+    """Dispatch triple extraction. Same chain as extract_entities (no Groq/trackb in auto).
 
     spaCy is deliberately NOT a fallback here (ADR-002). On the gold set it
     asserted 0 correct triples out of 15 (tripR 0.000): its dependency labels do
@@ -1344,6 +1459,10 @@ def extract_triples(text: str) -> list[dict]:
             return triples
     if method == "groq":
         triples = extract_triples_with_groq(text)
+        if triples:
+            return triples
+    if method == "trackb":
+        triples = extract_triples_with_trackb(text)
         if triples:
             return triples
     return []
