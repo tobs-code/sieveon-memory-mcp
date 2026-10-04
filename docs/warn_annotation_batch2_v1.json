@@ -1,0 +1,12 @@
+{"counts": {"NO": 24, "UNCLEAR": 6, "YES": 3},
+  "mechanisms": {"benefit_effect": ["prodc2-086"],
+                 "cooperation_association": ["prodc2-040", "prodc2-064", "prodc2-065", "prodc2-145"],
+                 "direction_reversal": ["prodc2-047", "prodc1-048", "prodc2-148"],
+                 "direct_support_action_yes": ["prodc2-113 advises", "prodc2-133 roots for", "prodc2-143 got advice"],
+                 "intent_offer": ["prodc2-061", "prodc2-065", "prodc2-149"],
+                 "positive_affect": ["prodc2-039", "prodc2-073", "prodc2-091", "prodc2-139"]},
+  "not_new_triggers_yet": "no licensing change from single batch; recurrence required",
+  "unclear_boundary_case": "prodc2-140 built website for customers: agentive artefact provision, kept UNCLEAR, not smuggled into lexicon",
+  "verdict": "majority is neighboring semantics, not missing provides triggers; small core of 3 true new provides constructions",
+  "version": "warn_annotation_batch2_v1",
+  "yes_cases": ["prodc2-113", "prodc2-133", "prodc2-143"]}
