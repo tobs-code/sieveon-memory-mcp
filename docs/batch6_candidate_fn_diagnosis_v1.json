@@ -1,0 +1,92 @@
+{
+  "version": "batch6_candidate_fn_diagnosis_v1",
+  "date": "2026-10-04",
+  "status": "diagnostic_only",
+  "gold": "docs/batch6_gold_v1.json",
+  "rule": "characterize, do not build. No trigger, lexicon, or pipeline change follows from this file.",
+  "cases": [
+    {
+      "sentence_id": "prodc6-012",
+      "surface_realization": "give off (phrasal verb)",
+      "syntactic_construction": "active transitive + circumstantial adjuncts",
+      "semantic_subtype": "transformation_output (emission)",
+      "argument_structure": "source-subject -> theme-object (canonical positions)",
+      "note": "lexical gap candidate: phrasal emission verb, not a provides trigger"
+    },
+    {
+      "sentence_id": "prodc6-027",
+      "surface_realization": "leavened with (passive + with-PP)",
+      "syntactic_construction": "passive; provider as instrumental oblique",
+      "semantic_subtype": "artifact_transformation (leavening)",
+      "argument_structure": "patient-subject (It=bread) + provider in with-PP instrument",
+      "note": "provider not in subject position"
+    },
+    {
+      "sentence_id": "prodc6-030",
+      "surface_realization": "assist in (intransitive + PP)",
+      "syntactic_construction": "active intransitive with PP complement",
+      "semantic_subtype": "assistance_function",
+      "argument_structure": "agent-subject + activity nominal inside in-PP (no direct object)",
+      "note": "recipient/theme inside prepositional phrase"
+    },
+    {
+      "sentence_id": "prodc6-032",
+      "surface_realization": "providing X with Y (participial ditransitive)",
+      "syntactic_construction": "non-finite participial modifier, double-object frame",
+      "semantic_subtype": "signature_identification (distinguishing feature)",
+      "argument_structure": "provider-subject (systems) -> recipient as direct object (lighthouses) -> theme in with-PP (signatures)",
+      "note": "gold edge targets the recipient slot, not the theme slot of the canonical provides frame"
+    },
+    {
+      "sentence_id": "prodc6-055",
+      "surface_realization": "opened eyes to (metaphorical causation)",
+      "syntactic_construction": "active transitive idiom + to-PP content",
+      "semantic_subtype": "information_knowledge (awareness causation)",
+      "argument_structure": "provider-subject (tales) -> experiencer-metaphor (eyes) -> content in to-PP (customs)",
+      "note": "provision is metaphorical; no provides trigger verb present"
+    },
+    {
+      "sentence_id": "prodc6-112",
+      "surface_realization": "serves as protection to (role nominal + to-PP)",
+      "syntactic_construction": "relative clause, serve-as copular-like + beneficiary PP",
+      "semantic_subtype": "artifact_service (protective function)",
+      "argument_structure": "provider-subject (glaze) -> role nominal (protection) -> beneficiary in to-PP (pottery)",
+      "note": "provision mediated through role nominal; recipient oblique"
+    },
+    {
+      "sentence_id": "prodc6-120",
+      "surface_realization": "funded from (passive + from-PP)",
+      "syntactic_construction": "passive; provider as source oblique",
+      "semantic_subtype": "funding",
+      "argument_structure": "patient-subject (library) + provider in from-PP source (public sources/taxes)",
+      "note": "provider not in subject position"
+    },
+    {
+      "sentence_id": "prodc6-130",
+      "surface_realization": "serve + modal building-around (split across clauses)",
+      "syntactic_construction": "relative clause (they serve) + modal purpose clause (can start building)",
+      "semantic_subtype": "community_program_service",
+      "argument_structure": "provider-subject (library system) -> recipient (community) in clause 1; provision content modalized in clause 2",
+      "note": "provision spans two clauses, second one modal"
+    },
+    {
+      "sentence_id": "prodc6-132",
+      "surface_realization": "funded by (passive + by-agent)",
+      "syntactic_construction": "passive with by-agent",
+      "semantic_subtype": "funding",
+      "argument_structure": "event-nominal patient-subject (digitization/preservation) + provider in by-PP (grants/philanthropy)",
+      "note": "patient is an event nominal, not a canonical entity"
+    }
+  ],
+  "matrix": {
+    "funding": {"cases": ["prodc6-120", "prodc6-132"], "found": "0/2"},
+    "assistance_function": {"cases": ["prodc6-030"], "found": "0/1"},
+    "artifact_service": {"cases": ["prodc6-027", "prodc6-112"], "found": "0/2"},
+    "information_knowledge": {"cases": ["prodc6-055"], "found": "0/1"},
+    "transformation_output": {"cases": ["prodc6-012"], "found": "0/1"},
+    "signature_identification": {"cases": ["prodc6-032"], "found": "0/1"},
+    "community_program_service": {"cases": ["prodc6-130"], "found": "0/1"}
+  },
+  "structural_observation": "in 6/9 cases (027, 030, 032, 112, 120, 132) the provider or the recipient sits in an oblique PP (with/from/by/to/in) or a non-finite clause rather than canonical subject/direct-object positions. Observation only; no mechanism derived.",
+  "ceiling_note": "even a perfect assertion layer caps sentence recall at 8/17 = 0.47 on this batch; the candidate stage is the binding constraint."
+}
