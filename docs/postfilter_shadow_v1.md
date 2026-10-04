@@ -1,4 +1,15 @@
-# PostFilter Shadow v1 — Spezifikation (keine Verhaltensänderung)
+# PostFilter Shadow v1/v2 — Spezifikation (keine Verhaltensänderung)
+
+## v2-Änderungen (Shadow v2)
+
+1. `ARGUMENT_GROUNDING` (Subjekt-/Objekt-Spans) getrennt von
+   `TRIGGER_LICENSING` (Relationstrigger mit Konstruktion).
+2. Trigger-Licensing als (Lemma, Konstruktion)-Tabelle statt Wortliste;
+   `carry/move/paint/repair` nur in `benefactive-for`-Konstruktion
+   (X Ved NP for Y, performed action), sonst lizenzieren sie nichts.
+3. Neue Scope-Klassen: `CONTRASTIVE_TARGET` (instead of/rather than),
+   `DESIDERATIVE` (hoped/wished/desired/wanted). `instead of` nicht mehr
+   unter HYPOTHETICAL versteckt.
 
 ## Gate-Reihenfolge (alle Stufen nur protokolliert, nichts verworfen)
 

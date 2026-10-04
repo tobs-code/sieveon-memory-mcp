@@ -9,11 +9,18 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from trackb_production import normalize, link
-TRIGGERS = ["help", "support", "encourag", "guid", "mentor", "advocat",
-            "giv", "fund", "assist", "back", "provid", "cheer", "urg",
-            "praise", "acknowledg", "hope", "wish"]
-NEG = ["never", "not", "no ", "n't", "nobody", "nothing", "nowhere",
-       "without", "hardly", "barely"]
+# Trigger licensing: (lemma, construction) -> canonical relation.
+# Only semantically vetted constructions, never a bare word list.
+# "benefactive-for": X Ved NP for Y with performed action asserts assistance;
+# note repair/carry/paint alone license nothing outside this construction.
+LICENSED_TRIGGERS = [
+    ("help", None), ("support", None), ("encourag", None), ("guid", None),
+    ("mentor", None), ("advocat", None), ("assist", None), ("praise", None),
+    ("acknowledg", None), ("cheer", None), ("urg", None),
+    ("carr", "benefactive-for"), ("move", "benefactive-for"),
+    ("paint", "benefactive-for"), ("repair", "benefactive-for"),
+]
+TRIGGER_LEXEMES = sorted({t[0] for t in LICENSED_TRIGGERS})
 SCOPE_CUES = {
     "INTENTIONAL": ["offered to", "planned to", "meant to", "intended to",
                     "wants to", "wishes to", "going to"],
@@ -21,8 +28,42 @@ SCOPE_CUES = {
     "REPORTED": ["said ", "reported", "rumored", "alleged", "claimed"],
     "ATTRIBUTED": ["talk of", "talk about", "described ", "spoke of"],
     "CONDITIONAL": ["would help", "would support", "would assist", " if "],
-    "HYPOTHETICAL": ["instead of", ],
+    "HYPOTHETICAL": ["would ", "could ", "might "],
+    "CONTRASTIVE_TARGET": ["instead of", "rather than"],
+    "DESIDERATIVE": ["hoped", "wished", "desired", "wanted"],
 }
+
+
+NEG = ["never", "not", "no ", "n't", "nobody", "nothing", "nowhere",
+       "without", "hardly", "barely"]
+
+
+def argument_grounding(sentence, subj, obj):
+    low = sentence.lower()
+    out = {}
+    for role, m in (("subject", subj), ("object", obj)):
+        idx = low.find(m.lower())
+        out[role] = {"span": [idx, idx + len(m)]} if idx >= 0 else None
+    out["status"] = "pass" if (out["subject"] and out["object"]) else "fail"
+    return out
+
+
+def trigger_licensing(sentence, subj, obj):
+    """Licensed trigger: (lemma, construction) with span, never bare words."""
+    low = sentence.lower()
+    for lemma, construction in LICENSED_TRIGGERS:
+        m = re.search(lemma, low)
+        if not m:
+            continue
+        if construction == "benefactive-for":
+            # X Ved NP for Y with performed action: require "for <object>"
+            # after the trigger; otherwise the verb licenses nothing.
+            tail = low[m.end():]
+            if not re.search(r"\bfor\s+" + re.escape(obj.lower()), tail):
+                continue
+        return {"status": "pass", "lemma": lemma, "construction": construction,
+                "span": [m.start(), m.start() + len(lemma)]}
+    return {"status": "fail", "reason": "no_licensed_trigger"}
 
 
 def anchor(sentence, subj, obj):
@@ -31,10 +72,8 @@ def anchor(sentence, subj, obj):
     for role, m in (("subject", subj), ("object", obj)):
         idx = low.find(m.lower())
         out[role] = {"span": [idx, idx + len(m)]} if idx >= 0 else None
-    trig = [(w.start(), w.group(0)) for w in
-            (re.search(t, low) for t in TRIGGERS) if w]
-    out["trigger"] = {"span": [trig[0][0], trig[0][0] + len(trig[0][1])],
-                               "lemma": trig[0][1]} if trig else None
+    trig = trigger_licensing(sentence, subj, obj)
+    out["trigger"] = trig if trig["status"] == "pass" else None
     out["status"] = "pass" if (out["subject"] and out["object"]
                                and out["trigger"]) else "fail"
     return out
@@ -133,16 +172,21 @@ def main() -> int:
 
 def write_record(fh, key, sent, subj, obj, norms, validated):
     a = anchor(sent, subj, obj)
+    arg = argument_grounding(sent, subj, obj)
+    trig = trigger_licensing(sent, subj, obj)
     rec = {"key": key, "subject": subj, "object": obj,
            "validated": validated,
            "anchor": a["status"], "anchor_detail": a,
+           "argument_grounding": arg["status"],
+           "trigger_licensing": trig,
            "role": role(sent, subj, obj, a),
            "scope": scope(sent),
            "entity": link(subj, norms)["status"] + "/" +
                      link(obj, norms)["status"],
            "nli": nli_shadow(sent, subj, obj)}
     fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
-    print(key, subj, "->", obj, a["status"], rec["scope"], rec["nli"], flush=True)
+    print(key, subj, "->", obj, arg["status"], trig.get("lemma", "-"),
+          rec["scope"], rec["nli"]["label"], flush=True)
     return rec
 
 
