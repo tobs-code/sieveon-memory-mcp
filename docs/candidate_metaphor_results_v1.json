@@ -1,0 +1,587 @@
+{
+ "version": "candidate_metaphor_results_v1",
+ "protocol": "docs/candidate_metaphor_probe_v1.json",
+ "material": "docs/candidate_metaphor_material_v1.json",
+ "stage": "candidate_generation_only (nu_candidates, no validator, no linking)",
+ "match_rule": "rigid 5-token frame The-P-V-R-T: provider slot vs 'The P', recipient slot vs R (animate), theme slot vs theme head. Generator convention from all prior probes is provider->animate-recipient; theme recovery is secondary.",
+ "convention_note": "v1 runner wrongly scored the theme slot as primary (everything partial). v2 scores recipient-convention primary; a miss there is absence, a theme-only hit would be selection.",
+ "pairs": [
+  {
+   "pair_id": "mm01",
+   "class": "M0",
+   "verb": "give",
+   "sides": {
+    "literal": {
+     "sentence_id": "mm01lit",
+     "gold": "YES",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "students"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "correct"
+    },
+    "figurative": {
+     "sentence_id": "mm01fig",
+     "gold": "YES",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "students"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "correct"
+    }
+   }
+  },
+  {
+   "pair_id": "mm02",
+   "class": "M0",
+   "verb": "offer",
+   "sides": {
+    "literal": {
+     "sentence_id": "mm02lit",
+     "gold": "YES",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The center",
+       "guests"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "correct"
+    },
+    "figurative": {
+     "sentence_id": "mm02fig",
+     "gold": "YES",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The center",
+       "guests"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "correct"
+    }
+   }
+  },
+  {
+   "pair_id": "mm03",
+   "class": "M0",
+   "verb": "provide",
+   "sides": {
+    "literal": {
+     "sentence_id": "mm03lit",
+     "gold": "YES",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The pharmacy",
+       "customers"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "correct"
+    },
+    "figurative": {
+     "sentence_id": "mm03fig",
+     "gold": "YES",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The pharmacy",
+       "customers"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "correct"
+    }
+   }
+  },
+  {
+   "pair_id": "mm04",
+   "class": "M0",
+   "verb": "supply",
+   "sides": {
+    "literal": {
+     "sentence_id": "mm04lit",
+     "gold": "YES",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "crews"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "correct"
+    },
+    "figurative": {
+     "sentence_id": "mm04fig",
+     "gold": "YES",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "crews"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "correct"
+    }
+   }
+  },
+  {
+   "pair_id": "mm05",
+   "class": "M1",
+   "verb": "spread",
+   "sides": {
+    "literal": {
+     "sentence_id": "mm05lit",
+     "gold": "YES",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "theme_recovered": false,
+     "outcome": "absent"
+    },
+    "figurative": {
+     "sentence_id": "mm05fig",
+     "gold": "YES*",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The paper",
+       "readers"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "correct"
+    }
+   }
+  },
+  {
+   "pair_id": "mm06",
+   "class": "M1",
+   "verb": "feed",
+   "sides": {
+    "literal": {
+     "sentence_id": "mm06lit",
+     "gold": "YES",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The website",
+       "fed users"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "correct"
+    },
+    "figurative": {
+     "sentence_id": "mm06fig",
+     "gold": "YES*",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The website",
+       "fed users"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "correct"
+    }
+   }
+  },
+  {
+   "pair_id": "mm07",
+   "class": "M1",
+   "verb": "offer",
+   "sides": {
+    "literal": {
+     "sentence_id": "mm07lit",
+     "gold": "YES",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The paper",
+       "readers"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "correct"
+    },
+    "figurative": {
+     "sentence_id": "mm07fig",
+     "gold": "YES*",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "theme_recovered": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "mm08",
+   "class": "M1",
+   "verb": "give",
+   "sides": {
+    "literal": {
+     "sentence_id": "mm08lit",
+     "gold": "YES",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "mentor",
+       "pupils"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "correct"
+    },
+    "figurative": {
+     "sentence_id": "mm08fig",
+     "gold": "NO",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "mentor",
+       "pupils"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "mm09",
+   "class": "M1",
+   "verb": "bring",
+   "sides": {
+    "literal": {
+     "sentence_id": "mm09lit",
+     "gold": "YES",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The courier",
+       "residents"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "correct"
+    },
+    "figurative": {
+     "sentence_id": "mm09fig",
+     "gold": "NO",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The courier",
+       "residents"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "mm10",
+   "class": "M1",
+   "verb": "build",
+   "sides": {
+    "literal": {
+     "sentence_id": "mm10lit",
+     "gold": "YES",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The firm",
+       "families"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "correct"
+    },
+    "figurative": {
+     "sentence_id": "mm10fig",
+     "gold": "NO",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The firm",
+       "families"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "mm11",
+   "class": "M3",
+   "verb": "give",
+   "sides": {
+    "literal": {
+     "sentence_id": "mm11lit",
+     "gold": "YES",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The coach",
+       "players"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "correct"
+    },
+    "figurative": {
+     "sentence_id": "mm11fig",
+     "gold": "YES",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The coach",
+       "players"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "correct"
+    }
+   }
+  },
+  {
+   "pair_id": "mm12",
+   "class": "M3",
+   "verb": "offer",
+   "sides": {
+    "literal": {
+     "sentence_id": "mm12lit",
+     "gold": "YES",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The agency",
+       "clients"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "correct"
+    },
+    "figurative": {
+     "sentence_id": "mm12fig",
+     "gold": "YES",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "theme_recovered": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "mm13",
+   "class": "M3",
+   "verb": "provide",
+   "sides": {
+    "literal": {
+     "sentence_id": "mm13lit",
+     "gold": "YES",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The practice",
+       "clients"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "correct"
+    },
+    "figurative": {
+     "sentence_id": "mm13fig",
+     "gold": "YES",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The practice",
+       "clients"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "correct"
+    }
+   }
+  },
+  {
+   "pair_id": "mm14",
+   "class": "M3",
+   "verb": "supply",
+   "sides": {
+    "literal": {
+     "sentence_id": "mm14lit",
+     "gold": "YES",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The warehouse",
+       "staff"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "correct"
+    },
+    "figurative": {
+     "sentence_id": "mm14fig",
+     "gold": "YES",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The warehouse",
+       "staff"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "correct"
+    }
+   }
+  },
+  {
+   "pair_id": "mm15",
+   "class": "M3",
+   "verb": "send",
+   "sides": {
+    "literal": {
+     "sentence_id": "mm15lit",
+     "gold": "YES",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The broker",
+       "buyers"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "correct"
+    },
+    "figurative": {
+     "sentence_id": "mm15fig",
+     "gold": "YES",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The broker",
+       "buyers"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "correct"
+    }
+   }
+  },
+  {
+   "pair_id": "mm16",
+   "class": "M3",
+   "verb": "bring",
+   "sides": {
+    "literal": {
+     "sentence_id": "mm16lit",
+     "gold": "YES",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The driver",
+       "tenants"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "correct"
+    },
+    "figurative": {
+     "sentence_id": "mm16fig",
+     "gold": "YES",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The driver",
+       "tenants"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "theme_recovered": false,
+     "outcome": "correct"
+    }
+   }
+  }
+ ]
+}
