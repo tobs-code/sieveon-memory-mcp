@@ -1,5 +1,5 @@
 {
- "version": "handoff_v7",
+ "version": "handoff_v8",
  "date": "2026-10-04",
  "role": "evidence-chain handoff, not a new scientific factor",
  "head": "b0ab64d",
@@ -136,9 +136,15 @@
    "factor": "postfilter removal of accepted gold relations",
    "result": "bbaff05",
    "verdict": "no hard drop; H-PF-DROP not supported"
+  },
+  {
+   "n": 16,
+   "factor": "assertion scope A/B (prompt question)",
+   "result": "168ae0d",
+   "verdict": "primary recovery 0/10 and false-accept 0/22; prompt B is stricter, not laxer (eventnominal 15/15 -> 0/15); scope hypothesis not supported, recipient mechanism open"
   }
  ],
- "standing_statement": "14 controlled factors plus the assertion-scope test do not explain the batch-6 silences. The validator stage carries the one unexplained split (15/15 vs 6/16 on valid items). The PostFilter removes no correct extraction (0 hard rejects of 28 validator-ACCEPT items). These are candidate exclusions, not a proof that no linguistic factor remains.",
+ "standing_statement": "The stages examined so far (extractor, postfilter, linker/worthiness) provide no explanation for the remaining silences. Inside the validator, the assertion scope was excluded as an explanation for the recipient rejections, while a separate scope effect on explicit support predicates was demonstrated. The mechanism behind the recipient rejections remains open. Localized to the validator stage does not mean understood.",
  "hypothesis_status": {
   "H_position": "REJECTED",
   "H_lexical": "REJECTED",
@@ -155,7 +161,8 @@
   "H_THEME_ROLE": "NOT SUPPORTED",
   "candidate_generator_hypothesis": "H001 (pair->provides binding blocked) remains ACTIVE but untested by the probes above",
   "H_ASSERT_SCOPE": "REJECTED (primary within-source null; pooled direction is a source artifact)",
-  "H_PF_DROP": "REJECTED (0 hard rejects of 28 validator-ACCEPT items)"
+  "H_PF_DROP": "REJECTED (0 hard rejects of 28 validator-ACCEPT items)",
+  "H_SCOPE_AB": "NOT SUPPORTED in the predicted direction (recovery 0/10); a larger reverse effect exists and is recorded as observation only"
  },
  "open_residuals_do_not_recycle": {
   "r1_recipientless_3_8": "anthems, repairs, bunks silent; n=8, no shared feature, no mechanism derived",
@@ -163,12 +170,13 @@
   "r3_serve_lexicon": "T2 serve unstable across concrete/service items",
   "r4_d2badge": "only true miss in anaphora probe (It provides visitors badges)",
   "r5_prodc6_032": "implicit_argument_count=1 but the implicit role is UNKNOWN; not assigned to any probe",
-  "rule": "do not promote any residual to a hypothesis without independent new material"
+  "rule": "do not promote any residual to a hypothesis without independent new material",
+  "r6_validator_recipient": "recipient-source rejections (A-REJECT, 10 valid items) survive scope removal; mechanism OPEN, deliberately not further decomposed inside batch-6 material"
  },
  "next_candidate_agreed": {
-  "primary": "A/B prompt-scope probe (same frozen valid inputs, only the semantic question changes; A/B frozen before run)",
-  "secondary": "batch 7 as external reality check AFTER the pipeline boundary is known",
-  "not_now": "no new material scope for the A/B test; reuse the 71 valid items"
+  "primary": "batch 7 external replication on fresh material with frozen production pipeline v1.2.1, no batch-6 hypothesis transfer",
+  "first_question": "does the silence finding reproduce at all on new material",
+  "after_replication": "recipient gets its own probe only if it reproduces outside batch-6 material"
  },
  "do_not_repeat": [
   "any single-factor candidate probe listed above",
@@ -207,8 +215,8 @@
   }
  ],
  "pipeline_localization": {
-  "extractor": "not explained",
-  "validator": "unexplained split 15/15 (eventnominal) vs 6/16 (recipient)",
+  "extractor": "not explained (14 controlled factors)",
+  "validator": "two separate phenomena: (1) support-scope phrase is load-bearing for explicit support predicates, (2) recipient rejections unexplained by scope removal",
   "postfilter": "no hard drop; 15 ACCEPT / 10 WARN / 3 ABSTAIN / 0 REJECT of 28",
   "linker_worthiness": "no drop; selection preferences only"
  }

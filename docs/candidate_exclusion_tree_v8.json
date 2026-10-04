@@ -1,0 +1,54 @@
+{
+  "version": "candidate_exclusion_tree_v8",
+  "date": "2026-10-04",
+  "status": "frozen interim balance",
+  "supersedes": "candidate_exclusion_tree_v7 (e53b464, unchanged)",
+
+  "wording_rule": "localized to the validator stage != mechanism understood. Candidates excluded, not proven absent.",
+
+  "standing_statement": "The stages examined so far (extractor, postfilter, linker/worthiness) provide no explanation for the remaining silences. Inside the validator, the assertion scope was excluded as an explanation for the recipient rejections, while a separate scope effect on explicit support predicates was demonstrated. The mechanism behind the recipient rejections remains open.",
+
+  "material_defect_ledger": [
+    {
+      "id": "DEFECT-ASSERTION-R1-NULL",
+      "found_in": "23846d4",
+      "detected_in": "bbaff05",
+      "what": "8 of 79 assertion-probe items carry a NULL gold recipient; the validator was asked '... to None'",
+      "handling": "excluded from valid recipient analysis and postfilter replay; no rerun, no prompt change, no result rewriting",
+      "headline_correction": "recipient 6/16 not 6/24; pooled SUPPORT 25/37 not 25/45",
+      "production_relevance": "none - all 8 are validator-REJECT"
+    }
+  ],
+
+  "pipeline_localization_v8": {
+    "extractor": "not explained; 14 controlled factors show no systematic silence effect",
+    "validator": "TWO separate phenomena, different signatures",
+    "postfilter": "no hard drop: 15 ACCEPT / 10 WARN / 3 ABSTAIN / 0 REJECT of 28 validator-ACCEPT items",
+    "linker_worthiness": "no drop; documented selection preferences only",
+    "validator_phenomenon_1_support_predicates": {
+      "signature": "A-ACCEPT -> B-REJECT (26 transitions, incl. eventnominal 15/15 -> 0/15)",
+      "reading": "the support-scope phrase in the shipped prompt is load-bearing for accepting explicit support predicates",
+      "status": "demonstrated observation, not a proposed change"
+    },
+    "validator_phenomenon_2_recipient_rejections": {
+      "signature": "A-REJECT -> B-REJECT (recovery 0/10); not explained by scope removal",
+      "status": "MECHANISM OPEN; deliberately not further decomposed inside batch-6 material"
+    }
+  },
+
+  "probe_addendum": [
+    {"n": 16, "factor": "assertion scope A/B (prompt question)", "result": "168ae0d",
+     "finding": "primary recovery 0/10, false-accept control 0/22; prompt B is STRICTER (eventnominal 15/15 -> 0/15), so the scope hypothesis is not supported in the predicted direction and a larger reverse effect exists",
+     "verdict": "H-SCOPE not supported; recipient mechanism remains open"}
+  ],
+  "rejected_factors_n": 13,
+  "probes_total_n": 16,
+
+  "not_concluded": [
+    "no prompt change is proposed or made",
+    "the 26 A-ACCEPT -> B-REJECT transitions are not evidence for prompt tuning",
+    "168ae0d does not identify the mechanism behind the recipient rejections, it only excludes the support scope"
+  ],
+
+  "next": "Batch 7 as external replication on fresh material with the frozen production pipeline v1.2.1. No batch-6 hypothesis transfer. First question only: does the silence finding reproduce at all? Recipient gets its own probe only after replication."
+}
