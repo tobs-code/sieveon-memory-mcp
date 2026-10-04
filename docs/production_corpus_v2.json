@@ -1,0 +1,757 @@
+{
+ "version": "production_corpus_v2",
+ "n": 150,
+ "digest": "a4f18e7f01173823a08f019c5144ffc14b0e8103fac72ef236113e2e75023fb7",
+ "sentences": [
+  {
+   "document_id": "conv-26/session_19_observation/Caroline",
+   "text": "Caroline went through a tough process of finding self-acceptance but is now ready to help others who need support.",
+   "sentence_id": "prodc2-000"
+  },
+  {
+   "document_id": "conv-26/session_19_observation/Caroline",
+   "text": "Caroline received invaluable help from friends, family, and role models during the process of finding acceptance.",
+   "sentence_id": "prodc2-001"
+  },
+  {
+   "document_id": "conv-26/session_19_observation/Caroline",
+   "text": "Caroline's journey of self-discovery has been amazing and she finds joy in bringing comfort and support to others.",
+   "sentence_id": "prodc2-002"
+  },
+  {
+   "document_id": "conv-26/session_19_observation/Melanie",
+   "text": "Melanie bought figurines that remind her of family love.",
+   "sentence_id": "prodc2-003"
+  },
+  {
+   "document_id": "conv-26/session_19_observation/Melanie",
+   "text": "Melanie appreciates Caroline's passion for helping kids and finds her inspiring.",
+   "sentence_id": "prodc2-004"
+  },
+  {
+   "document_id": "conv-26/session_19_observation/Melanie",
+   "text": "Melanie respects Caroline's journey of finding acceptance and admires her strength and inspiration to help others.",
+   "sentence_id": "prodc2-005"
+  },
+  {
+   "document_id": "conv-26/session_19_observation/Melanie",
+   "text": "Melanie values the mutual support they provide to each other and appreciates the encouragement of close ones.",
+   "sentence_id": "prodc2-006"
+  },
+  {
+   "document_id": "conv-30/session_1_observation/Gina",
+   "text": "Gina lost her job at Door Dash during the month of the conversation.",
+   "sentence_id": "prodc2-007"
+  },
+  {
+   "document_id": "conv-30/session_1_observation/Gina",
+   "text": "Gina used to compete in dance competitions and shows, winning first place in a regional competition at the age of fifteen.",
+   "sentence_id": "prodc2-008"
+  },
+  {
+   "document_id": "conv-30/session_1_observation/Gina",
+   "text": "Gina's favorite dance style is contemporary.",
+   "sentence_id": "prodc2-009"
+  },
+  {
+   "document_id": "conv-30/session_1_observation/Jon",
+   "text": "Jon lost his job as a banker the day before the conversation.",
+   "sentence_id": "prodc2-010"
+  },
+  {
+   "document_id": "conv-30/session_1_observation/Jon",
+   "text": "Jon is starting his own dance studio due to his passion for dancing.",
+   "sentence_id": "prodc2-011"
+  },
+  {
+   "document_id": "conv-30/session_1_observation/Jon",
+   "text": "Jon's favorite dance style is contemporary.",
+   "sentence_id": "prodc2-012"
+  },
+  {
+   "document_id": "conv-30/session_1_observation/Jon",
+   "text": "Jon practices various dances with a small group, including contemporary and hip-hop, and is working on choreography for a nearby festival.",
+   "sentence_id": "prodc2-013"
+  },
+  {
+   "document_id": "conv-30/session_2_observation/Gina",
+   "text": "Gina launched an ad campaign for her clothing store in hopes of growing the business.",
+   "sentence_id": "prodc2-014"
+  },
+  {
+   "document_id": "conv-30/session_2_observation/Gina",
+   "text": "Gina started her own clothing store and finds taking risks scary but rewarding.",
+   "sentence_id": "prodc2-015"
+  },
+  {
+   "document_id": "conv-30/session_2_observation/Gina",
+   "text": "Gina appreciates seeing her vision for the store come to life.",
+   "sentence_id": "prodc2-016"
+  },
+  {
+   "document_id": "conv-30/session_2_observation/Gina",
+   "text": "Gina has been to Rome once.",
+   "sentence_id": "prodc2-017"
+  },
+  {
+   "document_id": "conv-30/session_2_observation/Gina",
+   "text": "Gina appreciates Jon's determination to make his dance studio work.",
+   "sentence_id": "prodc2-018"
+  },
+  {
+   "document_id": "conv-30/session_2_observation/Jon",
+   "text": "Jon is looking for the ideal spot for his dance studio and is considering features like size, natural light, and flooring.",
+   "sentence_id": "prodc2-019"
+  },
+  {
+   "document_id": "conv-30/session_2_observation/Jon",
+   "text": "Jon visited Paris recently",
+   "sentence_id": "prodc2-020"
+  },
+  {
+   "document_id": "conv-30/session_2_observation/Jon",
+   "text": "Jon is looking for Marley flooring for his dance studio due to its grip, movement, durability, and cleanliness.",
+   "sentence_id": "prodc2-021"
+  },
+  {
+   "document_id": "conv-30/session_2_observation/Jon",
+   "text": "Jon finds the process of setting up his dance studio a mix of exciting and nerve-wracking but is determined to make it work.",
+   "sentence_id": "prodc2-022"
+  },
+  {
+   "document_id": "conv-30/session_2_observation/Jon",
+   "text": "Jon believes in himself and is grateful for Gina's support.",
+   "sentence_id": "prodc2-023"
+  },
+  {
+   "document_id": "conv-30/session_3_observation/Jon",
+   "text": "Jon is following his passion for dance and searching for a place to open his dance studio.",
+   "sentence_id": "prodc2-024"
+  },
+  {
+   "document_id": "conv-30/session_3_observation/Gina",
+   "text": "Gina is enthusiastic about expanding her clothing store and successfully got a positive response from a wholesaler.",
+   "sentence_id": "prodc2-025"
+  },
+  {
+   "document_id": "conv-30/session_3_observation/Gina",
+   "text": "Gina designed her clothing store space to be cozy and inviting for her customers.",
+   "sentence_id": "prodc2-026"
+  },
+  {
+   "document_id": "conv-30/session_3_observation/Gina",
+   "text": "Gina chose furniture and decor for her store that match her style and make customers feel comfortable.",
+   "sentence_id": "prodc2-027"
+  },
+  {
+   "document_id": "conv-30/session_4_observation/Jon",
+   "text": "Jon is working hard on his business despite facing obstacles.",
+   "sentence_id": "prodc2-028"
+  },
+  {
+   "document_id": "conv-30/session_4_observation/Jon",
+   "text": "Jon is determined to make his business successful and reach his dreams.",
+   "sentence_id": "prodc2-029"
+  },
+  {
+   "document_id": "conv-30/session_4_observation/Jon",
+   "text": "Jon is searching for a dance studio location and is determined to find the right spot.",
+   "sentence_id": "prodc2-030"
+  },
+  {
+   "document_id": "conv-30/session_4_observation/Jon",
+   "text": "Jon is working on new dance routines and rehearsing hard for an upcoming show.",
+   "sentence_id": "prodc2-031"
+  },
+  {
+   "document_id": "conv-30/session_4_observation/Jon",
+   "text": "Jon is passionate about dancing and it brings him joy and fulfillment.",
+   "sentence_id": "prodc2-032"
+  },
+  {
+   "document_id": "conv-30/session_4_observation/Jon",
+   "text": "Jon is preparing for a dance competition near him next month to showcase his skills.",
+   "sentence_id": "prodc2-033"
+  },
+  {
+   "document_id": "conv-30/session_4_observation/Gina",
+   "text": "Gina's store is doing great and it's a wild ride.",
+   "sentence_id": "prodc2-034"
+  },
+  {
+   "document_id": "conv-30/session_4_observation/Gina",
+   "text": "Gina encourages Jon to keep pushing, assuring him he'll reach his dreams.",
+   "sentence_id": "prodc2-035"
+  },
+  {
+   "document_id": "conv-30/session_4_observation/Gina",
+   "text": "Gina supports Jon through setbacks and encourages him not to give up.",
+   "sentence_id": "prodc2-036"
+  },
+  {
+   "document_id": "conv-30/session_4_observation/Gina",
+   "text": "Gina is supportive of Jon and assures him that setbacks can be overcome.",
+   "sentence_id": "prodc2-037"
+  },
+  {
+   "document_id": "conv-30/session_4_observation/Gina",
+   "text": "Gina encourages Jon to hang in there while searching for the perfect dance studio location.",
+   "sentence_id": "prodc2-038"
+  },
+  {
+   "document_id": "conv-30/session_4_observation/Gina",
+   "text": "Gina compliments Jon's talent and expresses confidence in his success in the upcoming dance competition.",
+   "sentence_id": "prodc2-039"
+  },
+  {
+   "document_id": "conv-30/session_5_observation/Gina",
+   "text": "Gina has an online store and recently teamed up with a local artist for some cool designs.",
+   "sentence_id": "prodc2-040"
+  },
+  {
+   "document_id": "conv-30/session_5_observation/Gina",
+   "text": "Gina got a tattoo a few years ago that stands for freedom and a reminder to follow her passions and express herself.",
+   "sentence_id": "prodc2-041"
+  },
+  {
+   "document_id": "conv-30/session_5_observation/Jon",
+   "text": "Jon left his secure 9-5 job as a banker to pursue his passion for dancing and turn it into a business.",
+   "sentence_id": "prodc2-042"
+  },
+  {
+   "document_id": "conv-30/session_5_observation/Jon",
+   "text": "Jon finds joy and passion in dancing.",
+   "sentence_id": "prodc2-043"
+  },
+  {
+   "document_id": "conv-30/session_5_observation/Jon",
+   "text": "Jon believes taking risks is essential for success and transformation.",
+   "sentence_id": "prodc2-044"
+  },
+  {
+   "document_id": "conv-30/session_6_observation/Jon",
+   "text": "Jon started hitting the gym last week to stay on track with a venture.",
+   "sentence_id": "prodc2-045"
+  },
+  {
+   "document_id": "conv-30/session_6_observation/Jon",
+   "text": "Jon is starting his own business after losing his job and finds it tough but fulfilling.",
+   "sentence_id": "prodc2-046"
+  },
+  {
+   "document_id": "conv-30/session_6_observation/Jon",
+   "text": "Jon finds Gina's success inspiring and her determination awesome.",
+   "sentence_id": "prodc2-047"
+  },
+  {
+   "document_id": "conv-30/session_6_observation/Jon",
+   "text": "Jon feels motivated by facing similar challenges to Gina and considers her like a partner in this journey.",
+   "sentence_id": "prodc2-048"
+  },
+  {
+   "document_id": "conv-30/session_6_observation/Jon",
+   "text": "Jon is encouraged by Gina's journey and finds it inspiring.",
+   "sentence_id": "prodc2-049"
+  },
+  {
+   "document_id": "conv-30/session_6_observation/Gina",
+   "text": "Gina opened an online clothes store which she had been dreaming of for a while.",
+   "sentence_id": "prodc2-050"
+  },
+  {
+   "document_id": "conv-30/session_6_observation/Gina",
+   "text": "Gina is passionate about fashion trends and unique pieces, and she blended her love for dance and fashion in starting the online store.",
+   "sentence_id": "prodc2-051"
+  },
+  {
+   "document_id": "conv-30/session_6_observation/Gina",
+   "text": "Gina finds starting and running her own business to be a rollercoaster ride with its ups and downs.",
+   "sentence_id": "prodc2-052"
+  },
+  {
+   "document_id": "conv-30/session_6_observation/Gina",
+   "text": "Gina feels inspired by Jon's determination and success, and his words of encouragement mean a lot to her.",
+   "sentence_id": "prodc2-053"
+  },
+  {
+   "document_id": "conv-30/session_6_observation/Gina",
+   "text": "Gina sees Jon as someone on a different path but appreciates having him as someone to root for and support each other.",
+   "sentence_id": "prodc2-054"
+  },
+  {
+   "document_id": "conv-30/session_6_observation/Gina",
+   "text": "Gina values having someone like Jon to back her up and encourages each other to chase their dreams and achieve great things together.",
+   "sentence_id": "prodc2-055"
+  },
+  {
+   "document_id": "conv-30/session_7_observation/Jon",
+   "text": "Jon has a dance studio business where he helps his students learn and reach their goals.",
+   "sentence_id": "prodc2-056"
+  },
+  {
+   "document_id": "conv-30/session_7_observation/Gina",
+   "text": "Gina runs an online clothing store and has been keeping up with fashion trends to offer the best pieces to customers.",
+   "sentence_id": "prodc2-057"
+  },
+  {
+   "document_id": "conv-30/session_7_observation/Gina",
+   "text": "Gina values building relationships and creating a strong brand image for her store.",
+   "sentence_id": "prodc2-058"
+  },
+  {
+   "document_id": "conv-30/session_8_observation/Jon",
+   "text": "Jon had to shut down his bank account for his business.",
+   "sentence_id": "prodc2-059"
+  },
+  {
+   "document_id": "conv-30/session_8_observation/Jon",
+   "text": "Jon is handling changes positively and looking ahead despite facing challenges.",
+   "sentence_id": "prodc2-060"
+  },
+  {
+   "document_id": "conv-30/session_8_observation/Jon",
+   "text": "Jon is expanding his dance studio's social media presence and offering workshops and classes to local schools and centers.",
+   "sentence_id": "prodc2-061"
+  },
+  {
+   "document_id": "conv-30/session_8_observation/Gina",
+   "text": "Gina got new offers and promotions for her online store to attract new customers.",
+   "sentence_id": "prodc2-062"
+  },
+  {
+   "document_id": "conv-30/session_8_observation/Gina",
+   "text": "Gina combines her passion for dance and fashion to show creativity and share love with others.",
+   "sentence_id": "prodc2-063"
+  },
+  {
+   "document_id": "conv-30/session_8_observation/Gina",
+   "text": "Gina is focused on building her customer base for her store by working with fashion bloggers, influencers, and running more ads.",
+   "sentence_id": "prodc2-064"
+  },
+  {
+   "document_id": "conv-30/session_8_observation/Gina",
+   "text": "Gina plans to work with fashion bloggers and influencers to get more attention for her store and do more ads to reach more people.",
+   "sentence_id": "prodc2-065"
+  },
+  {
+   "document_id": "conv-30/session_9_observation/Jon",
+   "text": "Jon is turning his passion for dance into a business by opening a dance studio.",
+   "sentence_id": "prodc2-066"
+  },
+  {
+   "document_id": "conv-30/session_9_observation/Jon",
+   "text": "Jon's determination to make the dance studio work was fueled by losing his job.",
+   "sentence_id": "prodc2-067"
+  },
+  {
+   "document_id": "conv-30/session_9_observation/Jon",
+   "text": "Jonathan finds happiness in dancing and expresses himself through it.",
+   "sentence_id": "prodc2-068"
+  },
+  {
+   "document_id": "conv-30/session_9_observation/Jon",
+   "text": "Jon used to be scared of what people would think, but now prioritizes his own happiness.",
+   "sentence_id": "prodc2-069"
+  },
+  {
+   "document_id": "conv-30/session_9_observation/Jon",
+   "text": "Jon loved taking dance lessons with friends when he was younger.",
+   "sentence_id": "prodc2-070"
+  },
+  {
+   "document_id": "conv-30/session_9_observation/Jon",
+   "text": "Jon values the special meaning dance has for himself and Gina, as a way to express themselves.",
+   "sentence_id": "prodc2-071"
+  },
+  {
+   "document_id": "conv-30/session_9_observation/Jon",
+   "text": "Jon is determined to keep pushing and working hard for his dance business.",
+   "sentence_id": "prodc2-072"
+  },
+  {
+   "document_id": "conv-30/session_9_observation/Gina",
+   "text": "Gina admires Jon for turning his passion for dance into a business.",
+   "sentence_id": "prodc2-073"
+  },
+  {
+   "document_id": "conv-30/session_9_observation/Gina",
+   "text": "Gina loves spending time in the dance studio and values dance as a way to express oneself and find happiness.",
+   "sentence_id": "prodc2-074"
+  },
+  {
+   "document_id": "conv-30/session_9_observation/Gina",
+   "text": "Gina has a trophy from a dance contest as a reminder of the hard work, dedication, and joy dance brings.",
+   "sentence_id": "prodc2-075"
+  },
+  {
+   "document_id": "conv-30/session_9_observation/Gina",
+   "text": "Gina encourages Jon to keep up his hard work and achievements.",
+   "sentence_id": "prodc2-076"
+  },
+  {
+   "document_id": "conv-30/session_10_observation/Jon",
+   "text": "Jon has a studio business that he showed off at a fair recently.",
+   "sentence_id": "prodc2-077"
+  },
+  {
+   "document_id": "conv-30/session_10_observation/Jon",
+   "text": "Jon considers having confidence in oneself important for business success.",
+   "sentence_id": "prodc2-078"
+  },
+  {
+   "document_id": "conv-30/session_10_observation/Jon",
+   "text": "Jon is feeling low on confidence lately and seeks advice from Gina on staying confident in business.",
+   "sentence_id": "prodc2-079"
+  },
+  {
+   "document_id": "conv-30/session_10_observation/Jon",
+   "text": "Jon is talented and passionate about dance, as per Gina's encouragement.",
+   "sentence_id": "prodc2-080"
+  },
+  {
+   "document_id": "conv-30/session_10_observation/Gina",
+   "text": "Gina finds setbacks tough but rewarding for growth.",
+   "sentence_id": "prodc2-081"
+  },
+  {
+   "document_id": "conv-30/session_10_observation/Gina",
+   "text": "Gina advises Jon to focus on the big goal, get support, and dance it out to stay motivated during tough times in business.",
+   "sentence_id": "prodc2-082"
+  },
+  {
+   "document_id": "conv-30/session_10_observation/Gina",
+   "text": "Gina gives Jon tips to stay confident in business by reminding of successes and progress, having a good support system, and having faith in oneself.",
+   "sentence_id": "prodc2-083"
+  },
+  {
+   "document_id": "conv-30/session_10_observation/Gina",
+   "text": "Gina encourages Jon to believe in himself, tackle obstacles, and keep shining in pursuing his dreams.",
+   "sentence_id": "prodc2-084"
+  },
+  {
+   "document_id": "conv-30/session_11_observation/Jon",
+   "text": "Jon lost his job but used it as an opportunity to start his dream business: a dance studio.",
+   "sentence_id": "prodc2-085"
+  },
+  {
+   "document_id": "conv-30/session_11_observation/Jon",
+   "text": "Dance has been Jon's stress-buster since childhood.",
+   "sentence_id": "prodc2-086"
+  },
+  {
+   "document_id": "conv-30/session_11_observation/Jon",
+   "text": "Jon sees dancing as where he feels most alive and considers it a must-have in his life.",
+   "sentence_id": "prodc2-087"
+  },
+  {
+   "document_id": "conv-30/session_11_observation/Gina",
+   "text": "Gina finds dancing as her stress fix and something that makes her worries vanish.",
+   "sentence_id": "prodc2-088"
+  },
+  {
+   "document_id": "conv-30/session_11_observation/Gina",
+   "text": "Dance is essential to Gina, and she compares it to being like air.",
+   "sentence_id": "prodc2-089"
+  },
+  {
+   "document_id": "conv-30/session_11_observation/Gina",
+   "text": "Gina had an interview for a design internship and found it to be great.",
+   "sentence_id": "prodc2-090"
+  },
+  {
+   "document_id": "conv-30/session_11_observation/Gina",
+   "text": "Gina is proud of Jon and is excited about his dance studio project.",
+   "sentence_id": "prodc2-091"
+  },
+  {
+   "document_id": "conv-30/session_12_observation/Gina",
+   "text": "Gina got accepted for a fashion internship at a part-time position in the fashion department of an international company.",
+   "sentence_id": "prodc2-092"
+  },
+  {
+   "document_id": "conv-30/session_12_observation/Jon",
+   "text": "Jon is reading the book \"The Lean Startup\" and hoping to get tips for his business.",
+   "sentence_id": "prodc2-093"
+  },
+  {
+   "document_id": "conv-30/session_12_observation/Jon",
+   "text": "Jon is working on a business plan and looking for investors for his project.",
+   "sentence_id": "prodc2-094"
+  },
+  {
+   "document_id": "conv-30/session_13_observation/Jon",
+   "text": "Jon wants his dance studio to be a place of support and encouragement for all dancers.",
+   "sentence_id": "prodc2-095"
+  },
+  {
+   "document_id": "conv-30/session_13_observation/Jon",
+   "text": "Jon uses a mentor, goal setting, tracking achievements, and finding areas for improvement to stay organized and motivated.",
+   "sentence_id": "prodc2-096"
+  },
+  {
+   "document_id": "conv-30/session_13_observation/Jon",
+   "text": "Jon uses a whiteboard to stay on track, visualize goals, and reward successes.",
+   "sentence_id": "prodc2-097"
+  },
+  {
+   "document_id": "conv-30/session_13_observation/Jon",
+   "text": "Jon color-codes achievements to easily track progress and stay motivated.",
+   "sentence_id": "prodc2-098"
+  },
+  {
+   "document_id": "conv-30/session_13_observation/Jon",
+   "text": "Jon feels that support and guidance can help dancers shine.",
+   "sentence_id": "prodc2-099"
+  },
+  {
+   "document_id": "conv-30/session_13_observation/Jon",
+   "text": "Jon uses the system of goal setting, tracking achievements, and visualization to stay motivated and focused.",
+   "sentence_id": "prodc2-100"
+  },
+  {
+   "document_id": "conv-30/session_13_observation/Gina",
+   "text": "Gina has developed a video presentation to teach how to style her fashion pieces.",
+   "sentence_id": "prodc2-101"
+  },
+  {
+   "document_id": "conv-30/session_13_observation/Gina",
+   "text": "Gina highlights the importance of staying positive and believes in supporting others' dreams.",
+   "sentence_id": "prodc2-102"
+  },
+  {
+   "document_id": "conv-30/session_13_observation/Gina",
+   "text": "Gina values mentorship, having had a mentor herself when learning how to dance.",
+   "sentence_id": "prodc2-103"
+  },
+  {
+   "document_id": "conv-30/session_13_observation/Gina",
+   "text": "Gina encourages Jon to keep pushing for his dreams and not give up.",
+   "sentence_id": "prodc2-104"
+  },
+  {
+   "document_id": "conv-30/session_13_observation/Gina",
+   "text": "Gina supports Jon and believes in him.",
+   "sentence_id": "prodc2-105"
+  },
+  {
+   "document_id": "conv-30/session_14_observation/Jon",
+   "text": "Jon got mentored by a business person, which was inspiring for him.",
+   "sentence_id": "prodc2-106"
+  },
+  {
+   "document_id": "conv-30/session_14_observation/Jon",
+   "text": "Jon is working on promoting his business.",
+   "sentence_id": "prodc2-107"
+  },
+  {
+   "document_id": "conv-30/session_14_observation/Jon",
+   "text": "Jon posted dance videos on social media which created a stir.",
+   "sentence_id": "prodc2-108"
+  },
+  {
+   "document_id": "conv-30/session_14_observation/Jon",
+   "text": "Jon is passionate about dance and loves performing.",
+   "sentence_id": "prodc2-109"
+  },
+  {
+   "document_id": "conv-30/session_14_observation/Jon",
+   "text": "Jon finds Gina's encouragement motivating and it helps him keep going.",
+   "sentence_id": "prodc2-110"
+  },
+  {
+   "document_id": "conv-30/session_14_observation/Gina",
+   "text": "Gina is working on growing the customer base for her online store.",
+   "sentence_id": "prodc2-111"
+  },
+  {
+   "document_id": "conv-30/session_14_observation/Gina",
+   "text": "Gina lost her job, started an online clothing store, and enjoys being her own boss.",
+   "sentence_id": "prodc2-112"
+  },
+  {
+   "document_id": "conv-30/session_14_observation/Gina",
+   "text": "Gina advises Jon to stay passionate, focused, resilient, and open to learning for entrepreneurship.",
+   "sentence_id": "prodc2-113"
+  },
+  {
+   "document_id": "conv-30/session_14_observation/Gina",
+   "text": "Gina believes staying resilient and focused is key for entrepreneurs.",
+   "sentence_id": "prodc2-114"
+  },
+  {
+   "document_id": "conv-30/session_14_observation/Gina",
+   "text": "Gina shares a pic of herself dancing and mentions the tough but worth it journey.",
+   "sentence_id": "prodc2-115"
+  },
+  {
+   "document_id": "conv-30/session_14_observation/Gina",
+   "text": "Gina encourages Jon to keep going after his dreams.",
+   "sentence_id": "prodc2-116"
+  },
+  {
+   "document_id": "conv-30/session_15_observation/Jon",
+   "text": "Jon recently took a short trip to Rome to clear his mind.",
+   "sentence_id": "prodc2-117"
+  },
+  {
+   "document_id": "conv-30/session_15_observation/Jon",
+   "text": "Jon is working on opening a dance studio, with the official opening night being tomorrow.",
+   "sentence_id": "prodc2-118"
+  },
+  {
+   "document_id": "conv-30/session_15_observation/Gina",
+   "text": "Gina supports Jon's opening of the dance studio and expresses excitement for the launch.",
+   "sentence_id": "prodc2-119"
+  },
+  {
+   "document_id": "conv-30/session_15_observation/Gina",
+   "text": "Gina mentions she loves being around friends and having a great time.",
+   "sentence_id": "prodc2-120"
+  },
+  {
+   "document_id": "conv-30/session_16_observation/Gina",
+   "text": "Gina has a store where she acquired new unique pieces.",
+   "sentence_id": "prodc2-121"
+  },
+  {
+   "document_id": "conv-30/session_16_observation/Gina",
+   "text": "Gina made a limited edition line of clothing last week to show off her style and creativity.",
+   "sentence_id": "prodc2-122"
+  },
+  {
+   "document_id": "conv-30/session_16_observation/Gina",
+   "text": "Gina's design in her clothing line reminds her of the grit needed to stand out and face challenges.",
+   "sentence_id": "prodc2-123"
+  },
+  {
+   "document_id": "conv-30/session_16_observation/Jon",
+   "text": "Jon has been attending networking events to make things happen after losing his job.",
+   "sentence_id": "prodc2-124"
+  },
+  {
+   "document_id": "conv-30/session_16_observation/Jon",
+   "text": "Jon is investing his time in his business and believes it will eventually pay off.",
+   "sentence_id": "prodc2-125"
+  },
+  {
+   "document_id": "conv-30/session_16_observation/Jon",
+   "text": "Jon is writing down all his plans and goals to stay organized and motivated.",
+   "sentence_id": "prodc2-126"
+  },
+  {
+   "document_id": "conv-30/session_16_observation/Jon",
+   "text": "Jon finds that writing down his goals helps him stay motivated and focused.",
+   "sentence_id": "prodc2-127"
+  },
+  {
+   "document_id": "conv-30/session_17_observation/Gina",
+   "text": "Gina believes that stumbling blocks can sometimes be opened doors.",
+   "sentence_id": "prodc2-128"
+  },
+  {
+   "document_id": "conv-30/session_17_observation/Gina",
+   "text": "Gina supports and encourages Jon in his business dreams.",
+   "sentence_id": "prodc2-129"
+  },
+  {
+   "document_id": "conv-30/session_17_observation/Gina",
+   "text": "Gina considers Jon to be the perfect mentor and guide for aspiring dancers.",
+   "sentence_id": "prodc2-130"
+  },
+  {
+   "document_id": "conv-30/session_17_observation/Gina",
+   "text": "Gina is part of a solid community that cheers Jon on.",
+   "sentence_id": "prodc2-131"
+  },
+  {
+   "document_id": "conv-30/session_17_observation/Gina",
+   "text": "Gina believes Jon has potential and encourages him not to let anything stop him.",
+   "sentence_id": "prodc2-132"
+  },
+  {
+   "document_id": "conv-30/session_17_observation/Gina",
+   "text": "Gina roots for Jon to keep going and make his dreams a reality, even when facing bumps in the road.",
+   "sentence_id": "prodc2-133"
+  },
+  {
+   "document_id": "conv-30/session_17_observation/Jon",
+   "text": "Jon mentioned losing his job but is determined to pursue his business dreams.",
+   "sentence_id": "prodc2-134"
+  },
+  {
+   "document_id": "conv-30/session_17_observation/Jon",
+   "text": "Jon started learning marketing and analytics tools to push his business forward.",
+   "sentence_id": "prodc2-135"
+  },
+  {
+   "document_id": "conv-30/session_17_observation/Jon",
+   "text": "Jon aspires to guide and mentor aspiring dancers on their dreams.",
+   "sentence_id": "prodc2-136"
+  },
+  {
+   "document_id": "conv-30/session_17_observation/Jon",
+   "text": "Jon values the support and encouragement from Gina and the community in pursuing his dreams.",
+   "sentence_id": "prodc2-137"
+  },
+  {
+   "document_id": "conv-30/session_17_observation/Jon",
+   "text": "Jon is determined not to let anything or anyone stop him from making his dreams come true.",
+   "sentence_id": "prodc2-138"
+  },
+  {
+   "document_id": "conv-30/session_17_observation/Jon",
+   "text": "Jon expresses gratitude for Gina's belief in him and considers her a great friend.",
+   "sentence_id": "prodc2-139"
+  },
+  {
+   "document_id": "conv-30/session_18_observation/Gina",
+   "text": "Gina built a new website for customers to make orders for her clothing store last week.",
+   "sentence_id": "prodc2-140"
+  },
+  {
+   "document_id": "conv-30/session_18_observation/Gina",
+   "text": "Gina faced challenges in her business, particularly in sourcing trendy pieces which required research and networking.",
+   "sentence_id": "prodc2-141"
+  },
+  {
+   "document_id": "conv-30/session_18_observation/Gina",
+   "text": "Gina advised Jon not to be scared to reach out to people in his field for help and contacts, stressing the importance of networking.",
+   "sentence_id": "prodc2-142"
+  },
+  {
+   "document_id": "conv-30/session_18_observation/Gina",
+   "text": "Gina met some investors and got good advice at a recent networking event.",
+   "sentence_id": "prodc2-143"
+  },
+  {
+   "document_id": "conv-30/session_18_observation/Gina",
+   "text": "Gina offered to help Jon with making content and managing his social media accounts for his dance studio.",
+   "sentence_id": "prodc2-144"
+  },
+  {
+   "document_id": "conv-30/session_18_observation/Gina",
+   "text": "Gina expressed excitement to collaborate with Jon on making the dance studio shine and making a difference in the world.",
+   "sentence_id": "prodc2-145"
+  },
+  {
+   "document_id": "conv-30/session_18_observation/Jon",
+   "text": "Jon is networking and updating his business plan and pitch to investors based on advice received.",
+   "sentence_id": "prodc2-146"
+  },
+  {
+   "document_id": "conv-30/session_18_observation/Jon",
+   "text": "Jon is working on an online platform to showcase the dance studio's offerings.",
+   "sentence_id": "prodc2-147"
+  },
+  {
+   "document_id": "conv-30/session_18_observation/Jon",
+   "text": "Jon expressed a need for marketing strategies, seeking advice on reaching his target audience and raising awareness for the dance studio.",
+   "sentence_id": "prodc2-148"
+  },
+  {
+   "document_id": "conv-30/session_18_observation/Jon",
+   "text": "Jon plans to collaborate with Gina on making content and managing his social media accounts to promote the dance studio.",
+   "sentence_id": "prodc2-149"
+  }
+ ]
+}
