@@ -1,0 +1,116 @@
+{
+ "version": "candidate_exclusion_tree_v5",
+ "date": "2026-10-04",
+ "status": "frozen interim balance",
+ "supersedes": "candidate_exclusion_tree_v4 (46ef893, unchanged)",
+ "wording_rule": "single hypotheses show no systematic silence effect; span/selection errors found locally; a null on one factor does not exclude interactions",
+ "rejected": [
+  {
+   "n": 1,
+   "factor": "position/argument realization",
+   "result": "b5644f8"
+  },
+  {
+   "n": 2,
+   "factor": "lexical coverage",
+   "result": "a4eea29"
+  },
+  {
+   "n": 3,
+   "factor": "finite syntactic complexity",
+   "result": "54f9809"
+  },
+  {
+   "n": 4,
+   "factor": "anaphora/coreference",
+   "result": "b613ff0"
+  },
+  {
+   "n": 5,
+   "factor": "event nominalization",
+   "result": "4d3a930"
+  },
+  {
+   "n": 6,
+   "factor": "benefactive realization",
+   "result": "d951923"
+  },
+  {
+   "n": 7,
+   "factor": "metaphorical realization",
+   "result": "4a85e37"
+  },
+  {
+   "n": 8,
+   "factor": "passive x nominal interaction",
+   "result": "107a946"
+  },
+  {
+   "n": 9,
+   "factor": "provider agency",
+   "result": "8888a38"
+  },
+  {
+   "n": 10,
+   "factor": "recipient realization",
+   "result": "0f6f883"
+  },
+  {
+   "n": 11,
+   "factor": "proposition density",
+   "result": "770a5d1",
+   "finding": "SINGLE 4/4, REL 4/4, ADV 4/4 with constant target frame"
+  },
+  {
+   "n": 12,
+   "factor": "implicit agent (A2 vs A3, voice constant)",
+   "result": "e491eb4",
+   "finding": "A1/A2 correct 8/8; A3 4/4 present as (theme, recipient) pairs"
+  },
+  {
+   "n": 13,
+   "factor": "implicit theme (overt vs dropped)",
+   "result": "e491eb4",
+   "finding": "overt 7/8 and dropped 7/8 correct; b08 absent in all 4 variants (item-specific, not theme effect)"
+  },
+  {
+   "n": 14,
+   "factor": "implicit recipient (R1)",
+   "result": "0f6f883",
+   "finding": "5/8 present as provider+theme; residual 3/8 unexplained, no shared feature"
+  }
+ ],
+ "profiling_chain": {
+  "matching_freeze": "e762051 (36 items, blind axes)",
+  "annotation": "independent, sentence+gold only",
+  "descriptive_profile": "FNs differ from controls along density/canonicality/implicit-args (descriptive only)",
+  "density_hypothesis": "independent minimal-pair test 770a5d1",
+  "verdict": "density NOT adopted as an explanatory generator mechanism"
+ },
+ "microprofile_remaining_FNs": {
+  "cluster_R_recipientless": {
+   "status": "general mechanism rejected; residuals unexplained"
+  },
+  "cluster_N_noncanonical_recipient": {
+   "status": "still open; explicitly untouched"
+  },
+  "figurative_055": {
+   "status": "separate"
+  }
+ },
+ "mechanism_ledger": [
+  {
+   "id": "H-IMPLICIT",
+   "status": "REJECTED AS SYSTEMATIC MECHANISM",
+   "observation": "FN 5/9 implicit_argument_count=1 vs CONTROL 0/27.",
+   "controlled_evidence": [
+    "Agent omission (A2 vs A3, voice constant): no systematic silence.",
+    "Theme omission (overt vs dropped): no systematic silence (7/8 both).",
+    "Recipient omission (R1): no systematic silence (5/8 present).",
+    "b08 failure persisted across overt/dropped variants and controls."
+   ],
+   "interpretation": "Implicit argument realization may occur in individual FN cases, but omission of an overt argument is not supported as a systematic silence mechanism under the tested conditions.",
+   "limitation": "Not every possible implicit-argument construction is proven harmless; only the tested agent/theme/recipient configurations are negative."
+  }
+ ]
+}
