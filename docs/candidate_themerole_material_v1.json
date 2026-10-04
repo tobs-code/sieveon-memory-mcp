@@ -1,0 +1,177 @@
+{
+  "version": "candidate_themerole_material_v1",
+  "status": "frozen_for_probe (reviewed; T1 confounded-exploratory, T2 naturalness-audited)",
+  "date": "2026-10-04",
+  "hypothesis": "H-THEME-ROLE: non-prototypical theme (ACTIVITY/SERVICE) yields more extraction failure than concrete theme, verb and frame constant. T1 and T2 are separate subprobes; do not pool before seeing results.",
+  "known_confound": "T1 concrete items carry animate recipients, activity items inanimate ones; animacy covaries with the manipulation there. T2 holds animacy constant (inanimate both sides) and is the cleaner role contrast. T1 status: confounded/exploratory (animacy covaries with theme role; no isolated theme-role claim from T1). T2 naturalness audit: service nominals restricted to idiomatic serve+NP collocations (justice/communion/notices/accounts); transportation/childcare/maintenance/consulting removed as unidiomatic.",
+  "pairs": [
+    {
+      "pair_id": "t101",
+      "subprobe": "T1",
+      "verb": "assist",
+      "concrete": {
+        "sentence": "The guide assisted the traveler.",
+        "gold": [
+          "The guide",
+          "the traveler"
+        ],
+        "relation": "provides"
+      },
+      "nonproto": {
+        "sentence": "The guide assisted aerial navigation.",
+        "gold": [
+          "The guide",
+          "aerial navigation"
+        ],
+        "relation": "provides"
+      }
+    },
+    {
+      "pair_id": "t102",
+      "subprobe": "T1",
+      "verb": "assist",
+      "concrete": {
+        "sentence": "The technician assisted the operator.",
+        "gold": [
+          "The technician",
+          "the operator"
+        ],
+        "relation": "provides"
+      },
+      "nonproto": {
+        "sentence": "The technician assisted equipment maintenance.",
+        "gold": [
+          "The technician",
+          "equipment maintenance"
+        ],
+        "relation": "provides"
+      }
+    },
+    {
+      "pair_id": "t103",
+      "subprobe": "T1",
+      "verb": "assist",
+      "concrete": {
+        "sentence": "The nurse assisted the patient.",
+        "gold": [
+          "The nurse",
+          "the patient"
+        ],
+        "relation": "provides"
+      },
+      "nonproto": {
+        "sentence": "The nurse assisted patient recovery.",
+        "gold": [
+          "The nurse",
+          "patient recovery"
+        ],
+        "relation": "provides"
+      }
+    },
+    {
+      "pair_id": "t104",
+      "subprobe": "T1",
+      "verb": "assist",
+      "concrete": {
+        "sentence": "The engineer assisted the team.",
+        "gold": [
+          "The engineer",
+          "the team"
+        ],
+        "relation": "provides"
+      },
+      "nonproto": {
+        "sentence": "The engineer assisted system integration.",
+        "gold": [
+          "The engineer",
+          "system integration"
+        ],
+        "relation": "provides"
+      }
+    },
+    {
+      "pair_id": "t201",
+      "subprobe": "T2",
+      "verb": "serve",
+      "concrete": {
+        "sentence": "The court serves meals.",
+        "gold": [
+          "The company",
+          "dinner"
+        ],
+        "relation": "provides"
+      },
+      "nonproto": {
+        "sentence": "The court serves justice.",
+        "gold": [
+          "The company",
+          "transportation"
+        ],
+        "relation": "provides"
+      }
+    },
+    {
+      "pair_id": "t202",
+      "subprobe": "T2",
+      "verb": "serve",
+      "concrete": {
+        "sentence": "The church serves dinner.",
+        "gold": [
+          "The company",
+          "breakfast"
+        ],
+        "relation": "provides"
+      },
+      "nonproto": {
+        "sentence": "The church serves communion.",
+        "gold": [
+          "The company",
+          "childcare"
+        ],
+        "relation": "provides"
+      }
+    },
+    {
+      "pair_id": "t203",
+      "subprobe": "T2",
+      "verb": "serve",
+      "concrete": {
+        "sentence": "The clerk serves forms.",
+        "gold": [
+          "The company",
+          "meals"
+        ],
+        "relation": "provides"
+      },
+      "nonproto": {
+        "sentence": "The clerk serves notices.",
+        "gold": [
+          "The company",
+          "maintenance"
+        ],
+        "relation": "provides"
+      }
+    },
+    {
+      "pair_id": "t204",
+      "subprobe": "T2",
+      "verb": "serve",
+      "concrete": {
+        "sentence": "The company serves breakfast.",
+        "gold": [
+          "The company",
+          "refreshments"
+        ],
+        "relation": "provides"
+      },
+      "nonproto": {
+        "sentence": "The company serves accounts.",
+        "gold": [
+          "The company",
+          "consulting"
+        ],
+        "relation": "provides"
+      }
+    }
+  ]
+}
