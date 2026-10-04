@@ -1,0 +1,317 @@
+{
+ "version": "linker_shadow_doc_v1",
+ "gates": {
+  "resolved": [
+   22,
+   22
+  ]
+ },
+ "cases": [
+  {
+   "sentence_id": "prodc3-002",
+   "mention": "Dancing",
+   "document": "session_19_observation/Jon",
+   "global": "resolved",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "activity_subject_non_entity"
+  },
+  {
+   "sentence_id": "prodc3-002",
+   "mention": "Jon",
+   "document": "session_19_observation/Jon",
+   "global": "ambiguous",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "activity_subject_non_entity"
+  },
+  {
+   "sentence_id": "prodc3-004",
+   "mention": "Gina",
+   "document": "session_19_observation/Gina",
+   "global": "resolved",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "name_collision_context_resolvable"
+  },
+  {
+   "sentence_id": "prodc3-004",
+   "mention": "Jon",
+   "document": "session_19_observation/Gina",
+   "global": "ambiguous",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "name_collision_context_resolvable"
+  },
+  {
+   "sentence_id": "prodc3-005",
+   "mention": "Gina",
+   "document": "session_19_observation/Gina",
+   "global": "resolved",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "name_collision_context_resolvable"
+  },
+  {
+   "sentence_id": "prodc3-005",
+   "mention": "Jon",
+   "document": "session_19_observation/Gina",
+   "global": "ambiguous",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "name_collision_context_resolvable"
+  },
+  {
+   "sentence_id": "prodc3-019",
+   "mention": "John",
+   "document": "session_3_observation/John",
+   "global": "ambiguous",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "name_collision_context_resolvable"
+  },
+  {
+   "sentence_id": "prodc3-019",
+   "mention": "homeless shelter",
+   "document": "session_3_observation/John",
+   "global": "resolved",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "name_collision_context_resolvable"
+  },
+  {
+   "sentence_id": "prodc3-019",
+   "mention": "John",
+   "document": "session_3_observation/John",
+   "global": "ambiguous",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "generic_entity_unresolved"
+  },
+  {
+   "sentence_id": "prodc3-019",
+   "mention": "kids in need",
+   "document": "session_3_observation/John",
+   "global": "resolved",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "generic_entity_unresolved"
+  },
+  {
+   "sentence_id": "prodc3-028",
+   "mention": "Maria",
+   "document": "session_4_observation/Maria",
+   "global": "resolved",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "name_collision_context_resolvable"
+  },
+  {
+   "sentence_id": "prodc3-028",
+   "mention": "John",
+   "document": "session_4_observation/Maria",
+   "global": "ambiguous",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "name_collision_context_resolvable"
+  },
+  {
+   "sentence_id": "prodc3-037",
+   "mention": "Maria",
+   "document": "session_4_observation/John",
+   "global": "resolved",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "name_collision_context_resolvable"
+  },
+  {
+   "sentence_id": "prodc3-037",
+   "mention": "John",
+   "document": "session_4_observation/John",
+   "global": "ambiguous",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "name_collision_context_resolvable"
+  },
+  {
+   "sentence_id": "prodc3-053",
+   "mention": "John",
+   "document": "session_6_observation/John",
+   "global": "ambiguous",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "generic_entity_unresolved"
+  },
+  {
+   "sentence_id": "prodc3-053",
+   "mention": "people who lost their jobs",
+   "document": "session_6_observation/John",
+   "global": "resolved",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "generic_entity_unresolved"
+  },
+  {
+   "sentence_id": "prodc3-070",
+   "mention": "friends",
+   "document": "session_8_observation/John",
+   "global": "resolved",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "name_collision_context_resolvable"
+  },
+  {
+   "sentence_id": "prodc3-070",
+   "mention": "John",
+   "document": "session_8_observation/John",
+   "global": "ambiguous",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "name_collision_context_resolvable"
+  },
+  {
+   "sentence_id": "prodc3-072",
+   "mention": "Maria",
+   "document": "session_9_observation/Maria",
+   "global": "resolved",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "name_collision_context_resolvable"
+  },
+  {
+   "sentence_id": "prodc3-072",
+   "mention": "John",
+   "document": "session_9_observation/Maria",
+   "global": "ambiguous",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "name_collision_context_resolvable"
+  },
+  {
+   "sentence_id": "prodc3-081",
+   "mention": "Maria",
+   "document": "session_9_observation/John",
+   "global": "resolved",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "name_collision_context_resolvable"
+  },
+  {
+   "sentence_id": "prodc3-081",
+   "mention": "John",
+   "document": "session_9_observation/John",
+   "global": "ambiguous",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "name_collision_context_resolvable"
+  },
+  {
+   "sentence_id": "prodc3-084",
+   "mention": "beginner yoga class",
+   "document": "session_10_observation/John",
+   "global": "resolved",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "activity_subject_non_entity"
+  },
+  {
+   "sentence_id": "prodc3-084",
+   "mention": "John",
+   "document": "session_10_observation/John",
+   "global": "ambiguous",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "activity_subject_non_entity"
+  },
+  {
+   "sentence_id": "prodc3-085",
+   "mention": "Yoga",
+   "document": "session_10_observation/John",
+   "global": "resolved",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "activity_subject_non_entity"
+  },
+  {
+   "sentence_id": "prodc3-085",
+   "mention": "John",
+   "document": "session_10_observation/John",
+   "global": "ambiguous",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "activity_subject_non_entity"
+  },
+  {
+   "sentence_id": "prodc3-087",
+   "mention": "John",
+   "document": "session_10_observation/John",
+   "global": "ambiguous",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "name_collision_context_resolvable"
+  },
+  {
+   "sentence_id": "prodc3-087",
+   "mention": "kids",
+   "document": "session_10_observation/John",
+   "global": "resolved",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "name_collision_context_resolvable"
+  },
+  {
+   "sentence_id": "prodc3-093",
+   "mention": "Maria",
+   "document": "session_10_observation/Maria",
+   "global": "resolved",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "name_collision_context_resolvable"
+  },
+  {
+   "sentence_id": "prodc3-093",
+   "mention": "John",
+   "document": "session_10_observation/Maria",
+   "global": "ambiguous",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "name_collision_context_resolvable"
+  },
+  {
+   "sentence_id": "prodc3-113",
+   "mention": "John",
+   "document": "session_13_observation/John",
+   "global": "ambiguous",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "generic_entity_unresolved"
+  },
+  {
+   "sentence_id": "prodc3-113",
+   "mention": "his family",
+   "document": "session_13_observation/John",
+   "global": "resolved",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "generic_entity_unresolved"
+  },
+  {
+   "sentence_id": "prodc3-113",
+   "mention": "his family",
+   "document": "session_13_observation/John",
+   "global": "resolved",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "name_collision_context_resolvable"
+  },
+  {
+   "sentence_id": "prodc3-113",
+   "mention": "John",
+   "document": "session_13_observation/John",
+   "global": "ambiguous",
+   "doc": "resolved",
+   "doc_mode": "doc",
+   "gold_class": "name_collision_context_resolvable"
+  }
+ ]
+}
