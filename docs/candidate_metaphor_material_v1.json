@@ -1,0 +1,345 @@
+{
+  "version": "candidate_metaphor_material_v1",
+  "status": "frozen_for_probe (reviewed; open replaced by spread, build-portfolios by send-contracts/updates, feed naturalized to website/users, open-minds dropped)",
+  "date": "2026-10-04",
+  "protocol": "docs/candidate_metaphor_probe_v1.json",
+  "design": "16 pairs x (literal vs figurative), same verb and same ditransitive frame within pair. M0: literal vs literal-paraphrase (verb-level baseline). M1: literal YES vs conventional-figurative (gold YES* for information-vehicles analogous to 055, gold NO for effect/attitude-vehicles). M3: literal-concrete vs literal-abstract-neighbor (both YES; isolates abstractness from figurativeness). M2 omitted: no deliberate-novel case constructible without artificial sentences; documented, not silently dropped. YES* marks 055-analogous information-via-metaphor gold: tests whether the generator builds the relation; a miss patterns with 055 either way (see ontology branch). Gate review applied: open removed (possessor confound), build-portfolios replaced (metaphorical extended use), feed re-anchored (plausibility), YES* kept only for feed-rumors and offer-ammunition.",
+  "pairs": [
+    {
+      "pair_id": "mm01",
+      "class": "M0",
+      "verb": "give",
+      "literal": {
+        "sentence_id": "mm01lit",
+        "sentence": "The tutor gives students books.",
+        "literal_figurative": "literal",
+        "provides_relation": "YES",
+        "expected_candidate": true,
+        "mapping": "direct transfer"
+      },
+      "figurative": {
+        "sentence_id": "mm01fig",
+        "sentence": "The tutor gives students blankets.",
+        "literal_figurative": "literal-paraphrase",
+        "provides_relation": "YES",
+        "expected_candidate": true,
+        "mapping": "direct transfer"
+      }
+    },
+    {
+      "pair_id": "mm02",
+      "class": "M0",
+      "verb": "offer",
+      "literal": {
+        "sentence_id": "mm02lit",
+        "sentence": "The center offers guests seats.",
+        "literal_figurative": "literal",
+        "provides_relation": "YES",
+        "expected_candidate": true,
+        "mapping": "direct transfer"
+      },
+      "figurative": {
+        "sentence_id": "mm02fig",
+        "sentence": "The center offers guests tours.",
+        "literal_figurative": "literal-paraphrase",
+        "provides_relation": "YES",
+        "expected_candidate": true,
+        "mapping": "direct transfer"
+      }
+    },
+    {
+      "pair_id": "mm03",
+      "class": "M0",
+      "verb": "provide",
+      "literal": {
+        "sentence_id": "mm03lit",
+        "sentence": "The pharmacy provides customers vaccines.",
+        "literal_figurative": "literal",
+        "provides_relation": "YES",
+        "expected_candidate": true,
+        "mapping": "direct transfer"
+      },
+      "figurative": {
+        "sentence_id": "mm03fig",
+        "sentence": "The pharmacy provides customers bandages.",
+        "literal_figurative": "literal-paraphrase",
+        "provides_relation": "YES",
+        "expected_candidate": true,
+        "mapping": "direct transfer"
+      }
+    },
+    {
+      "pair_id": "mm04",
+      "class": "M0",
+      "verb": "supply",
+      "literal": {
+        "sentence_id": "mm04lit",
+        "sentence": "The depot supplies crews fuel.",
+        "literal_figurative": "literal",
+        "provides_relation": "YES",
+        "expected_candidate": true,
+        "mapping": "direct transfer"
+      },
+      "figurative": {
+        "sentence_id": "mm04fig",
+        "sentence": "The depot supplies crews oil.",
+        "literal_figurative": "literal-paraphrase",
+        "provides_relation": "YES",
+        "expected_candidate": true,
+        "mapping": "direct transfer"
+      }
+    },
+    {
+      "pair_id": "mm05",
+      "class": "M1",
+      "verb": "spread",
+      "literal": {
+        "sentence_id": "mm05lit",
+        "sentence": "The paper spreads readers maps.",
+        "literal_figurative": "literal",
+        "provides_relation": "YES",
+        "expected_candidate": true,
+        "mapping": "access provision"
+      },
+      "figurative": {
+        "sentence_id": "mm05fig",
+        "sentence": "The paper spreads readers rumors.",
+        "literal_figurative": "conventional-metaphor",
+        "provides_relation": "YES*",
+        "expected_candidate": true,
+        "mapping": "dissemination-to-information; 055-analogous"
+      }
+    },
+    {
+      "pair_id": "mm06",
+      "class": "M1",
+      "verb": "feed",
+      "literal": {
+        "sentence_id": "mm06lit",
+        "sentence": "The website fed users data.",
+        "literal_figurative": "literal",
+        "provides_relation": "YES",
+        "expected_candidate": true,
+        "mapping": "direct transfer"
+      },
+      "figurative": {
+        "sentence_id": "mm06fig",
+        "sentence": "The website fed users rumors.",
+        "literal_figurative": "conventional-metaphor",
+        "provides_relation": "YES*",
+        "expected_candidate": true,
+        "mapping": "consumption-to-information; 055-analogous"
+      }
+    },
+    {
+      "pair_id": "mm07",
+      "class": "M1",
+      "verb": "offer",
+      "literal": {
+        "sentence_id": "mm07lit",
+        "sentence": "The paper offered readers documents.",
+        "literal_figurative": "literal",
+        "provides_relation": "YES",
+        "expected_candidate": true,
+        "mapping": "information provision"
+      },
+      "figurative": {
+        "sentence_id": "mm07fig",
+        "sentence": "The paper offered readers ammunition.",
+        "literal_figurative": "conventional-metaphor",
+        "provides_relation": "YES*",
+        "expected_candidate": true,
+        "mapping": "weapon-to-information; 055-analogous"
+      }
+    },
+    {
+      "pair_id": "mm08",
+      "class": "M1",
+      "verb": "give",
+      "literal": {
+        "sentence_id": "mm08lit",
+        "sentence": "The mentor gives pupils novels.",
+        "literal_figurative": "literal",
+        "provides_relation": "YES",
+        "expected_candidate": true,
+        "mapping": "direct transfer"
+      },
+      "figurative": {
+        "sentence_id": "mm08fig",
+        "sentence": "The mentor gives pupils hope.",
+        "literal_figurative": "conventional-metaphor",
+        "provides_relation": "NO",
+        "expected_candidate": false,
+        "mapping": "emotional effect, benefit-excluded; ontology control"
+      }
+    },
+    {
+      "pair_id": "mm09",
+      "class": "M1",
+      "verb": "bring",
+      "literal": {
+        "sentence_id": "mm09lit",
+        "sentence": "The courier brought residents gifts.",
+        "literal_figurative": "literal",
+        "provides_relation": "YES",
+        "expected_candidate": true,
+        "mapping": "direct transfer"
+      },
+      "figurative": {
+        "sentence_id": "mm09fig",
+        "sentence": "The courier brought residents joy.",
+        "literal_figurative": "conventional-metaphor",
+        "provides_relation": "NO",
+        "expected_candidate": false,
+        "mapping": "emotional effect, benefit-excluded; ontology control"
+      }
+    },
+    {
+      "pair_id": "mm10",
+      "class": "M1",
+      "verb": "build",
+      "literal": {
+        "sentence_id": "mm10lit",
+        "sentence": "The firm built families homes.",
+        "literal_figurative": "literal",
+        "provides_relation": "YES",
+        "expected_candidate": true,
+        "mapping": "direct transfer"
+      },
+      "figurative": {
+        "sentence_id": "mm10fig",
+        "sentence": "The firm built families confidence.",
+        "literal_figurative": "conventional-metaphor",
+        "provides_relation": "NO",
+        "expected_candidate": false,
+        "mapping": "psychological effect, benefit-excluded; ontology control"
+      }
+    },
+    {
+      "pair_id": "mm11",
+      "class": "M3",
+      "verb": "give",
+      "literal": {
+        "sentence_id": "mm11lit",
+        "sentence": "The coach gives players manuals.",
+        "literal_figurative": "literal",
+        "provides_relation": "YES",
+        "expected_candidate": true,
+        "mapping": "direct transfer"
+      },
+      "figurative": {
+        "sentence_id": "mm11fig",
+        "sentence": "The coach gives players details.",
+        "literal_figurative": "literal-abstract-neighbor",
+        "provides_relation": "YES",
+        "expected_candidate": true,
+        "mapping": "information provision, literal"
+      }
+    },
+    {
+      "pair_id": "mm12",
+      "class": "M3",
+      "verb": "offer",
+      "literal": {
+        "sentence_id": "mm12lit",
+        "sentence": "The agency offers clients seats.",
+        "literal_figurative": "literal",
+        "provides_relation": "YES",
+        "expected_candidate": true,
+        "mapping": "direct transfer"
+      },
+      "figurative": {
+        "sentence_id": "mm12fig",
+        "sentence": "The agency offers clients options.",
+        "literal_figurative": "literal-abstract-neighbor",
+        "provides_relation": "YES",
+        "expected_candidate": true,
+        "mapping": "choice provision, literal"
+      }
+    },
+    {
+      "pair_id": "mm13",
+      "class": "M3",
+      "verb": "provide",
+      "literal": {
+        "sentence_id": "mm13lit",
+        "sentence": "The practice provides clients treatment.",
+        "literal_figurative": "literal",
+        "provides_relation": "YES",
+        "expected_candidate": true,
+        "mapping": "direct transfer"
+      },
+      "figurative": {
+        "sentence_id": "mm13fig",
+        "sentence": "The practice provides clients coverage.",
+        "literal_figurative": "literal-abstract-neighbor",
+        "provides_relation": "YES",
+        "expected_candidate": true,
+        "mapping": "insurance coverage, literal"
+      }
+    },
+    {
+      "pair_id": "mm14",
+      "class": "M3",
+      "verb": "supply",
+      "literal": {
+        "sentence_id": "mm14lit",
+        "sentence": "The warehouse supplies staff rations.",
+        "literal_figurative": "literal",
+        "provides_relation": "YES",
+        "expected_candidate": true,
+        "mapping": "direct transfer"
+      },
+      "figurative": {
+        "sentence_id": "mm14fig",
+        "sentence": "The warehouse supplies staff batteries.",
+        "literal_figurative": "literal-abstract-neighbor",
+        "provides_relation": "YES",
+        "expected_candidate": true,
+        "mapping": "energy provision, literal"
+      }
+    },
+    {
+      "pair_id": "mm15",
+      "class": "M3",
+      "verb": "send",
+      "literal": {
+        "sentence_id": "mm15lit",
+        "sentence": "The broker sends buyers contracts.",
+        "literal_figurative": "literal",
+        "provides_relation": "YES",
+        "expected_candidate": true,
+        "mapping": "direct transfer"
+      },
+      "figurative": {
+        "sentence_id": "mm15fig",
+        "sentence": "The broker sends buyers updates.",
+        "literal_figurative": "literal-abstract-neighbor",
+        "provides_relation": "YES",
+        "expected_candidate": true,
+        "mapping": "document transfer, literal (abstract theme)"
+      }
+    },
+    {
+      "pair_id": "mm16",
+      "class": "M3",
+      "verb": "bring",
+      "literal": {
+        "sentence_id": "mm16lit",
+        "sentence": "The driver brought tenants parcels.",
+        "literal_figurative": "literal",
+        "provides_relation": "YES",
+        "expected_candidate": true,
+        "mapping": "direct transfer"
+      },
+      "figurative": {
+        "sentence_id": "mm16fig",
+        "sentence": "The driver brought tenants news.",
+        "literal_figurative": "literal-abstract-neighbor",
+        "provides_relation": "YES",
+        "expected_candidate": true,
+        "mapping": "information transfer, literal"
+      }
+    }
+  ]
+}
