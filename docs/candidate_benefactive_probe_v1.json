@@ -1,0 +1,35 @@
+{
+  "version": "candidate_benefactive_probe_v1",
+  "status": "preregistered_before_inference",
+  "date": "2026-10-04",
+  "pipeline_changes": "none",
+  "negative_anchors": [
+    "b5644f8: position no effect",
+    "a4eea29: lexicon no effect",
+    "54f9809: finite complexity no effect",
+    "b613ff0: anaphora no effect (27/28)",
+    "4d3a930: event nominals no effect (16/16)"
+  ],
+  "hypothesis": {
+    "H1": "Candidate Generation loses provides relations when provision is framed as benefactive/non-prototypical (doing/creating/funding/enabling FOR a beneficiary) rather than direct transfer, even with identical surface structure.",
+    "H0": "Candidate recall does not depend on the semantic role model given constant surface structure."
+  },
+  "design_principle": "same surface structure, different semantic role models. Lexical variation is licensed by Phase L (no lexical effect in simple frames); the measured dimension is the role model.",
+  "conditions_semantic": {
+    "T0_DIRECT": "genuine theme/provision recipient; A provides B to C",
+    "T1_BENEFACTIVE_FOR": "C is beneficiary of the action; A does/provides B for C (for alone does not guarantee one uniform role type)",
+    "T2_PROCUREMENT_FOR": "A procures/acquires B for C; C benefits but is not the recipient of the acquisition",
+    "T3_PURPOSE_ORIENTED": "C appears in a purpose construction; C must not be accidentally labeled as direct recipient"
+  },
+  "role_model_tree": "PROVIDES? -> DIRECT(T0) vs NON-DIRECT benefactive-family(T1,T2,T3); T1-T3 vary the role model itself, they are not gradations of one relation",
+  "gold_schema_required": "every item freezes source_trigger, gold_relation=provides, semantic_basis (benefactive provision or control basis): the probe measures candidate recall for the canonical KG relation provides, not accidental related relations",
+  "outcome_taxonomy": {"CANDIDATE_PRESENT": ["correct arguments", "wrong span", "wrong role / wrong entity selection"], "CANDIDATE_ABSENT": ["TRUE SILENCE"]},
+  "note": "examples are illustrative only, not test material. NO controls mirror each condition with deny. Metaphor stays excluded (own later probe). A for-case with detected but misrouted argument must NOT count as benefactive-silence evidence.",
+  "primary_metrics": ["candidate_recall_per_condition_YES", "false_candidate_rate_NO"],
+  "decision_rule": {
+    "benefactive_support": "T1-T3 materially below T0 in identical frames, reproducing across independent items",
+    "negative_result": "benefactive framing does not explain silence; open metaphor probe next"
+  },
+  "forbidden_during_probe": ["no trigger additions", "no prompt changes", "no thresholds", "no assertion changes", "no PostFilter changes", "no new linking rules"],
+  "test_material": "not yet built"
+}
