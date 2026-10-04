@@ -1,0 +1,319 @@
+{
+ "version": "postfilter_v1_ablation",
+ "tp_lost": 0,
+ "fp_removed": 0,
+ "rows": [
+  {
+   "id": "prodc1-000",
+   "gold": "yes",
+   "system": "ACCEPT",
+   "filter": {
+    "final": "ACCEPT",
+    "by": "TRIGGER",
+    "trigger": {
+     "verdict": "PASS",
+     "reason": null,
+     "lemma": "support",
+     "construction": null
+    }
+   }
+  },
+  {
+   "id": "prodc1-004",
+   "gold": "no",
+   "system": "ACCEPT",
+   "filter": {
+    "final": "WARN_ACCEPT",
+    "by": "TRIGGER",
+    "trigger": {
+     "verdict": "WARN",
+     "reason": "UNKNOWN_TRIGGER"
+    }
+   }
+  },
+  {
+   "id": "prodc1-011",
+   "gold": "yes",
+   "system": "ACCEPT",
+   "filter": {
+    "final": "ACCEPT",
+    "by": "TRIGGER",
+    "trigger": {
+     "verdict": "PASS",
+     "reason": null,
+     "lemma": "encourag",
+     "construction": null
+    }
+   }
+  },
+  {
+   "id": "prodc1-016",
+   "gold": "yes",
+   "system": "ACCEPT",
+   "filter": {
+    "final": "ACCEPT",
+    "by": "TRIGGER",
+    "trigger": {
+     "verdict": "PASS",
+     "reason": null,
+     "lemma": "mentor",
+     "construction": null
+    }
+   }
+  },
+  {
+   "id": "prodc1-016",
+   "gold": "yes",
+   "system": "ACCEPT",
+   "filter": {
+    "final": "ACCEPT",
+    "by": "TRIGGER",
+    "trigger": {
+     "verdict": "PASS",
+     "reason": null,
+     "lemma": "mentor",
+     "construction": null
+    }
+   }
+  },
+  {
+   "id": "prodc1-017",
+   "gold": "yes",
+   "system": "ACCEPT",
+   "filter": {
+    "final": "ACCEPT",
+    "by": "TRIGGER",
+    "trigger": {
+     "verdict": "PASS",
+     "reason": null,
+     "lemma": "help",
+     "construction": null
+    }
+   }
+  },
+  {
+   "id": "prodc1-018",
+   "gold": "yes",
+   "system": "ACCEPT",
+   "filter": {
+    "final": "ACCEPT",
+    "by": "TRIGGER",
+    "trigger": {
+     "verdict": "PASS",
+     "reason": null,
+     "lemma": "support",
+     "construction": null
+    }
+   }
+  },
+  {
+   "id": "prodc1-019",
+   "gold": "yes",
+   "system": "ACCEPT",
+   "filter": {
+    "final": "WARN_ACCEPT",
+    "by": "TRIGGER",
+    "trigger": {
+     "verdict": "WARN",
+     "reason": "UNKNOWN_TRIGGER"
+    }
+   }
+  },
+  {
+   "id": "prodc1-039",
+   "gold": "yes",
+   "system": "ACCEPT",
+   "filter": {
+    "final": "ACCEPT",
+    "by": "TRIGGER",
+    "trigger": {
+     "verdict": "PASS",
+     "reason": null,
+     "lemma": "help",
+     "construction": null
+    }
+   }
+  },
+  {
+   "id": "prodc1-039",
+   "gold": "yes",
+   "system": "ACCEPT",
+   "filter": {
+    "final": "ACCEPT",
+    "by": "TRIGGER",
+    "trigger": {
+     "verdict": "PASS",
+     "reason": null,
+     "lemma": "help",
+     "construction": null
+    }
+   }
+  },
+  {
+   "id": "prodc1-040",
+   "gold": "yes",
+   "system": "ACCEPT",
+   "filter": {
+    "final": "ACCEPT",
+    "by": "TRIGGER",
+    "trigger": {
+     "verdict": "PASS",
+     "reason": null,
+     "lemma": "guid",
+     "construction": null
+    }
+   }
+  },
+  {
+   "id": "prodc1-048",
+   "gold": "yes",
+   "system": "ACCEPT",
+   "filter": {
+    "final": "ACCEPT",
+    "by": "TRIGGER",
+    "trigger": {
+     "verdict": "PASS",
+     "reason": null,
+     "lemma": "support",
+     "construction": null
+    }
+   }
+  },
+  {
+   "id": "prodc1-054",
+   "gold": "no",
+   "system": "ACCEPT",
+   "filter": {
+    "final": "WARN_ACCEPT",
+    "by": "TRIGGER",
+    "trigger": {
+     "verdict": "WARN",
+     "reason": "UNKNOWN_TRIGGER"
+    }
+   }
+  },
+  {
+   "id": "prodc1-060",
+   "gold": "yes",
+   "system": "ACCEPT",
+   "filter": {
+    "final": "ACCEPT",
+    "by": "TRIGGER",
+    "trigger": {
+     "verdict": "PASS",
+     "reason": null,
+     "lemma": "help",
+     "construction": null
+    }
+   }
+  },
+  {
+   "id": "prodc1-064",
+   "gold": "yes",
+   "system": "ACCEPT",
+   "filter": {
+    "final": "ACCEPT",
+    "by": "TRIGGER",
+    "trigger": {
+     "verdict": "PASS",
+     "reason": null,
+     "lemma": "mentor",
+     "construction": null
+    }
+   }
+  },
+  {
+   "id": "prodc1-074",
+   "gold": "yes",
+   "system": "ACCEPT",
+   "filter": {
+    "final": "ACCEPT",
+    "by": "TRIGGER",
+    "trigger": {
+     "verdict": "PASS",
+     "reason": null,
+     "lemma": "support",
+     "construction": null
+    }
+   }
+  },
+  {
+   "id": "prodc1-075",
+   "gold": "yes",
+   "system": "ACCEPT",
+   "filter": {
+    "final": "ACCEPT",
+    "by": "TRIGGER",
+    "trigger": {
+     "verdict": "PASS",
+     "reason": null,
+     "lemma": "advocat",
+     "construction": null
+    }
+   }
+  },
+  {
+   "id": "prodc1-107",
+   "gold": "unclear",
+   "system": "ACCEPT",
+   "filter": {
+    "final": "WARN_ACCEPT",
+    "by": "TRIGGER",
+    "trigger": {
+     "verdict": "WARN",
+     "reason": "UNKNOWN_TRIGGER"
+    }
+   }
+  },
+  {
+   "id": "prodc1-110",
+   "gold": "yes",
+   "system": "ACCEPT",
+   "filter": {
+    "final": "ACCEPT",
+    "by": "TRIGGER",
+    "trigger": {
+     "verdict": "PASS",
+     "reason": null,
+     "lemma": "support",
+     "construction": null
+    }
+   }
+  },
+  {
+   "id": "prodc1-149",
+   "gold": "yes",
+   "system": "ACCEPT",
+   "filter": {
+    "final": "ACCEPT",
+    "by": "TRIGGER",
+    "trigger": {
+     "verdict": "PASS",
+     "reason": null,
+     "lemma": "support",
+     "construction": null
+    }
+   }
+  },
+  {
+   "id": "prodc1-009",
+   "gold": "yes",
+   "system": "ABSTAIN",
+   "filter": {
+    "final": "ABSTAIN",
+    "by": "ENTITY",
+    "entity": "ambiguous/resolved"
+   }
+  },
+  {
+   "id": "prodc1-016",
+   "gold": "yes",
+   "system": "ABSTAIN",
+   "filter": {
+    "final": "ABSTAIN",
+    "by": "ENTITY",
+    "entity": "ambiguous/resolved"
+   }
+  }
+ ]
+}
