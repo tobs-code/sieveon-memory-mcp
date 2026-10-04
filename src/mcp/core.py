@@ -6,11 +6,15 @@ Handles connection management, resilience patterns, and basic utilities
 
 import asyncio
 import json
+import logging
 import os
 import random
+import re
 import sys
 import time
-from typing import Any, Dict, List, Optional
+from collections import OrderedDict
+from contextlib import asynccontextmanager
+from typing import Any, Dict, List, Optional, Tuple
 
 import httpx
 
@@ -28,6 +32,8 @@ from src.router.budget import BudgetTracker
 
 # Shared CostTracker – wird von RoutingPolicy automatisch gefüttert
 cost_tracker = CostTracker()
+
+log = logging.getLogger(__name__)
 
 # Initialize FastMCP (Model Context Protocol) and FastAPI apps
 mcp = FastMCP("sieveon")  # Model Context Protocol implementation
@@ -69,6 +75,11 @@ from urllib.parse import unquote as _unquote
 async def get_entity_resource(entity_id: str) -> str:
     """Get detailed information about a specific entity, including its active KG facts."""
     entity_id = _unquote(entity_id)
+    # Interpolated unquoted into FROM/WHERE below, so it must be a strict
+    # record id -- escaping cannot make an identifier safe.
+    if not _is_record_id(entity_id):
+        return json.dumps(
+            {"error": f"Invalid record id '{entity_id}': expected 'table:id'"}, indent=2)
     try:
         result = await _query_surreal(f"SELECT * FROM {entity_id};")
         data = _extract_result(result, 1)
@@ -93,6 +104,9 @@ async def get_entity_resource(entity_id: str) -> str:
 async def get_event_resource(event_id: str) -> str:
     """Get details about a specific event."""
     event_id = _unquote(event_id)
+    if not _is_record_id(event_id):
+        return json.dumps(
+            {"error": f"Invalid record id '{event_id}': expected 'table:id'"}, indent=2)
     try:
         sql = f"SELECT id, content, timestamp, source, metadata, forgotten, forgotten_reason FROM {event_id};"
         result = await _query_surreal(sql)
@@ -208,7 +222,10 @@ async def search_resource(query: str) -> str:
             ftx_result = await ftx_task
             ftx_events = _extract_result(ftx_result, 1) or []
         except Exception:
-            pass
+            # Vector results alone still answer the query; say why the lexical
+            # half is missing instead of returning a silently poorer result.
+            log.warning("search_resource: FTX query failed, vector-only results",
+                        exc_info=True)
 
         k = 60
         fused = {}
@@ -247,19 +264,63 @@ async def search_resource(query: str) -> str:
         return json.dumps({"error": f"Search failed for query '{query}': {str(e)}"}, indent=2)
 
 
-# FastAPI app
-app = FastAPI(title="Sieveon Control Plane Server (MCP Implementation)", version="0.1.0")
+# ── FastAPI app ────────────────────────────────────────────────────────
+# CORS: the origin allowlist is explicit. `allow_origins=["*"]` combined with
+# `allow_credentials=True` is not merely permissive, it is incoherent -- the
+# spec forbids echoing a wildcard origin on a credentialed response, so the
+# browser rejects it and the intended capability (credentialed cross-origin
+# requests) is unreachable while looking configured. Set CORS_ORIGINS to a
+# comma-separated list to widen it deliberately.
+_DEFAULT_CORS_ORIGINS = ("http://localhost:3000", "http://127.0.0.1:3000")
 
-# Add CORS middleware
+
+def _cors_origins() -> List[str]:
+    raw = os.getenv("CORS_ORIGINS")
+    if raw is None:
+        return list(_DEFAULT_CORS_ORIGINS)
+    return [o.strip() for o in raw.split(",") if o.strip()]
+
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    """Start/stop module-level background work with the application.
+
+    The reconnect task is started lazily by _query_surreal, so shutdown is what
+    has to guarantee it does not outlive the process.
+    """
+    _reconnect_stop.clear()
+    try:
+        yield
+    finally:
+        _reconnect_stop.set()
+        global _shared_client
+        # Hold the client lock so the background reconnect task cannot grab
+        # a client that is being closed (client.post on a closed AsyncClient
+        # raises RuntimeError).
+        async with _client_lock:
+            if _shared_client is not None:
+                await _shared_client.aclose()
+                _shared_client = None
+
+
+app = FastAPI(
+    title="Sieveon Control Plane Server (MCP Implementation)",
+    version="0.1.0",
+    lifespan=lifespan,
+)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_cors_origins(),
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type", "Authorization"],
 )
 
 SURREAL_URL = os.getenv("SURREALDB_URL", "http://127.0.0.1:8000/sql")
+# Local SurrealDB defaults to root/root, so these match a stock `surreal start`.
+# Set SURREALDB_USER/SURREALDB_PASS for anything reachable off localhost --
+# shipping root/root to a shared instance would hand over the whole database.
 SURREAL_AUTH = (
     os.getenv("SURREALDB_USER", "root"),
     os.getenv("SURREALDB_PASS", "root"),
@@ -277,13 +338,19 @@ _surreal_last_failure = 0.0
 _surreal_backoff_level = 0
 _surreal_lock = asyncio.Lock()
 _reconnect_task_started = False
+# Set on shutdown to end the reconnect loop. Without it the `while True` task
+# outlives the application (and every test process that imported the module).
+_reconnect_stop = asyncio.Event()
 
 # Shared HTTP client (reused across requests to avoid connection overhead)
 _shared_client: Optional[httpx.AsyncClient] = None
 _client_lock = asyncio.Lock()
 
-# Query embedding cache (LRU)
-_embedding_cache: Dict[str, List[float]] = {}
+# Query embedding cache. Bounded FIFO: eviction takes the oldest *inserted*
+# entry, which is not a true LRU (a hot key can still be evicted). At this
+# size (128 vectors) the difference does not matter; the important property is
+# that the cache cannot grow without bound.
+_embedding_cache: "OrderedDict[str, List[float]]" = OrderedDict()
 _EMBEDDING_CACHE_MAX = 128
 
 # Circuit-breaker thresholds (budget-aware)
@@ -291,6 +358,20 @@ _CIRCUIT_OPEN_THRESHOLD = 5  # failures before opening
 _CIRCUIT_RESET_AFTER = 10.0  # seconds before half-open retry
 _MAX_BACKOFF = 8.0  # cap jittered backoff
 _RECONNECT_INTERVAL = 30.0  # background check every 30s
+
+# HTTP statuses worth retrying. Everything else in 4xx is a permanent client
+# error (bad SurrealQL, bad credentials, missing table) and must fail fast.
+_RETRYABLE_HTTP_STATUS = frozenset({408, 429, 500, 502, 503, 504})
+
+
+class _NonRetryableSurrealError(RuntimeError):
+    """A SurrealDB failure that will not improve on retry.
+
+    Raised for 4xx responses and statement-level ``status: ERR``. Distinguishing
+    it from a transport failure matters twice over: the query is not retried,
+    and the circuit breaker is not advanced -- otherwise one malformed statement
+    could open the breaker and take every later query down with it.
+    """
 
 # Test escape hatch. The breaker is module-global, so a test that expects a
 # query to fail -- or a suite that runs against an unavailable server -- leaves
@@ -319,21 +400,28 @@ def reset_surreal_circuit() -> None:
 
 async def _get_client() -> httpx.AsyncClient:
     global _shared_client
-    if _shared_client is None:
+    # A closed client (lifespan shutdown / event-loop change) must never be
+    # reused: httpx raises "Cannot send a request, as the client has been
+    # closed" and every query then feeds the circuit breaker until it opens.
+    if _shared_client is None or _shared_client.is_closed:
         async with _client_lock:
-            if _shared_client is None:
+            if _shared_client is None or _shared_client.is_closed:
                 _shared_client = httpx.AsyncClient(timeout=httpx.Timeout(30.0))
     return _shared_client
 
 
 def _get_cached_embedding(query: str) -> Optional[List[float]]:
-    return _embedding_cache.get(query)
+    cached = _embedding_cache.get(query)
+    if cached is not None:
+        _embedding_cache.move_to_end(query)
+    return cached
 
 
 def _store_embedding_cache(query: str, vector: List[float]):
-    if len(_embedding_cache) >= _EMBEDDING_CACHE_MAX:
-        _embedding_cache.pop(next(iter(_embedding_cache)))
     _embedding_cache[query] = vector
+    _embedding_cache.move_to_end(query)
+    while len(_embedding_cache) > _EMBEDDING_CACHE_MAX:
+        _embedding_cache.popitem(last=False)
 
 
 async def _embed_query(query: str) -> List[float]:
@@ -354,18 +442,31 @@ def _jittered_backoff(level: int) -> float:
     return random.uniform(0.0, ceiling)
 
 
-def _budget_aware_should_retry(sql: str) -> bool:
-    """Adaptive retry logic based on query complexity and system health."""
+def _health_from_failures(failure_count: int) -> float:
+    """System-health factor for a consecutive-failure count (0..1).
+
+    Single source of truth: _query_surreal and _background_reconnect_task used
+    to carry the same `1.0 - min(failures, 10) / 12.0` expression inline, so
+    the two could drift apart.
+    """
+    return 1.0 - (min(failure_count, 10) / 12.0)
+
+
+def _retry_budget_for(sql: str) -> int:
+    """How many attempts _query_surreal may make for this statement.
+
+    Named for what it returns (an attempt count, not a boolean). Write-heavy
+    statements get fewer attempts, and a struggling system gets fewer still.
+    """
     health = BudgetTracker.get_system_health()
-
-    # Heavy queries get fewer retries
     heavy = sql.strip().upper().startswith(("RELATE", "DEFINE", "CREATE"))
-
     if health < 0.5:
-        # System is struggling, be very conservative
         return 1 if heavy else 2
-
     return 2 if heavy else 3
+
+
+# Backwards-compatible alias for the original (misleading) name.
+_budget_aware_should_retry = _retry_budget_for
 
 
 async def _query_surreal(
@@ -453,9 +554,18 @@ async def _query_surreal(
             )
             if response.status_code >= 400:
                 error_msg = response.text
-                print(
-                    f"[ERROR] SurrealDB Error ({response.status_code}): {error_msg}"
-                )
+                log.error(
+                    "SurrealDB HTTP %s: %s", response.status_code, error_msg[:500])
+                if response.status_code not in _RETRYABLE_HTTP_STATUS:
+                    # 4xx (except 408/429) means the request itself is wrong --
+                    # malformed SurrealQL, bad auth, missing table. Retrying it
+                    # cannot succeed and just spends 3 roundtrips plus backoff
+                    # on a permanent failure. Surface it immediately and do NOT
+                    # count it against the circuit breaker.
+                    raise _NonRetryableSurrealError(
+                        f"SurrealDB rejected the query (HTTP {response.status_code}): "
+                        f"{error_msg[:300]} | SQL: {sql[:120]}"
+                    )
                 raise httpx.HTTPStatusError(
                     f"SurrealDB error {response.status_code}: {error_msg}",
                     request=response.request,
@@ -465,7 +575,10 @@ async def _query_surreal(
             if isinstance(data, list):
                 for item in data:
                     if isinstance(item, dict) and item.get("status") == "ERR":
-                        raise RuntimeError(
+                        # A statement-level ERR is a query problem, not an
+                        # availability problem: same reasoning as the 4xx case
+                        # above, so it must not open the circuit either.
+                        raise _NonRetryableSurrealError(
                             f"SurrealDB Error: {item.get('information') or item.get('result')} | SQL: {sql[:120]}"
                         )
             # success -> reset circuit state (only lock for this update)
@@ -476,6 +589,9 @@ async def _query_surreal(
                 # Success: reset health factor
                 BudgetTracker.update_system_health(1.0)
             return data
+        except _NonRetryableSurrealError:
+            # Permanent by definition -- no retry, no backoff, no breaker.
+            raise
         except Exception as exc:
             last_exception = exc
             async with _surreal_lock:
@@ -485,7 +601,7 @@ async def _query_surreal(
                 _surreal_backoff_level = min(level + 1, 10)
 
                 # Update health factor based on failure count
-                health = 1.0 - (min(_surreal_failure_count, 10) / 12.0)
+                health = _health_from_failures(_surreal_failure_count)
                 BudgetTracker.update_system_health(health)
 
             if attempt < max_retries - 1:
@@ -506,17 +622,31 @@ async def _query_surreal(
 
 
 def _extract_result(data: List[Dict], index: int = 1) -> List[Dict]:
-    """Extract results from SurrealDB response."""
+    """Extract results from SurrealDB response.
+
+    `index` addresses the *filtered* candidate list, not the raw response.
+    Callers overwhelmingly want the first meaningful statement, which is why
+    `index=1` is the default and why `index == 1` short-circuits to
+    `candidates[0]`: with the USE statement already filtered out, index 1 of the
+    raw response IS candidates[0]. The explicit branches below only apply to
+    other indices.
+
+    Statements whose result is `None` are skipped. Those are the control
+    statements `_query_surreal` and the transaction wrappers emit -- `USE`,
+    `LET` (parameter declarations), `BEGIN`/`COMMIT` -- none of which return
+    rows. Without this filter a request carrying bound parameters returned the
+    `LET`'s None and every caller saw an empty result: the parameters resolved
+    correctly, the extraction just pointed at the wrong statement.
+    """
     if not isinstance(data, list):
         return []
 
-    # Filter out connection info messages
     candidates = [
         item
         for item in data
         if isinstance(item, dict)
         and item.get("status") == "OK"
-        and "result" in item
+        and item.get("result") is not None
         and not (
             isinstance(item["result"], dict)
             and "database" in item["result"]
@@ -527,9 +657,7 @@ def _extract_result(data: List[Dict], index: int = 1) -> List[Dict]:
     if not candidates:
         return []
 
-    # If index is 1, we usually want the FIRST meaningful result
-    # (since index 0 was likely the USE NS/DB statement which we filtered out)
-    if index == 1 and len(candidates) >= 1:
+    if index == 1:
         target = candidates[0]
     elif len(candidates) <= index:
         target = candidates[-1]
@@ -554,6 +682,34 @@ def _extract_result_batch(data: List[Dict]) -> List[Any]:
     ]
 
 
+def _extract_statement_results(data: List[Dict]) -> List[List[Any]]:
+    """Per-statement results of a multi-statement SurrealDB response.
+
+    Filters out the two statement kinds that never carry rows:
+      * ``USE NS/DB``               -> result is a {namespace, database} dict
+      * ``BEGIN``/``COMMIT``/``CANCEL`` -> result is None
+
+    Returns a list whose element *i* is the rows produced by the i-th
+    data-carrying statement, in order. Callers that wrap work in a transaction
+    use this instead of `_extract_result`, because hard-coded offsets shift
+    every time a BEGIN/COMMIT pair is added or removed.
+
+    Verified against SurrealDB 3.x: a 4-statement request
+    (USE, UPDATE, RELATE, COMMIT) yields exactly [update_rows, relate_rows].
+    """
+    out: List[List[Any]] = []
+    for item in (data or []):
+        if not isinstance(item, dict):
+            continue
+        res = item.get("result")
+        if res is None:
+            continue
+        if isinstance(res, dict) and "namespace" in res and "database" in res:
+            continue
+        out.append(res if isinstance(res, list) else [res])
+    return out
+
+
 def _validate_limit(value: int, name: str = "limit", max_val: int = 1_000_000) -> int:
     """Validate that a limit/value is non-negative and within bounds. Raises ValueError if not."""
     if not isinstance(value, int) or isinstance(value, bool):
@@ -565,12 +721,68 @@ def _validate_limit(value: int, name: str = "limit", max_val: int = 1_000_000) -
     return value
 
 
-def _validate_event_id(event_id: str) -> str:
-    """Validate that an event_id has the correct format (event:xxx or entity:xxx)."""
-    import re
-    if not re.match(r'^(event|entity):[a-z0-9]+$', event_id):
-        raise ValueError(f"Invalid ID format: '{event_id}'. Expected format: 'event:<id>' or 'entity:<id>'")
-    return event_id
+_ALLOWED_RECORD_TABLES = frozenset({"entity", "fact", "event", "fact_history"})
+
+
+def _is_record_id(value: Any) -> bool:
+    """Strict record-id check (`table:id`) against SurrealQL injection.
+
+    Record ids are interpolated *unquoted* into FROM/WHERE/UPDATE/DELETE
+    statements throughout the tool layer, so they cannot be escaped as string
+    literals -- a semicolon in the input terminates the statement and whatever
+    follows is executed as further SurrealQL. Only the narrow shape SurrealDB
+    itself generates is accepted, restricted to the tables this codebase
+    reads/writes (arbitrary table names would allow probing unrelated tables).
+
+    Canonical definition lives here (not in tools.py) because src.mcp.core is the
+    module every consumer already imports; tools.py re-exports it for
+    backwards compatibility.
+    """
+    text = str(value or "")
+    m = re.fullmatch(r"([A-Za-z0-9_]+):([A-Za-z0-9_]+)", text)
+    return bool(m) and m.group(1) in _ALLOWED_RECORD_TABLES
+
+
+_ANGLED_ID_DELIMITERS = "⟨⟩<>"
+
+
+def _strip_angled(value: Any) -> str:
+    """Drop the record-id delimiters SurrealDB may wrap ids in.
+
+    SurrealDB renders record ids as U+27E8/U+27E9 (ANGLE BRACKET) in some
+    serialisations; ASCII <> is accepted too so callers can pass either form.
+    """
+    return str(value or "").strip(_ANGLED_ID_DELIMITERS).strip()
+
+
+def _datetime_filters(
+    since: Optional[str] = None,
+    until: Optional[str] = None,
+    column: str = "timestamp",
+    param_prefix: str = "t",
+) -> Tuple[List[str], Dict[str, Any]]:
+    """Build timestamp bounds as *bound parameters*, never as a literal.
+
+    Returns ``(clauses, params)``: a list of ready-to-join SQL predicates
+    (empty when there is nothing to filter) and the params mapping
+    ``$<param_prefix>_since`` / ``$<param_prefix>_until`` to the raw values.
+    Join the clauses with ``" AND "``; the caller decides placement.
+
+    Binding is not optional here: these values used to be interpolated into
+    ``type::datetime("...")`` -- a *double*-quoted literal -- while
+    escape_surrealql only escaped apostrophes, so a `since` containing `"`
+    terminated the literal early and injected SQL. Bound parameters remove the
+    quote-style question entirely.
+    """
+    clauses: List[str] = []
+    params: Dict[str, Any] = {}
+    if since:
+        params[f"{param_prefix}_since"] = since
+        clauses.append(f"{column} >= type::datetime(${param_prefix}_since)")
+    if until:
+        params[f"{param_prefix}_until"] = until
+        clauses.append(f"{column} <= type::datetime(${param_prefix}_until)")
+    return clauses, params
 
 
 def _trust_of(source: str, explicit: Any = None) -> str:
@@ -609,11 +821,15 @@ def _clean_output(obj: Any) -> Any:
 
 
 async def _background_reconnect_task():
-    """Background task to actively check connection and reset circuit breaker."""
+    """Background task to actively check connection and reset circuit breaker.
+
+    Runs until `_reconnect_stop` is set, so it terminates on application
+    shutdown instead of leaking for the lifetime of the process.
+    """
     global _surreal_failure_count, _surreal_circuit_open, _surreal_backoff_level
 
-    print("[INFO] Starting background SurrealDB reconnect task")
-    while True:
+    log.info("Starting background SurrealDB reconnect task")
+    while not _reconnect_stop.is_set():
         try:
             # Only probe if we've had failures or circuit is open
             should_probe = False
@@ -639,9 +855,8 @@ async def _background_reconnect_task():
                     # Success! Reset everything
                     async with _surreal_lock:
                         if _surreal_circuit_open:
-                            print(
-                                "[INFO] SurrealDB connection restored. Closing circuit."
-                            )
+                            log.info(
+                                "SurrealDB connection restored. Closing circuit.")
                         _surreal_failure_count = 0
                         _surreal_circuit_open = False
                         _surreal_backoff_level = 0
@@ -650,14 +865,18 @@ async def _background_reconnect_task():
                 else:
                     # Still failing, update health factor based on failure count
                     async with _surreal_lock:
-                        health = 1.0 - (min(_surreal_failure_count, 10) / 12.0)
+                        health = _health_from_failures(_surreal_failure_count)
                         BudgetTracker.update_system_health(health)
 
         except Exception as e:
             # Log the exception instead of silent fail
-            print(f"[ERROR] Background reconnect task error: {e}")
+            log.warning("Background reconnect task error: %s", e)
 
-        await asyncio.sleep(_RECONNECT_INTERVAL)
+        try:
+            await asyncio.wait_for(
+                _reconnect_stop.wait(), timeout=_RECONNECT_INTERVAL)
+        except asyncio.TimeoutError:
+            pass
 
 
 async def check_schema_exists() -> bool:
@@ -683,11 +902,45 @@ async def check_schema_exists() -> bool:
         required_tables = ["event", "entity", "fact"]
         exists = all(table in table_names for table in required_tables)
         if exists:
-            print(f"[DEBUG] Tables found: {table_names}")
+            log.debug("Tables found: %s", table_names)
         return exists
     except Exception as e:
-        print(f"[WARN] Schema check failed: {e}")
+        log.warning("Schema check failed: %s", e)
         return False
+
+
+def _strip_surql_comments(line: str) -> str:
+    """Remove a trailing `--` / `//` comment from one line.
+
+    Naive `line.split("--")[0]` truncated any statement containing `--` inside
+    a string literal -- e.g. a regex default `'^[a-z--]+$'` -- silently
+    producing a different statement than the file declared. Scan for the marker
+    only while outside quotes; the trailing part is kept.
+    """
+    out = []
+    quote = None
+    i = 0
+    n = len(line)
+    while i < n:
+        ch = line[i]
+        if quote:
+            out.append(ch)
+            if ch == "\\" and i + 1 < n:
+                out.append(line[i + 1])
+                i += 2
+                continue
+            if ch == quote:
+                quote = None
+        else:
+            if ch in ("'", '"', "`"):
+                quote = ch
+                out.append(ch)
+            elif line.startswith("--", i) or line.startswith("//", i):
+                break
+            else:
+                out.append(ch)
+        i += 1
+    return "".join(out).strip()
 
 
 def load_schema_file(file_path: str) -> List[str]:
@@ -695,14 +948,9 @@ def load_schema_file(file_path: str) -> List[str]:
     with open(file_path, "r", encoding="utf-8") as f:
         content = f.read()
 
-    lines = content.split("\n")
     clean_lines = []
-    for line in lines:
-        stripped = line.strip()
-        if stripped.startswith("--") or stripped.startswith("//"):
-            continue
-        if "--" in stripped:
-            stripped = stripped.split("--")[0].strip()
+    for line in content.split("\n"):
+        stripped = _strip_surql_comments(line)
         if stripped:
             clean_lines.append(stripped)
     content_no_comments = " ".join(clean_lines)
@@ -730,14 +978,15 @@ def load_schema_file(file_path: str) -> List[str]:
         upper = stmt.upper()
         if "OVERWRITE" in upper:
             safe_statements.append(stmt)
-        elif "DEFINE TABLE" in stmt and "IF NOT EXISTS" not in stmt:
-            stmt = stmt.replace("DEFINE TABLE", "DEFINE TABLE IF NOT EXISTS")
-        elif "DEFINE INDEX" in stmt and "IF NOT EXISTS" not in stmt:
-            stmt = stmt.replace("DEFINE INDEX", "DEFINE INDEX IF NOT EXISTS")
-        elif "DEFINE FUNCTION" in stmt and "IF NOT EXISTS" not in stmt:
-            stmt = stmt.replace("DEFINE FUNCTION", "DEFINE FUNCTION IF NOT EXISTS")
-        elif "DEFINE FIELD" in stmt and "IF NOT EXISTS" not in stmt:
-            stmt = stmt.replace("DEFINE FIELD", "DEFINE FIELD IF NOT EXISTS")
+            continue
+        for keyword in ("DEFINE TABLE", "DEFINE INDEX", "DEFINE FUNCTION",
+                        "DEFINE FIELD"):
+            # `upper.startswith` rather than `in`: a stray "DEFINE TABLE"
+            # mention later in the statement body must not be rewritten too,
+            # and str.replace would substitute every occurrence.
+            if upper.startswith(keyword) and "IF NOT EXISTS" not in upper:
+                stmt = stmt[:len(keyword)] + " IF NOT EXISTS" + stmt[len(keyword):]
+                break
         safe_statements.append(stmt)
 
     return safe_statements
@@ -746,7 +995,7 @@ def load_schema_file(file_path: str) -> List[str]:
 async def ensure_schema_loaded():
     """Ensure the Sieveon schema is loaded. If not, load it automatically."""
     if not await check_schema_exists():
-        print("[INFO] Sieveon schema not found. Loading automatically...")
+        log.info("Sieveon schema not found. Loading automatically...")
 
         project_root = os.path.dirname(
             os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -754,7 +1003,7 @@ async def ensure_schema_loaded():
         load_script = os.path.join(project_root, "scripts", "load_schema_optimized.py")
 
         if os.path.exists(load_script):
-            print(f"   Using existing load script: {load_script}")
+            log.info("Using existing load script: %s", load_script)
             try:
                 proc = await asyncio.create_subprocess_exec(
                     sys.executable, load_script,
@@ -764,21 +1013,23 @@ async def ensure_schema_loaded():
                 )
                 stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=60)
                 if stdout:
-                    print(stdout.decode("utf-8", errors="replace"))
+                    log.info("Schema loader stdout: %s",
+                          stdout.decode("utf-8", errors="replace"))
                 if stderr:
-                    print(f"   [WARN] Warnings: {stderr.decode('utf-8', errors='replace')}")
-                print("[OK] Schema loading complete!")
+                    log.warning("Schema loader stderr: %s",
+                                stderr.decode("utf-8", errors="replace"))
+                log.info("Schema loading complete")
             except asyncio.TimeoutError:
-                print("   [ERROR] Schema loading timed out after 60s")
+                log.error("Schema loading timed out after 60s")
                 if proc:
                     proc.kill()
             except Exception as e:
-                print(f"   [ERROR] Failed to run load script: {e}")
+                log.error("Failed to run load script: %s", e)
         else:
-            print(f"   [WARN] Load script not found: {load_script}")
-            print("   Skipping automatic schema load")
+            log.warning("Load script not found: %s", load_script)
+            log.warning("Skipping automatic schema load")
     else:
-        print("[OK] Sieveon schema already loaded")
+        log.info("Sieveon schema already loaded")
 
     # Ensure entity table has all required fields (in case schema was loaded without them).
     # Every DEFAULT must match docs/schema.surql: these are OVERWRITE statements, so a
@@ -798,7 +1049,7 @@ async def ensure_schema_loaded():
         for field_def in required_fields:
             await _query_surreal(field_def)
     except Exception as e:
-        print(f"   [WARN] Entity field sync failed (non-fatal): {e}")
+        log.warning("Entity field sync failed (non-fatal): %s", e)
 
     # Backfill missing timestamps on existing entities
     try:
@@ -815,9 +1066,9 @@ async def ensure_schema_loaded():
         )
         count = backfilled[0].get("c", 0) if backfilled else 0
         if count > 0:
-            print(f"[OK] Backfilled timestamps for {count} entities")
+            log.info("Backfilled timestamps for %d entities", count)
     except Exception as e:
-        print(f"   [WARN] Timestamp backfill failed (non-fatal): {e}")
+        log.warning("Timestamp backfill failed (non-fatal): %s", e)
 
     # ── Automatic data migration ──────────────────────────────────────
     # Apply pending schema/data migrations in version order.
@@ -827,9 +1078,9 @@ async def ensure_schema_loaded():
         _register_builtin(engine)
         logs = await engine.apply_all()
         for line in logs:
-            print(f"[MIGRATION] {line}")
+            log.info("[MIGRATION] %s", line)
     except Exception as e:
-        print(f"   [WARN] Migration check failed (non-fatal): {e}")
+        log.warning("Migration check failed (non-fatal): %s", e)
 
     # ── Router learned costs ──────────────────────────────────────────
     # Restore per-context strategy effectiveness from the last run.
@@ -856,7 +1107,7 @@ async def load_router_costs() -> bool:
         cost_tracker.import_state(state)
         return True
     except Exception as e:
-        print(f"   [WARN] Router cost restore failed (non-fatal): {e}")
+        log.warning("Router cost restore failed (non-fatal): %s", e)
         return False
 
 
@@ -881,5 +1132,5 @@ async def save_router_costs() -> bool:
         )
         return True
     except Exception as e:
-        print(f"   [WARN] Router cost snapshot failed (non-fatal): {e}")
+        log.warning("Router cost snapshot failed (non-fatal): %s", e)
         return False

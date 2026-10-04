@@ -70,13 +70,13 @@ def _parse_front_matter(text: str) -> Tuple[Optional[Dict[str, Any]], str]:
     raw = m.group(1)
     rest = text[m.end():].strip()
     try:
-        import yaml
+        import yaml  # type: ignore[import-untyped]
         data = yaml.safe_load(raw)
         if isinstance(data, dict):
             return data, rest
     except Exception:
         pass
-    lines = {}
+    lines: Dict[str, str] = {}
     for line in raw.strip().split('\n'):
         if ':' in line:
             k, _, v = line.partition(':')
@@ -93,7 +93,7 @@ def _extract_headings(text: str) -> List[Tuple[int, int, str]]:
 
 
 def _heading_context(pos: int, headings: List[Tuple[int, int, str]]) -> str:
-    active = []
+    active: List[Tuple[int, str]] = []
     for hpos, level, title in headings:
         if hpos > pos:
             break
@@ -161,15 +161,11 @@ def _count_units(text: str, method: str, encoding: Any) -> int:
 
 
 def _build_section_tree(text: str, blocks: List[Tuple[int, int, str]]) -> List[Dict[str, Any]]:
-    sections = []
+    sections: List[Dict[str, Any]] = []
     lines = text.split("\n")
-    current_heading = None
+    current_heading: Optional[Tuple[str, str]] = None
     current_start = 0
-    current_lines = []
-    protected_map = {}
-    for s, e, t in blocks:
-        for i in range(s, e):
-            protected_map[i] = True
+    current_lines: List[str] = []
 
     pos = 0
     for line in lines:
@@ -220,7 +216,7 @@ def _chunk_semantic(
         return len(sec["text"]) > chunk_size * 0.3
 
     def merge_small_adjacent(all_secs: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        merged = []
+        merged: List[Dict[str, Any]] = []
         for sec in all_secs:
             if not merged:
                 merged.append(dict(sec))
@@ -332,8 +328,22 @@ def chunk_markdown(
     Returns:
         Dict with keys: chunks (list), front_matter (dict or None), images (list)
     """
-    result = {"chunks": [], "front_matter": None, "images": []}
+    result: Dict[str, Any] = {"chunks": [], "front_matter": None, "images": []}
 
+    # Defense-in-depth (PY-004): direct callers bypass tools.py validation.
+    # Fail-closed instead of looping/degrading on degenerative values.
+    if isinstance(chunk_size, bool) or not isinstance(chunk_size, int):
+        raise ValueError("chunk_size must be an integer")
+    if isinstance(overlap, bool) or not isinstance(overlap, int):
+        raise ValueError("overlap must be an integer")
+    if chunk_size < 100 or chunk_size > 10_000:
+        raise ValueError(f"chunk_size out of bounds (100..10000, got {chunk_size})")
+    if overlap < 0 or overlap >= chunk_size:
+        raise ValueError(
+            f"overlap must satisfy 0 <= overlap < chunk_size (got {overlap} / {chunk_size})"
+        )
+    if chunking_method not in ("char", "token", "semantic"):
+        raise ValueError(f"unknown chunking_method: {chunking_method!r}")
     if not text or not text.strip():
         return result
 
@@ -393,8 +403,8 @@ def chunk_markdown(
     headings = _extract_headings(text) if include_heading_context else []
     segments = _split_into_segments(text, blocks)
 
-    chunks = []
-    current_segs = []
+    chunks: List[Dict[str, Any]] = []
+    current_segs: List[Dict[str, Any]] = []
     current_units = 0
 
     def seg_units(seg: Dict[str, Any]) -> int:

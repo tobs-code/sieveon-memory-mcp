@@ -21,6 +21,7 @@ Scope, deliberately narrow:
   after that ~2ms on the reference hardware.
 """
 
+import logging
 from typing import Any, Dict, List, Optional, Tuple
 
 from src.extraction.verbalise import BAND_HI, BAND_LO, verbalise
@@ -46,11 +47,20 @@ def _get_verifier():
     if _verifier is None:
         from sentence_transformers import CrossEncoder
 
-        model = CrossEncoder(_VERIFIER_MODEL, max_length=512, device="cuda")
+        try:
+            import torch
+
+            _device = "cuda" if torch.cuda.is_available() else "cpu"
+        except Exception:
+            _device = "cpu"
+        model = CrossEncoder(_VERIFIER_MODEL, max_length=512, device=_device)
         try:
             model.model = model.model.half()
         except Exception:
-            pass
+            # fp16 is a GPU optimisation; a CPU or unsupported-op model simply
+            # stays in full precision, which is correct but slower.
+            logging.debug("CrossEncoder fp16 unavailable, staying in fp32",
+                          exc_info=True)
         id2label = {
             int(k): str(v).lower()
             for k, v in model.model.config.id2label.items()

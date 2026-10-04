@@ -11,9 +11,10 @@ README + docs/mcp-server.md.
 
 import asyncio
 import os
+import re
 import time
 from datetime import datetime, timedelta
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
 
 import httpx
 
@@ -82,7 +83,19 @@ async def _query_surreal(sql: str) -> Any:
 
 
 def _extract_result(data: List[Dict], index: int = 1) -> List[Dict]:
-    """Extract results from SurrealDB response."""
+    """Extract results from SurrealDB response.
+
+    Delegates to src.mcp.core._extract_result so both modules share one
+    index semantic (index=1 -> first data-carrying statement, LET/BEGIN/
+    COMMIT and USE responses are skipped). Falls back to a local copy with
+    the same semantic when the core import is unavailable.
+    """
+    try:
+        from src.mcp.core import _extract_result as _core_extract
+
+        return _core_extract(data, index)
+    except Exception:
+        pass
     if not isinstance(data, list):
         return []
     candidates = [
@@ -90,7 +103,7 @@ def _extract_result(data: List[Dict], index: int = 1) -> List[Dict]:
         for item in data
         if isinstance(item, dict)
         and item.get("status") == "OK"
-        and "result" in item
+        and item.get("result") is not None
         and not (
             isinstance(item["result"], dict)
             and "database" in item["result"]
@@ -99,7 +112,9 @@ def _extract_result(data: List[Dict], index: int = 1) -> List[Dict]:
     ]
     if not candidates:
         return []
-    if len(candidates) <= index:
+    if index == 1:
+        target = candidates[0]
+    elif len(candidates) <= index:
         target = candidates[-1]
     else:
         target = candidates[index]
@@ -109,6 +124,76 @@ def _extract_result(data: List[Dict], index: int = 1) -> List[Dict]:
     if isinstance(result, dict):
         return [result]
     return []
+
+
+_RECORD_ID_RE = re.compile(r"^(entity|fact|event|fact_history):[A-Za-z0-9_]+$")
+
+# Field names are interpolated unquoted into UPDATE ... SET, so they must be
+# strict identifiers -- escaping cannot make them safe (same reason record ids
+# need _RECORD_ID_RE instead of escape_surrealql).
+_FIELD_NAME_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+
+
+def _is_record_id(value: Any) -> bool:
+    """Strict record-id check, canonical with src.mcp.core._is_record_id.
+
+    Local copy to avoid importing the MCP stack (httpx/FastMCP) from the
+    maintenance module; keep the two patterns in sync.
+    """
+    try:
+        from src.mcp.core import _is_record_id as _core_check
+
+        return bool(_core_check(value))
+    except Exception:
+        return bool(_RECORD_ID_RE.match(str(value or "")))
+
+
+def _archive_fact_sqls(fact: Dict[str, Any]) -> Tuple[str, str]:
+    """Build (CREATE fact_history, DELETE original) for one stale fact.
+
+    Pure (no IO), so the no-loss guarantee is unit-testable. The archived
+    copy keeps the original id suffix (fact_history:<suffix>), the record
+    links (in/out stay real links, not strings, so graph reads keep
+    working), validity window, confidence, plus archived_at. Raises
+    ValueError when the row cannot be archived losslessly.
+    """
+    fid = str(fact.get("id") or "")
+    if not _RECORD_ID_RE.match(fid):
+        raise ValueError(f"cannot archive fact without valid id: {fid!r}")
+    suffix = fid.split(":", 1)[1]
+
+    def _link(value: Any, role: str) -> str:
+        if isinstance(value, dict):
+            value = value.get("id")
+        link = str(value or "")
+        if not _RECORD_ID_RE.match(link):
+            raise ValueError(f"cannot archive {fid}: invalid {role} link {link!r}")
+        return link
+
+    in_id = _link(fact.get("in"), "in")
+    out_id = _link(fact.get("out"), "out")
+
+    try:
+        conf = float(fact.get("confidence") or 0.0)
+    except (TypeError, ValueError):
+        raise ValueError(f"cannot archive {fid}: invalid confidence")
+
+    def _dt(value: Any) -> str:
+        if value is None or value == "NONE":
+            return "NONE"
+        return f"type::datetime('{escape_surrealql(str(value))}')"
+
+    predicate = escape_surrealql(str(fact.get("predicate") or ""))
+    archived_id = escape_surrealql(fid)
+    create_sql = (
+        f"CREATE fact_history:{suffix} SET archived_id = '{archived_id}', "
+        f"predicate = '{predicate}', in = {in_id}, out = {out_id}, "
+        f"confidence = {conf}, valid_from = {_dt(fact.get('valid_from'))}, "
+        f"valid_until = {_dt(fact.get('valid_until'))}, "
+        f"archived_at = time::now();"
+    )
+    delete_sql = f"DELETE {fid};"
+    return create_sql, delete_sql
 
 
 class ConservativeMaintainer:
@@ -148,6 +233,9 @@ class ConservativeMaintainer:
 
     async def queue_patch_update(self, entity_id: str, updates: Dict[str, Any]):
         """Queue a patch update to be applied later"""
+        if not _is_record_id(entity_id):
+            print(f"Refusing to queue patch update with invalid record id: {entity_id!r}")
+            return
         if entity_id not in self.pending_updates:
             self.pending_updates[entity_id] = {}
         self.pending_updates[entity_id].update(updates)
@@ -163,15 +251,25 @@ class ConservativeMaintainer:
 
         for entity_id, updates in self.pending_updates.items():
             try:
+                # entity_id is interpolated unquoted into UPDATE -- escaping
+                # cannot make an identifier safe, so fail closed on shape.
+                if not _is_record_id(entity_id):
+                    print(f"Refusing patch update with invalid record id: {entity_id!r}")
+                    continue
                 # Build update query
                 set_clauses = []
                 for key, value in updates.items():
+                    if not isinstance(key, str) or not _FIELD_NAME_RE.match(key):
+                        print(f"Refusing patch update with invalid field name: {key!r}")
+                        continue
                     if isinstance(value, str):
                         escaped_value = escape_surrealql(value)
                         set_clauses.append(f"{key} = '{escaped_value}'")
                     else:
                         set_clauses.append(f"{key} = {json.dumps(value)}")
 
+                if not set_clauses:
+                    continue
                 update_sql = f"UPDATE {entity_id} SET {', '.join(set_clauses)};"
                 await _query_surreal(update_sql)
             except Exception as e:
@@ -182,7 +280,12 @@ class ConservativeMaintainer:
         self.last_flush_time = time.time()
 
     async def _clean_stale_facts(self) -> int:
-        """Clean up facts that have been marked as stale"""
+        """Archive stale facts to fact_history, then remove the originals.
+
+        Invalidated facts (valid_until in the past) are moved, never
+        silently dropped: at_time queries and audits keep working against
+        fact_history. Returns the archived count.
+        """
         try:
             # Find facts that are marked as invalid/stale
             sql = """
@@ -194,17 +297,19 @@ class ConservativeMaintainer:
             result = await _query_surreal(sql)
             stale_facts = _extract_result(result)
 
-            # Actually remove the stale facts (physical deletion)
+            # Archive each fact before removal (no-loss guarantee)
             removed_count = 0
             for fact in stale_facts:
                 fact_id = fact.get("id")
-                if fact_id:
-                    try:
-                        delete_sql = f"DELETE {fact_id};"
-                        await _query_surreal(delete_sql)
-                        removed_count += 1
-                    except Exception as e:
-                        print(f"Could not delete stale fact {fact_id}: {e}")
+                if not fact_id:
+                    continue
+                try:
+                    create_sql, delete_sql = _archive_fact_sqls(fact)
+                    await _query_surreal(create_sql)
+                    await _query_surreal(delete_sql)
+                    removed_count += 1
+                except Exception as e:
+                    print(f"Could not archive stale fact {fact_id}: {e}")
 
             return removed_count
         except Exception as e:
@@ -241,6 +346,9 @@ class ConservativeMaintainer:
                 for dup in group[1:]:
                     dup_id = dup.get("id")
                     if not dup_id:
+                        continue
+                    if not _is_record_id(dup_id):
+                        print(f"Refusing to consolidate invalid record id: {dup_id!r}")
                         continue
                     try:
                         forget_sql = f"UPDATE {dup_id} SET forgotten = true, forgotten_reason = 'consolidated_duplicate';"

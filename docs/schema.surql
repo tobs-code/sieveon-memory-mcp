@@ -69,6 +69,16 @@ DEFINE INDEX IF NOT EXISTS fact_object ON fact COLUMNS out;
 DEFINE INDEX IF NOT EXISTS fact_count ON fact COUNT;
 DEFINE INDEX IF NOT EXISTS fact_predicate_ft ON fact FIELDS predicate FULLTEXT ANALYZER entity_analyzer BM25;
 
+-- Fact history archive: stale facts move here instead of being deleted.
+DEFINE TABLE IF NOT EXISTS fact_history SCHEMALESS;
+DEFINE FIELD IF NOT EXISTS archived_id ON fact_history TYPE string;
+DEFINE FIELD IF NOT EXISTS archived_at ON fact_history TYPE datetime DEFAULT time::now();
+DEFINE FIELD IF NOT EXISTS predicate ON fact_history TYPE string;
+DEFINE FIELD IF NOT EXISTS valid_from ON fact_history TYPE datetime DEFAULT time::now();
+DEFINE FIELD IF NOT EXISTS valid_until ON fact_history TYPE none | datetime;
+DEFINE FIELD IF NOT EXISTS confidence ON fact_history TYPE none | float DEFAULT 1.0;
+DEFINE INDEX IF NOT EXISTS fact_history_valid_until ON fact_history COLUMNS valid_until;
+
 -- ========================================
 -- ③ Gate Log
 -- ========================================

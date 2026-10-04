@@ -2,19 +2,11 @@
 sieveon - Entropy Gate
 Composite Score aus Text-Entropy und Embedding-Novelty
 Nur vor KG-Write, Raw Event Log bekommt immer alles!
-
-NOTE (2026-09-30): Der alte "LightMem-style"-Kommentar war falsch.
-LightMem (_unused/LightMem/src/lightmem/factory/pre_compressor/entropy_compress.py)
-berechnet LM-Surprisal (-log2 p(Token|Kontext) via GPT-2) und behaelt die
-Top-k informativsten Woerter (Pre-Compression). Dieses Gate berechnet dagegen
-Shannon-Entropie ueber Zeichenhaeufigkeiten + gzip-Ratio als Write/No-Write
-Signal. Gleiches Wort, anderes Konzept, anderer Zweck. Echter LightMem-Ansatz
-(LM-Surprisal als Salience-Signal) ist als spaetere Stufe vorgesehen, siehe
-`salience_version`.
 """
 
 import gzip
 import hashlib
+import logging
 import math
 import os
 import re
@@ -55,11 +47,29 @@ def _get_http_client() -> httpx.Client:
 
 
 def escape_surrealql(value: str) -> str:
-    """Escape a string for safe use in a SurrealQL string literal."""
+    """Escape a string for safe use in a SurrealQL string literal.
+
+    Escapes BOTH quote styles, not just ``'``. Several call sites interpolate
+    the result into double-quoted literals (``type::datetime("...")``); while
+    ``\\'`` protects a single-quoted context it does nothing for a
+    double-quoted one, so a value containing ``"`` broke out of the literal
+    there (verified against SurrealDB 3.x: ``type::datetime("a" OR 1=1 --")``
+    reached the parser and failed on ``expected this delimiter to close``).
+
+    SurrealQL treats backslash as an active escape character inside
+    double-quoted strings too, so ``\\"`` collapses back to ``"`` on store and
+    adding it here does not corrupt values written to single-quoted literals
+    (verified round-trip: ``he said "hi" and it's fine``).
+
+    Table/record identifiers cannot be escaped this way at all -- those must be
+    validated against a strict shape instead (see ``_is_record_id``) or bound as
+    parameters.
+    """
     import re
 
     value = value.replace("\\", "\\\\")
     value = value.replace("'", "\\'")
+    value = value.replace('"', '\\"')
     value = value.replace("}", "\\}")
     value = value.replace("\n", "\\n")
     value = value.replace("\r", "\\r")
@@ -495,7 +505,10 @@ class EntropyGate:
             if rows:
                 return rows[0].get("c", 0)
         except Exception:
-            pass
+            # Falling back to 0 lowers the adaptive threshold, i.e. more content
+            # gets through the gate -- a safe direction, but not a silent one.
+            logging.warning("Event count query failed; assuming an empty store",
+                            exc_info=True)
         return 0
 
     def invalidate_count_cache(self) -> None:
@@ -934,8 +947,11 @@ class EntropyGate:
             if entities and len(entities) > 0:
                 return entities[0].get("id")
         except Exception:
-            # If embedding fails, skip similarity search
-            pass
+            # If embedding fails, skip similarity search -- the caller then
+            # creates a fresh entity. That means a broken embedding service
+            # silently duplicates entities, so it must not be invisible.
+            logging.warning("Entity similarity lookup failed; treating '%s' as "
+                            "new", name, exc_info=True)
         return None
 
     def _select_salient_entities(
@@ -1477,7 +1493,11 @@ class EntropyGate:
                 try:
                     entity_embeddings[name] = self.embedding_service.embed_for_storage(name)
                 except Exception:
-                    pass
+                    # No embedding means this entity cannot take part in
+                    # cosine pair scoring, so its co-occurrence facts are
+                    # silently weaker. Say so.
+                    logging.warning("Skipping embedding for entity %r during "
+                                    "co-occurrence pairing", name, exc_info=True)
 
             # SVO-Triples einmal vor der Schleife cachen
             svo_triples = None

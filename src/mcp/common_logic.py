@@ -4,6 +4,7 @@ Common logic functions shared between HTTP endpoints and MCP tools
 """
 
 import asyncio
+import re
 import sys
 import os
 from typing import Any, Dict, List, Optional, Tuple
@@ -171,44 +172,49 @@ async def _execute_query(
         results = []
 
     entities, facts, events = _categorize_results(results)
+
+    # Truncate BEFORE synthesising. The summary's totals and its confidence
+    # score are derived from these lists, so synthesising first made
+    # summary["total_facts"] disagree with results["facts"] whenever the
+    # retriever returned more than `limit`.
+    total_candidates = len(entities) + len(facts) + len(events)
+    events = events[:limit]
+    entities = entities[:limit]
+    facts = facts[:limit]
+
     summary = _synthesize_answer(
         query, entities, facts, events,
         retrieval_relevance=results_raw.get("relevance_score"),
     )
 
     # Enrich events with matched terms and ranking info
-    import re
     query_words_list = [w for w in re.findall(r'\b\w+\b', query.lower()) if len(w) > 2]
+    # Query terms are already lowercase from the regex above, and `content` is
+    # lowercased once per event rather than once per (event, word) pair.
     enriched_events = []
     for ev in events:
         content = ev.get("content", "")
         if content and query_words_list:
-            matched = set()
-            relevance_hits = 0
-            for word in query_words_list:
-                if word.lower() in content.lower():
-                    relevance_hits += 1
-                    matched.add(word)
+            content_lower = content.lower()
+            matched = {w for w in query_words_list if w in content_lower}
             ev["matched_terms"] = sorted(matched)
-            ev["relevance_hits"] = relevance_hits
+            ev["relevance_hits"] = len(matched)
         enriched_events.append(ev)
 
     ranking = {
         "strategy_used": strategy_dict["strategy"],
         "query_type": q_type.value,
         "classification_confidence": confidence,
-        "total_candidates": len(entities) + len(facts) + len(events),
+        # Pre-truncation candidate count: how much the retriever found before
+        # `limit` was applied.
+        "total_candidates": total_candidates,
         "relevance_score": results_raw.get("relevance_score"),
         "diversity_note": "Results from multiple retrieval paths (FTX + vector + KG) fused via RRF.",
         "temporal_window": {"since": since, "until": until, "at_time": at_time},
     }
     if any(ev.get("relevance_score") is not None for ev in events):
         scores = [ev.get("relevance_score", 0) or 0 for ev in events]
-        ranking["score_range"] = {"min": round(min(scores), 4), "max": round(max(scores), 4)} if scores else None
-
-    events = events[:limit]
-    entities = entities[:limit]
-    facts = facts[:limit]
+        ranking["score_range"] = {"min": round(min(scores), 4), "max": round(max(scores), 4)}
 
     return {
         "query": query,
@@ -431,6 +437,52 @@ def _is_confident_retrieval(relevance: Optional[float]) -> bool:
     )
 
 
+def _stem_word(word: str) -> str:
+    """Naive stemmer for overlap matching only, not for display.
+
+    Whole-word matching missed inflections ("acquire" vs "acquired"), so a
+    question about an acquisition never matched the event describing it.
+    Rules are deliberately crude and applied to both sides, which keeps
+    comparison consistent; short words are left alone.
+
+    Strips iteratively (max 2 passes) so "cases" -> "case" -> "cas" meets
+    "case" -> "cas", instead of the old single-shot "cases" -> "cas"
+    skipping a step its singular never took.
+    """
+    w = word.lower()
+
+    def _strip_once(s: str) -> str:
+        if len(s) > 4 and s.endswith("ies"):
+            return s[:-3] + "y"
+        if len(s) > 4 and s.endswith(("sses", "xes", "zes", "ches", "shes")):
+            return s[:-2]
+        if len(s) > 3 and s.endswith("s") and not s.endswith("ss"):
+            return s[:-1]
+        for suffix, min_len in (("ed", 3), ("ing", 5)):
+            if len(s) > min_len and s.endswith(suffix):
+                base = s[: -len(suffix)]
+                # Doubled consonant from -ing/-ed forms ("runn" -> "run",
+                # "stopp" -> "stop"). "ss"/"zz" stay ("pass", "buzz").
+                if (
+                    len(base) > 3
+                    and base[-1] == base[-2]
+                    and base[-1] in "bcdfgklmnprt"
+                ):
+                    base = base[:-1]
+                return base
+        if len(s) > 2 and s.endswith("e"):
+            return s[:-1]
+        return s
+
+    prev = w
+    for _ in range(2):
+        nxt = _strip_once(prev)
+        if nxt == prev:
+            break
+        prev = nxt
+    return prev
+
+
 def _synthesize_answer(
     query: str,
     entities: List[Dict],
@@ -439,20 +491,27 @@ def _synthesize_answer(
     retrieval_relevance: Optional[float] = None,
 ) -> Dict[str, Any]:
     """Synthesize a structured answer from entities, facts, and events."""
-    answer_parts = []
-    key_facts = []
-    key_entities = []
-    event_snippets = []
+    answer_parts: List[Dict[str, Any]] = []
+    key_facts: List[str] = []
+    key_entities: List[str] = []
+    event_snippets: List[Dict[str, Any]] = []
 
-    import re
     query_lower = query.lower()
     query_words = {
         w
         for w in re.findall(r"\b\w+\b", query_lower)
         if len(w) > 2 and w not in _SUMMARY_STOPWORDS
     }
+    # Stemmed view for overlap checks: "acquire" must meet "acquired".
+    query_stems = {_stem_word(w) for w in query_words}
 
     fact_entity_names = set()
+    strong_fact_count = 0
+    # Co-occurrence predicates state no relation, only joint appearance. An
+    # entity-name overlap on such a fact ("NovaCore co_occurs_with David Kim"
+    # for a NovaCore question) must not confirm an answer: only a semantic
+    # predicate with query overlap counts as a strong fact.
+    _WEAK_FACT_PREDICATES = frozenset({"co_occurs_with", "related_to", "strongly_related"})
     for f in facts:
         in_data = f.get("in")
         out_data = f.get("out")
@@ -468,9 +527,10 @@ def _synthesize_answer(
             obj = out_data
         pred = f.get("predicate", "")
         if subj and obj and pred and pred not in ("mentions", "weakly_related"):
-            subj_words = {w for w in re.findall(r'\b\w+\b', subj.lower()) if len(w) > 2}
-            obj_words = {w for w in re.findall(r'\b\w+\b', obj.lower()) if len(w) > 2}
-            if not (subj_words & query_words or obj_words & query_words):
+            subj_words = {_stem_word(w) for w in re.findall(r'\b\w+\b', subj.lower()) if len(w) > 2}
+            obj_words = {_stem_word(w) for w in re.findall(r'\b\w+\b', obj.lower()) if len(w) > 2}
+            has_overlap = bool(subj_words & query_stems or obj_words & query_stems)
+            if not has_overlap:
                 # No lexical overlap. The retriever may have matched this
                 # semantically ("The streaming service's cloud provider?" shares
                 # no content word with "Netflix uses Amazon Web Services"), so
@@ -478,11 +538,17 @@ def _synthesize_answer(
                 # actually looks confident. Without that gate every fact came
                 # back for every query, because the strategies return their
                 # top-k regardless of the query.
+                #
+                # Such overlap-free facts are weak evidence even when kept:
+                # the 2026-10-03 incident answered "Which company did NovaCore
+                # acquire?" with "Facebook acquired WhatsApp" at found/0.8
+                # because generic top-k facts carried the verdict alone.
                 if not _is_confident_retrieval(retrieval_relevance):
                     continue
                 key_facts.append(f"{subj} {pred} {obj}")
                 fact_entity_names.update([subj.lower(), obj.lower()])
                 continue
+            strong_fact_count += 1 if pred not in _WEAK_FACT_PREDICATES else 0
             key_facts.append(f"{subj} {pred} {obj}")
             fact_entity_names.update([subj.lower(), obj.lower()])
 
@@ -493,8 +559,8 @@ def _synthesize_answer(
         if not name:
             continue
         name_lower = name.lower()
-        name_words = {w for w in re.findall(r'\b\w+\b', name_lower) if len(w) > 2}
-        if not (name_words & query_words or name_lower in fact_entity_names):
+        name_words = {_stem_word(w) for w in re.findall(r'\b\w+\b', name_lower) if len(w) > 2}
+        if not (name_words & query_stems or name_lower in fact_entity_names):
             # Same reasoning as facts above: keep the entity when the
             # retriever is confident, drop it otherwise.
             if not _is_confident_retrieval(retrieval_relevance):
@@ -512,17 +578,21 @@ def _synthesize_answer(
     query_words_list = [
         w for w in re.findall(r"\b\w+\b", query_lower) if len(w) > 2 and w not in _SUMMARY_STOPWORDS
     ]
+    query_stems_list = [_stem_word(w) for w in query_words_list]
     for ev in events[:5]:
         content = ev.get("content", "")
         if content:
-            content_words = {w.lower() for w in re.findall(r"\b\w+\b", content.lower())}
+            content_stems = {_stem_word(w) for w in re.findall(r"\b\w+\b", content.lower())}
             # Whole-word matching on content terms. Substring matching scored
             # "design" inside "designed" and counted question words like "is"
             # and "was" as hits, so a query with nothing to do with the store
             # ("What is the capital of France?") still reported a best match
             # and found=True. That is worse than returning nothing: the
             # agent reads a populated answer as a real one.
-            matched = [w for w in query_words_list if w in content_words]
+            #
+            # Stems are compared, so inflections count ("acquire" meets
+            # "acquired") without reintroducing substring hits.
+            matched = [w for w, s in zip(query_words_list, query_stems_list) if s in content_stems]
             score = len(matched)
             # Score by share of the query covered, not by raw count. A longer
             # query has more words to miss, so a raw count punished it:
@@ -568,7 +638,10 @@ def _synthesize_answer(
     # can see what was considered without treating it as an answer.
     evidence = 0.0
     if key_facts:
-        evidence += 0.6
+        # Overlap-free facts are weak evidence (see incident note above):
+        # they may be quoted as near misses, but they must not confirm an
+        # answer on their own.
+        evidence += 0.6 if strong_fact_count else 0.25
     if event_snippets:
         # Scale by how much of the query the best event actually covers, so a
         # thin overlap cannot reach the bar on strength of raw word count.
@@ -585,6 +658,12 @@ def _synthesize_answer(
     else:
         verdict = "weak_match"
 
+    # No fact shares vocabulary with the query: nothing is confirmed, however
+    # confident the retriever looked. Caps the incident case (generic
+    # top-k facts + confident retriever) at weak_match.
+    if verdict == "found" and key_facts and not strong_fact_count:
+        verdict = "weak_match"
+
     # Retrieval confidence gates the verdict. Evidence built from rows the
     # retriever already doubts is not evidence, and this is the layer that
     # keeps an unrelated query from reading as answered: the store always
@@ -596,13 +675,20 @@ def _synthesize_answer(
     ):
         verdict = "nothing_found"
 
-    # Build a concise natural-language summary
+    # Build a concise natural-language summary. When no fact shares query
+    # vocabulary but a covering event exists, the event answers the question
+    # and leads -- facts first would repeat the incident (generic facts
+    # headlining over the event that holds the answer).
     text_parts = []
+    event_first = event_snippets and not strong_fact_count
+    if event_first:
+        best = event_snippets[0]
+        text_parts.append(f"Best match: \"{best['content'][:150]}...\" (source: {best['source']}, hits: {best['relevance_hits']})")
     if key_facts:
         text_parts.append(". ".join(key_facts[:3]))
     if key_entities:
         text_parts.append("Related entities: " + ", ".join(key_entities[:5]))
-    if event_snippets:
+    if event_snippets and not event_first:
         best = event_snippets[0]
         text_parts.append(f"Best match: \"{best['content'][:150]}...\" (source: {best['source']}, hits: {best['relevance_hits']})")
 
@@ -652,7 +738,14 @@ async def _get_or_create_entity(name: str) -> Optional[str]:
     if entities:
         return entities[0]["id"]
 
-    entity_type = infer_entity_type(name)
+    # Pass the embedding service: without it every unseen name falls back to
+    # "concept" (seen live with "NovaCore Labs" via memory_update).
+    from src.extraction.embedding_service import get_embedding_service
+    try:
+        embedding_service = get_embedding_service()
+    except Exception:
+        embedding_service = None
+    entity_type = infer_entity_type(name, embedding_service)
     create_sql = f"CREATE entity SET name = '{name_escaped}', type = '{entity_type}', created_at = time::now(), updated_at = time::now();"
     create_result = await _query_surreal(create_sql)
     created = _extract_result(create_result, 1)

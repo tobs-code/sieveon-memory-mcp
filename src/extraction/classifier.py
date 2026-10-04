@@ -8,6 +8,7 @@ Hybrid approach:
 """
 
 import json
+import logging
 import pickle
 import re
 from pathlib import Path
@@ -344,12 +345,27 @@ class _MLClassifier:
                     "vectorizer": self.vectorizer,
                 }, f)
         except OSError:
-            pass
+            # Cache write only: classification still works from the in-memory
+            # model, but say so -- otherwise a permanently unwritable path
+            # means retraining on every start with no diagnostic.
+            logging.warning("Could not persist classifier cache to %s",
+                            _ML_MODEL_PATH, exc_info=True)
+
+    # Upper bound for the classifier cache: a LogisticRegression + TF-IDF
+    # vectorizer for this training set is a few MB. Anything much larger is
+    # not our cache (or a tampered one) -- refuse before unpickling, since
+    # pickle executes arbitrary code on load and must only ever read our own
+    # file. Long-term this cache should move off pickle entirely.
+    _MAX_MODEL_BYTES = 32 * 1024 * 1024
 
     def load(self) -> bool:
         if not _ML_MODEL_PATH.exists():
             return False
         try:
+            if _ML_MODEL_PATH.stat().st_size > self._MAX_MODEL_BYTES:
+                logging.warning("Classifier cache at %s exceeds %d bytes, refusing to load",
+                                _ML_MODEL_PATH, self._MAX_MODEL_BYTES)
+                return False
             with open(_ML_MODEL_PATH, "rb") as f:
                 data = pickle.load(f)
             self.model = data["model"]
@@ -357,6 +373,11 @@ class _MLClassifier:
             self.vectorizer = data.get("vectorizer")
             return True
         except Exception:
+            # A corrupt or stale pickle just means "no cached model": the caller
+            # retrains. Log it because a cache that never loads looks identical
+            # to one that is simply absent.
+            logging.warning("Could not load classifier cache from %s",
+                            _ML_MODEL_PATH, exc_info=True)
             return False
 
     def classify(self, query: str) -> Tuple[Optional[str], float]:

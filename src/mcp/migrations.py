@@ -195,6 +195,12 @@ def _register_builtin(engine: MigrationEngine):
         apply_fn=_m007_router_costs,
     ))
 
+    engine.register(Migration(
+        version=8,
+        description="fact_history archive table: stale facts are moved here instead of deleted",
+        apply_fn=_m008_fact_history,
+    ))
+
 
 async def _m001_baseline(query):
     sql = r"""
@@ -391,6 +397,25 @@ async def _m007_router_costs(query):
         "DEFINE TABLE IF NOT EXISTS router_costs SCHEMAFULL;",
         "DEFINE FIELD IF NOT EXISTS state ON router_costs TYPE option<object> FLEXIBLE;",
         "DEFINE FIELD IF NOT EXISTS updated_at ON router_costs TYPE none | datetime;",
+    ]
+    for stmt in statements:
+        await query(stmt)
+
+
+async def _m008_fact_history(query):
+    """fact_history archive: stale (invalidated) facts are moved here by the
+    maintainer and by memory_consolidate(delete_stale=true) instead of being
+    physically deleted, so at_time queries keep answering from history.
+    SCHEMALESS like fact; the validity index mirrors fact_valid_until."""
+    statements = [
+        "DEFINE TABLE IF NOT EXISTS fact_history SCHEMALESS;",
+        "DEFINE FIELD IF NOT EXISTS archived_id ON fact_history TYPE string;",
+        "DEFINE FIELD IF NOT EXISTS archived_at ON fact_history TYPE datetime DEFAULT time::now();",
+        "DEFINE FIELD IF NOT EXISTS predicate ON fact_history TYPE string;",
+        "DEFINE FIELD IF NOT EXISTS valid_from ON fact_history TYPE datetime DEFAULT time::now();",
+        "DEFINE FIELD IF NOT EXISTS valid_until ON fact_history TYPE none | datetime;",
+        "DEFINE FIELD IF NOT EXISTS confidence ON fact_history TYPE none | float DEFAULT 1.0;",
+        "DEFINE INDEX IF NOT EXISTS fact_history_valid_until ON fact_history COLUMNS valid_until;",
     ]
     for stmt in statements:
         await query(stmt)

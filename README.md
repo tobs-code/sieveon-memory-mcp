@@ -18,7 +18,7 @@ Sieveon is an agent memory system that intelligently classifies, routes, plans, 
 
 ```
                   ┌─────────────────────────┐
-                  │  MCP Server             │  (Python, stdio)
+                  │  MCP Server             │  (Python, stdio + HTTP)
                   │  19 tools + 6 resources │
                   │  Classifier → QueryType │
                   │  RoutingPolicy → Strategy + Budget
@@ -32,9 +32,16 @@ Sieveon is an agent memory system that intelligently classifies, routes, plans, 
         │     SurrealDB Storage       │
         │  (NS:sieveon DB:sieveon)    │
         │  event / entity / fact /    │
-        │  gate_log / _schema_migrations
+        │  fact_history / gate_log /  │
+        │  router_costs / retrieval_cache /
+        │  _schema_migrations
         └─────────────────────────────┘
 ```
+
+`stdio` is the primary MCP transport. Additionally `src/mcp/server.py`
+starts an **unauthenticated HTTP control plane on `0.0.0.0:8082`**
+(same tools via `POST /memory/...`, see Security). Do not expose it
+without auth in front.
 
 `memory_query` classifies via `QueryClassifier`, selects a strategy via
 `RoutingPolicy` and executes it via `RetrievalExecutor`. Direct tools like
@@ -51,7 +58,7 @@ Sieveon is an agent memory system that intelligently classifies, routes, plans, 
 | **Router** | `src/router/` | Query classification policy + budget tracking: `policy.py` (RoutingPolicy, strategy per QueryType), `budget.py` (BudgetTracker, BudgetLevel), `cost_awareness.py` (CostTracker effectiveness ranking) |
 | **Planner** | `src/planner/executor.py` | No separate `Planner` class — retrieval execution only: `RetrievalExecutor.execute_strategy()` + `PlanExecutor.execute_plan()` run the strategy chosen by the Router |
 | **Maintenance** | `src/maintenance/conservative_maintainer.py` | Internal conservative maintainer (debounced patch updates, stale-fact cleanup, duplicate consolidation). Only MCP entrypoint is `memory_consolidate` |
-| **Chunking** | `src/mcp/chunking.py` | Overlapping `char`/`token`/`semantic` chunking engine with YAML front matter parsing, table/HTML fence protection, image stripping (alt-text preserved), heading context prepended to each chunk |
+| **Chunking** | `src/mcp/chunking.py` | Overlapping `char`/`token`/`semantic` chunking engine with YAML front matter parsing, table/HTML fence protection, image stripping (alt-text preserved), heading context prepended to each chunk. Hardened import path (see `memory_store_markdown` below): `.md`/`.markdown` only, no symlinks, 2 MiB / 200k-chars cap, `chunk_size` 100–10000, `0 <= overlap < chunk_size`, `max_concurrent` 1–5, optional jail via `SIEVEON_MARKDOWN_ROOT` |
 
 ---
 
@@ -74,6 +81,7 @@ Sieveon is an agent memory system that intelligently classifies, routes, plans, 
   - **Thresholds:** `RELEX_REL_THRESHOLD` (default 0.7). Sweep via `python scripts/eval_extraction.py --sweep`. Note the sweep is not a precision/recall trade you can win outright — raising it from 0.7 to 0.9 lifts per-fact precision 0.12→0.18 but drops triple recall 0.29→0.22, because the model's score distributions for correct and wrong facts overlap almost completely.
 - **Logical Invalidation** — `valid_until` timestamps instead of hard deletes. `memory_update` auto-creates target entities if they don't exist yet.
 - **Forgetting & Consolidation** — `memory_forget` soft-deletes events or entities; `memory_consolidate` (sole MCP entrypoint) triggers `ConservativeMaintainer` runs (with optional physical stale-fact removal).
+- **Markdown import (`memory_store_markdown`)** — `content` or `file_path` (mutually exclusive). `file_path` is untrusted input: only `.md`/`.markdown` regular files, no symlinks, max 2 MiB on disk / 200k chars, optionally jailed to `SIEVEON_MARKDOWN_ROOT` (when set, the resolved path must lie inside it). Chunking params are fail-closed: `chunk_size` 100–10000, `0 <= overlap < chunk_size`, `chunking_method ∈ {char, token, semantic}`, `encoding_name ∈ {cl100k_base, p50k_base, r50k_base, o200k_base}`, `max_concurrent` 1–5, `content` ≤ 200k chars. Violations return `{"status": "error"}` before any chunking/DB work.
 - **Cost Awareness** — Tracks & budgets resource consumption per strategy
 - **Tool notes** — `memory_stats` accepts optional `aggregate` (`none`/`events_by_source`/`facts_by_predicate`/`entities_by_type`/`all`); the extra `random_string` param exists only for MCP no-required-args compatibility — call with no args.
 
@@ -261,7 +269,7 @@ in `gate_log`, facts (with salience + extractor) in the KG.
 
 ## Resilience & Error Handling
 
-**Implemented in `src/mcp/server.py`:**
+**Implemented in `src/mcp/core.py`** (`server.py` only starts the transports):
 
 - **Retry:** up to **3 attempts** by default; heavy queries (`RELATE`/`DEFINE`/`CREATE`) use **2 attempts**.
 - **Jittered backoff:** full jitter (`uniform(0, min(8s, 0.5 * 2^level))`) to avoid thundering herd.
@@ -282,7 +290,7 @@ Budgets are measured and enforced per execution, and adaptively scaled based on 
 | `medium` | <= 25 DB calls / 3k tokens | Hybrid BM25+vector+temporal | result truncation |
 | `high` | <= 50 DB calls / 8k tokens | Graph expansion + invalidation | best-effort truncation |
 
-- **Adaptive Scaling:** Limits are automatically scaled down based on a **System Health Factor** (`BudgetTracker.get_system_health()`, range `0.1–1.0`). It is set to `1.0` on successful SurrealDB calls and lowered on failures (`src/mcp/core.py`); low health (< 0.5) also reduces retry attempts. Read it via `get_system_health()` — do not access the private `BudgetTracker._health_factor` directly.
+- **Adaptive Scaling:** Limits are automatically scaled down based on a **System Health Factor** (`BudgetTracker.get_system_health()`, range `~0.17–1.0` per `_health_from_failures`: `1.0 - min(failures,10)/12.0`). It is set to `1.0` on successful SurrealDB calls and lowered on failures (`src/mcp/core.py`); low health (< 0.5) also reduces retry attempts. Read it via `get_system_health()` — do not access the private `BudgetTracker._health_factor` directly.
 - **Token counting:** uses `tiktoken` (`gpt-3.5-turbo` encoding) where available; otherwise falls back to `chars/4`.
 - **BudgetTracker:** records `db_calls` and `estimated_tokens` and exposes `OverBudget` for aborts/throttling.
 
@@ -317,7 +325,10 @@ engine.register(Migration(
 | `event` | SCHEMALESS | Raw event log (content, source, trust, embedding, timestamp) |
 | `entity` | SCHEMAFULL | Knowledge graph entities (name, type, embedding) |
 | `fact` | SCHEMALESS | Relations between entities (subject → predicate → object, salience, extractor) |
+| `fact_history` | SCHEMALESS | Invalidated fact versions (logical-delete history) |
 | `gate_log` | SCHEMAFULL | Gate decisions (composite score, threshold, salience, reason) |
+| `router_costs` | SCHEMAFULL | Persisted router cost-tracker state |
+| `retrieval_cache` | SCHEMALESS | Cached retrieval results (query_hash, TTL) |
 | `_schema_migrations` | SCHEMAFULL | Applied migration versions (version, description, checksum) |
 
 ---
@@ -342,7 +353,11 @@ A memory server that returns stored text into LLM context is a
   fail-closed); `memory_merge_entities(dry_run=True)` previews merges.
   Nothing merges automatically.
 - **Transport:** the MCP server itself has no auth layer (see Known
-  Limitations) — bind stdio locally or put auth in front.
+  Limitations) — bind stdio locally or put auth in front. This explicitly
+  includes the HTTP control plane (`0.0.0.0:8082`, e.g.
+  `POST /memory/store/markdown`): it accepts the same untrusted tool inputs
+  (notably `file_path`, `content`, `chunk_size`/`overlap`) as stdio with no
+  authentication. Never expose the port without auth/reverse-proxy.
 
 ---
 

@@ -5,6 +5,7 @@ MCP Tools implementation
 
 import asyncio
 import hashlib
+import logging
 import os
 import re
 import sys
@@ -15,8 +16,69 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 from src.extraction.entropy_gate import SALIENCE_VERSION, character_diversity, escape_surrealql
 
 from .common_logic import _execute_query, _get_or_create_entity, _store_content
-from .core import _clean_output, _embed_query, _extract_result, _query_surreal, mcp
+from .core import (
+    _clean_output,
+    _datetime_filters,
+    _embed_query,
+    _extract_result,
+    _extract_statement_results,
+    _query_surreal,
+    _strip_angled,
+    _validate_limit,
+    mcp,
+)
+from .core import _is_record_id as _is_record_id_impl
 from src.extraction.entity_utils import infer_entity_type, validate_predicate
+
+from pathlib import Path
+
+log = logging.getLogger(__name__)
+
+# ── PY-001 / PY-004 hardening: markdown import limits ────────────────────
+# `memory_store_markdown(file_path=...)` previously opened any server-local
+# path with no suffix/size/jail check (arbitrary file read of `.env`, keys,
+# … via MCP stdio and unauthenticated `POST /memory/store/markdown`), and
+# `chunk_size/overlap/content/max_concurrent` were unvalidated (DoS via
+# chunk amplification). All bounds are enforced here so both the MCP tool
+# and the HTTP endpoint are covered.
+_MAX_MARKDOWN_FILE_BYTES = 2 * 1024 * 1024  # 2 MiB on disk
+_MAX_MARKDOWN_CHARS = 200_000  # chars after decoding
+_ALLOWED_MARKDOWN_SUFFIXES = frozenset({".md", ".markdown"})
+_MIN_CHUNK_SIZE = 100
+_MAX_CHUNK_SIZE = 10_000
+_ALLOWED_CHUNKING_METHODS = frozenset({"char", "token", "semantic"})
+_ALLOWED_ENCODINGS = frozenset({"cl100k_base", "p50k_base", "r50k_base", "o200k_base"})
+_MIN_MAX_CONCURRENT = 1
+_MAX_MAX_CONCURRENT = 5
+
+
+def _markdown_root() -> Optional[Path]:
+    """Optional jail directory from `SIEVEON_MARKDOWN_ROOT` (resolved, or None)."""
+    raw = os.getenv("SIEVEON_MARKDOWN_ROOT")
+    if not raw or not raw.strip():
+        return None
+    try:
+        return Path(raw).expanduser().resolve()
+    except Exception:
+        return None
+
+
+def _is_within_root(resolved: Path, root: Path) -> bool:
+    try:
+        resolved.relative_to(root)
+        return True
+    except ValueError:
+        return False
+
+# Ceiling for over-fetch multipliers in the hybrid search paths. Without a cap a
+# large `offset` times a 12x exclusion multiplier asks the database for millions
+# of rows to throw away in Python.
+_MAX_FETCH_ROWS = 500
+
+# Upper bound on paths collected by graph_traverse. Distinct routes multiply
+# combinatorially with depth, so without a cap a dense graph at max_depth=5 can
+# exhaust memory inside one tool call.
+_MAX_TRAVERSE_PATHS = 2_000
 
 
 def _prepare_fts_query(query: str, syntax: str = "auto") -> str:
@@ -58,8 +120,12 @@ def _parse_fts_operators(query: str) -> dict:
              "must_phrases": [...], "must_not_phrases": [...],
              "should_phrases": [...]}. Pure function, no I/O.
     """
-    must, must_not, should = [], [], []
-    must_phrases, must_not_phrases, should_phrases = [], [], []
+    must: List[str] = []
+    must_not: List[str] = []
+    should: List[str] = []
+    must_phrases: List[str] = []
+    must_not_phrases: List[str] = []
+    should_phrases: List[str] = []
     if not query or not query.strip():
         return {"must": must, "must_not": must_not, "should": should,
                 "must_phrases": must_phrases,
@@ -250,14 +316,103 @@ async def memory_store_batch(
 
 
 def _read_file(file_path: str) -> str:
+    """Securely read a markdown file for `memory_store_markdown`.
+
+    Mitigates PY-001 (arbitrary local file read): only `.md`/`.markdown`
+    regular files, no symlinks, size-capped, optionally jailed to
+    `SIEVEON_MARKDOWN_ROOT`. Error messages expose only the basename to
+    avoid leaking server-local absolute paths.
+    """
+    if not isinstance(file_path, str) or not file_path.strip() or len(file_path) > 4096:
+        raise ValueError("Invalid file_path")
+    if "\x00" in file_path:
+        raise ValueError("Invalid file_path")
+    p = Path(file_path).expanduser()
+    # Reject symlinks before resolving (TOCTOU best-effort; read follows).
     try:
-        with open(file_path, "r", encoding="utf-8") as f:
-            return f.read()
+        if p.is_symlink():
+            raise ValueError(f"Refusing symlink: {p.name}")
+    except ValueError:
+        raise
+    except Exception:
+        raise ValueError("Invalid file_path")
+    try:
+        resolved = p.resolve()
+    except Exception:
+        raise FileNotFoundError(f"File not found: {p.name}")
+    if resolved.suffix.lower() not in _ALLOWED_MARKDOWN_SUFFIXES:
+        raise ValueError(
+            f"Only markdown files allowed ({sorted(_ALLOWED_MARKDOWN_SUFFIXES)}), got '{resolved.suffix}'"
+        )
+    root = _markdown_root()
+    if root is not None and not _is_within_root(resolved, root):
+        raise ValueError(f"file_path outside SIEVEON_MARKDOWN_ROOT: {p.name}")
+    try:
+        st = resolved.stat()
     except FileNotFoundError:
-        raise FileNotFoundError(f"File not found: {file_path}")
+        raise FileNotFoundError(f"File not found: {p.name}")
+    except Exception:
+        raise ValueError(f"Cannot stat file: {p.name}")
+    try:
+        if not resolved.is_file() or resolved.is_symlink():
+            raise ValueError(f"Not a regular file: {p.name}")
+    except ValueError:
+        raise
+    except Exception:
+        raise ValueError(f"Cannot access file: {p.name}")
+    if st.st_size > _MAX_MARKDOWN_FILE_BYTES:
+        raise ValueError(
+            f"File too large ({st.st_size} bytes, max {_MAX_MARKDOWN_FILE_BYTES})"
+        )
+    try:
+        with open(resolved, "r", encoding="utf-8") as f:
+            content = f.read(_MAX_MARKDOWN_CHARS + 1)
+    except FileNotFoundError:
+        raise FileNotFoundError(f"File not found: {p.name}")
     except UnicodeDecodeError:
-        with open(file_path, "r", encoding="latin-1") as f:
-            return f.read()
+        with open(resolved, "r", encoding="latin-1") as f:
+            content = f.read(_MAX_MARKDOWN_CHARS + 1)
+    if len(content) > _MAX_MARKDOWN_CHARS:
+        raise ValueError(
+            f"File content too large (>{_MAX_MARKDOWN_CHARS} chars)"
+        )
+    return content
+
+
+def _validate_markdown_params(
+    chunk_size: Any,
+    overlap: Any,
+    chunking_method: Any,
+    encoding_name: Any,
+    max_concurrent: Any,
+) -> tuple[int, int, str, str, int]:
+    """Validate PY-004 parameters; raises ValueError with a clear message."""
+    chunk_size = _validate_limit(chunk_size, "chunk_size", _MAX_CHUNK_SIZE)
+    if chunk_size < _MIN_CHUNK_SIZE:
+        raise ValueError(
+            f"chunk_size must be >= {_MIN_CHUNK_SIZE} (got {chunk_size})"
+        )
+    overlap = _validate_limit(overlap, "overlap", _MAX_CHUNK_SIZE)
+    if overlap >= chunk_size:
+        raise ValueError(
+            f"overlap must be < chunk_size (got overlap={overlap}, chunk_size={chunk_size})"
+        )
+    if chunking_method not in _ALLOWED_CHUNKING_METHODS:
+        raise ValueError(
+            f"chunking_method must be one of {sorted(_ALLOWED_CHUNKING_METHODS)}"
+        )
+    if not isinstance(encoding_name, str) or encoding_name not in _ALLOWED_ENCODINGS:
+        raise ValueError(
+            f"encoding_name must be one of {sorted(_ALLOWED_ENCODINGS)}"
+        )
+    max_concurrent = _validate_limit(
+        max_concurrent, "max_concurrent", _MAX_MAX_CONCURRENT
+    )
+    if max_concurrent < _MIN_MAX_CONCURRENT:
+        raise ValueError(
+            f"max_concurrent must be >= {_MIN_MAX_CONCURRENT} (got {max_concurrent})"
+        )
+    return chunk_size, overlap, chunking_method, encoding_name, max_concurrent
 
 
 @mcp.tool()
@@ -302,18 +457,50 @@ async def memory_store_markdown(
     if content and file_path:
         return {"status": "error", "message": "Provide either 'content' or 'file_path', not both"}
 
+    # PY-004: fail-closed on degenerative/oversized chunking params (DoS).
+    try:
+        chunk_size, overlap, chunking_method, encoding_name, max_concurrent = (
+            _validate_markdown_params(
+                chunk_size, overlap, chunking_method, encoding_name, max_concurrent
+            )
+        )
+    except (ValueError, TypeError) as e:
+        return {"status": "error", "message": f"Invalid chunking params: {e}"}
+    for _flag_name, _flag_val in (
+        ("include_heading_context", include_heading_context),
+        ("strip_images", strip_images),
+        ("parse_front_matter", parse_front_matter),
+    ):
+        if not isinstance(_flag_val, bool):
+            return {
+                "status": "error",
+                "message": f"Invalid chunking params: {_flag_name} must be a boolean",
+            }
+    if not isinstance(source, str) or not source.strip() or len(source) > 256:
+        return {"status": "error", "message": "Invalid chunking params: source must be a non-empty string (<=256 chars)"}
+
     if file_path:
         try:
             content = _read_file(file_path)
         except FileNotFoundError as e:
             return {"status": "error", "message": str(e)}
+        except ValueError as e:
+            return {"status": "error", "message": str(e)}
         except Exception as e:
             return {"status": "error", "message": f"Failed to read file: {e}"}
         if source == "markdown_import":
-            source = f"markdown:{os.path.basename(file_path)}"
+            try:
+                source = f"markdown:{Path(file_path).name[:100]}"
+            except Exception:
+                source = "markdown:file"
 
     if not content or not content.strip():
         return {"status": "error", "message": "Content is empty"}
+    if len(content) > _MAX_MARKDOWN_CHARS:
+        return {
+            "status": "error",
+            "message": f"Content too large ({len(content)} chars, max {_MAX_MARKDOWN_CHARS})",
+        }
 
     from .chunking import chunk_markdown
 
@@ -458,40 +645,52 @@ async def memory_update(subject: str, predicate: str, new_value: str) -> dict:
     subject_escaped = escape_surrealql(subject)
     predicate_escaped = escape_surrealql(predicate)
 
-    find_sql = f"""
-    SELECT * FROM fact
-    WHERE in.name = '{subject_escaped}'
-      AND predicate = '{predicate_escaped}'
-      AND valid_until = NONE
-    LIMIT 1;
-    """
-    find_result = await _query_surreal(find_sql)
-    facts = _extract_result(find_result, 1)
-
-    invalidated = None
-    if facts:
-        old_fact_id = facts[0]["id"]
-        invalidate_sql = f"UPDATE {old_fact_id} SET valid_until = time::now();"
-        await _query_surreal(invalidate_sql)
-        invalidated = old_fact_id
-
     # Salience coverage: update-created facts carry it too (novelty unknown
     # here -> neutral 0.5 inside fact_salience).
     from src.extraction.entropy_gate import EntropyGate
 
     sal = EntropyGate.fact_salience(1.0, predicate, None)
-    relate_sql = (
-        f"RELATE {subject_id}->fact->{object_id} SET predicate = '{predicate_escaped}', "
-        f"confidence = 1.0, salience = {sal:.4f}, salience_version = '{SALIENCE_VERSION}', "
-        f"extractor = 'manual';"
-    )
-    relate_result = await _query_surreal(relate_sql)
-    new_fact = _extract_result(relate_result, 1)
-    new_fact_id = new_fact[0]["id"] if new_fact else None
+
+    # Invalidate ALL active (subject, predicate) facts, not just one: a
+    # subject may hold several (e.g. three concurrent works_at rows), and
+    # leaving any active after an update serves stale values as current.
+    #
+    # Both statements go in ONE transaction. Sent separately, a failing RELATE
+    # left the subject with every fact invalidated and none created -- silent,
+    # permanent data loss. Inside a transaction SurrealDB either applies both
+    # or neither, so a failure now raises _NonRetryableSurrealError and leaves
+    # the graph untouched. One round trip instead of two, as a bonus.
+    txn_sql = f"""
+BEGIN TRANSACTION;
+    UPDATE fact SET valid_until = time::now()
+    WHERE in.name = '{subject_escaped}'
+      AND predicate = '{predicate_escaped}'
+      AND valid_until = NONE;
+    RELATE {subject_id}->fact->{object_id}
+      SET predicate = '{predicate_escaped}',
+          confidence = 1.0,
+          salience = {sal:.4f},
+          salience_version = '{SALIENCE_VERSION}',
+          extractor = 'manual';
+COMMIT TRANSACTION;
+"""
+    txn_result = await _query_surreal(txn_sql)
+    statement_results = _extract_statement_results(txn_result)
+    invalidated_rows = statement_results[0] if len(statement_results) > 0 else []
+    new_fact = statement_results[1] if len(statement_results) > 1 else []
+
+    invalidated_ids = [
+        r.get("id") for r in invalidated_rows
+        if isinstance(r, dict) and r.get("id")
+    ]
+    invalidated = invalidated_ids[0] if invalidated_ids else None
+    new_fact_id = new_fact[0]["id"] if new_fact and isinstance(new_fact[0], dict) else None
 
     return {
         "status": "ok",
         "invalidated_fact": invalidated,
+        "invalidated_facts": invalidated_ids,
+        "invalidated_count": len(invalidated_ids),
         "new_fact": new_fact_id,
         "subject": subject,
         "predicate": predicate,
@@ -605,17 +804,18 @@ async def event_log_search(
     Use query_syntax='exact' for exact phrase matching (auto-wraps in quotes).
     Default 'auto' treats the entire input as plain text with full escaping.
     """
+    limit = _validate_limit(limit, "limit", max_val=1_000)
+    offset = _validate_limit(offset, "offset", max_val=1_000_000)
     fts_plan = _fts_search_plan(query, query_syntax, "content")
     fts_condition = fts_plan["where"]
     exclude_terms = fts_plan["exclude_terms"]
     exclude_phrases = fts_plan["exclude_phrases"]
     # Datetime-Vergleiche brauchen type::datetime (plain strings coerces
     # SurrealDB v3 bei datetime-Feldern NICHT -- stiller Wrong-Result-Bug).
-    time_filter = ""
-    if since:
-        time_filter += f" AND timestamp >= type::datetime(\"{escape_surrealql(since)}\")"
-    if until:
-        time_filter += f" AND timestamp <= type::datetime(\"{escape_surrealql(until)}\")"
+    # Values are BOUND, not interpolated: the previous form embedded them in a
+    # double-quoted literal, which escape_surrealql did not protect.
+    _time_clauses, sql_params = _datetime_filters(since, until)
+    time_filter = " AND " + " AND ".join(_time_clauses) if _time_clauses else ""
 
     if include_forgotten:
         forgotten_filter = "1=1"
@@ -633,14 +833,18 @@ async def event_log_search(
         LIMIT {limit}
         START {offset};
         """
-        result = await _query_surreal(sql)
+        result = await _query_surreal(sql, sql_params)
         events = _extract_result(result, 1)
         for event in events:
             event["search_type"] = "recent"
         return {"events": _clean_output(events), "count": len(events)}
 
-    # Exclusions are post-filtered in Python, so over-fetch to keep recall.
-    fetch_limit = (offset + limit) * (10 if (exclude_terms or exclude_phrases) else 4)
+    # Exclusions are post-filtered in Python, so over-fetch to keep recall --
+    # but cap it, or a large offset asks for millions of rows.
+    fetch_limit = min(
+        (offset + limit) * (10 if (exclude_terms or exclude_phrases) else 4),
+        _MAX_FETCH_ROWS,
+    )
 
     # 1) Lexical search via FTX index (fts mode compiles +must/"phrase" into
     # AND conditions; -exclusions are post-filtered, see _fts_search_plan).
@@ -668,7 +872,7 @@ async def event_log_search(
         """
 
     # Start FTX query immediately (overlap with embedding computation)
-    ftx_task = asyncio.create_task(_query_surreal(ftx_sql))
+    ftx_task = asyncio.create_task(_query_surreal(ftx_sql, sql_params))
 
     # 2) Vector search — compute embedding while FTX runs
     try:
@@ -687,9 +891,15 @@ async def event_log_search(
         ORDER BY vec_score DESC
         LIMIT {fetch_limit};
         """
-        vec_result = await _query_surreal(vec_sql)
+        vec_result = await _query_surreal(vec_sql, sql_params)
         ftx_result = await ftx_task
     except Exception:
+        # The vector channel is optional: a failed embedding lookup or a
+        # dimension mismatch still leaves usable lexical results. Degrade
+        # rather than fail, but say so -- silently dropping half the ranking
+        # signal is how a recall regression goes unnoticed.
+        log.warning("event_log_search: vector channel failed, "
+                    "returning lexical results only", exc_info=True)
         ftx_result = await ftx_task
         vec_result = None
 
@@ -697,7 +907,7 @@ async def event_log_search(
 
     # RRF fusion
     k = 60
-    fused = {}
+    fused: Dict[Any, Dict[str, Any]] = {}
     for rank, ev in enumerate(ftx_events):
         eid = ev.get("id")
         if eid:
@@ -730,21 +940,28 @@ async def event_log_search(
     return {"events": events, "count": len(events)}
 
 
-@mcp.tool()
-async def kg_query(
-    subject: Optional[str] = None,
-    object: Optional[str] = None,
-    predicate: Optional[str] = None,
-    at_time: Optional[str] = None,
-    limit: int = 100,
-    offset: int = 0,
-) -> dict:
-    """Direct graph traversal: query facts by subject/object/predicate/time.
-    Returns associated entities with their inferred types (e.g., 'organization', 'concept').
-    - 'subject' matches entity name in subject position (in.name).
-    - 'object' matches entity name in object position (out.name).
-    - If both are provided, finds facts connecting them.
-    - If neither is provided, returns all active facts (use with predicate to narrow)."""
+def _build_kg_query_sql(
+    subject: Optional[str],
+    object: Optional[str],
+    predicate: Optional[str],
+    at_time: Optional[str],
+    limit: int,
+    offset: int,
+    table: str = "fact",
+) -> str:
+    """Build the kg_query SELECT. Pure (no IO) so temporal filtering is testable.
+
+    Without at_time only currently-active facts are returned. With at_time
+    the validity window is pinned to that instant instead: requiring
+    valid_until > now() on top would exclude every fact invalidated since,
+    which made historical queries always return nothing.
+
+    `table` selects the source ("fact" or "fact_history", the archive that
+    the maintainer fills instead of deleting). Anything else is rejected
+    (table names cannot be bound as parameters, so allowlist).
+    """
+    if table not in ("fact", "fact_history"):
+        raise ValueError(f"unknown KG table: {table!r}")
     extra_clauses = ""
 
     if subject and object:
@@ -763,19 +980,23 @@ async def kg_query(
             extra_clauses += f" AND predicate = '{predicate_escaped}'"
         else:
             extra_clauses = f"WHERE predicate = '{predicate_escaped}'"
+
     if at_time:
+        # Pin validity to the instant (same semantics as the executor's
+        # _validity_at_clause): valid then, regardless of now().
         time_escaped = escape_surrealql(at_time)
         time_condition = (
-            f"(valid_from <= '{time_escaped}' OR valid_from = NONE)"
-            f" AND (valid_until >= '{time_escaped}' OR valid_until = NONE)"
+            f"valid_from <= type::datetime('{time_escaped}')"
+            f" AND (valid_until IS NONE OR valid_until > type::datetime('{time_escaped}'))"
         )
         if extra_clauses:
             extra_clauses += f" AND {time_condition}"
         else:
             extra_clauses = f"WHERE {time_condition}"
-
-    # Only show active facts (not invalidated)
-    valid_filter = "WHERE (valid_until IS NONE OR valid_until > time::now())"
+        valid_filter = "WHERE 1 = 1"
+    else:
+        # Only show active facts (not invalidated)
+        valid_filter = "WHERE (valid_until IS NONE OR valid_until > time::now())"
 
     extra_clauses_stripped = ""
     if extra_clauses:
@@ -785,7 +1006,7 @@ async def kg_query(
         if extra_clauses_stripped:
             extra_clauses_stripped = f"AND {extra_clauses_stripped}"
 
-    sql = f"""
+    return f"""
     SELECT
         id,
         in.name AS in_name,
@@ -795,14 +1016,57 @@ async def kg_query(
         out.type AS out_type,
         out.id AS out_id,
         predicate, confidence, valid_from, valid_until
-    FROM fact
+    FROM {table}
     {valid_filter} {extra_clauses_stripped}
     ORDER BY confidence DESC
     LIMIT {limit} START {offset};
     """
 
+
+@mcp.tool()
+async def kg_query(
+    subject: Optional[str] = None,
+    object: Optional[str] = None,
+    predicate: Optional[str] = None,
+    at_time: Optional[str] = None,
+    limit: int = 100,
+    offset: int = 0,
+) -> dict:
+    """Direct graph traversal: query facts by subject/object/predicate/time.
+    Returns associated entities with their inferred types (e.g., 'organization', 'concept').
+    - 'subject' matches entity name in subject position (in.name).
+    - 'object' matches entity name in object position (out.name).
+    - If both are provided, finds facts connecting them.
+    - If neither is provided, returns all active facts (use with predicate to narrow)."""
+    limit = _validate_limit(limit, "limit", max_val=10_000)
+    offset = _validate_limit(offset, "offset", max_val=1_000_000)
+    sql = _build_kg_query_sql(subject, object, predicate, at_time, limit, offset)
+
     result = await _query_surreal(sql)
     facts = _extract_result(result, 1)
+
+    if at_time:
+        # Historical queries also read the archive: the maintainer moves
+        # invalidated facts to fact_history instead of deleting them, so a
+        # fact purged from `fact` long ago is still answerable here.
+        try:
+            hist_sql = _build_kg_query_sql(
+                subject, object, predicate, at_time, limit, offset,
+                table="fact_history",
+            )
+            hist_result = await _query_surreal(hist_sql)
+            hist_facts = _extract_result(hist_result, 1) or []
+            if hist_facts:
+                seen = {f.get("id") for f in facts if isinstance(f, dict)}
+                for hf in hist_facts:
+                    if isinstance(hf, dict) and hf.get("id") not in seen:
+                        facts.append(hf)
+                        seen.add(hf.get("id"))
+                facts.sort(key=lambda f: (f.get("confidence") or 0)
+                           if isinstance(f, dict) else 0, reverse=True)
+                facts = facts[:limit] if limit else facts
+        except Exception as e:
+            log.warning("kg_query: fact_history read failed: %s", e)
 
     NOISY_PREDICATES = {"weakly_related", "mentions"}
     MIN_CONFIDENCE = 0.5
@@ -855,6 +1119,23 @@ async def kg_query(
     }
 
 
+def _count_rare_term_hits(rare_terms: list, content_lower: str) -> int:
+    """Count rare query terms occurring as whole words in the content.
+
+    Word boundaries matter: a substring check counted "service" as a hit
+    inside "Services", boosting an irrelevant event above the true match
+    (2026-10-03 incident).
+    """
+    hits = 0
+    for term in rare_terms:
+        t = (term or "").lower()
+        if not t:
+            continue
+        if re.search(r"\b" + re.escape(t) + r"\b", content_lower):
+            hits += 1
+    return hits
+
+
 @mcp.tool()
 async def semantic_search(
     query: str,
@@ -874,6 +1155,8 @@ async def semantic_search(
     """
     if not query.strip():
         return {"events": [], "count": 0, "message": "Query cannot be empty"}
+
+    top_k = _validate_limit(top_k, "top_k", max_val=150)
 
     fts_plan = _fts_search_plan(query, query_syntax, "content")
     ftx_condition = fts_plan["where"]
@@ -926,18 +1209,22 @@ async def semantic_search(
     vec_result = await vec_task
     vec_events = _extract_result(vec_result, 1) or []
 
-    ftx_events = []
+    ftx_events: List[Dict[str, Any]] = []
     if ftx_task:
         try:
             ftx_result = await ftx_task
             ftx_events = _extract_result(ftx_result, 1) or []
         except Exception:
-            pass
+            # Vector results alone still answer the query. Degrade rather than
+            # fail, but record it: a silently missing lexical channel is how a
+            # recall regression stays invisible until someone measures it.
+            log.warning("semantic_search: FTX channel failed, "
+                        "returning vector-only results", exc_info=True)
 
     # 3) RRF fusion: combine vector + ftx results
     k = 60
-    fused = {}  # content_hash -> {event, rrf_score, vec_score}
-    seen_ids = set()
+    fused: Dict[Any, Dict[str, Any]] = {}
+    seen_ids: set = set()
 
     def _bm25_of(ev: dict) -> float:
         try:
@@ -1018,9 +1305,17 @@ async def semantic_search(
         if query_lower and query_lower in content_lower:
             rrf += 1.0 / k
         elif rare_terms:
-            hits = sum(1 for t in rare_terms if t.lower() in content_lower)
+            hits = _count_rare_term_hits(rare_terms, content_lower)
             if hits:
                 rrf += (hits / len(rare_terms)) * (1.0 / k)
+
+        # Vector magnitude term: pure rank fusion let a document ranking high
+        # in a weak channel outrank the semantically closest one (incident:
+        # vec 0.26 beat vec 0.56 on rank arithmetic alone). Adding vec/k
+        # keeps the RRF scale (max one extra 1/k) while letting similarity
+        # magnitude break rank ties.
+        if vec_score > 0:
+            rrf += vec_score / k
 
         scored.append((rrf, vec_score, bm25, ev))
         eid = ev.get("id")
@@ -1031,7 +1326,6 @@ async def semantic_search(
     # Extract entity names from event contents AND the query itself for KG matching
     kg_facts_map = {}
     if event_ids_for_kg:
-        import re
         entity_names = set()
         # Extract entities from event contents
         for _, _, _, ev in scored[:top_k]:
@@ -1094,7 +1388,7 @@ async def semantic_search(
                     if filtered:
                         kg_facts_map["_all"] = [_clean_output(f) for f in filtered]
             except Exception as e:
-                print(f"[semantic_search] KG fact filtering error: {e}")
+                log.warning("semantic_search: KG fact filtering error: %s", e)
 
     # 6) Sort by RRF, normalize scores to 0-1, build final output
     # Global scale (comparable across queries, unlike per-query min-max which
@@ -1102,11 +1396,11 @@ async def semantic_search(
     # post-fusion boosts applied above, otherwise every two-channel hit
     # saturates at 1.0 and scores stop discriminating (measured 2026-10-03:
     # five hits all at 1.0): 2/k for two rank-0 channel hits + 1/k exact
-    # substring boost + 1/k rare-term boost = 4/k.
+    # substring boost + 1/k rare-term boost + 1/k vector magnitude = 5/k.
     scored.sort(key=lambda x: (x[0], x[1]), reverse=True)
     top_results = scored[:top_k]
 
-    max_possible_rrf = 4.0 / k
+    max_possible_rrf = 5.0 / k
 
     events = []
     for rrf, vec_score, bm25, ev in top_results:
@@ -1151,21 +1445,19 @@ def _is_fact_plausible(predicate: str, in_type: str, out_type: str) -> bool:
 
 def _is_highly_repetitive(text: str) -> bool:
     """Erkennt repetitive/noise content wie 'test test test test test' or 'ab ab ab ab ab'.
-    Prüft character_diversity (< 0.20) und zusätzlich die Wort-Wiederholungsrate."""
+    Character-Diversity ALLEIN reicht nicht: der Zeichenvorrat ist begrenzt,
+    daher sinkt die Ratio mit der Textlaenge -- normale Saetze messen 0.16,
+    quasi identisch zu 'test test test' (0.167). Erst zusammen mit hoher
+    Wort-Wiederholungsrate ist es Repetition (2026-10-03: sonst vernichtet
+    das x0.02-Penalty echte Treffer im Retrieval-Ranking)."""
     if not text or len(text) < 5:
         return False
     div = character_diversity(text)
-    # Character-Diversity: "test test test test test" -> 4/24 = 0.167 < 0.20 ✓
-    if div < 0.20:
-        return True
-    # Word-Repetition: zählt unique words / total words
     words = text.lower().split()
+    word_ratio = 1.0
     if len(words) >= 3:
-        unique_words = len(set(words))
-        word_ratio = unique_words / len(words)
-        if word_ratio < 0.3:
-            return True
-    return False
+        word_ratio = len(set(words)) / len(words)
+    return div < 0.20 and word_ratio < 0.3
 
 
 @mcp.tool()
@@ -1236,6 +1528,19 @@ async def memory_get(
     is_record_id = ":" in id_stripped and not id_stripped.startswith("⟨")
 
     if is_record_id:
+        # Below, id_stripped is interpolated *unquoted* into FROM / WHERE, so a
+        # semicolon in the input ends the statement and the rest is executed as
+        # further SurrealQL. The previous guard was merely `":" in id`, which
+        # "event:abc; DELETE event" passes. Validate the shape instead -- the
+        # same check memory_forget already used.
+        normalised = _strip_angled(id_stripped)
+        if not _is_record_id(normalised):
+            return {
+                "status": "error",
+                "message": f"Invalid record id '{id_stripped}': expected "
+                           f"'table:id' with an alphanumeric id",
+            }
+        id_stripped = normalised
         prefix = id_stripped.split(":")[0]
 
         if prefix == "event":
@@ -1330,13 +1635,10 @@ async def memory_get(
         return {"status": "ok", "type": "entity", "data": entity}
 
 
-def _is_record_id(value: str) -> bool:
-    """Strict record-id check (table:id, alphanumeric) against SurrealQL injection.
-
-    Record ids are interpolated unquoted into queries in several tools; only
-    allow the narrow shape SurrealDB itself generates.
-    """
-    return bool(re.fullmatch(r"[A-Za-z0-9_]+:[A-Za-z0-9_]+", str(value or "")))
+# `_is_record_id` is re-exported from src.mcp.core, where it lives so the MCP
+# resources can share the exact same guard (they interpolate record ids
+# unquoted too). Aliased here because this module shadows the name otherwise.
+_is_record_id = _is_record_id_impl
 
 
 @mcp.tool()
@@ -1365,7 +1667,7 @@ async def memory_forget(
             "message": f"Invalid record id '{event_id}': expected table:id",
         }
 
-    forgotten_items = []
+    forgotten_items: List[Dict[str, Any]] = []
 
     if event_id:
         # Prüfen ob das Event existiert
@@ -1579,7 +1881,17 @@ async def memory_unforget(
     """Restores a previously forgotten event or entity. Resets forgotten=false.
     When restoring a forgotten entity, also restores all facts that were
     invalidated alongside it (clears valid_until and invalidated_reason)."""
-    is_entity = str(event_id).startswith("entity:")
+    event_id = _strip_angled(event_id)
+    # event_id is interpolated unquoted into SELECT/UPDATE below. This tool
+    # un-forgets data, so an injected statement here is a privacy incident, not
+    # just a query error -- validate before touching the database.
+    if not _is_record_id(event_id):
+        return {
+            "status": "error",
+            "message": f"Invalid record id '{event_id}': expected 'table:id' "
+                       f"with an alphanumeric id",
+        }
+    is_entity = event_id.startswith("entity:")
 
     try:
         check_sql = f"SELECT id FROM {event_id};"
@@ -1595,7 +1907,7 @@ async def memory_unforget(
         update_sql = f"UPDATE {event_id} SET forgotten = false, forgotten_reason = NONE;"
         await _query_surreal(update_sql)
 
-        result = {"status": "restored", "event_id": event_id}
+        result: Dict[str, Any] = {"status": "restored", "event_id": event_id}
 
         # 2. If it's an entity, also restore all facts invalidated alongside it
         if is_entity:
@@ -1623,7 +1935,7 @@ async def memory_unforget(
                         )
                         restored_facts += 1
                     except Exception as e:
-                        print(f"[WARN] Failed to restore fact {fid}: {e}")
+                        log.warning("Failed to restore fact %s: %s", fid, e)
 
                 if restored_facts:
                     result["facts_restored"] = restored_facts
@@ -1667,17 +1979,31 @@ async def memory_consolidate(
     stale_facts = _extract_result(result, 1)
 
     deleted_count = 0
+    archived_count = 0
     if delete_stale and stale_facts:
+        # No-loss: stale facts move to fact_history before removal, so
+        # at_time queries keep answering from the archive.
+        from src.maintenance.conservative_maintainer import _archive_fact_sqls
+
         for fact in stale_facts:
             fact_id = fact.get("id")
             try:
-                delete_sql = f"DELETE {fact_id};"
+                # Full row needed for a lossless copy; the sample select
+                # above only fetches names.
+                full_rows = _extract_result(
+                    await _query_surreal(f"SELECT * FROM {fact_id};"), 1
+                )
+                if not full_rows:
+                    continue
+                create_sql, delete_sql = _archive_fact_sqls(full_rows[0])
+                await _query_surreal(create_sql)
                 await _query_surreal(delete_sql)
+                archived_count += 1
                 deleted_count += 1
             except Exception as e:
                 return {
                     "status": "error",
-                    "message": f"Failed to delete fact {fact_id}: {str(e)}",
+                    "message": f"Failed to archive fact {fact_id}: {str(e)}",
                 }
 
     # Step 2: Find duplicate active facts — gleiches (subject, predicate, object) mehrfach aktiv
@@ -1704,7 +2030,7 @@ async def memory_consolidate(
     all_active = _extract_result(dup_result, 1)
 
     merged_count = 0
-    seen = {}
+    seen: Dict[Any, Any] = {}
     for fact in all_active:
         key = (fact.get("in_id"), fact.get("predicate"), fact.get("out_id"))
         fid = fact.get("id")
@@ -1716,7 +2042,7 @@ async def memory_consolidate(
                     await _query_surreal(inv_sql)
                     merged_count += 1
                 except Exception as e:
-                    print(f"[WARN] Failed to invalidate duplicate fact {fid}: {e}")
+                    log.warning("Failed to invalidate duplicate fact %s: %s", fid, e)
         else:
             seen[key] = fid
 
@@ -1735,12 +2061,13 @@ async def memory_consolidate(
         await _query_surreal(log_sql)
     except Exception as e:
         # Log-Fehler sollen den Hauptvorgang nicht blockieren
-        print(f"[WARN] Failed to write consolidation event log: {e}")
+        log.warning("Failed to write consolidation event log: %s", e)
 
     return {
         "scope": scope,
         "stale_facts_found": len(stale_facts),
         "deleted_count": deleted_count,
+        "archived_count": archived_count,
         "duplicates_merged": merged_count,
         "stale_facts_sample": stale_facts[:10],
         "status": "success",
@@ -1757,6 +2084,8 @@ async def list_entities(
     sort_order: str = "asc",
 ) -> dict:
     """List entities in the knowledge graph with filtering and pagination."""
+    limit = _validate_limit(limit, "limit", max_val=1_000)
+    offset = _validate_limit(offset, "offset", max_val=1_000_000)
     if sort_by not in ("name", "created_at", "updated_at"):
         sort_by = "name"
     if sort_order not in ("asc", "desc"):
@@ -1995,6 +2324,13 @@ async def memory_merge_entities(
             fact_id = fact["id"]
             predicate_escaped = escape_surrealql(fact.get("predicate", ""))
             confidence = fact.get("confidence", 1.0)
+            # confidence comes from the DB and is interpolated as a number; a
+            # non-numeric value would break the statement, so normalise rather
+            # than pass through.
+            try:
+                confidence = float(confidence)
+            except (TypeError, ValueError):
+                confidence = 1.0
 
             # Determine which side to replace
             fact_in_id = fact.get("in_id")
@@ -2006,11 +2342,17 @@ async def memory_merge_entities(
             else:
                 relate_sql = f"RELATE {fact_in_id}->fact->{tgt_id} SET predicate = '{predicate_escaped}', confidence = {confidence};"
 
-            await _query_surreal(relate_sql)
-
-            # Invalidate original fact
-            invalidate_sql = f"UPDATE {fact_id} SET valid_until = time::now(), invalidated_reason = 'merged_into_{te}';"
-            await _query_surreal(invalidate_sql)
+            # RELATE and the invalidation of the original go in one transaction.
+            # Sent separately, a failure between them left the fact active AND
+            # duplicated under the target -- the merge would silently fork the
+            # graph instead of moving it.
+            txn_sql = f"""
+BEGIN TRANSACTION;
+    {relate_sql}
+    UPDATE {fact_id} SET valid_until = time::now(), invalidated_reason = 'merged_into_{te}';
+COMMIT TRANSACTION;
+"""
+            await _query_surreal(txn_sql)
 
             merged += 1
         except Exception as e:
@@ -2037,7 +2379,7 @@ async def memory_merge_entities(
         """
         await _query_surreal(log_sql)
     except Exception as e:
-        print(f"[WARN] Failed to write merge event log: {e}")
+        log.warning("Failed to write merge event log: %s", e)
 
     return {
         "status": "ok",
@@ -2061,13 +2403,14 @@ async def list_events(
     include_forgotten: bool = False,
 ) -> dict:
     """List events from the raw event log with filtering and pagination."""
+    limit = _validate_limit(limit, "limit", max_val=1_000)
+    offset = _validate_limit(offset, "offset", max_val=1_000_000)
     filters = []
     if not include_forgotten:
         filters.append("forgotten = false")
-    if since:
-        filters.append(f"timestamp >= type::datetime(\"{escape_surrealql(since)}\")")
-    if until:
-        filters.append(f"timestamp <= type::datetime(\"{escape_surrealql(until)}\")")
+    # since/until are bound, never interpolated into a literal.
+    time_clauses, sql_params = _datetime_filters(since, until, column="timestamp")
+    filters.extend(time_clauses)
     if source:
         source_escaped = escape_surrealql(source)
         filters.append(f"source = '{source_escaped}'")
@@ -2083,8 +2426,8 @@ async def list_events(
     """
     count_sql = f"SELECT count() FROM event WHERE {where} GROUP ALL;"
 
-    result = await _query_surreal(sql)
-    count_result = await _query_surreal(count_sql)
+    result = await _query_surreal(sql, sql_params)
+    count_result = await _query_surreal(count_sql, sql_params)
 
     events = _clean_output(_extract_result(result, 1))
     counts = _extract_result(count_result, 1)
@@ -2111,15 +2454,28 @@ async def graph_traverse(
     from collections import deque
 
     max_depth = max(1, min(max_depth, 5))
+    min_confidence = max(0.0, min(float(min_confidence), 1.0))
 
-    is_record_id = start_entity.startswith("entity:") or start_entity.startswith("⟨entity:") or ":" in start_entity.split("entity:", 1)[-1][:1]
+    # Record ids are interpolated unquoted, so the shape must be checked. The
+    # previous expression -- `... or ":" in start_entity.split("entity:", 1)[-1][:1]`
+    # -- was effectively always False for the right input and unreadable, and it
+    # never validated anything: "entity:x OR 1=1" reached the WHERE clause.
+    normalised_start = _strip_angled(start_entity)
+    is_record_id = normalised_start.startswith("entity:")
 
     if is_record_id:
-        clean_id = start_entity.strip("⟨⟩")
+        if not _is_record_id(normalised_start):
+            return {
+                "status": "error",
+                "error": f"Invalid record id '{start_entity}': expected "
+                         f"'entity:<alphanumeric id>'",
+                "paths": [],
+                "path_count": 0,
+            }
         entity_sql = f"""
         SELECT id, name, type FROM entity
         WHERE forgotten = false
-        AND (id = {clean_id} OR name = '{escape_surrealql(start_entity)}')
+        AND (id = {normalised_start} OR name = '{escape_surrealql(start_entity)}')
         LIMIT 1;
         """
     else:
@@ -2146,6 +2502,7 @@ async def graph_traverse(
     all_edges: List[dict] = []
     all_paths: List[list] = []
     seen_edge_keys: set = set()
+    paths_truncated = False
 
     queue: deque = deque()
     queue.append((start["id"], start["name"], 0, [], None))
@@ -2223,11 +2580,23 @@ async def graph_traverse(
                 "to": neighbor_name, "confidence": f.get("confidence", 1.0),
             }
             new_path = path + [segment]
-            all_paths.append(new_path)
+            # `visited` only bounds how often a *node* is queued; every distinct
+            # route to it is still appended here, so path count grows
+            # combinatorially with depth on a dense graph. At max_depth=5 that
+            # is unbounded memory in a single tool call -- cap it and say so.
+            if len(all_paths) < _MAX_TRAVERSE_PATHS:
+                all_paths.append(new_path)
+            else:
+                paths_truncated = True
 
             if neighbor_id not in visited and (depth + 1) < max_depth:
                 visited.add(neighbor_id)
                 queue.append((neighbor_id, neighbor_name, depth + 1, new_path, eid))
+
+    if paths_truncated:
+        log.warning(
+            "graph_traverse: path budget of %d reached at depth %d from %r; "
+            "results are partial", _MAX_TRAVERSE_PATHS, max_depth, start_entity)
 
     seen = set()
     unique_paths = []
@@ -2237,7 +2606,7 @@ async def graph_traverse(
             seen.add(key)
             unique_paths.append(p)
 
-    return {
+    result = {
         "status": "ok",
         "start_entity": {"id": start["id"], "name": start["name"], "type": start.get("type", "")},
         "max_depth": max_depth,
@@ -2250,3 +2619,7 @@ async def graph_traverse(
         "path_count": len(unique_paths),
         "paths": unique_paths,
     }
+    if paths_truncated:
+        result["paths_truncated"] = True
+        result["path_budget"] = _MAX_TRAVERSE_PATHS
+    return result

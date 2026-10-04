@@ -331,12 +331,18 @@ class RetrievalExecutor:
                         try:
                             await save_router_costs()
                         except Exception:
-                            pass
+                            logging.warning(
+                                "Router cost snapshot failed; learned costs "
+                                "since the last one are lost", exc_info=True)
 
                     task = asyncio.create_task(_snapshot())
                     task.add_done_callback(lambda t: t.exception() if not t.cancelled() else None)
             except Exception:
-                pass
+                # Never break retrieval over a bookkeeping failure, but do not
+                # hide it either -- a permanently broken snapshot is invisible
+                # otherwise.
+                logging.warning("Router cost snapshot could not be scheduled",
+                                exc_info=True)
 
         # Surfaced so callers can see the score that was fed into the router's
         # cost tracking instead of having to reconstruct it.
