@@ -1,0 +1,814 @@
+{
+ "version": "candidate_anaphora_results_v1",
+ "protocol": "docs/candidate_anaphora_probe_v1.json",
+ "material": "docs/candidate_anaphora_material_v1.json",
+ "stage": "candidate_generation_only (nu_candidates, no validator, no linking)",
+ "match_rule": "normalized span equality or containment, either direction",
+ "note": "D0 items share surface with C0/lex01 triplets (cross-probe calibration)",
+ "pairs": [
+  {
+   "pair_id": "d0med",
+   "condition": "D0",
+   "subtype": "med",
+   "sides": {
+    "yes": {
+     "sentence_id": "d0medyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "provider_outcome": "explicit",
+     "recipient_outcome": "explicit",
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "d0medno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "d1med",
+   "condition": "D1",
+   "subtype": "med",
+   "sides": {
+    "yes": {
+     "sentence_id": "d1medyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "them"
+      ]
+     ],
+     "provider_outcome": "explicit",
+     "recipient_outcome": "pronoun",
+     "outcome": "anaphoric"
+    },
+    "no": {
+     "sentence_id": "d1medno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "them"
+      ]
+     ],
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "d2med",
+   "condition": "D2",
+   "subtype": "med",
+   "sides": {
+    "yes": {
+     "sentence_id": "d2medyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "It",
+       "patients"
+      ]
+     ],
+     "provider_outcome": "pronoun",
+     "recipient_outcome": "explicit",
+     "outcome": "anaphoric"
+    },
+    "no": {
+     "sentence_id": "d2medno",
+     "n_candidates": 0,
+     "candidates": [],
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "d3med",
+   "condition": "D3",
+   "subtype": "med",
+   "sides": {
+    "yes": {
+     "sentence_id": "d3medyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "It",
+       "them"
+      ]
+     ],
+     "provider_outcome": "pronoun",
+     "recipient_outcome": "pronoun",
+     "outcome": "anaphoric"
+    },
+    "no": {
+     "sentence_id": "d3medno",
+     "n_candidates": 0,
+     "candidates": [],
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "d4med",
+   "condition": "D4",
+   "subtype": "med",
+   "sides": {
+    "yes": {
+     "sentence_id": "d4medyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "provider_outcome": "explicit",
+     "recipient_outcome": "explicit",
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "d4medno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "d5med",
+   "condition": "D5",
+   "subtype": "med",
+   "sides": {
+    "yes": {
+     "sentence_id": "d5medyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the clinic",
+       "The patients"
+      ]
+     ],
+     "provider_outcome": "explicit",
+     "recipient_outcome": "resolved",
+     "outcome": "resolved"
+    },
+    "no": {
+     "sentence_id": "d5medno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "The patients"
+      ]
+     ],
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "d6med",
+   "condition": "D6",
+   "subtype": "med",
+   "sides": {
+    "yes": {
+     "sentence_id": "d6medyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "The patients"
+      ]
+     ],
+     "provider_outcome": "resolved",
+     "recipient_outcome": "resolved",
+     "outcome": "resolved"
+    },
+    "no": {
+     "sentence_id": "d6medno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "The patients"
+      ]
+     ],
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "d0fuel",
+   "condition": "D0",
+   "subtype": "fuel",
+   "sides": {
+    "yes": {
+     "sentence_id": "d0fuelyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "units"
+      ]
+     ],
+     "provider_outcome": "explicit",
+     "recipient_outcome": "explicit",
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "d0fuelno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "units"
+      ]
+     ],
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "d1fuel",
+   "condition": "D1",
+   "subtype": "fuel",
+   "sides": {
+    "yes": {
+     "sentence_id": "d1fuelyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "them"
+      ]
+     ],
+     "provider_outcome": "explicit",
+     "recipient_outcome": "pronoun",
+     "outcome": "anaphoric"
+    },
+    "no": {
+     "sentence_id": "d1fuelno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "them"
+      ]
+     ],
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "d2fuel",
+   "condition": "D2",
+   "subtype": "fuel",
+   "sides": {
+    "yes": {
+     "sentence_id": "d2fuelyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "It",
+       "units"
+      ]
+     ],
+     "provider_outcome": "pronoun",
+     "recipient_outcome": "explicit",
+     "outcome": "anaphoric"
+    },
+    "no": {
+     "sentence_id": "d2fuelno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "It",
+       "units"
+      ]
+     ],
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "d3fuel",
+   "condition": "D3",
+   "subtype": "fuel",
+   "sides": {
+    "yes": {
+     "sentence_id": "d3fuelyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "It",
+       "them"
+      ]
+     ],
+     "provider_outcome": "pronoun",
+     "recipient_outcome": "pronoun",
+     "outcome": "anaphoric"
+    },
+    "no": {
+     "sentence_id": "d3fuelno",
+     "n_candidates": 0,
+     "candidates": [],
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "d4fuel",
+   "condition": "D4",
+   "subtype": "fuel",
+   "sides": {
+    "yes": {
+     "sentence_id": "d4fuelyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "units"
+      ]
+     ],
+     "provider_outcome": "explicit",
+     "recipient_outcome": "explicit",
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "d4fuelno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "units"
+      ]
+     ],
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "d5fuel",
+   "condition": "D5",
+   "subtype": "fuel",
+   "sides": {
+    "yes": {
+     "sentence_id": "d5fuelyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the depot",
+       "The units"
+      ]
+     ],
+     "provider_outcome": "explicit",
+     "recipient_outcome": "resolved",
+     "outcome": "resolved"
+    },
+    "no": {
+     "sentence_id": "d5fuelno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "The units"
+      ]
+     ],
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "d6fuel",
+   "condition": "D6",
+   "subtype": "fuel",
+   "sides": {
+    "yes": {
+     "sentence_id": "d6fuelyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "The units"
+      ]
+     ],
+     "provider_outcome": "resolved",
+     "recipient_outcome": "resolved",
+     "outcome": "resolved"
+    },
+    "no": {
+     "sentence_id": "d6fuelno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "The units"
+      ]
+     ],
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "d0badge",
+   "condition": "D0",
+   "subtype": "badge",
+   "sides": {
+    "yes": {
+     "sentence_id": "d0badgeyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clerk",
+       "visitors"
+      ]
+     ],
+     "provider_outcome": "explicit",
+     "recipient_outcome": "explicit",
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "d0badgeno",
+     "n_candidates": 0,
+     "candidates": [],
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "d1badge",
+   "condition": "D1",
+   "subtype": "badge",
+   "sides": {
+    "yes": {
+     "sentence_id": "d1badgeyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clerk",
+       "them"
+      ]
+     ],
+     "provider_outcome": "explicit",
+     "recipient_outcome": "pronoun",
+     "outcome": "anaphoric"
+    },
+    "no": {
+     "sentence_id": "d1badgeno",
+     "n_candidates": 0,
+     "candidates": [],
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "d2badge",
+   "condition": "D2",
+   "subtype": "badge",
+   "sides": {
+    "yes": {
+     "sentence_id": "d2badgeyes",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_outcome": "missing",
+     "recipient_outcome": "missing",
+     "outcome": "missing"
+    },
+    "no": {
+     "sentence_id": "d2badgeno",
+     "n_candidates": 0,
+     "candidates": [],
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "d3badge",
+   "condition": "D3",
+   "subtype": "badge",
+   "sides": {
+    "yes": {
+     "sentence_id": "d3badgeyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "It",
+       "them"
+      ]
+     ],
+     "provider_outcome": "pronoun",
+     "recipient_outcome": "pronoun",
+     "outcome": "anaphoric"
+    },
+    "no": {
+     "sentence_id": "d3badgeno",
+     "n_candidates": 0,
+     "candidates": [],
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "d4badge",
+   "condition": "D4",
+   "subtype": "badge",
+   "sides": {
+    "yes": {
+     "sentence_id": "d4badgeyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clerk",
+       "visitors"
+      ]
+     ],
+     "provider_outcome": "explicit",
+     "recipient_outcome": "explicit",
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "d4badgeno",
+     "n_candidates": 0,
+     "candidates": [],
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "d5badge",
+   "condition": "D5",
+   "subtype": "badge",
+   "sides": {
+    "yes": {
+     "sentence_id": "d5badgeyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "clerk",
+       "visitors"
+      ]
+     ],
+     "provider_outcome": "explicit",
+     "recipient_outcome": "resolved",
+     "outcome": "resolved"
+    },
+    "no": {
+     "sentence_id": "d5badgeno",
+     "n_candidates": 0,
+     "candidates": [],
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "d6badge",
+   "condition": "D6",
+   "subtype": "badge",
+   "sides": {
+    "yes": {
+     "sentence_id": "d6badgeyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clerk",
+       "The visitors"
+      ]
+     ],
+     "provider_outcome": "resolved",
+     "recipient_outcome": "resolved",
+     "outcome": "resolved"
+    },
+    "no": {
+     "sentence_id": "d6badgeno",
+     "n_candidates": 0,
+     "candidates": [],
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "d0lesson",
+   "condition": "D0",
+   "subtype": "lesson",
+   "sides": {
+    "yes": {
+     "sentence_id": "d0lessonyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "students"
+      ]
+     ],
+     "provider_outcome": "explicit",
+     "recipient_outcome": "explicit",
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "d0lessonno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "students"
+      ]
+     ],
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "d1lesson",
+   "condition": "D1",
+   "subtype": "lesson",
+   "sides": {
+    "yes": {
+     "sentence_id": "d1lessonyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "them"
+      ]
+     ],
+     "provider_outcome": "explicit",
+     "recipient_outcome": "pronoun",
+     "outcome": "anaphoric"
+    },
+    "no": {
+     "sentence_id": "d1lessonno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "them"
+      ]
+     ],
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "d2lesson",
+   "condition": "D2",
+   "subtype": "lesson",
+   "sides": {
+    "yes": {
+     "sentence_id": "d2lessonyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "It",
+       "students"
+      ]
+     ],
+     "provider_outcome": "pronoun",
+     "recipient_outcome": "explicit",
+     "outcome": "anaphoric"
+    },
+    "no": {
+     "sentence_id": "d2lessonno",
+     "n_candidates": 0,
+     "candidates": [],
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "d3lesson",
+   "condition": "D3",
+   "subtype": "lesson",
+   "sides": {
+    "yes": {
+     "sentence_id": "d3lessonyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "It",
+       "them"
+      ]
+     ],
+     "provider_outcome": "pronoun",
+     "recipient_outcome": "pronoun",
+     "outcome": "anaphoric"
+    },
+    "no": {
+     "sentence_id": "d3lessonno",
+     "n_candidates": 0,
+     "candidates": [],
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "d4lesson",
+   "condition": "D4",
+   "subtype": "lesson",
+   "sides": {
+    "yes": {
+     "sentence_id": "d4lessonyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "students"
+      ]
+     ],
+     "provider_outcome": "explicit",
+     "recipient_outcome": "explicit",
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "d4lessonno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "students"
+      ]
+     ],
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "d5lesson",
+   "condition": "D5",
+   "subtype": "lesson",
+   "sides": {
+    "yes": {
+     "sentence_id": "d5lessonyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "The students"
+      ]
+     ],
+     "provider_outcome": "explicit",
+     "recipient_outcome": "resolved",
+     "outcome": "resolved"
+    },
+    "no": {
+     "sentence_id": "d5lessonno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "The students"
+      ]
+     ],
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "d6lesson",
+   "condition": "D6",
+   "subtype": "lesson",
+   "sides": {
+    "yes": {
+     "sentence_id": "d6lessonyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "The students"
+      ]
+     ],
+     "provider_outcome": "resolved",
+     "recipient_outcome": "resolved",
+     "outcome": "resolved"
+    },
+    "no": {
+     "sentence_id": "d6lessonno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "The students"
+      ]
+     ],
+     "false_candidate": true
+    }
+   }
+  }
+ ],
+ "classifier": "v2 with resolved class (analysis-only reclassification; recorded candidates unchanged)"
+}
