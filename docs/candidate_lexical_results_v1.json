@@ -1,0 +1,756 @@
+{
+ "version": "candidate_lexical_results_v1",
+ "protocol": "docs/candidate_lexical_probe_v1.json",
+ "material": "docs/candidate_lexical_material_v1.json",
+ "stage": "candidate_generation_only (nu_candidates, no validator)",
+ "match_rule": "normalized span equality or containment, either direction",
+ "pairs": [
+  {
+   "pair_id": "lex01",
+   "class": "L1",
+   "verb_yes": "provide",
+   "verb_no": "deny",
+   "sides": {
+    "yes": {
+     "sentence_id": "lex01yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "lex01no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "lex02",
+   "class": "L1",
+   "verb_yes": "supply",
+   "verb_no": "refuse",
+   "sides": {
+    "yes": {
+     "sentence_id": "lex02yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "units"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "lex02no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "units"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "lex03",
+   "class": "L1",
+   "verb_yes": "offer",
+   "verb_no": "withhold",
+   "sides": {
+    "yes": {
+     "sentence_id": "lex03yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The center",
+       "guests"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "lex03no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The center",
+       "guests"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "lex04",
+   "class": "L1",
+   "verb_yes": "give",
+   "verb_no": "deny",
+   "sides": {
+    "yes": {
+     "sentence_id": "lex04yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "students"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "lex04no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "students"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "lex05",
+   "class": "L2",
+   "verb_yes": "deliver",
+   "verb_no": "refuse",
+   "sides": {
+    "yes": {
+     "sentence_id": "lex05yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The courier",
+       "residents"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "lex05no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "full_match": false,
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "lex06",
+   "class": "L2",
+   "verb_yes": "hand",
+   "verb_no": "deny",
+   "sides": {
+    "yes": {
+     "sentence_id": "lex06yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clerk",
+       "visitors"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "lex06no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "full_match": false,
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "lex07",
+   "class": "L2",
+   "verb_yes": "pass",
+   "verb_no": "keep",
+   "sides": {
+    "yes": {
+     "sentence_id": "lex07yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The nurse",
+       "patients"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "lex07no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The nurse",
+       "patients"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "lex08",
+   "class": "L2",
+   "verb_yes": "send",
+   "verb_no": "withhold",
+   "sides": {
+    "yes": {
+     "sentence_id": "lex08yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The store",
+       "customers"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "lex08no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "full_match": false,
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "lex09",
+   "class": "L2",
+   "verb_yes": "lend",
+   "verb_no": "keep",
+   "sides": {
+    "yes": {
+     "sentence_id": "lex09yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The neighbor",
+       "families"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "lex09no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The neighbor",
+       "families"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "lex10",
+   "class": "L2",
+   "verb_yes": "transfer",
+   "verb_no": "deny",
+   "sides": {
+    "yes": {
+     "sentence_id": "lex10yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The office",
+       "branches"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "lex10no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The office",
+       "branches"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "lex11",
+   "class": "L3",
+   "verb_yes": "do",
+   "verb_no": "deny",
+   "sides": {
+    "yes": {
+     "sentence_id": "lex11yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clerk",
+       "visitors"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "lex11no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "full_match": false,
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "lex12",
+   "class": "L3",
+   "verb_yes": "pay",
+   "verb_no": "withhold",
+   "sides": {
+    "yes": {
+     "sentence_id": "lex12yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The firm",
+       "workers"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "lex12no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The firm",
+       "workers"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "lex13",
+   "class": "L3",
+   "verb_yes": "tip",
+   "verb_no": "refuse",
+   "sides": {
+    "yes": {
+     "sentence_id": "lex13yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The guest",
+       "porters"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "lex13no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "full_match": false,
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "lex14",
+   "class": "L3",
+   "verb_yes": "refund",
+   "verb_no": "charge",
+   "sides": {
+    "yes": {
+     "sentence_id": "lex14yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "lex14no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "lex15",
+   "class": "L3",
+   "verb_yes": "fetch",
+   "verb_no": "keep",
+   "sides": {
+    "yes": {
+     "sentence_id": "lex15yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "porter",
+       "guests"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "lex15no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "porter",
+       "guests"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "lex16",
+   "class": "L3",
+   "verb_yes": "cook",
+   "verb_no": "refuse",
+   "sides": {
+    "yes": {
+     "sentence_id": "lex16yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The chef",
+       "guests"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "lex16no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "full_match": false,
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "lex17",
+   "class": "L4",
+   "verb_yes": "allocate",
+   "verb_no": "deny",
+   "sides": {
+    "yes": {
+     "sentence_id": "lex17yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The office",
+       "departments"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "lex17no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The office",
+       "departments"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "lex18",
+   "class": "L4",
+   "verb_yes": "assign",
+   "verb_no": "refuse",
+   "sides": {
+    "yes": {
+     "sentence_id": "lex18yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The manager",
+       "workers"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "lex18no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "full_match": false,
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "lex19",
+   "class": "L4",
+   "verb_yes": "grant",
+   "verb_no": "deny",
+   "sides": {
+    "yes": {
+     "sentence_id": "lex19yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The board",
+       "teams"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "lex19no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "full_match": false,
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "lex20",
+   "class": "L4",
+   "verb_yes": "issue",
+   "verb_no": "withhold",
+   "sides": {
+    "yes": {
+     "sentence_id": "lex20yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The office",
+       "tenants"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "lex20no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The office",
+       "tenants"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "lex21",
+   "class": "L4",
+   "verb_yes": "teach",
+   "verb_no": "deny",
+   "sides": {
+    "yes": {
+     "sentence_id": "lex21yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The coach",
+       "players"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "lex21no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "full_match": false,
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "lex22",
+   "class": "L4",
+   "verb_yes": "allot",
+   "verb_no": "keep",
+   "sides": {
+    "yes": {
+     "sentence_id": "lex22yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The council",
+       "families"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "lex22no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The council",
+       "families"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  }
+ ]
+}
