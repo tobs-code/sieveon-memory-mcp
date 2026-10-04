@@ -1,0 +1,55 @@
+{
+  "version": "linking_production_candidate_v1",
+  "status": "production_candidate",
+  "date": "2026-10-04",
+  "linker": {
+    "candidate_pool": "document-scoped",
+    "similarity_gate": 0.85,
+    "similarity_mechanism": "unchanged",
+    "exact_match_shortcut": "removed (presence in pool never skips collision check)",
+    "scope_values": ["doc", "global"],
+    "fallback_without_doc_context": "legacy global link (identical behavior)",
+    "no_auto_resolve": true,
+    "code": "scripts/trackb_production.py:link()"
+  },
+  "node_worthiness": {
+    "version": "node_worthiness_v1",
+    "position": "isolated layer before linking",
+    "W1_activity": "gerund-headed mention or narrow activity head (provisional seed: yoga/dance/meditation + X-class/lesson pattern)",
+    "W2_open_class": "bare-plural head with restrictive relative clause -> NOT_WORTHY",
+    "W3_kinship_singular": "PROVISIONAL: singular kinship noun without proper-name anchor -> NOT_WORTHY",
+    "W1_activity_seed": "PROVISIONAL and documented (not widened without new evidence)",
+    "positive_controls_must_stay_worthy": "proper names + definite singulars (production precedent)",
+    "code": "scripts/node_worthiness.py:node_worthy()"
+  },
+  "wiring": "scripts/trackb_production_run.py (worthiness before link; NOT_WORTHY forces ABSTAIN, no link attempt)",
+  "evidence": {
+    "regression_8_8": "scripts/trackb_regression.py GREEN (v1.2.1 baseline, graph digest 540183ca36839681)",
+    "worthiness_gates": "scripts/node_worthiness_gates.py GREEN (gate A/B/C)",
+    "collision_recovery": [11, 11],
+    "recovered_extra": 6,
+    "non_worthy_blocked": [6, 6],
+    "positive_controls": [21, 21],
+    "cross_resolution": 0,
+    "endtest": "docs/linker_endtest_v1.json verdict GO",
+    "counting_note": "corrected counting path, no double counting (per-mention dedup via blocked set; batch-4 0-ABSTAIN voided by exact-match shortcut bug stays void)"
+  },
+  "freeze_semantics": {
+    "no_targeted_jon_john_construction": "further synthetic Jon/John sentences would overfit this exact failure; stop here",
+    "no_model_or_rule_change_for_batch_6": true,
+    "postfilter_posture_unchanged": {
+      "NEGATED": "OBSERVE",
+      "NLI": "SHADOW",
+      "UNKNOWN": "WARN (never auto-escalated)",
+      "artifact_provision": "open",
+      "source_support": "open"
+    }
+  },
+  "planned_next": {
+    "batch_6": "new real-text corpus, measure only",
+    "monitoring_category": {
+      "identity_source": ["local_document", "global_fallback", "unresolved", "ambiguous"]
+    },
+    "then": "joint error budget over candidate/assertion/scope/worthiness/linking failures before any further mechanism work"
+  }
+}
