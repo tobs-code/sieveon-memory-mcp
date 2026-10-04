@@ -1,0 +1,58 @@
+{
+  "version": "batch6_protocol_v1",
+  "status": "preregistered",
+  "date": "2026-10-04",
+  "source": {
+    "kind": "new independent natural-text corpus",
+    "language": "English",
+    "register": "heterogeneous nonfiction (not single-register news or product docs)",
+    "synthetic_or_llm_generated": false,
+    "n_sentences": 150,
+    "disjointness_invariant": {
+      "vs_corpora_v1_v5": "empty",
+      "vs_frozen_test_material": "empty",
+      "vs_prior_benchmark_manifests": "empty",
+      "check": "exact text match before run"
+    },
+    "snapshot": "pinned (source identifiers + fetch date stored in corpus file)",
+    "digest": "frozen before inference",
+    "no_targeted_construction": "no tailoring to Jon/John, worthiness, benefactive, or any known mechanism"
+  },
+  "pipeline": {
+    "candidate": "Track B production candidate (linking_production_candidate_v1)",
+    "linking": "v1.3 document-scoped, similarity gate 0.85 unchanged",
+    "node_worthiness": "v1 (W1/W2/W3, W3 provisional, W1 activity seed provisional)",
+    "postfilter": "v1.1",
+    "rule_or_model_changes": "NONE"
+  },
+  "postfilter_posture": {
+    "NEGATED": "OBSERVE",
+    "NLI": "SHADOW",
+    "UNKNOWN": "WARN (never auto-escalated)",
+    "artifact_provision": "open",
+    "source_support": "open"
+  },
+  "monitoring": {
+    "identity_source": {
+      "values": ["local_document", "global_fallback", "ambiguous", "unresolved", "not_linked"],
+      "semantics": {
+        "local_document": "resolved via document-scoped candidate pool",
+        "global_fallback": "resolved via global fallback",
+        "ambiguous": "candidate collision / unresolved due to ambiguity",
+        "unresolved": "linker attempted, but no candidate resolved",
+        "not_linked": "linking was never attempted (e.g. NOT_WORTHY)"
+      },
+      "chain": "Mention -> worthiness(NOT_WORTHY => not_linked) -> linking(WORTHY => local_document/global_fallback/ambiguous/unresolved)"
+    },
+    "node_worthiness": ["WORTHY", "NOT_WORTHY"],
+    "verdicts": ["ACCEPT", "ABSTAIN", "REJECT"],
+    "failure_mechanisms": ["candidate", "assertion", "scope", "worthiness", "linking"],
+    "first_seen_mechanism": true
+  },
+  "success_criteria": [
+    "corpus digest pinned before inference",
+    "run measured only, no pipeline change",
+    "identity_source distribution reported (how often doc-scope saves anything, how often needed)",
+    "joint error budget over candidate/assertion/scope/worthiness/linking failures"
+  ]
+}

@@ -53,6 +53,29 @@ def link(mention: str, all_norms: set, doc_norms: set | None = None):
             "scope": "doc" if doc_norms else "global"}
 
 
+def identity_source(worthiness_verdict: str, link_result: dict) -> str:
+    """Monitoring-only identity provenance (batch6_protocol_v1).
+
+    not_linked  = linking never attempted (e.g. NOT_WORTHY blocks first).
+    ambiguous   = candidate collision / unresolved due to ambiguity.
+    local_document / global_fallback = resolved, by link scope.
+    unresolved  = linker attempted but no candidate resolved
+                  (forward bucket; current linker only emits
+                  resolved/ambiguous, so unreachable today).
+    No semantic effect on ACCEPT/ABSTAIN/REJECT.
+    """
+    if worthiness_verdict != "WORTHY":
+        return "not_linked"
+    status = (link_result or {}).get("status")
+    if status == "ambiguous":
+        return "ambiguous"
+    if status == "resolved":
+        return ("local_document"
+                if (link_result or {}).get("scope") == "doc"
+                else "global_fallback")
+    return "unresolved"
+
+
 def main() -> int:
     recs = load_triples()
     with_norms = set()

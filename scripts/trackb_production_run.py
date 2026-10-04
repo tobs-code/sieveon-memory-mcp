@@ -6,7 +6,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from trackb_two_stage import nu_candidates, validate
-from trackb_production import normalize, link
+from trackb_production import normalize, link, identity_source
 from postfilter import judge as postfilter_judge
 from node_worthiness import node_worthy
 
@@ -76,11 +76,15 @@ def main() -> int:
                                      and ol["status"] == "resolved") else \
                     "ABSTAIN" if sup else "REJECT"
             pf = postfilter_judge(s["text"], x, y, norms)
+            src_s = identity_source(nw_s["verdict"], sl)
+            src_o = identity_source(nw_o["verdict"], ol)
             fh.write(json.dumps({
                 "document_id": s["document_id"], "sentence_id": s["sentence_id"],
                 "text": s["text"], "subject_mention": x, "object_mention": y,
                 "candidate_status": "candidate", "assertion_status": "supported" if sup else "not_supported",
                 "link_status": f"{sl['status']}/{ol['status']}", "final_status": final,
+                "link_scope": f"{sl.get('scope')}/{ol.get('scope')}",
+                "identity_source": f"{src_s}/{src_o}",
                 "canonical_subject": sl.get("entity_id"), "canonical_object": ol.get("entity_id"),
                 "pipeline_version": "trackb_two_stage_v1", "evidence": s["sentence_id"],
                 "node_worthy": f"{nw_s['verdict']}/{nw_o['verdict']}",
