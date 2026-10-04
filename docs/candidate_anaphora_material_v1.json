@@ -1,0 +1,654 @@
+{
+ "version": "candidate_anaphora_material_v1",
+ "status": "built_by_script (validation + freeze are separate steps)",
+ "date": "2026-10-04",
+ "protocol": "docs/candidate_anaphora_probe_v1.json",
+ "builder": "scripts/build_anaphora_material.py",
+ "surface_note": "provider_surface/recipient_surface hold the explicit surface span or null when anaphoric; provider/recipient hold the discourse referents for evaluation",
+ "pairs": [
+  {
+   "pair_id": "d0med",
+   "condition": "D0",
+   "subtype": "med",
+   "yes": {
+    "sentence_id": "d0medyes",
+    "sentence": "The clinic provides patients medication.",
+    "expected_provides": "YES",
+    "provider_surface": "The clinic",
+    "recipient_surface": "patients",
+    "provider": "The clinic",
+    "recipient": "patients",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d0medno",
+    "sentence": "The clinic denies patients medication.",
+    "expected_provides": "NO",
+    "provider": "The clinic",
+    "recipient": "patients",
+    "lexical_trigger": "deny"
+   }
+  },
+  {
+   "pair_id": "d1med",
+   "condition": "D1",
+   "subtype": "med",
+   "yes": {
+    "sentence_id": "d1medyes",
+    "sentence": "The clinic provides them medication.",
+    "expected_provides": "YES",
+    "provider_surface": "The clinic",
+    "recipient_surface": null,
+    "provider": "The clinic",
+    "recipient": "patients",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d1medno",
+    "sentence": "The clinic denies them medication.",
+    "expected_provides": "NO",
+    "provider": "The clinic",
+    "recipient": "patients",
+    "lexical_trigger": "deny"
+   }
+  },
+  {
+   "pair_id": "d2med",
+   "condition": "D2",
+   "subtype": "med",
+   "yes": {
+    "sentence_id": "d2medyes",
+    "sentence": "It provides patients medication.",
+    "expected_provides": "YES",
+    "provider_surface": null,
+    "recipient_surface": "patients",
+    "provider": "The clinic",
+    "recipient": "patients",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d2medno",
+    "sentence": "It denies patients medication.",
+    "expected_provides": "NO",
+    "provider": "The clinic",
+    "recipient": "patients",
+    "lexical_trigger": "deny"
+   }
+  },
+  {
+   "pair_id": "d3med",
+   "condition": "D3",
+   "subtype": "med",
+   "yes": {
+    "sentence_id": "d3medyes",
+    "sentence": "It provides them medication.",
+    "expected_provides": "YES",
+    "provider_surface": null,
+    "recipient_surface": null,
+    "provider": "The clinic",
+    "recipient": "patients",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d3medno",
+    "sentence": "It denies them medication.",
+    "expected_provides": "NO",
+    "provider": "The clinic",
+    "recipient": "patients",
+    "lexical_trigger": "deny"
+   }
+  },
+  {
+   "pair_id": "d4med",
+   "condition": "D4",
+   "subtype": "med",
+   "yes": {
+    "sentence_id": "d4medyes",
+    "sentence": "The clinic opened a new pharmacy. It provides patients medication.",
+    "expected_provides": "YES",
+    "provider_surface": "The clinic",
+    "recipient_surface": "patients",
+    "provider": "The clinic",
+    "recipient": "patients",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d4medno",
+    "sentence": "The clinic opened a new pharmacy. It denies patients medication.",
+    "expected_provides": "NO",
+    "provider": "The clinic",
+    "recipient": "patients",
+    "lexical_trigger": "deny"
+   }
+  },
+  {
+   "pair_id": "d5med",
+   "condition": "D5",
+   "subtype": "med",
+   "yes": {
+    "sentence_id": "d5medyes",
+    "sentence": "The patients arrived at the clinic. The clinic provides them medication.",
+    "expected_provides": "YES",
+    "provider_surface": "The clinic",
+    "recipient_surface": null,
+    "provider": "The clinic",
+    "recipient": "patients",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d5medno",
+    "sentence": "The patients arrived at the clinic. The clinic denies them medication.",
+    "expected_provides": "NO",
+    "provider": "The clinic",
+    "recipient": "patients",
+    "lexical_trigger": "deny"
+   }
+  },
+  {
+   "pair_id": "d6med",
+   "condition": "D6",
+   "subtype": "med",
+   "yes": {
+    "sentence_id": "d6medyes",
+    "sentence": "The clinic opened a new pharmacy. The patients arrived later. It provides them medication.",
+    "expected_provides": "YES",
+    "provider_surface": null,
+    "recipient_surface": null,
+    "provider": "The clinic",
+    "recipient": "patients",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d6medno",
+    "sentence": "The clinic opened a new pharmacy. The patients arrived later. It denies them medication.",
+    "expected_provides": "NO",
+    "provider": "The clinic",
+    "recipient": "patients",
+    "lexical_trigger": "deny"
+   }
+  },
+  {
+   "pair_id": "d0fuel",
+   "condition": "D0",
+   "subtype": "fuel",
+   "yes": {
+    "sentence_id": "d0fuelyes",
+    "sentence": "The depot provides units fuel.",
+    "expected_provides": "YES",
+    "provider_surface": "The depot",
+    "recipient_surface": "units",
+    "provider": "The depot",
+    "recipient": "units",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d0fuelno",
+    "sentence": "The depot denies units fuel.",
+    "expected_provides": "NO",
+    "provider": "The depot",
+    "recipient": "units",
+    "lexical_trigger": "deny"
+   }
+  },
+  {
+   "pair_id": "d1fuel",
+   "condition": "D1",
+   "subtype": "fuel",
+   "yes": {
+    "sentence_id": "d1fuelyes",
+    "sentence": "The depot provides them fuel.",
+    "expected_provides": "YES",
+    "provider_surface": "The depot",
+    "recipient_surface": null,
+    "provider": "The depot",
+    "recipient": "units",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d1fuelno",
+    "sentence": "The depot denies them fuel.",
+    "expected_provides": "NO",
+    "provider": "The depot",
+    "recipient": "units",
+    "lexical_trigger": "deny"
+   }
+  },
+  {
+   "pair_id": "d2fuel",
+   "condition": "D2",
+   "subtype": "fuel",
+   "yes": {
+    "sentence_id": "d2fuelyes",
+    "sentence": "It provides units fuel.",
+    "expected_provides": "YES",
+    "provider_surface": null,
+    "recipient_surface": "units",
+    "provider": "The depot",
+    "recipient": "units",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d2fuelno",
+    "sentence": "It denies units fuel.",
+    "expected_provides": "NO",
+    "provider": "The depot",
+    "recipient": "units",
+    "lexical_trigger": "deny"
+   }
+  },
+  {
+   "pair_id": "d3fuel",
+   "condition": "D3",
+   "subtype": "fuel",
+   "yes": {
+    "sentence_id": "d3fuelyes",
+    "sentence": "It provides them fuel.",
+    "expected_provides": "YES",
+    "provider_surface": null,
+    "recipient_surface": null,
+    "provider": "The depot",
+    "recipient": "units",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d3fuelno",
+    "sentence": "It denies them fuel.",
+    "expected_provides": "NO",
+    "provider": "The depot",
+    "recipient": "units",
+    "lexical_trigger": "deny"
+   }
+  },
+  {
+   "pair_id": "d4fuel",
+   "condition": "D4",
+   "subtype": "fuel",
+   "yes": {
+    "sentence_id": "d4fuelyes",
+    "sentence": "The depot opened a new terminal. It provides units fuel.",
+    "expected_provides": "YES",
+    "provider_surface": "The depot",
+    "recipient_surface": "units",
+    "provider": "The depot",
+    "recipient": "units",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d4fuelno",
+    "sentence": "The depot opened a new terminal. It denies units fuel.",
+    "expected_provides": "NO",
+    "provider": "The depot",
+    "recipient": "units",
+    "lexical_trigger": "deny"
+   }
+  },
+  {
+   "pair_id": "d5fuel",
+   "condition": "D5",
+   "subtype": "fuel",
+   "yes": {
+    "sentence_id": "d5fuelyes",
+    "sentence": "The units arrived at the depot. The depot provides them fuel.",
+    "expected_provides": "YES",
+    "provider_surface": "The depot",
+    "recipient_surface": null,
+    "provider": "The depot",
+    "recipient": "units",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d5fuelno",
+    "sentence": "The units arrived at the depot. The depot denies them fuel.",
+    "expected_provides": "NO",
+    "provider": "The depot",
+    "recipient": "units",
+    "lexical_trigger": "deny"
+   }
+  },
+  {
+   "pair_id": "d6fuel",
+   "condition": "D6",
+   "subtype": "fuel",
+   "yes": {
+    "sentence_id": "d6fuelyes",
+    "sentence": "The depot opened a new terminal. The units arrived later. It provides them fuel.",
+    "expected_provides": "YES",
+    "provider_surface": null,
+    "recipient_surface": null,
+    "provider": "The depot",
+    "recipient": "units",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d6fuelno",
+    "sentence": "The depot opened a new terminal. The units arrived later. It denies them fuel.",
+    "expected_provides": "NO",
+    "provider": "The depot",
+    "recipient": "units",
+    "lexical_trigger": "deny"
+   }
+  },
+  {
+   "pair_id": "d0badge",
+   "condition": "D0",
+   "subtype": "badge",
+   "yes": {
+    "sentence_id": "d0badgeyes",
+    "sentence": "The clerk provides visitors badges.",
+    "expected_provides": "YES",
+    "provider_surface": "The clerk",
+    "recipient_surface": "visitors",
+    "provider": "The clerk",
+    "recipient": "visitors",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d0badgeno",
+    "sentence": "The clerk denies visitors badges.",
+    "expected_provides": "NO",
+    "provider": "The clerk",
+    "recipient": "visitors",
+    "lexical_trigger": "deny"
+   }
+  },
+  {
+   "pair_id": "d1badge",
+   "condition": "D1",
+   "subtype": "badge",
+   "yes": {
+    "sentence_id": "d1badgeyes",
+    "sentence": "The clerk provides them badges.",
+    "expected_provides": "YES",
+    "provider_surface": "The clerk",
+    "recipient_surface": null,
+    "provider": "The clerk",
+    "recipient": "visitors",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d1badgeno",
+    "sentence": "The clerk denies them badges.",
+    "expected_provides": "NO",
+    "provider": "The clerk",
+    "recipient": "visitors",
+    "lexical_trigger": "deny"
+   }
+  },
+  {
+   "pair_id": "d2badge",
+   "condition": "D2",
+   "subtype": "badge",
+   "yes": {
+    "sentence_id": "d2badgeyes",
+    "sentence": "It provides visitors badges.",
+    "expected_provides": "YES",
+    "provider_surface": null,
+    "recipient_surface": "visitors",
+    "provider": "The clerk",
+    "recipient": "visitors",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d2badgeno",
+    "sentence": "It denies visitors badges.",
+    "expected_provides": "NO",
+    "provider": "The clerk",
+    "recipient": "visitors",
+    "lexical_trigger": "deny"
+   }
+  },
+  {
+   "pair_id": "d3badge",
+   "condition": "D3",
+   "subtype": "badge",
+   "yes": {
+    "sentence_id": "d3badgeyes",
+    "sentence": "It provides them badges.",
+    "expected_provides": "YES",
+    "provider_surface": null,
+    "recipient_surface": null,
+    "provider": "The clerk",
+    "recipient": "visitors",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d3badgeno",
+    "sentence": "It denies them badges.",
+    "expected_provides": "NO",
+    "provider": "The clerk",
+    "recipient": "visitors",
+    "lexical_trigger": "deny"
+   }
+  },
+  {
+   "pair_id": "d4badge",
+   "condition": "D4",
+   "subtype": "badge",
+   "yes": {
+    "sentence_id": "d4badgeyes",
+    "sentence": "The clerk opened a new desk. It provides visitors badges.",
+    "expected_provides": "YES",
+    "provider_surface": "The clerk",
+    "recipient_surface": "visitors",
+    "provider": "The clerk",
+    "recipient": "visitors",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d4badgeno",
+    "sentence": "The clerk opened a new desk. It denies visitors badges.",
+    "expected_provides": "NO",
+    "provider": "The clerk",
+    "recipient": "visitors",
+    "lexical_trigger": "deny"
+   }
+  },
+  {
+   "pair_id": "d5badge",
+   "condition": "D5",
+   "subtype": "badge",
+   "yes": {
+    "sentence_id": "d5badgeyes",
+    "sentence": "The visitors arrived at the desk. The clerk provides them badges.",
+    "expected_provides": "YES",
+    "provider_surface": "The clerk",
+    "recipient_surface": null,
+    "provider": "The clerk",
+    "recipient": "visitors",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d5badgeno",
+    "sentence": "The visitors arrived at the desk. The clerk denies them badges.",
+    "expected_provides": "NO",
+    "provider": "The clerk",
+    "recipient": "visitors",
+    "lexical_trigger": "deny"
+   }
+  },
+  {
+   "pair_id": "d6badge",
+   "condition": "D6",
+   "subtype": "badge",
+   "yes": {
+    "sentence_id": "d6badgeyes",
+    "sentence": "The clerk opened a new desk. The visitors arrived later. It provides them badges.",
+    "expected_provides": "YES",
+    "provider_surface": null,
+    "recipient_surface": null,
+    "provider": "The clerk",
+    "recipient": "visitors",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d6badgeno",
+    "sentence": "The clerk opened a new desk. The visitors arrived later. It denies them badges.",
+    "expected_provides": "NO",
+    "provider": "The clerk",
+    "recipient": "visitors",
+    "lexical_trigger": "deny"
+   }
+  },
+  {
+   "pair_id": "d0lesson",
+   "condition": "D0",
+   "subtype": "lesson",
+   "yes": {
+    "sentence_id": "d0lessonyes",
+    "sentence": "The tutor provides students lessons.",
+    "expected_provides": "YES",
+    "provider_surface": "The tutor",
+    "recipient_surface": "students",
+    "provider": "The tutor",
+    "recipient": "students",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d0lessonno",
+    "sentence": "The tutor denies students lessons.",
+    "expected_provides": "NO",
+    "provider": "The tutor",
+    "recipient": "students",
+    "lexical_trigger": "deny"
+   }
+  },
+  {
+   "pair_id": "d1lesson",
+   "condition": "D1",
+   "subtype": "lesson",
+   "yes": {
+    "sentence_id": "d1lessonyes",
+    "sentence": "The tutor provides them lessons.",
+    "expected_provides": "YES",
+    "provider_surface": "The tutor",
+    "recipient_surface": null,
+    "provider": "The tutor",
+    "recipient": "students",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d1lessonno",
+    "sentence": "The tutor denies them lessons.",
+    "expected_provides": "NO",
+    "provider": "The tutor",
+    "recipient": "students",
+    "lexical_trigger": "deny"
+   }
+  },
+  {
+   "pair_id": "d2lesson",
+   "condition": "D2",
+   "subtype": "lesson",
+   "yes": {
+    "sentence_id": "d2lessonyes",
+    "sentence": "It provides students lessons.",
+    "expected_provides": "YES",
+    "provider_surface": null,
+    "recipient_surface": "students",
+    "provider": "The tutor",
+    "recipient": "students",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d2lessonno",
+    "sentence": "It denies students lessons.",
+    "expected_provides": "NO",
+    "provider": "The tutor",
+    "recipient": "students",
+    "lexical_trigger": "deny"
+   }
+  },
+  {
+   "pair_id": "d3lesson",
+   "condition": "D3",
+   "subtype": "lesson",
+   "yes": {
+    "sentence_id": "d3lessonyes",
+    "sentence": "It provides them lessons.",
+    "expected_provides": "YES",
+    "provider_surface": null,
+    "recipient_surface": null,
+    "provider": "The tutor",
+    "recipient": "students",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d3lessonno",
+    "sentence": "It denies them lessons.",
+    "expected_provides": "NO",
+    "provider": "The tutor",
+    "recipient": "students",
+    "lexical_trigger": "deny"
+   }
+  },
+  {
+   "pair_id": "d4lesson",
+   "condition": "D4",
+   "subtype": "lesson",
+   "yes": {
+    "sentence_id": "d4lessonyes",
+    "sentence": "The tutor opened a new course. It provides students lessons.",
+    "expected_provides": "YES",
+    "provider_surface": "The tutor",
+    "recipient_surface": "students",
+    "provider": "The tutor",
+    "recipient": "students",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d4lessonno",
+    "sentence": "The tutor opened a new course. It denies students lessons.",
+    "expected_provides": "NO",
+    "provider": "The tutor",
+    "recipient": "students",
+    "lexical_trigger": "deny"
+   }
+  },
+  {
+   "pair_id": "d5lesson",
+   "condition": "D5",
+   "subtype": "lesson",
+   "yes": {
+    "sentence_id": "d5lessonyes",
+    "sentence": "The students arrived at the hall. The tutor provides them lessons.",
+    "expected_provides": "YES",
+    "provider_surface": "The tutor",
+    "recipient_surface": null,
+    "provider": "The tutor",
+    "recipient": "students",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d5lessonno",
+    "sentence": "The students arrived at the hall. The tutor denies them lessons.",
+    "expected_provides": "NO",
+    "provider": "The tutor",
+    "recipient": "students",
+    "lexical_trigger": "deny"
+   }
+  },
+  {
+   "pair_id": "d6lesson",
+   "condition": "D6",
+   "subtype": "lesson",
+   "yes": {
+    "sentence_id": "d6lessonyes",
+    "sentence": "The tutor opened a new course. The students arrived later. It provides them lessons.",
+    "expected_provides": "YES",
+    "provider_surface": null,
+    "recipient_surface": null,
+    "provider": "The tutor",
+    "recipient": "students",
+    "lexical_trigger": "provide"
+   },
+   "no": {
+    "sentence_id": "d6lessonno",
+    "sentence": "The tutor opened a new course. The students arrived later. It denies them lessons.",
+    "expected_provides": "NO",
+    "provider": "The tutor",
+    "recipient": "students",
+    "lexical_trigger": "deny"
+   }
+  }
+ ]
+}

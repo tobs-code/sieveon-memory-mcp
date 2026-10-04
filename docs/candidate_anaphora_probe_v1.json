@@ -1,0 +1,35 @@
+{
+  "version": "candidate_anaphora_probe_v1",
+  "status": "preregistered_before_inference",
+  "date": "2026-10-04",
+  "pipeline_changes": "none",
+  "negative_anchors": [
+    "b5644f8: argument position alone does not explain candidate silence",
+    "a4eea29: lexical realization does not explain candidate silence",
+    "54f9809: finite syntactic complexity does not explain candidate silence (YES 23/24)"
+  ],
+  "hypothesis": {
+    "H1": "Candidate Generation loses provides relations when provider or recipient is anaphoric/coreferential rather than an explicit noun phrase.",
+    "H0": "Candidate recall does not materially depend on anaphoric vs explicit argument realization."
+  },
+  "lexical_constant": "YES=provide, NO=deny (both validated; candidate stage intentionally assertionsblind)",
+  "conditions": {
+    "D0": "explicit baseline (both arguments explicit NPs)",
+    "D1": "anaphoric recipient only",
+    "D2": "anaphoric provider only",
+    "D3": "both arguments anaphoric (single sentence, exophoric)",
+    "D4": "cross-sentence provider reference (2-sentence context)",
+    "D5": "cross-sentence recipient reference (2-sentence context)",
+    "D6": "cross-sentence both (3-sentence context)"
+  },
+  "methodological_separation": "candidate generation only; resolution of it/them to KG entities is NOT required. Outcome classes kept separate: candidate_missing, candidate_present_but_anaphoric_span, candidate_present_with_wrong_span, candidate_present_correct. An anaphoric-span candidate is a coreference/linking matter, not relation-detection silence.",
+  "primary_metrics": ["candidate_recall_present_per_condition", "correct_explicit_span_rate_per_condition", "false_candidate_rate_NO"],
+  "interpretation": {
+    "D0_eq_D1_D3_but_D4_D6_degrade": "cross-sentence discourse context implicated, not local anaphora",
+    "D1_D3_degrade": "pronominal argument realization implicated",
+    "present_but_anaphoric": "not generator silence; coreference/linking territory",
+    "all_stable": "anaphora is a weak explanation for batch-6 FNs; no pipeline engineering on theoretical plausibility alone"
+  },
+  "excluded": ["nominalizations", "metaphors", "event-nominal patients", "benefactives", "passive", "coordination", "negation", "modality", "lexical substitution"],
+  "material_shape": "7 conditions x 4 subtypes x YES/NO = 56 inputs / 28 YES-NO pairs; D4-D6 inputs are multi-sentence contexts fed as one string; pair differs only in provide/deny"
+}
