@@ -1,0 +1,307 @@
+{
+ "version": "linker_efficacy_v1",
+ "v12_abstain": 17,
+ "v13_resolved_collision": 0,
+ "v13_abstain": 0,
+ "cross": 0,
+ "cases": [
+  {
+   "id": "prodc3-002",
+   "mention": "Dancing",
+   "doc": "Jon",
+   "v12": "resolved",
+   "v13": "entity:dancing",
+   "gold": "activity_subject_non_entity"
+  },
+  {
+   "id": "prodc3-002",
+   "mention": "Jon",
+   "doc": "Jon",
+   "v12": "ambiguous",
+   "v13": "entity:jon",
+   "gold": "activity_subject_non_entity"
+  },
+  {
+   "id": "prodc3-004",
+   "mention": "Gina",
+   "doc": "Gina",
+   "v12": "resolved",
+   "v13": "entity:gina",
+   "gold": "name_collision_context_resolvable"
+  },
+  {
+   "id": "prodc3-004",
+   "mention": "Jon",
+   "doc": "Gina",
+   "v12": "ambiguous",
+   "v13": "entity:jon",
+   "gold": "name_collision_context_resolvable"
+  },
+  {
+   "id": "prodc3-005",
+   "mention": "Gina",
+   "doc": "Gina",
+   "v12": "resolved",
+   "v13": "entity:gina",
+   "gold": "name_collision_context_resolvable"
+  },
+  {
+   "id": "prodc3-005",
+   "mention": "Jon",
+   "doc": "Gina",
+   "v12": "ambiguous",
+   "v13": "entity:jon",
+   "gold": "name_collision_context_resolvable"
+  },
+  {
+   "id": "prodc3-019",
+   "mention": "John",
+   "doc": "John",
+   "v12": "ambiguous",
+   "v13": "entity:john",
+   "gold": "name_collision_context_resolvable"
+  },
+  {
+   "id": "prodc3-019",
+   "mention": "homeless shelter",
+   "doc": "John",
+   "v12": "resolved",
+   "v13": "entity:homeless shelter",
+   "gold": "name_collision_context_resolvable"
+  },
+  {
+   "id": "prodc3-019",
+   "mention": "John",
+   "doc": "John",
+   "v12": "ambiguous",
+   "v13": "entity:john",
+   "gold": "generic_entity_unresolved"
+  },
+  {
+   "id": "prodc3-019",
+   "mention": "kids in need",
+   "doc": "John",
+   "v12": "resolved",
+   "v13": "entity:kids in need",
+   "gold": "generic_entity_unresolved"
+  },
+  {
+   "id": "prodc3-028",
+   "mention": "Maria",
+   "doc": "Maria",
+   "v12": "resolved",
+   "v13": "entity:maria",
+   "gold": "name_collision_context_resolvable"
+  },
+  {
+   "id": "prodc3-028",
+   "mention": "John",
+   "doc": "Maria",
+   "v12": "ambiguous",
+   "v13": "entity:john",
+   "gold": "name_collision_context_resolvable"
+  },
+  {
+   "id": "prodc3-037",
+   "mention": "Maria",
+   "doc": "John",
+   "v12": "resolved",
+   "v13": "entity:maria",
+   "gold": "name_collision_context_resolvable"
+  },
+  {
+   "id": "prodc3-037",
+   "mention": "John",
+   "doc": "John",
+   "v12": "ambiguous",
+   "v13": "entity:john",
+   "gold": "name_collision_context_resolvable"
+  },
+  {
+   "id": "prodc3-053",
+   "mention": "John",
+   "doc": "John",
+   "v12": "ambiguous",
+   "v13": "entity:john",
+   "gold": "generic_entity_unresolved"
+  },
+  {
+   "id": "prodc3-053",
+   "mention": "people who lost their jobs",
+   "doc": "John",
+   "v12": "resolved",
+   "v13": "entity:people who lost their jobs",
+   "gold": "generic_entity_unresolved"
+  },
+  {
+   "id": "prodc3-070",
+   "mention": "friends",
+   "doc": "John",
+   "v12": "resolved",
+   "v13": "entity:friends",
+   "gold": "name_collision_context_resolvable"
+  },
+  {
+   "id": "prodc3-070",
+   "mention": "John",
+   "doc": "John",
+   "v12": "ambiguous",
+   "v13": "entity:john",
+   "gold": "name_collision_context_resolvable"
+  },
+  {
+   "id": "prodc3-072",
+   "mention": "Maria",
+   "doc": "Maria",
+   "v12": "resolved",
+   "v13": "entity:maria",
+   "gold": "name_collision_context_resolvable"
+  },
+  {
+   "id": "prodc3-072",
+   "mention": "John",
+   "doc": "Maria",
+   "v12": "ambiguous",
+   "v13": "entity:john",
+   "gold": "name_collision_context_resolvable"
+  },
+  {
+   "id": "prodc3-081",
+   "mention": "Maria",
+   "doc": "John",
+   "v12": "resolved",
+   "v13": "entity:maria",
+   "gold": "name_collision_context_resolvable"
+  },
+  {
+   "id": "prodc3-081",
+   "mention": "John",
+   "doc": "John",
+   "v12": "ambiguous",
+   "v13": "entity:john",
+   "gold": "name_collision_context_resolvable"
+  },
+  {
+   "id": "prodc3-084",
+   "mention": "beginner yoga class",
+   "doc": "John",
+   "v12": "resolved",
+   "v13": "entity:beginner yoga class",
+   "gold": "activity_subject_non_entity"
+  },
+  {
+   "id": "prodc3-084",
+   "mention": "John",
+   "doc": "John",
+   "v12": "ambiguous",
+   "v13": "entity:john",
+   "gold": "activity_subject_non_entity"
+  },
+  {
+   "id": "prodc3-085",
+   "mention": "Yoga",
+   "doc": "John",
+   "v12": "resolved",
+   "v13": "entity:yoga",
+   "gold": "activity_subject_non_entity"
+  },
+  {
+   "id": "prodc3-085",
+   "mention": "John",
+   "doc": "John",
+   "v12": "ambiguous",
+   "v13": "entity:john",
+   "gold": "activity_subject_non_entity"
+  },
+  {
+   "id": "prodc3-087",
+   "mention": "John",
+   "doc": "John",
+   "v12": "ambiguous",
+   "v13": "entity:john",
+   "gold": "name_collision_context_resolvable"
+  },
+  {
+   "id": "prodc3-087",
+   "mention": "kids",
+   "doc": "John",
+   "v12": "resolved",
+   "v13": "entity:kids",
+   "gold": "name_collision_context_resolvable"
+  },
+  {
+   "id": "prodc3-093",
+   "mention": "Maria",
+   "doc": "Maria",
+   "v12": "resolved",
+   "v13": "entity:maria",
+   "gold": "name_collision_context_resolvable"
+  },
+  {
+   "id": "prodc3-093",
+   "mention": "John",
+   "doc": "Maria",
+   "v12": "ambiguous",
+   "v13": "entity:john",
+   "gold": "name_collision_context_resolvable"
+  },
+  {
+   "id": "prodc3-113",
+   "mention": "John",
+   "doc": "John",
+   "v12": "ambiguous",
+   "v13": "entity:john",
+   "gold": "generic_entity_unresolved"
+  },
+  {
+   "id": "prodc3-113",
+   "mention": "his family",
+   "doc": "John",
+   "v12": "resolved",
+   "v13": "entity:his family",
+   "gold": "generic_entity_unresolved"
+  },
+  {
+   "id": "prodc3-113",
+   "mention": "his family",
+   "doc": "John",
+   "v12": "resolved",
+   "v13": "entity:his family",
+   "gold": "name_collision_context_resolvable"
+  },
+  {
+   "id": "prodc3-113",
+   "mention": "John",
+   "doc": "John",
+   "v12": "ambiguous",
+   "v13": "entity:john",
+   "gold": "name_collision_context_resolvable"
+  }
+ ],
+ "v13_ok": 11,
+ "pair_level": {
+  "clean_recoveries": [
+   "prodc3-004",
+   "prodc3-005",
+   "prodc3-028",
+   "prodc3-037",
+   "prodc3-070",
+   "prodc3-072",
+   "prodc3-081",
+   "prodc3-093"
+  ],
+  "junk_node_risk": [
+   "prodc3-002",
+   "prodc3-084",
+   "prodc3-085",
+   "prodc3-053",
+   "prodc3-019-kids",
+   "prodc3-113-john-to-family"
+  ],
+  "borderline": [
+   "prodc3-019-homeless",
+   "prodc3-087-kids"
+  ]
+ },
+ "verdict": "HOLD: identity efficacy 11/11 with 0 cross, but 6 recovered pairs need node-worthiness gate before acceptance"
+}
