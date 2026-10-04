@@ -1,0 +1,37 @@
+{
+ "version": "trigger_licensing_v2_shadow",
+ "licensed": [
+  {
+   "s": "Gina advises Jon to stay passionate, focused, resilient, and",
+   "x": "Gina",
+   "y": "Jon",
+   "c": {
+    "v2": "LICENSED",
+    "construction": "ACTIVE_advise",
+    "lemma": "advises"
+   }
+  },
+  {
+   "s": "Gina roots for Jon to keep going and make his dreams a reali",
+   "x": "Gina",
+   "y": "Jon",
+   "c": {
+    "v2": "LICENSED",
+    "construction": "ACTIVE_roots_for",
+    "lemma": "roots for"
+   }
+  },
+  {
+   "s": "Gina met some investors and got good advice at a recent netw",
+   "x": "investors",
+   "y": "Gina",
+   "c": {
+    "v2": "LICENSED",
+    "construction": "NOMINAL_TRANSFER_advice",
+    "source": null,
+    "recipient": "Gina"
+   }
+  }
+ ],
+ "unknown_n": 31
+}
