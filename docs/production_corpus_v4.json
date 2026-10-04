@@ -1,0 +1,757 @@
+{
+ "version": "production_corpus_v4",
+ "n": 150,
+ "digest": "16754bf331cbfde7100b99fa7b602f286ae57e0873171f6302a5babb0dbbc709",
+ "sentences": [
+  {
+   "document_id": "conv-41/session_17_observation/John",
+   "text": "John is finding it tough to cope with the loss of Max, but he and his family are trying to focus on the good times and memories they shared.",
+   "sentence_id": "prodc4-000"
+  },
+  {
+   "document_id": "conv-41/session_17_observation/John",
+   "text": "John shared a picture of Max to honor his memory and cherish the moments they had together.",
+   "sentence_id": "prodc4-001"
+  },
+  {
+   "document_id": "conv-41/session_17_observation/John",
+   "text": "John values the lessons that Max taught them about love and loyalty, and wants his kids to learn the same.",
+   "sentence_id": "prodc4-002"
+  },
+  {
+   "document_id": "conv-41/session_17_observation/John",
+   "text": "John is considering adopting a rescue dog to give it a loving home and teach his kids responsibility and compassion.",
+   "sentence_id": "prodc4-003"
+  },
+  {
+   "document_id": "conv-41/session_17_observation/Maria",
+   "text": "Maria offered John her condolences and support after hearing about the loss of Max, acknowledging the importance of pets as part of the family.",
+   "sentence_id": "prodc4-004"
+  },
+  {
+   "document_id": "conv-41/session_17_observation/Maria",
+   "text": "Maria started volunteering at a local dog shelter once a month, showing her compassion towards animals and her willingness to help.",
+   "sentence_id": "prodc4-005"
+  },
+  {
+   "document_id": "conv-41/session_18_observation/Maria",
+   "text": "Maria went camping with friends from church to take her mind off things.",
+   "sentence_id": "prodc4-006"
+  },
+  {
+   "document_id": "conv-41/session_18_observation/Maria",
+   "text": "Maria and her family went on a road trip to Oregon when she was younger.",
+   "sentence_id": "prodc4-007"
+  },
+  {
+   "document_id": "conv-41/session_18_observation/Maria",
+   "text": "Maria described a view of a waterfall and bridge as awesome and breath-taking.",
+   "sentence_id": "prodc4-008"
+  },
+  {
+   "document_id": "conv-41/session_18_observation/Maria",
+   "text": "Maria felt like she was in a fairy tale at the waterfall, with calming water sounds and beautiful surroundings.",
+   "sentence_id": "prodc4-009"
+  },
+  {
+   "document_id": "conv-41/session_18_observation/Maria",
+   "text": "Maria has gone camping a few times but has never tried mountain climbing.",
+   "sentence_id": "prodc4-010"
+  },
+  {
+   "document_id": "conv-41/session_18_observation/Maria",
+   "text": "Maria enjoys upside-down yoga poses as they make her feel free and light.",
+   "sentence_id": "prodc4-011"
+  },
+  {
+   "document_id": "conv-41/session_18_observation/John",
+   "text": "John went on a mountaineering trip with workmates that helped clear his head.",
+   "sentence_id": "prodc4-012"
+  },
+  {
+   "document_id": "conv-41/session_18_observation/John",
+   "text": "John reached the summit during the mountaineering trip and found the view stunning.",
+   "sentence_id": "prodc4-013"
+  },
+  {
+   "document_id": "conv-41/session_18_observation/John",
+   "text": "John has been camping plenty of times and enjoys getting away from it all to be at one with nature.",
+   "sentence_id": "prodc4-014"
+  },
+  {
+   "document_id": "conv-41/session_18_observation/John",
+   "text": "John believes nature helps in calming us down and acts like a reset button amidst chaos.",
+   "sentence_id": "prodc4-015"
+  },
+  {
+   "document_id": "conv-41/session_19_observation/Maria",
+   "text": "Maria's fitness goal is to get stronger, improve her endurance, and she is trying kundalini yoga.",
+   "sentence_id": "prodc4-016"
+  },
+  {
+   "document_id": "conv-41/session_19_observation/Maria",
+   "text": "Maria admires John's trophy and asks about its backstory.",
+   "sentence_id": "prodc4-017"
+  },
+  {
+   "document_id": "conv-41/session_19_observation/Maria",
+   "text": "Maria acknowledges John's challenges and commends his perseverance and determination.",
+   "sentence_id": "prodc4-018"
+  },
+  {
+   "document_id": "conv-41/session_19_observation/Maria",
+   "text": "Maria values belief in oneself and mentions the importance of having loved ones' support.",
+   "sentence_id": "prodc4-019"
+  },
+  {
+   "document_id": "conv-41/session_19_observation/Maria",
+   "text": "Maria enjoys taking time off for herself and her family and appreciates creating memories together.",
+   "sentence_id": "prodc4-020"
+  },
+  {
+   "document_id": "conv-41/session_19_observation/Maria",
+   "text": "Maria shares a special beach memory from a vacation in Florida with her family.",
+   "sentence_id": "prodc4-021"
+  },
+  {
+   "document_id": "conv-41/session_19_observation/Maria",
+   "text": "Maria appreciates the joy and carefree moments of family vacations.",
+   "sentence_id": "prodc4-022"
+  },
+  {
+   "document_id": "conv-41/session_19_observation/John",
+   "text": "John's trophy symbolizes the obstacles he overcame on his journey to the promotion.",
+   "sentence_id": "prodc4-023"
+  },
+  {
+   "document_id": "conv-41/session_19_observation/John",
+   "text": "John shares about facing various challenges including tech issues, workplace hurdles, and self-doubt on his path to promotion.",
+   "sentence_id": "prodc4-024"
+  },
+  {
+   "document_id": "conv-41/session_19_observation/John",
+   "text": "John mentions the importance of having support at home, believing in oneself, and staying determined.",
+   "sentence_id": "prodc4-025"
+  },
+  {
+   "document_id": "conv-41/session_19_observation/John",
+   "text": "John values having loved ones' support on his journey, especially his family.",
+   "sentence_id": "prodc4-026"
+  },
+  {
+   "document_id": "conv-41/session_19_observation/John",
+   "text": "John appreciates special family times and cherishes creating memories together.",
+   "sentence_id": "prodc4-027"
+  },
+  {
+   "document_id": "conv-41/session_20_observation/Maria",
+   "text": "Maria has been struggling but is focusing on the positive and relying on friends and family for support.",
+   "sentence_id": "prodc4-028"
+  },
+  {
+   "document_id": "conv-41/session_20_observation/Maria",
+   "text": "Maria finds joy and fulfillment in volunteering at a shelter to help others.",
+   "sentence_id": "prodc4-029"
+  },
+  {
+   "document_id": "conv-41/session_20_observation/Maria",
+   "text": "Maria had a special memory at the shelter when playing with kids made someone who had been sad suddenly laugh, which was uplifting.",
+   "sentence_id": "prodc4-030"
+  },
+  {
+   "document_id": "conv-41/session_20_observation/Maria",
+   "text": "Maria sees making a difference in others' lives as a source of joy for herself.",
+   "sentence_id": "prodc4-031"
+  },
+  {
+   "document_id": "conv-41/session_20_observation/Maria",
+   "text": "Maria feels that spreading kindness and positivity is her way of impacting the world.",
+   "sentence_id": "prodc4-032"
+  },
+  {
+   "document_id": "conv-41/session_20_observation/John",
+   "text": "John recalls having a blast at a live music event with his family last week.",
+   "sentence_id": "prodc4-033"
+  },
+  {
+   "document_id": "conv-41/session_20_observation/John",
+   "text": "John emphasizes the importance of appreciating loved ones and finding silver linings in tough times.",
+   "sentence_id": "prodc4-034"
+  },
+  {
+   "document_id": "conv-41/session_20_observation/John",
+   "text": "John finds it amazing how brief moments with others can make a big difference in bringing joy and happiness.",
+   "sentence_id": "prodc4-035"
+  },
+  {
+   "document_id": "conv-41/session_20_observation/John",
+   "text": "John encourages Maria to continue spreading kindness and positivity, acknowledging the impact she is making.",
+   "sentence_id": "prodc4-036"
+  },
+  {
+   "document_id": "conv-41/session_21_observation/Maria",
+   "text": "Maria met some kids at a shelter.",
+   "sentence_id": "prodc4-037"
+  },
+  {
+   "document_id": "conv-41/session_21_observation/Maria",
+   "text": "Maria got hit by a car that ran a red light, but everyone is okay.",
+   "sentence_id": "prodc4-038"
+  },
+  {
+   "document_id": "conv-41/session_21_observation/Maria",
+   "text": "Maria appreciates kindness and care.",
+   "sentence_id": "prodc4-039"
+  },
+  {
+   "document_id": "conv-41/session_21_observation/Maria",
+   "text": "Maria loves volunteering and feels it makes a difference, even if it's a small one.",
+   "sentence_id": "prodc4-040"
+  },
+  {
+   "document_id": "conv-41/session_21_observation/John",
+   "text": "John expressed willingness to help Maria if she needed anything.",
+   "sentence_id": "prodc4-041"
+  },
+  {
+   "document_id": "conv-41/session_21_observation/John",
+   "text": "John participated in a marching event for veterans' rights.",
+   "sentence_id": "prodc4-042"
+  },
+  {
+   "document_id": "conv-41/session_21_observation/John",
+   "text": "John respects the military and believes in standing up for beliefs.",
+   "sentence_id": "prodc4-043"
+  },
+  {
+   "document_id": "conv-41/session_21_observation/John",
+   "text": "John feels the importance of making a difference through activism and was motivated by it.",
+   "sentence_id": "prodc4-044"
+  },
+  {
+   "document_id": "conv-41/session_22_observation/John",
+   "text": "John has been thinking about how education and infrastructure shape communities.",
+   "sentence_id": "prodc4-045"
+  },
+  {
+   "document_id": "conv-41/session_22_observation/John",
+   "text": "John feels it is an uphill battle to make a positive change in communities.",
+   "sentence_id": "prodc4-046"
+  },
+  {
+   "document_id": "conv-41/session_22_observation/John",
+   "text": "John doubts if he is making a difference sometimes.",
+   "sentence_id": "prodc4-047"
+  },
+  {
+   "document_id": "conv-41/session_22_observation/John",
+   "text": "John's family motivates him to strive for change.",
+   "sentence_id": "prodc4-048"
+  },
+  {
+   "document_id": "conv-41/session_22_observation/John",
+   "text": "John looks at a picture of his family when times get hard to remember why he is doing his work.",
+   "sentence_id": "prodc4-049"
+  },
+  {
+   "document_id": "conv-41/session_22_observation/John",
+   "text": "John is inspired by his family, exercise, and spending time with friends.",
+   "sentence_id": "prodc4-050"
+  },
+  {
+   "document_id": "conv-41/session_22_observation/John",
+   "text": "John sees sunsets at least once a week during his walks to disconnect and find peace.",
+   "sentence_id": "prodc4-051"
+  },
+  {
+   "document_id": "conv-41/session_22_observation/Maria",
+   "text": "Maria agrees with John on the crucial role of education and infrastructure in shaping communities.",
+   "sentence_id": "prodc4-052"
+  },
+  {
+   "document_id": "conv-41/session_22_observation/Maria",
+   "text": "Maria supports John in his efforts to make a positive change in communities.",
+   "sentence_id": "prodc4-053"
+  },
+  {
+   "document_id": "conv-41/session_22_observation/Maria",
+   "text": "Maria is inspired by chatting to people, volunteering, and listening to music.",
+   "sentence_id": "prodc4-054"
+  },
+  {
+   "document_id": "conv-41/session_22_observation/Maria",
+   "text": "Maria takes regular 'me-time' walks at the park nearby to find peace.",
+   "sentence_id": "prodc4-055"
+  },
+  {
+   "document_id": "conv-41/session_23_observation/John",
+   "text": "John's old area was hit by a nasty flood last week causing damage to many homes.",
+   "sentence_id": "prodc4-056"
+  },
+  {
+   "document_id": "conv-41/session_23_observation/John",
+   "text": "John is taking initiative to get people together to discuss potential solutions for the issues in the community.",
+   "sentence_id": "prodc4-057"
+  },
+  {
+   "document_id": "conv-41/session_23_observation/John",
+   "text": "John appreciates Maria's offer to help with the community issues.",
+   "sentence_id": "prodc4-058"
+  },
+  {
+   "document_id": "conv-41/session_23_observation/John",
+   "text": "John mentions that Maria's support and friendship mean everything to him.",
+   "sentence_id": "prodc4-059"
+  },
+  {
+   "document_id": "conv-41/session_23_observation/John",
+   "text": "John believes that together with Maria, they can make a difference and motivate others in the community.",
+   "sentence_id": "prodc4-060"
+  },
+  {
+   "document_id": "conv-41/session_23_observation/John",
+   "text": "John acknowledges that little steps count and they can make a difference together.",
+   "sentence_id": "prodc4-061"
+  },
+  {
+   "document_id": "conv-41/session_23_observation/Maria",
+   "text": "Maria empathizes with John about the tough situation in his area due to the flood.",
+   "sentence_id": "prodc4-062"
+  },
+  {
+   "document_id": "conv-41/session_23_observation/Maria",
+   "text": "Maria expresses her willingness to join the meeting and contribute to making the community better.",
+   "sentence_id": "prodc4-063"
+  },
+  {
+   "document_id": "conv-41/session_23_observation/Maria",
+   "text": "Maria admires John's determination and commitment to helping others.",
+   "sentence_id": "prodc4-064"
+  },
+  {
+   "document_id": "conv-41/session_23_observation/Maria",
+   "text": "Maria mentions that John's commitment to helping others is inspiring.",
+   "sentence_id": "prodc4-065"
+  },
+  {
+   "document_id": "conv-41/session_23_observation/Maria",
+   "text": "Maria believes that their actions, no matter how small, can have a big impact on the community.",
+   "sentence_id": "prodc4-066"
+  },
+  {
+   "document_id": "conv-41/session_24_observation/John",
+   "text": "John visited a veteran's hospital and met an elderly veteran named Samuel who shared inspiring and heartbreaking stories.",
+   "sentence_id": "prodc4-067"
+  },
+  {
+   "document_id": "conv-41/session_24_observation/John",
+   "text": "John is part of an organization where he works with passionate people and considers them like a family.",
+   "sentence_id": "prodc4-068"
+  },
+  {
+   "document_id": "conv-41/session_24_observation/John",
+   "text": "John is thinking of setting up fun activities like arts and crafts for his kids based on his experience at a community event.",
+   "sentence_id": "prodc4-069"
+  },
+  {
+   "document_id": "conv-41/session_24_observation/Maria",
+   "text": "Maria had a picnic with friends from church where they played games like charades and a scavenger hunt.",
+   "sentence_id": "prodc4-070"
+  },
+  {
+   "document_id": "conv-41/session_24_observation/Maria",
+   "text": "Maria appreciates the importance of making connections and enjoying life's simpler moments.",
+   "sentence_id": "prodc4-071"
+  },
+  {
+   "document_id": "conv-41/session_24_observation/Maria",
+   "text": "Maria believes that doing good and helping others brings joy, and little acts of kindness can have a big effect.",
+   "sentence_id": "prodc4-072"
+  },
+  {
+   "document_id": "conv-41/session_25_observation/John",
+   "text": "John is enjoying his new job and finds his team to be encouraging and inspiring.",
+   "sentence_id": "prodc4-073"
+  },
+  {
+   "document_id": "conv-41/session_25_observation/John",
+   "text": "John attends a yoga studio with a chill vibe and awesome instructors.",
+   "sentence_id": "prodc4-074"
+  },
+  {
+   "document_id": "conv-41/session_25_observation/John",
+   "text": "John has also done weight training classes and found them challenging but peaceful.",
+   "sentence_id": "prodc4-075"
+  },
+  {
+   "document_id": "conv-41/session_25_observation/Maria",
+   "text": "Maria had a great experience hiking with her church friends last weekend, feeling surrounded by supportive people and enjoying nature.",
+   "sentence_id": "prodc4-076"
+  },
+  {
+   "document_id": "conv-41/session_25_observation/Maria",
+   "text": "Maria wanted to make connections, laugh together, and take in nature's beauty during the hike.",
+   "sentence_id": "prodc4-077"
+  },
+  {
+   "document_id": "conv-41/session_25_observation/Maria",
+   "text": "Maria plans to explore more and volunteer at shelters next month.",
+   "sentence_id": "prodc4-078"
+  },
+  {
+   "document_id": "conv-41/session_25_observation/Maria",
+   "text": "Maria is off to bake some cakes after the conversation.",
+   "sentence_id": "prodc4-079"
+  },
+  {
+   "document_id": "conv-41/session_26_observation/Maria",
+   "text": "Maria volunteers at a homeless shelter and is driven to make a difference.",
+   "sentence_id": "prodc4-080"
+  },
+  {
+   "document_id": "conv-41/session_26_observation/Maria",
+   "text": "Maria shared a photo from her volunteer work that reminds her of the importance of kindness.",
+   "sentence_id": "prodc4-081"
+  },
+  {
+   "document_id": "conv-41/session_26_observation/John",
+   "text": "John joined a firefighting brigade to give back to his community.",
+   "sentence_id": "prodc4-082"
+  },
+  {
+   "document_id": "conv-41/session_26_observation/John",
+   "text": "John was a part of a rescue mission that saved a family from a burning building.",
+   "sentence_id": "prodc4-083"
+  },
+  {
+   "document_id": "conv-41/session_26_observation/John",
+   "text": "John mentioned his military background and the sense of bond and support he feels in the firefighting brigade.",
+   "sentence_id": "prodc4-084"
+  },
+  {
+   "document_id": "conv-41/session_26_observation/John",
+   "text": "John believes in having friends you can rely on, as he finds it makes a huge difference.",
+   "sentence_id": "prodc4-085"
+  },
+  {
+   "document_id": "conv-41/session_27_observation/John",
+   "text": "John is part of a virtual support group advocating for the military and has involved family and friends in supporting veterans.",
+   "sentence_id": "prodc4-086"
+  },
+  {
+   "document_id": "conv-41/session_27_observation/John",
+   "text": "John admires Maria's volunteer work at a homeless shelter and finds it inspiring.",
+   "sentence_id": "prodc4-087"
+  },
+  {
+   "document_id": "conv-41/session_27_observation/John",
+   "text": "John had a meaningful experience at a military memorial with his kids last week.",
+   "sentence_id": "prodc4-088"
+  },
+  {
+   "document_id": "conv-41/session_27_observation/John",
+   "text": "John's kids were awestruck and humbled when they visited the military memorial.",
+   "sentence_id": "prodc4-089"
+  },
+  {
+   "document_id": "conv-41/session_27_observation/Maria",
+   "text": "Maria volunteers at a homeless shelter, which she started about a year ago after witnessing a struggling family on the streets.",
+   "sentence_id": "prodc4-090"
+  },
+  {
+   "document_id": "conv-41/session_27_observation/Maria",
+   "text": "Maria finds volunteering at the homeless shelter really fulfilling and impactful.",
+   "sentence_id": "prodc4-091"
+  },
+  {
+   "document_id": "conv-41/session_27_observation/Maria",
+   "text": "Maria mentioned Cindy, a resident at the shelter, who wrote a heartfelt expression of gratitude.",
+   "sentence_id": "prodc4-092"
+  },
+  {
+   "document_id": "conv-41/session_27_observation/Maria",
+   "text": "Maria thinks it's important to teach kids about veterans and their contributions.",
+   "sentence_id": "prodc4-093"
+  },
+  {
+   "document_id": "conv-41/session_28_observation/John",
+   "text": "John lost his job at a mechanical engineering company that tanked.",
+   "sentence_id": "prodc4-094"
+  },
+  {
+   "document_id": "conv-41/session_28_observation/John",
+   "text": "John is looking into opportunities in the tech industry after losing his job.",
+   "sentence_id": "prodc4-095"
+  },
+  {
+   "document_id": "conv-41/session_28_observation/John",
+   "text": "John found a job at a tech company that needs his mechanical skills for their hardware team.",
+   "sentence_id": "prodc4-096"
+  },
+  {
+   "document_id": "conv-41/session_28_observation/John",
+   "text": "John helped renovate a rundown community center back home last year.",
+   "sentence_id": "prodc4-097"
+  },
+  {
+   "document_id": "conv-41/session_28_observation/John",
+   "text": "John finds volunteering satisfying and valuable.",
+   "sentence_id": "prodc4-098"
+  },
+  {
+   "document_id": "conv-41/session_28_observation/Maria",
+   "text": "Maria engaged in community work with friends from church yesterday.",
+   "sentence_id": "prodc4-099"
+  },
+  {
+   "document_id": "conv-41/session_28_observation/Maria",
+   "text": "Maria believes in the importance of kindness and compassion.",
+   "sentence_id": "prodc4-100"
+  },
+  {
+   "document_id": "conv-41/session_29_observation/Maria",
+   "text": "Maria volunteered at a homeless shelter last week and received a medal for her help.",
+   "sentence_id": "prodc4-101"
+  },
+  {
+   "document_id": "conv-41/session_29_observation/Maria",
+   "text": "Maria found a community event inspiring and heartwarming.",
+   "sentence_id": "prodc4-102"
+  },
+  {
+   "document_id": "conv-41/session_29_observation/Maria",
+   "text": "Maria expressed admiration for John's initiative in organizing a charity run for veterans.",
+   "sentence_id": "prodc4-103"
+  },
+  {
+   "document_id": "conv-41/session_29_observation/Maria",
+   "text": "Maria thinks domestic abuse is a horrible issue and supports raising awareness and funds for it.",
+   "sentence_id": "prodc4-104"
+  },
+  {
+   "document_id": "conv-41/session_29_observation/Maria",
+   "text": "Both Maria and John agree on the importance of spreading awareness and supporting causes in the community.",
+   "sentence_id": "prodc4-105"
+  },
+  {
+   "document_id": "conv-41/session_29_observation/Maria",
+   "text": "Maria appreciates having a friend like John who is passionate and motivated about making a difference.",
+   "sentence_id": "prodc4-106"
+  },
+  {
+   "document_id": "conv-41/session_29_observation/John",
+   "text": "John organized a 5K charity run in the neighborhood to help veterans and their families.",
+   "sentence_id": "prodc4-107"
+  },
+  {
+   "document_id": "conv-41/session_29_observation/John",
+   "text": "John faced challenges in getting sponsors for the charity run but was successful in the end.",
+   "sentence_id": "prodc4-108"
+  },
+  {
+   "document_id": "conv-41/session_29_observation/John",
+   "text": "John has organized events for causes other than helping veterans, like raising awareness and funds for victims of domestic abuse.",
+   "sentence_id": "prodc4-109"
+  },
+  {
+   "document_id": "conv-41/session_30_observation/Maria",
+   "text": "Maria got a puppy named Coco two weeks ago, bringing joy to her life.",
+   "sentence_id": "prodc4-110"
+  },
+  {
+   "document_id": "conv-41/session_30_observation/Maria",
+   "text": "Maria finds joy in greeting her puppy, Coco, when coming home.",
+   "sentence_id": "prodc4-111"
+  },
+  {
+   "document_id": "conv-41/session_30_observation/Maria",
+   "text": "Maria believes that taking care of her puppy, Coco, is worth the adjustment.",
+   "sentence_id": "prodc4-112"
+  },
+  {
+   "document_id": "conv-41/session_30_observation/Maria",
+   "text": "Maria acknowledges nature as a reset for our souls.",
+   "sentence_id": "prodc4-113"
+  },
+  {
+   "document_id": "conv-41/session_30_observation/Maria",
+   "text": "Maria understands tough times and offers support to John.",
+   "sentence_id": "prodc4-114"
+  },
+  {
+   "document_id": "conv-41/session_30_observation/Maria",
+   "text": "Maria suggests to John to focus his energy on something meaningful, like joining local organizations or volunteering programs.",
+   "sentence_id": "prodc4-115"
+  },
+  {
+   "document_id": "conv-41/session_30_observation/Maria",
+   "text": "Maria encourages John, assures him he can make a difference, and offers help.",
+   "sentence_id": "prodc4-116"
+  },
+  {
+   "document_id": "conv-41/session_30_observation/Maria",
+   "text": "Maria plans to keep spreading positivity.",
+   "sentence_id": "prodc4-117"
+  },
+  {
+   "document_id": "conv-41/session_30_observation/John",
+   "text": "John cherishes memories of his pet Max, including a camping trip where they hiked, swam, and made great memories.",
+   "sentence_id": "prodc4-118"
+  },
+  {
+   "document_id": "conv-41/session_30_observation/John",
+   "text": "John found the camping trip with his pet Max to be peaceful and awesome.",
+   "sentence_id": "prodc4-119"
+  },
+  {
+   "document_id": "conv-41/session_30_observation/John",
+   "text": "John values nature as a way to restart his mind and spirit, appreciating the peaceful moments.",
+   "sentence_id": "prodc4-120"
+  },
+  {
+   "document_id": "conv-41/session_30_observation/John",
+   "text": "John expresses feeling stuck and wanting to positively affect people and the world.",
+   "sentence_id": "prodc4-121"
+  },
+  {
+   "document_id": "conv-41/session_30_observation/John",
+   "text": "John has been exploring options to make a difference, considering joining local organizations or volunteering programs.",
+   "sentence_id": "prodc4-122"
+  },
+  {
+   "document_id": "conv-41/session_30_observation/John",
+   "text": "John appreciates Maria's kind words and finds her an inspiration.",
+   "sentence_id": "prodc4-123"
+  },
+  {
+   "document_id": "conv-41/session_31_observation/John",
+   "text": "John is volunteering as a mentor for a local school, helping students improve their confidence and skills.",
+   "sentence_id": "prodc4-124"
+  },
+  {
+   "document_id": "conv-41/session_31_observation/John",
+   "text": "John is considering adopting a new pup and plans to look into shelters near him soon.",
+   "sentence_id": "prodc4-125"
+  },
+  {
+   "document_id": "conv-41/session_31_observation/Maria",
+   "text": "Maria recently adopted a cute pup named Shadow from a shelter.",
+   "sentence_id": "prodc4-126"
+  },
+  {
+   "document_id": "conv-41/session_31_observation/Maria",
+   "text": "Maria did not have any pets growing up, but having a furry companion brightens her days.",
+   "sentence_id": "prodc4-127"
+  },
+  {
+   "document_id": "conv-41/session_31_observation/Maria",
+   "text": "Maria's pup is learning commands and house training well.",
+   "sentence_id": "prodc4-128"
+  },
+  {
+   "document_id": "conv-41/session_32_observation/John",
+   "text": "John is now part of the fire-fighting brigade and is enthusiastic about helping the community.",
+   "sentence_id": "prodc4-129"
+  },
+  {
+   "document_id": "conv-41/session_32_observation/John",
+   "text": "John was impressed with the dedication and teamwork of the people in the fire-fighting brigade.",
+   "sentence_id": "prodc4-130"
+  },
+  {
+   "document_id": "conv-41/session_32_observation/John",
+   "text": "John feels a sense of purpose and passion in helping out with the fire-fighting brigade, considering it his true calling.",
+   "sentence_id": "prodc4-131"
+  },
+  {
+   "document_id": "conv-41/session_32_observation/John",
+   "text": "The donations raised by John and his team helped in getting a brand new fire truck.",
+   "sentence_id": "prodc4-132"
+  },
+  {
+   "document_id": "conv-41/session_32_observation/Maria",
+   "text": "Maria finds fulfillment in volunteering at the shelter, seeing the impact of small acts of kindness on people's lives.",
+   "sentence_id": "prodc4-133"
+  },
+  {
+   "document_id": "conv-41/session_32_observation/Maria",
+   "text": "Maria believes in the power to make a difference in people's lives and is enthusiastic about spreading kindness in the community.",
+   "sentence_id": "prodc4-134"
+  },
+  {
+   "document_id": "conv-42/session_1_observation/Nate",
+   "text": "Nate won his first video game tournament playing a team shooter game called Counter-Strike: Global Offensive.",
+   "sentence_id": "prodc4-135"
+  },
+  {
+   "document_id": "conv-42/session_1_observation/Nate",
+   "text": "Nate's main hobbies are playing video games and watching movies.",
+   "sentence_id": "prodc4-136"
+  },
+  {
+   "document_id": "conv-42/session_1_observation/Nate",
+   "text": "Nate enjoys action and sci-fi movies for their cool effects.",
+   "sentence_id": "prodc4-137"
+  },
+  {
+   "document_id": "conv-42/session_1_observation/Joanna",
+   "text": "Joanna has been working on a project recently.",
+   "sentence_id": "prodc4-138"
+  },
+  {
+   "document_id": "conv-42/session_1_observation/Joanna",
+   "text": "Joanna's favorite movie genres are dramas and romcoms as she enjoys getting immersed in feelings and plots.",
+   "sentence_id": "prodc4-139"
+  },
+  {
+   "document_id": "conv-42/session_1_observation/Joanna",
+   "text": "Joanna recommended a romantic drama movie that focuses on memory and relationships.",
+   "sentence_id": "prodc4-140"
+  },
+  {
+   "document_id": "conv-42/session_1_observation/Joanna",
+   "text": "Joanna watched a specific movie she recommended around 3 years ago and considers it one of her favorites.",
+   "sentence_id": "prodc4-141"
+  },
+  {
+   "document_id": "conv-42/session_2_observation/Joanna",
+   "text": "Joanna finished her first full screenplay last Friday, which is a mix of drama and romance.",
+   "sentence_id": "prodc4-142"
+  },
+  {
+   "document_id": "conv-42/session_2_observation/Joanna",
+   "text": "Joanna plans to submit her screenplay to film festivals and hopes to attract producers and directors to check it out.",
+   "sentence_id": "prodc4-143"
+  },
+  {
+   "document_id": "conv-42/session_2_observation/Joanna",
+   "text": "Joanna is allergic to most reptiles and animals with fur, causing her face to get puffy and itchy.",
+   "sentence_id": "prodc4-144"
+  },
+  {
+   "document_id": "conv-42/session_2_observation/Joanna",
+   "text": "Writing and hanging out with friends bring Joanna joy and help her express herself.",
+   "sentence_id": "prodc4-145"
+  },
+  {
+   "document_id": "conv-42/session_2_observation/Joanna",
+   "text": "Writing allows Joanna to create wild worlds with interesting characters and serves as a great way to express her feelings.",
+   "sentence_id": "prodc4-146"
+  },
+  {
+   "document_id": "conv-42/session_2_observation/Nate",
+   "text": "Nate has had turtles for 3 years that bring him joy and help keep him calm during stressful times.",
+   "sentence_id": "prodc4-147"
+  },
+  {
+   "document_id": "conv-42/session_2_observation/Nate",
+   "text": "Nate enjoys hanging out with people outside of his usual circle at the tournament.",
+   "sentence_id": "prodc4-148"
+  },
+  {
+   "document_id": "conv-42/session_2_observation/Nate",
+   "text": "Nate does not expect to win big at the tournament but plays for fun and likes cheering on others.",
+   "sentence_id": "prodc4-149"
+  }
+ ]
+}
