@@ -10,7 +10,8 @@
     "b613ff0: anaphora does not explain candidate silence (27/28 present)"
   ],
   "scope_note": "NOT nominalization in general (PP_PROVIDER nominals were found 8/8 in the position probe). Only: does Candidate Generation lose a relation when the argument itself is an event/process nominal?",
-  "lexical_constant": "YES=supports (broadly accepted support trigger with established mapping to canonical provides), NO=deny",
+  "lexical_constant": "YES=supports, NO=deny",
+  "trigger_mapping": {"source_trigger": "supports", "gold_relation": "provides", "semantic_basis": "support/provision (support lexically covers PROVIDE: furnishing needed means/support)"},
   "classes": {
     "E0": "ordinary entity as object",
     "E1": "event nominal as object",

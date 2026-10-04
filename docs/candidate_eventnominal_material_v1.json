@@ -1,0 +1,393 @@
+{
+ "version": "candidate_eventnominal_material_v1",
+  "status": "frozen_for_probe (reviewed; E1 event readings confirmed; supports-to-provides mapping in protocol)",
+ "date": "2026-10-04",
+ "protocol": "docs/candidate_eventnominal_probe_v1.json",
+ "builder": "scripts/build_eventnominal_material.py",
+ "pairs": [
+  {
+   "pair_id": "en01",
+   "class": "E0",
+   "target_type": "entity",
+   "semantic_subtype": "museum_support",
+   "yes": {
+    "sentence_id": "en01yes",
+    "sentence": "The foundation supports the museum.",
+    "expected_provides": "YES",
+    "provider": "The foundation",
+    "recipient": "the museum",
+    "lexical_trigger": "supports",
+    "argument_frame": "transitive"
+   },
+   "no": {
+    "sentence_id": "en01no",
+    "sentence": "The foundation denies the museum.",
+    "expected_provides": "NO",
+    "provider": "The foundation",
+    "recipient": "the museum",
+    "lexical_trigger": "deny",
+    "argument_frame": "transitive"
+   }
+  },
+  {
+   "pair_id": "en02",
+   "class": "E0",
+   "target_type": "entity",
+   "semantic_subtype": "library_support",
+   "yes": {
+    "sentence_id": "en02yes",
+    "sentence": "The city supports the library.",
+    "expected_provides": "YES",
+    "provider": "The city",
+    "recipient": "the library",
+    "lexical_trigger": "supports",
+    "argument_frame": "transitive"
+   },
+   "no": {
+    "sentence_id": "en02no",
+    "sentence": "The city denies the library.",
+    "expected_provides": "NO",
+    "provider": "The city",
+    "recipient": "the library",
+    "lexical_trigger": "deny",
+    "argument_frame": "transitive"
+   }
+  },
+  {
+   "pair_id": "en03",
+   "class": "E0",
+   "target_type": "entity",
+   "semantic_subtype": "school_support",
+   "yes": {
+    "sentence_id": "en03yes",
+    "sentence": "The company supports the school.",
+    "expected_provides": "YES",
+    "provider": "The company",
+    "recipient": "the school",
+    "lexical_trigger": "supports",
+    "argument_frame": "transitive"
+   },
+   "no": {
+    "sentence_id": "en03no",
+    "sentence": "The company denies the school.",
+    "expected_provides": "NO",
+    "provider": "The company",
+    "recipient": "the school",
+    "lexical_trigger": "deny",
+    "argument_frame": "transitive"
+   }
+  },
+  {
+   "pair_id": "en04",
+   "class": "E0",
+   "target_type": "entity",
+   "semantic_subtype": "park_support",
+   "yes": {
+    "sentence_id": "en04yes",
+    "sentence": "The club supports the park.",
+    "expected_provides": "YES",
+    "provider": "The club",
+    "recipient": "the park",
+    "lexical_trigger": "supports",
+    "argument_frame": "transitive"
+   },
+   "no": {
+    "sentence_id": "en04no",
+    "sentence": "The club denies the park.",
+    "expected_provides": "NO",
+    "provider": "The club",
+    "recipient": "the park",
+    "lexical_trigger": "deny",
+    "argument_frame": "transitive"
+   }
+  },
+  {
+   "pair_id": "en05",
+   "class": "E1",
+   "target_type": "event_nominal",
+   "semantic_subtype": "renovation_support",
+   "yes": {
+    "sentence_id": "en05yes",
+    "sentence": "The foundation supports the renovation.",
+    "expected_provides": "YES",
+    "provider": "The foundation",
+    "recipient": "the renovation",
+    "lexical_trigger": "supports",
+    "argument_frame": "transitive"
+   },
+   "no": {
+    "sentence_id": "en05no",
+    "sentence": "The foundation denies the renovation.",
+    "expected_provides": "NO",
+    "provider": "The foundation",
+    "recipient": "the renovation",
+    "lexical_trigger": "deny",
+    "argument_frame": "transitive"
+   }
+  },
+  {
+   "pair_id": "en06",
+   "class": "E1",
+   "target_type": "event_nominal",
+   "semantic_subtype": "digitization_support",
+   "yes": {
+    "sentence_id": "en06yes",
+    "sentence": "The archive supports the digitization.",
+    "expected_provides": "YES",
+    "provider": "The archive",
+    "recipient": "the digitization",
+    "lexical_trigger": "supports",
+    "argument_frame": "transitive"
+   },
+   "no": {
+    "sentence_id": "en06no",
+    "sentence": "The archive denies the digitization.",
+    "expected_provides": "NO",
+    "provider": "The archive",
+    "recipient": "the digitization",
+    "lexical_trigger": "deny",
+    "argument_frame": "transitive"
+   }
+  },
+  {
+   "pair_id": "en07",
+   "class": "E1",
+   "target_type": "event_nominal",
+   "semantic_subtype": "restoration_support",
+   "yes": {
+    "sentence_id": "en07yes",
+    "sentence": "The trust supports the restoration.",
+    "expected_provides": "YES",
+    "provider": "The trust",
+    "recipient": "the restoration",
+    "lexical_trigger": "supports",
+    "argument_frame": "transitive"
+   },
+   "no": {
+    "sentence_id": "en07no",
+    "sentence": "The trust denies the restoration.",
+    "expected_provides": "NO",
+    "provider": "The trust",
+    "recipient": "the restoration",
+    "lexical_trigger": "deny",
+    "argument_frame": "transitive"
+   }
+  },
+  {
+   "pair_id": "en08",
+   "class": "E1",
+   "target_type": "event_nominal",
+   "semantic_subtype": "expansion_support",
+   "yes": {
+    "sentence_id": "en08yes",
+    "sentence": "The board supports the expansion.",
+    "expected_provides": "YES",
+    "provider": "The board",
+    "recipient": "the expansion",
+    "lexical_trigger": "supports",
+    "argument_frame": "transitive"
+   },
+   "no": {
+    "sentence_id": "en08no",
+    "sentence": "The board denies the expansion.",
+    "expected_provides": "NO",
+    "provider": "The board",
+    "recipient": "the expansion",
+    "lexical_trigger": "deny",
+    "argument_frame": "transitive"
+   }
+  },
+  {
+   "pair_id": "en09",
+   "class": "E2",
+   "target_type": "event_nominal_of",
+   "semantic_subtype": "museum_renovation_support",
+   "yes": {
+    "sentence_id": "en09yes",
+    "sentence": "The foundation supports the renovation of the museum.",
+    "expected_provides": "YES",
+    "provider": "The foundation",
+    "recipient": "the renovation of the museum",
+    "lexical_trigger": "supports",
+    "argument_frame": "transitive"
+   },
+   "no": {
+    "sentence_id": "en09no",
+    "sentence": "The foundation denies the renovation of the museum.",
+    "expected_provides": "NO",
+    "provider": "The foundation",
+    "recipient": "the renovation of the museum",
+    "lexical_trigger": "deny",
+    "argument_frame": "transitive"
+   }
+  },
+  {
+   "pair_id": "en10",
+   "class": "E2",
+   "target_type": "event_nominal_of",
+   "semantic_subtype": "records_digitization_support",
+   "yes": {
+    "sentence_id": "en10yes",
+    "sentence": "The donors supports the digitization of the records.",
+    "expected_provides": "YES",
+    "provider": "The donors",
+    "recipient": "the digitization of the records",
+    "lexical_trigger": "supports",
+    "argument_frame": "transitive"
+   },
+   "no": {
+    "sentence_id": "en10no",
+    "sentence": "The donors denies the digitization of the records.",
+    "expected_provides": "NO",
+    "provider": "The donors",
+    "recipient": "the digitization of the records",
+    "lexical_trigger": "deny",
+    "argument_frame": "transitive"
+   }
+  },
+  {
+   "pair_id": "en11",
+   "class": "E2",
+   "target_type": "event_nominal_of",
+   "semantic_subtype": "theater_restoration_support",
+   "yes": {
+    "sentence_id": "en11yes",
+    "sentence": "The trust supports the restoration of the theater.",
+    "expected_provides": "YES",
+    "provider": "The trust",
+    "recipient": "the restoration of the theater",
+    "lexical_trigger": "supports",
+    "argument_frame": "transitive"
+   },
+   "no": {
+    "sentence_id": "en11no",
+    "sentence": "The trust denies the restoration of the theater.",
+    "expected_provides": "NO",
+    "provider": "The trust",
+    "recipient": "the restoration of the theater",
+    "lexical_trigger": "deny",
+    "argument_frame": "transitive"
+   }
+  },
+  {
+   "pair_id": "en12",
+   "class": "E2",
+   "target_type": "event_nominal_of",
+   "semantic_subtype": "hospital_expansion_support",
+   "yes": {
+    "sentence_id": "en12yes",
+    "sentence": "The council supports the expansion of the hospital.",
+    "expected_provides": "YES",
+    "provider": "The council",
+    "recipient": "the expansion of the hospital",
+    "lexical_trigger": "supports",
+    "argument_frame": "transitive"
+   },
+   "no": {
+    "sentence_id": "en12no",
+    "sentence": "The council denies the expansion of the hospital.",
+    "expected_provides": "NO",
+    "provider": "The council",
+    "recipient": "the expansion of the hospital",
+    "lexical_trigger": "deny",
+    "argument_frame": "transitive"
+   }
+  },
+  {
+   "pair_id": "en13",
+   "class": "E3",
+   "target_type": "result_nominal",
+   "semantic_subtype": "renovated_museum_support",
+   "yes": {
+    "sentence_id": "en13yes",
+    "sentence": "The foundation supports the renovated museum.",
+    "expected_provides": "YES",
+    "provider": "The foundation",
+    "recipient": "the renovated museum",
+    "lexical_trigger": "supports",
+    "argument_frame": "transitive"
+   },
+   "no": {
+    "sentence_id": "en13no",
+    "sentence": "The foundation denies the renovated museum.",
+    "expected_provides": "NO",
+    "provider": "The foundation",
+    "recipient": "the renovated museum",
+    "lexical_trigger": "deny",
+    "argument_frame": "transitive"
+   }
+  },
+  {
+   "pair_id": "en14",
+   "class": "E3",
+   "target_type": "result_nominal",
+   "semantic_subtype": "digitized_records_support",
+   "yes": {
+    "sentence_id": "en14yes",
+    "sentence": "The donors supports the digitized records.",
+    "expected_provides": "YES",
+    "provider": "The donors",
+    "recipient": "the digitized records",
+    "lexical_trigger": "supports",
+    "argument_frame": "transitive"
+   },
+   "no": {
+    "sentence_id": "en14no",
+    "sentence": "The donors denies the digitized records.",
+    "expected_provides": "NO",
+    "provider": "The donors",
+    "recipient": "the digitized records",
+    "lexical_trigger": "deny",
+    "argument_frame": "transitive"
+   }
+  },
+  {
+   "pair_id": "en15",
+   "class": "E3",
+   "target_type": "result_nominal",
+   "semantic_subtype": "restored_theater_support",
+   "yes": {
+    "sentence_id": "en15yes",
+    "sentence": "The trust supports the restored theater.",
+    "expected_provides": "YES",
+    "provider": "The trust",
+    "recipient": "the restored theater",
+    "lexical_trigger": "supports",
+    "argument_frame": "transitive"
+   },
+   "no": {
+    "sentence_id": "en15no",
+    "sentence": "The trust denies the restored theater.",
+    "expected_provides": "NO",
+    "provider": "The trust",
+    "recipient": "the restored theater",
+    "lexical_trigger": "deny",
+    "argument_frame": "transitive"
+   }
+  },
+  {
+   "pair_id": "en16",
+   "class": "E3",
+   "target_type": "result_nominal",
+   "semantic_subtype": "expanded_hospital_support",
+   "yes": {
+    "sentence_id": "en16yes",
+    "sentence": "The council supports the expanded hospital.",
+    "expected_provides": "YES",
+    "provider": "The council",
+    "recipient": "the expanded hospital",
+    "lexical_trigger": "supports",
+    "argument_frame": "transitive"
+   },
+   "no": {
+    "sentence_id": "en16no",
+    "sentence": "The council denies the expanded hospital.",
+    "expected_provides": "NO",
+    "provider": "The council",
+    "recipient": "the expanded hospital",
+    "lexical_trigger": "deny",
+    "argument_frame": "transitive"
+   }
+  }
+ ]
+}
