@@ -1,0 +1,203 @@
+{
+ "version": "abstain_annotation_batch3_v1",
+ "n": 17,
+ "error_classes": [
+  "name_collision_context_resolvable",
+  "name_collision_genuinely_ambiguous",
+  "generic_entity_unresolved",
+  "generic_entity_context_resolvable",
+  "activity_subject_non_entity",
+  "activity_subject_should_be_entity",
+  "true_ambiguity",
+  "linker_error_other"
+ ],
+ "entries": [
+  {
+   "sentence_id": "prodc3-002",
+   "text": "Dancing has kept Jon going during stressful times.",
+   "subject_mention": "Dancing",
+   "object_mention": "Jon",
+   "link_status": "resolved/ambiguous",
+   "link_correct": null,
+   "should_link_to": null,
+   "error_class": null,
+   "rationale": null
+  },
+  {
+   "sentence_id": "prodc3-004",
+   "text": "Gina encouraged Jon to keep up the good work and not forget his passion for dance.",
+   "subject_mention": "Gina",
+   "object_mention": "Jon",
+   "link_status": "resolved/ambiguous",
+   "link_correct": null,
+   "should_link_to": null,
+   "error_class": null,
+   "rationale": null
+  },
+  {
+   "sentence_id": "prodc3-005",
+   "text": "Gina is supportive of Jon's dream of opening a dance studio.",
+   "subject_mention": "Gina",
+   "object_mention": "Jon",
+   "link_status": "resolved/ambiguous",
+   "link_correct": null,
+   "should_link_to": null,
+   "error_class": null,
+   "rationale": null
+  },
+  {
+   "sentence_id": "prodc3-019",
+   "text": "John participated in activities with the online group such as giving out food at a homeless shelter and organizing a toy drive for kids in need.",
+   "subject_mention": "John",
+   "object_mention": "homeless shelter",
+   "link_status": "ambiguous/resolved",
+   "link_correct": null,
+   "should_link_to": null,
+   "error_class": null,
+   "rationale": null
+  },
+  {
+   "sentence_id": "prodc3-019",
+   "text": "John participated in activities with the online group such as giving out food at a homeless shelter and organizing a toy drive for kids in need.",
+   "subject_mention": "John",
+   "object_mention": "kids in need",
+   "link_status": "ambiguous/resolved",
+   "link_correct": null,
+   "should_link_to": null,
+   "error_class": null,
+   "rationale": null
+  },
+  {
+   "sentence_id": "prodc3-028",
+   "text": "Maria supports John's community work and helps him with new ideas and plans.",
+   "subject_mention": "Maria",
+   "object_mention": "John",
+   "link_status": "resolved/ambiguous",
+   "link_correct": null,
+   "should_link_to": null,
+   "error_class": null,
+   "rationale": null
+  },
+  {
+   "sentence_id": "prodc3-037",
+   "text": "John is grateful for Maria's support and considers her an awesome friend.",
+   "subject_mention": "Maria",
+   "object_mention": "John",
+   "link_status": "resolved/ambiguous",
+   "link_correct": null,
+   "should_link_to": null,
+   "error_class": null,
+   "rationale": null
+  },
+  {
+   "sentence_id": "prodc3-053",
+   "text": "John started helping out with a food drive for people who lost their jobs.",
+   "subject_mention": "John",
+   "object_mention": "people who lost their jobs",
+   "link_status": "ambiguous/resolved",
+   "link_correct": null,
+   "should_link_to": null,
+   "error_class": null,
+   "rationale": null
+  },
+  {
+   "sentence_id": "prodc3-070",
+   "text": "John discussed the volunteering opportunity with family and friends, who have been supportive.",
+   "subject_mention": "friends",
+   "object_mention": "John",
+   "link_status": "resolved/ambiguous",
+   "link_correct": null,
+   "should_link_to": null,
+   "error_class": null,
+   "rationale": null
+  },
+  {
+   "sentence_id": "prodc3-072",
+   "text": "Maria congratulated John on finishing his degree.",
+   "subject_mention": "Maria",
+   "object_mention": "John",
+   "link_status": "resolved/ambiguous",
+   "link_correct": null,
+   "should_link_to": null,
+   "error_class": null,
+   "rationale": null
+  },
+  {
+   "sentence_id": "prodc3-081",
+   "text": "John values Maria's support and finds it encouraging.",
+   "subject_mention": "Maria",
+   "object_mention": "John",
+   "link_status": "resolved/ambiguous",
+   "link_correct": null,
+   "should_link_to": null,
+   "error_class": null,
+   "rationale": null
+  },
+  {
+   "sentence_id": "prodc3-084",
+   "text": "John is in a beginner yoga class that helps him relax and increase flexibility.",
+   "subject_mention": "beginner yoga class",
+   "object_mention": "John",
+   "link_status": "resolved/ambiguous",
+   "link_correct": null,
+   "should_link_to": null,
+   "error_class": null,
+   "rationale": null
+  },
+  {
+   "sentence_id": "prodc3-085",
+   "text": "Yoga has helped John feel more connected, relaxed, and improved his mind and body.",
+   "subject_mention": "Yoga",
+   "object_mention": "John",
+   "link_status": "resolved/ambiguous",
+   "link_correct": null,
+   "should_link_to": null,
+   "error_class": null,
+   "rationale": null
+  },
+  {
+   "sentence_id": "prodc3-087",
+   "text": "John volunteered at a career fair at a local school and found it rewarding to help kids with dreams affected by lack of resources.",
+   "subject_mention": "John",
+   "object_mention": "kids",
+   "link_status": "ambiguous/resolved",
+   "link_correct": null,
+   "should_link_to": null,
+   "error_class": null,
+   "rationale": null
+  },
+  {
+   "sentence_id": "prodc3-093",
+   "text": "Maria motivates John for the awesome work he's doing in helping kids and encourages him to keep up the good work.",
+   "subject_mention": "Maria",
+   "object_mention": "John",
+   "link_status": "resolved/ambiguous",
+   "link_correct": null,
+   "should_link_to": null,
+   "error_class": null,
+   "rationale": null
+  },
+  {
+   "sentence_id": "prodc3-113",
+   "text": "John and his family support and motivate each other during workouts.",
+   "subject_mention": "John",
+   "object_mention": "his family",
+   "link_status": "ambiguous/resolved",
+   "link_correct": null,
+   "should_link_to": null,
+   "error_class": null,
+   "rationale": null
+  },
+  {
+   "sentence_id": "prodc3-113",
+   "text": "John and his family support and motivate each other during workouts.",
+   "subject_mention": "his family",
+   "object_mention": "John",
+   "link_status": "resolved/ambiguous",
+   "link_correct": null,
+   "should_link_to": null,
+   "error_class": null,
+   "rationale": null
+  }
+ ]
+}
