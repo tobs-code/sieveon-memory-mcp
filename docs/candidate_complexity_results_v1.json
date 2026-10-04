@@ -1,0 +1,825 @@
+{
+ "version": "candidate_complexity_results_v1",
+ "protocol": "docs/candidate_complexity_probe_v1.json",
+ "material": "docs/candidate_complexity_material_v1.json",
+ "stage": "candidate_generation_only (nu_candidates, no validator)",
+ "match_rule": "normalized span equality or containment, either direction",
+ "note": "c0med YES/NO share surface with lex01 (cross-probe calibration, not independent evidence)",
+ "pairs": [
+  {
+   "pair_id": "c0med",
+   "condition": "C0",
+   "subtype": "med",
+   "sides": {
+    "yes": {
+     "sentence_id": "c0medyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "c0medno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "c1med",
+   "condition": "C1",
+   "subtype": "med",
+   "sides": {
+    "yes": {
+     "sentence_id": "c1medyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "c1medno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "c2med",
+   "condition": "C2",
+   "subtype": "med",
+   "sides": {
+    "yes": {
+     "sentence_id": "c2medyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "c2medno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "c3med",
+   "condition": "C3",
+   "subtype": "med",
+   "sides": {
+    "yes": {
+     "sentence_id": "c3medyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "c3medno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "c4med",
+   "condition": "C4",
+   "subtype": "med",
+   "sides": {
+    "yes": {
+     "sentence_id": "c4medyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "patients"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "c4medno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clinic",
+       "the pharmacy"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": false,
+     "full_match": false,
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "c5med",
+   "condition": "C5",
+   "subtype": "med",
+   "sides": {
+    "yes": {
+     "sentence_id": "c5medyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the clinic",
+       "patients"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "c5medno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "full_match": false,
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "c0fuel",
+   "condition": "C0",
+   "subtype": "fuel",
+   "sides": {
+    "yes": {
+     "sentence_id": "c0fuelyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "units"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "c0fuelno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "units"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "c1fuel",
+   "condition": "C1",
+   "subtype": "fuel",
+   "sides": {
+    "yes": {
+     "sentence_id": "c1fuelyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "units"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "c1fuelno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "depot",
+       "units"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "c2fuel",
+   "condition": "C2",
+   "subtype": "fuel",
+   "sides": {
+    "yes": {
+     "sentence_id": "c2fuelyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "units"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "c2fuelno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "units"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "c3fuel",
+   "condition": "C3",
+   "subtype": "fuel",
+   "sides": {
+    "yes": {
+     "sentence_id": "c3fuelyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "units"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "c3fuelno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "units"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "c4fuel",
+   "condition": "C4",
+   "subtype": "fuel",
+   "sides": {
+    "yes": {
+     "sentence_id": "c4fuelyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "units"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "c4fuelno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The depot",
+       "units"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "c5fuel",
+   "condition": "C5",
+   "subtype": "fuel",
+   "sides": {
+    "yes": {
+     "sentence_id": "c5fuelyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "Providing units",
+       "the depot"
+      ]
+     ],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "full_match": false,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "c5fuelno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "full_match": false,
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "c0badge",
+   "condition": "C0",
+   "subtype": "badge",
+   "sides": {
+    "yes": {
+     "sentence_id": "c0badgeyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clerk",
+       "visitors"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "c0badgeno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "full_match": false,
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "c1badge",
+   "condition": "C1",
+   "subtype": "badge",
+   "sides": {
+    "yes": {
+     "sentence_id": "c1badgeyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clerk",
+       "visitors"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "c1badgeno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "full_match": false,
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "c2badge",
+   "condition": "C2",
+   "subtype": "badge",
+   "sides": {
+    "yes": {
+     "sentence_id": "c2badgeyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clerk",
+       "visitors"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "c2badgeno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "recipient_recovered": false,
+     "full_match": false,
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "c3badge",
+   "condition": "C3",
+   "subtype": "badge",
+   "sides": {
+    "yes": {
+     "sentence_id": "c3badgeyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clerk",
+       "visitors"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "c3badgeno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "clerk",
+       "visitors"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "c4badge",
+   "condition": "C4",
+   "subtype": "badge",
+   "sides": {
+    "yes": {
+     "sentence_id": "c4badgeyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clerk",
+       "visitors"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "c4badgeno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The clerk",
+       "visitors"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "c5badge",
+   "condition": "C5",
+   "subtype": "badge",
+   "sides": {
+    "yes": {
+     "sentence_id": "c5badgeyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the clerk",
+       "visitors"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "c5badgeno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "clerk",
+       "visitors"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "c0lesson",
+   "condition": "C0",
+   "subtype": "lesson",
+   "sides": {
+    "yes": {
+     "sentence_id": "c0lessonyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "students"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "c0lessonno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "students"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "c1lesson",
+   "condition": "C1",
+   "subtype": "lesson",
+   "sides": {
+    "yes": {
+     "sentence_id": "c1lessonyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "students"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "c1lessonno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "students"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "c2lesson",
+   "condition": "C2",
+   "subtype": "lesson",
+   "sides": {
+    "yes": {
+     "sentence_id": "c2lessonyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "students"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "c2lessonno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "students"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "c3lesson",
+   "condition": "C3",
+   "subtype": "lesson",
+   "sides": {
+    "yes": {
+     "sentence_id": "c3lessonyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "students"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "c3lessonno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "students"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "c4lesson",
+   "condition": "C4",
+   "subtype": "lesson",
+   "sides": {
+    "yes": {
+     "sentence_id": "c4lessonyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "students"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "c4lessonno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The tutor",
+       "students"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "c5lesson",
+   "condition": "C5",
+   "subtype": "lesson",
+   "sides": {
+    "yes": {
+     "sentence_id": "c5lessonyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the tutor",
+       "students"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": false
+    },
+    "no": {
+     "sentence_id": "c5lessonno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the tutor",
+       "students"
+      ]
+     ],
+     "provider_recovered": true,
+     "recipient_recovered": true,
+     "full_match": true,
+     "false_candidate": true
+    }
+   }
+  }
+ ]
+}
