@@ -1,0 +1,497 @@
+{
+ "version": "candidate_interaction_results_v1",
+ "protocol": "docs/candidate_interaction_probe_v1.json",
+ "material": "docs/candidate_interaction_material_v1.json",
+ "stage": "candidate_generation_only (nu_candidates, no validator, no linking)",
+ "match_rule": "normalized span equality or containment, either direction",
+ "pairs": [
+  {
+   "pair_id": "arec",
+   "cell": "A",
+   "scenario": "rec",
+   "sides": {
+    "yes": {
+     "sentence_id": "arecyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The foundation",
+       "teams"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "arecno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "target_recovered": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "brec",
+   "cell": "B",
+   "scenario": "rec",
+   "sides": {
+    "yes": {
+     "sentence_id": "brecyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The foundation",
+       "the digitization of records"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "brecno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "target_recovered": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "crec",
+   "cell": "C",
+   "scenario": "rec",
+   "sides": {
+    "yes": {
+     "sentence_id": "crecyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the foundation",
+       "Teams digitizing records"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "crecno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the foundation",
+       "Teams digitizing records"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "drec",
+   "cell": "D",
+   "scenario": "rec",
+   "sides": {
+    "yes": {
+     "sentence_id": "drecyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the foundation",
+       "The digitization of records"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "drecno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "target_recovered": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "athea",
+   "cell": "A",
+   "scenario": "thea",
+   "sides": {
+    "yes": {
+     "sentence_id": "atheayes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The donors",
+       "staff"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "atheano",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The donors",
+       "staff"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "bthea",
+   "cell": "B",
+   "scenario": "thea",
+   "sides": {
+    "yes": {
+     "sentence_id": "btheayes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The donors",
+       "the restoration of the theater"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "btheano",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The donors",
+       "the theater"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "cthea",
+   "cell": "C",
+   "scenario": "thea",
+   "sides": {
+    "yes": {
+     "sentence_id": "ctheayes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "donors",
+       "Staff restoring the theater"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "ctheano",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "donors",
+       "Staff"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "dthea",
+   "cell": "D",
+   "scenario": "thea",
+   "sides": {
+    "yes": {
+     "sentence_id": "dtheayes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the donors",
+       "the theater"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "dtheano",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the donors",
+       "the theater"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "ahosp",
+   "cell": "A",
+   "scenario": "hosp",
+   "sides": {
+    "yes": {
+     "sentence_id": "ahospyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The city",
+       "crews"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "ahospno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "target_recovered": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "bhosp",
+   "cell": "B",
+   "scenario": "hosp",
+   "sides": {
+    "yes": {
+     "sentence_id": "bhospyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The city",
+       "the rebuilding of the bridge"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "bhospno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "target_recovered": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "chosp",
+   "cell": "C",
+   "scenario": "hosp",
+   "sides": {
+    "yes": {
+     "sentence_id": "chospyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the city",
+       "Crews rebuilding the bridge"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "chospno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the city",
+       "Crews rebuilding the bridge"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "dhosp",
+   "cell": "D",
+   "scenario": "hosp",
+   "sides": {
+    "yes": {
+     "sentence_id": "dhospyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the city",
+       "the bridge"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "dhospno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "target_recovered": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "amus",
+   "cell": "A",
+   "scenario": "mus",
+   "sides": {
+    "yes": {
+     "sentence_id": "amusyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The trust",
+       "artists"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "amusno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "target_recovered": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "bmus",
+   "cell": "B",
+   "scenario": "mus",
+   "sides": {
+    "yes": {
+     "sentence_id": "bmusyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The trust",
+       "the recording of songs"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "bmusno",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "target_recovered": false,
+     "outcome": "absent"
+    }
+   }
+  },
+  {
+   "pair_id": "cmus",
+   "cell": "C",
+   "scenario": "mus",
+   "sides": {
+    "yes": {
+     "sentence_id": "cmusyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the trust",
+       "Artists recording songs"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "cmusno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the trust",
+       "Artists recording songs"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "outcome": "false_candidate"
+    }
+   }
+  },
+  {
+   "pair_id": "dmus",
+   "cell": "D",
+   "scenario": "mus",
+   "sides": {
+    "yes": {
+     "sentence_id": "dmusyes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the trust",
+       "The recording of songs"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "outcome": "correct"
+    },
+    "no": {
+     "sentence_id": "dmusno",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "the trust",
+       "songs"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "outcome": "false_candidate"
+    }
+   }
+  }
+ ]
+}
