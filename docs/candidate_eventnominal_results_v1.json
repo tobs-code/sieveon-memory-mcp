@@ -1,0 +1,667 @@
+{
+ "version": "candidate_eventnominal_results_v1",
+ "protocol": "docs/candidate_eventnominal_probe_v1.json",
+ "material": "docs/candidate_eventnominal_material_v1.json",
+ "stage": "candidate_generation_only + separate node_worthy(target) readout",
+ "match_rule": "normalized span equality or containment, either direction",
+ "pairs": [
+  {
+   "pair_id": "en01",
+   "class": "E0",
+   "target_type": "entity",
+   "sides": {
+    "yes": {
+     "sentence_id": "en01yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The foundation",
+       "the museum"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "full_match": true,
+     "target_worthiness": [
+      {
+       "span": "the museum",
+       "verdict": "WORTHY",
+       "reason": null
+      }
+     ],
+     "false_candidate": false,
+     "exact_target_span": true
+    },
+    "no": {
+     "sentence_id": "en01no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The foundation",
+       "the museum"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "full_match": true,
+     "target_worthiness": [
+      {
+       "span": "the museum",
+       "verdict": "WORTHY",
+       "reason": null
+      }
+     ],
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "en02",
+   "class": "E0",
+   "target_type": "entity",
+   "sides": {
+    "yes": {
+     "sentence_id": "en02yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The city",
+       "the library"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "full_match": true,
+     "target_worthiness": [
+      {
+       "span": "the library",
+       "verdict": "WORTHY",
+       "reason": null
+      }
+     ],
+     "false_candidate": false,
+     "exact_target_span": true
+    },
+    "no": {
+     "sentence_id": "en02no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The city",
+       "the library"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "full_match": true,
+     "target_worthiness": [
+      {
+       "span": "the library",
+       "verdict": "WORTHY",
+       "reason": null
+      }
+     ],
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "en03",
+   "class": "E0",
+   "target_type": "entity",
+   "sides": {
+    "yes": {
+     "sentence_id": "en03yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The company",
+       "the school"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "full_match": true,
+     "target_worthiness": [
+      {
+       "span": "the school",
+       "verdict": "WORTHY",
+       "reason": null
+      }
+     ],
+     "false_candidate": false,
+     "exact_target_span": true
+    },
+    "no": {
+     "sentence_id": "en03no",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The company",
+       "the school"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "full_match": true,
+     "target_worthiness": [
+      {
+       "span": "the school",
+       "verdict": "WORTHY",
+       "reason": null
+      }
+     ],
+     "false_candidate": true
+    }
+   }
+  },
+  {
+   "pair_id": "en04",
+   "class": "E0",
+   "target_type": "entity",
+   "sides": {
+    "yes": {
+     "sentence_id": "en04yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The club",
+       "the park"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "full_match": true,
+     "target_worthiness": [
+      {
+       "span": "the park",
+       "verdict": "WORTHY",
+       "reason": null
+      }
+     ],
+     "false_candidate": false,
+     "exact_target_span": true
+    },
+    "no": {
+     "sentence_id": "en04no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "target_recovered": false,
+     "full_match": false,
+     "target_worthiness": [],
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "en05",
+   "class": "E1",
+   "target_type": "event_nominal",
+   "sides": {
+    "yes": {
+     "sentence_id": "en05yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The foundation",
+       "the renovation"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "full_match": true,
+     "target_worthiness": [
+      {
+       "span": "the renovation",
+       "verdict": "WORTHY",
+       "reason": null
+      }
+     ],
+     "false_candidate": false,
+     "exact_target_span": true
+    },
+    "no": {
+     "sentence_id": "en05no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "target_recovered": false,
+     "full_match": false,
+     "target_worthiness": [],
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "en06",
+   "class": "E1",
+   "target_type": "event_nominal",
+   "sides": {
+    "yes": {
+     "sentence_id": "en06yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The archive",
+       "the digitization"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "full_match": true,
+     "target_worthiness": [
+      {
+       "span": "the digitization",
+       "verdict": "WORTHY",
+       "reason": null
+      }
+     ],
+     "false_candidate": false,
+     "exact_target_span": true
+    },
+    "no": {
+     "sentence_id": "en06no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "target_recovered": false,
+     "full_match": false,
+     "target_worthiness": [],
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "en07",
+   "class": "E1",
+   "target_type": "event_nominal",
+   "sides": {
+    "yes": {
+     "sentence_id": "en07yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The trust",
+       "the restoration"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "full_match": true,
+     "target_worthiness": [
+      {
+       "span": "the restoration",
+       "verdict": "WORTHY",
+       "reason": null
+      }
+     ],
+     "false_candidate": false,
+     "exact_target_span": true
+    },
+    "no": {
+     "sentence_id": "en07no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "target_recovered": false,
+     "full_match": false,
+     "target_worthiness": [],
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "en08",
+   "class": "E1",
+   "target_type": "event_nominal",
+   "sides": {
+    "yes": {
+     "sentence_id": "en08yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The board",
+       "the expansion"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "full_match": true,
+     "target_worthiness": [
+      {
+       "span": "the expansion",
+       "verdict": "WORTHY",
+       "reason": null
+      }
+     ],
+     "false_candidate": false,
+     "exact_target_span": true
+    },
+    "no": {
+     "sentence_id": "en08no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "target_recovered": false,
+     "full_match": false,
+     "target_worthiness": [],
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "en09",
+   "class": "E2",
+   "target_type": "event_nominal_of",
+   "sides": {
+    "yes": {
+     "sentence_id": "en09yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The foundation",
+       "the museum"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "full_match": true,
+     "target_worthiness": [
+      {
+       "span": "the museum",
+       "verdict": "WORTHY",
+       "reason": null
+      }
+     ],
+     "false_candidate": false,
+     "exact_target_span": false
+    },
+    "no": {
+     "sentence_id": "en09no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "target_recovered": false,
+     "full_match": false,
+     "target_worthiness": [],
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "en10",
+   "class": "E2",
+   "target_type": "event_nominal_of",
+   "sides": {
+    "yes": {
+     "sentence_id": "en10yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The donors",
+       "the digitization of the records"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "full_match": true,
+     "target_worthiness": [
+      {
+       "span": "the digitization of the records",
+       "verdict": "WORTHY",
+       "reason": null
+      }
+     ],
+     "false_candidate": false,
+     "exact_target_span": true
+    },
+    "no": {
+     "sentence_id": "en10no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "target_recovered": false,
+     "full_match": false,
+     "target_worthiness": [],
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "en11",
+   "class": "E2",
+   "target_type": "event_nominal_of",
+   "sides": {
+    "yes": {
+     "sentence_id": "en11yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The trust",
+       "the theater"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "full_match": true,
+     "target_worthiness": [
+      {
+       "span": "the theater",
+       "verdict": "WORTHY",
+       "reason": null
+      }
+     ],
+     "false_candidate": false,
+     "exact_target_span": false
+    },
+    "no": {
+     "sentence_id": "en11no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "target_recovered": false,
+     "full_match": false,
+     "target_worthiness": [],
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "en12",
+   "class": "E2",
+   "target_type": "event_nominal_of",
+   "sides": {
+    "yes": {
+     "sentence_id": "en12yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The council",
+       "the hospital"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "full_match": true,
+     "target_worthiness": [
+      {
+       "span": "the hospital",
+       "verdict": "WORTHY",
+       "reason": null
+      }
+     ],
+     "false_candidate": false,
+     "exact_target_span": false
+    },
+    "no": {
+     "sentence_id": "en12no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "target_recovered": false,
+     "full_match": false,
+     "target_worthiness": [],
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "en13",
+   "class": "E3",
+   "target_type": "result_nominal",
+   "sides": {
+    "yes": {
+     "sentence_id": "en13yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The foundation",
+       "the renovated museum"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "full_match": true,
+     "target_worthiness": [
+      {
+       "span": "the renovated museum",
+       "verdict": "WORTHY",
+       "reason": null
+      }
+     ],
+     "false_candidate": false,
+     "exact_target_span": true
+    },
+    "no": {
+     "sentence_id": "en13no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "target_recovered": false,
+     "full_match": false,
+     "target_worthiness": [],
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "en14",
+   "class": "E3",
+   "target_type": "result_nominal",
+   "sides": {
+    "yes": {
+     "sentence_id": "en14yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The donors",
+       "the digitized records"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "full_match": true,
+     "target_worthiness": [
+      {
+       "span": "the digitized records",
+       "verdict": "WORTHY",
+       "reason": null
+      }
+     ],
+     "false_candidate": false,
+     "exact_target_span": true
+    },
+    "no": {
+     "sentence_id": "en14no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "target_recovered": false,
+     "full_match": false,
+     "target_worthiness": [],
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "en15",
+   "class": "E3",
+   "target_type": "result_nominal",
+   "sides": {
+    "yes": {
+     "sentence_id": "en15yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The trust",
+       "the restored theater"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "full_match": true,
+     "target_worthiness": [
+      {
+       "span": "the restored theater",
+       "verdict": "WORTHY",
+       "reason": null
+      }
+     ],
+     "false_candidate": false,
+     "exact_target_span": true
+    },
+    "no": {
+     "sentence_id": "en15no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "target_recovered": false,
+     "full_match": false,
+     "target_worthiness": [],
+     "false_candidate": false
+    }
+   }
+  },
+  {
+   "pair_id": "en16",
+   "class": "E3",
+   "target_type": "result_nominal",
+   "sides": {
+    "yes": {
+     "sentence_id": "en16yes",
+     "n_candidates": 1,
+     "candidates": [
+      [
+       "The council",
+       "the expanded hospital"
+      ]
+     ],
+     "provider_recovered": true,
+     "target_recovered": true,
+     "full_match": true,
+     "target_worthiness": [
+      {
+       "span": "the expanded hospital",
+       "verdict": "WORTHY",
+       "reason": null
+      }
+     ],
+     "false_candidate": false,
+     "exact_target_span": true
+    },
+    "no": {
+     "sentence_id": "en16no",
+     "n_candidates": 0,
+     "candidates": [],
+     "provider_recovered": false,
+     "target_recovered": false,
+     "full_match": false,
+     "target_worthiness": [],
+     "false_candidate": false
+    }
+   }
+  }
+ ],
+ "span_diagnostic": "E0/E1/E3 exact target spans 12/12; E2 exact 1/4 with 3/4 bypassing the event nominal to the of-complement entity (span/role pattern, not silence)"
+}
