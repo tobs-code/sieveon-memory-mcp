@@ -1,0 +1,4268 @@
+{
+ "ratio": 0.006792094002580996,
+ "usable_total": 29446,
+ "sentences": 1316,
+ "digest": "fa7f529094d0c648353e3b83563180168c4a1ccf7c7753773cebc13b6c281081",
+ "per_document": [
+  {
+   "tag": "remeasure_hud_style_guide",
+   "url": "https://www.huduser.gov/portal/About/style-guide-for-reports.pdf",
+   "usable_total": 318,
+   "sections": 7,
+   "level": 1,
+   "picked": 12,
+   "detail": [
+    {
+     "section": 0,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 1,
+     "candidates": 36,
+     "picked": 2
+    },
+    {
+     "section": 2,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 3,
+     "candidates": 35,
+     "picked": 2
+    },
+    {
+     "section": 4,
+     "candidates": 89,
+     "picked": 2
+    },
+    {
+     "section": 5,
+     "candidates": 58,
+     "picked": 2
+    },
+    {
+     "section": 6,
+     "candidates": 92,
+     "picked": 2
+    }
+   ]
+  },
+  {
+   "tag": "remeasure_iso_directives_part2",
+   "url": "https://boss.cen.eu/media/yypjl3mn/iso_iec_directives_part2.pdf",
+   "usable_total": 671,
+   "sections": 14,
+   "level": 1,
+   "picked": 24,
+   "detail": [
+    {
+     "section": 0,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 1,
+     "candidates": 54,
+     "picked": 2
+    },
+    {
+     "section": 2,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 3,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 4,
+     "candidates": 367,
+     "picked": 2
+    },
+    {
+     "section": 5,
+     "candidates": 60,
+     "picked": 2
+    },
+    {
+     "section": 6,
+     "candidates": 5,
+     "picked": 2
+    },
+    {
+     "section": 7,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 8,
+     "candidates": 77,
+     "picked": 2
+    },
+    {
+     "section": 9,
+     "candidates": 5,
+     "picked": 2
+    },
+    {
+     "section": 10,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 11,
+     "candidates": 59,
+     "picked": 2
+    },
+    {
+     "section": 12,
+     "candidates": 14,
+     "picked": 2
+    },
+    {
+     "section": 13,
+     "candidates": 13,
+     "picked": 2
+    }
+   ]
+  },
+  {
+   "tag": "remeasure_who_trs_957",
+   "url": "https://syntheticdrugs.unodc.org/uploads/syntheticdrugs/res/library/access_html/WHO_good_distribution_practices_for_pharmaceutical_products_WHO_Technical_Report_Series_No._957.pdf",
+   "usable_total": 2471,
+   "sections": 139,
+   "level": 1,
+   "picked": 224,
+   "detail": [
+    {
+     "section": 0,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 1,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 2,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 3,
+     "candidates": 55,
+     "picked": 2
+    },
+    {
+     "section": 4,
+     "candidates": 25,
+     "picked": 2
+    },
+    {
+     "section": 5,
+     "candidates": 110,
+     "picked": 2
+    },
+    {
+     "section": 6,
+     "candidates": 101,
+     "picked": 2
+    },
+    {
+     "section": 7,
+     "candidates": 31,
+     "picked": 2
+    },
+    {
+     "section": 8,
+     "candidates": 42,
+     "picked": 2
+    },
+    {
+     "section": 9,
+     "candidates": 11,
+     "picked": 2
+    },
+    {
+     "section": 10,
+     "candidates": 26,
+     "picked": 2
+    },
+    {
+     "section": 11,
+     "candidates": 64,
+     "picked": 2
+    },
+    {
+     "section": 12,
+     "candidates": 16,
+     "picked": 2
+    },
+    {
+     "section": 13,
+     "candidates": 28,
+     "picked": 2
+    },
+    {
+     "section": 14,
+     "candidates": 189,
+     "picked": 2
+    },
+    {
+     "section": 15,
+     "candidates": 26,
+     "picked": 2
+    },
+    {
+     "section": 16,
+     "candidates": 12,
+     "picked": 2
+    },
+    {
+     "section": 17,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 18,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 19,
+     "candidates": 9,
+     "picked": 2
+    },
+    {
+     "section": 20,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 21,
+     "candidates": 10,
+     "picked": 2
+    },
+    {
+     "section": 22,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 23,
+     "candidates": 11,
+     "picked": 2
+    },
+    {
+     "section": 24,
+     "candidates": 32,
+     "picked": 2
+    },
+    {
+     "section": 25,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 26,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 27,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 28,
+     "candidates": 14,
+     "picked": 2
+    },
+    {
+     "section": 29,
+     "candidates": 16,
+     "picked": 2
+    },
+    {
+     "section": 30,
+     "candidates": 18,
+     "picked": 2
+    },
+    {
+     "section": 31,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 32,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 33,
+     "candidates": 28,
+     "picked": 2
+    },
+    {
+     "section": 34,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 35,
+     "candidates": 17,
+     "picked": 2
+    },
+    {
+     "section": 36,
+     "candidates": 9,
+     "picked": 2
+    },
+    {
+     "section": 37,
+     "candidates": 22,
+     "picked": 2
+    },
+    {
+     "section": 38,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 39,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 40,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 41,
+     "candidates": 10,
+     "picked": 2
+    },
+    {
+     "section": 42,
+     "candidates": 47,
+     "picked": 2
+    },
+    {
+     "section": 43,
+     "candidates": 8,
+     "picked": 2
+    },
+    {
+     "section": 44,
+     "candidates": 15,
+     "picked": 2
+    },
+    {
+     "section": 45,
+     "candidates": 33,
+     "picked": 2
+    },
+    {
+     "section": 46,
+     "candidates": 41,
+     "picked": 2
+    },
+    {
+     "section": 47,
+     "candidates": 9,
+     "picked": 2
+    },
+    {
+     "section": 48,
+     "candidates": 28,
+     "picked": 2
+    },
+    {
+     "section": 49,
+     "candidates": 35,
+     "picked": 2
+    },
+    {
+     "section": 50,
+     "candidates": 26,
+     "picked": 2
+    },
+    {
+     "section": 51,
+     "candidates": 27,
+     "picked": 2
+    },
+    {
+     "section": 52,
+     "candidates": 37,
+     "picked": 2
+    },
+    {
+     "section": 53,
+     "candidates": 24,
+     "picked": 2
+    },
+    {
+     "section": 54,
+     "candidates": 5,
+     "picked": 2
+    },
+    {
+     "section": 55,
+     "candidates": 54,
+     "picked": 2
+    },
+    {
+     "section": 56,
+     "candidates": 46,
+     "picked": 2
+    },
+    {
+     "section": 57,
+     "candidates": 11,
+     "picked": 2
+    },
+    {
+     "section": 58,
+     "candidates": 14,
+     "picked": 2
+    },
+    {
+     "section": 59,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 60,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 61,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 62,
+     "candidates": 47,
+     "picked": 2
+    },
+    {
+     "section": 63,
+     "candidates": 16,
+     "picked": 2
+    },
+    {
+     "section": 64,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 65,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 66,
+     "candidates": 37,
+     "picked": 2
+    },
+    {
+     "section": 67,
+     "candidates": 17,
+     "picked": 2
+    },
+    {
+     "section": 68,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 69,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 70,
+     "candidates": 8,
+     "picked": 2
+    },
+    {
+     "section": 71,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 72,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 73,
+     "candidates": 5,
+     "picked": 2
+    },
+    {
+     "section": 74,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 75,
+     "candidates": 27,
+     "picked": 2
+    },
+    {
+     "section": 76,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 77,
+     "candidates": 12,
+     "picked": 2
+    },
+    {
+     "section": 78,
+     "candidates": 17,
+     "picked": 2
+    },
+    {
+     "section": 79,
+     "candidates": 38,
+     "picked": 2
+    },
+    {
+     "section": 80,
+     "candidates": 10,
+     "picked": 2
+    },
+    {
+     "section": 81,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 82,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 83,
+     "candidates": 11,
+     "picked": 2
+    },
+    {
+     "section": 84,
+     "candidates": 8,
+     "picked": 2
+    },
+    {
+     "section": 85,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 86,
+     "candidates": 11,
+     "picked": 2
+    },
+    {
+     "section": 87,
+     "candidates": 10,
+     "picked": 2
+    },
+    {
+     "section": 88,
+     "candidates": 121,
+     "picked": 2
+    },
+    {
+     "section": 89,
+     "candidates": 21,
+     "picked": 2
+    },
+    {
+     "section": 90,
+     "candidates": 46,
+     "picked": 2
+    },
+    {
+     "section": 91,
+     "candidates": 19,
+     "picked": 2
+    },
+    {
+     "section": 92,
+     "candidates": 11,
+     "picked": 2
+    },
+    {
+     "section": 93,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 94,
+     "candidates": 33,
+     "picked": 2
+    },
+    {
+     "section": 95,
+     "candidates": 31,
+     "picked": 2
+    },
+    {
+     "section": 96,
+     "candidates": 9,
+     "picked": 2
+    },
+    {
+     "section": 97,
+     "candidates": 31,
+     "picked": 2
+    },
+    {
+     "section": 98,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 99,
+     "candidates": 28,
+     "picked": 2
+    },
+    {
+     "section": 100,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 101,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 102,
+     "candidates": 5,
+     "picked": 2
+    },
+    {
+     "section": 103,
+     "candidates": 14,
+     "picked": 2
+    },
+    {
+     "section": 104,
+     "candidates": 9,
+     "picked": 2
+    },
+    {
+     "section": 105,
+     "candidates": 14,
+     "picked": 2
+    },
+    {
+     "section": 106,
+     "candidates": 27,
+     "picked": 2
+    },
+    {
+     "section": 107,
+     "candidates": 44,
+     "picked": 2
+    },
+    {
+     "section": 108,
+     "candidates": 26,
+     "picked": 2
+    },
+    {
+     "section": 109,
+     "candidates": 9,
+     "picked": 2
+    },
+    {
+     "section": 110,
+     "candidates": 19,
+     "picked": 2
+    },
+    {
+     "section": 111,
+     "candidates": 25,
+     "picked": 2
+    },
+    {
+     "section": 112,
+     "candidates": 22,
+     "picked": 2
+    },
+    {
+     "section": 113,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 114,
+     "candidates": 8,
+     "picked": 2
+    },
+    {
+     "section": 115,
+     "candidates": 16,
+     "picked": 2
+    },
+    {
+     "section": 116,
+     "candidates": 10,
+     "picked": 2
+    },
+    {
+     "section": 117,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 118,
+     "candidates": 9,
+     "picked": 2
+    },
+    {
+     "section": 119,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 120,
+     "candidates": 26,
+     "picked": 2
+    },
+    {
+     "section": 121,
+     "candidates": 14,
+     "picked": 2
+    },
+    {
+     "section": 122,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 123,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 124,
+     "candidates": 12,
+     "picked": 2
+    },
+    {
+     "section": 125,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 126,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 127,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 128,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 129,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 130,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 131,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 132,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 133,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 134,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 135,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 136,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 137,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 138,
+     "candidates": 10,
+     "picked": 2
+    }
+   ]
+  },
+  {
+   "tag": "energy_k1_sustainability_eo14057",
+   "url": "https://www.sustainability.gov/pdfs/EO_14057_Implementing_Instructions.pdf",
+   "usable_total": 636,
+   "sections": 10,
+   "level": 1,
+   "picked": 19,
+   "detail": [
+    {
+     "section": 0,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 1,
+     "candidates": 27,
+     "picked": 2
+    },
+    {
+     "section": 2,
+     "candidates": 11,
+     "picked": 2
+    },
+    {
+     "section": 3,
+     "candidates": 17,
+     "picked": 2
+    },
+    {
+     "section": 4,
+     "candidates": 34,
+     "picked": 2
+    },
+    {
+     "section": 5,
+     "candidates": 45,
+     "picked": 2
+    },
+    {
+     "section": 6,
+     "candidates": 466,
+     "picked": 3
+    },
+    {
+     "section": 7,
+     "candidates": 29,
+     "picked": 2
+    },
+    {
+     "section": 8,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 9,
+     "candidates": 3,
+     "picked": 2
+    }
+   ]
+  },
+  {
+   "tag": "transport_k1_kytc_acfr",
+   "url": "https://transportation.ky.gov/KPTIA/Financial%20Statements/FY%202025%20Annual%20Comprehensive%20Financial%20Report.pdf",
+   "usable_total": 338,
+   "sections": 1,
+   "level": null,
+   "picked": 2,
+   "detail": [
+    {
+     "section": "DEGENERATE document-wide",
+     "candidates": 338,
+     "picked": 2
+    }
+   ]
+  },
+  {
+   "tag": "museums_k1_britishmuseum_annual",
+   "url": "https://www.britishmuseum.org/sites/default/files/2026-07/Annual_Report_and_Accounts_2025-26.pdf",
+   "usable_total": 1136,
+   "sections": 19,
+   "level": 1,
+   "picked": 24,
+   "detail": [
+    {
+     "section": 0,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 1,
+     "candidates": 16,
+     "picked": 2
+    },
+    {
+     "section": 2,
+     "candidates": 15,
+     "picked": 2
+    },
+    {
+     "section": 3,
+     "candidates": 288,
+     "picked": 2
+    },
+    {
+     "section": 4,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 5,
+     "candidates": 83,
+     "picked": 2
+    },
+    {
+     "section": 6,
+     "candidates": 157,
+     "picked": 2
+    },
+    {
+     "section": 7,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 8,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 9,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 10,
+     "candidates": 29,
+     "picked": 2
+    },
+    {
+     "section": 11,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 12,
+     "candidates": 90,
+     "picked": 2
+    },
+    {
+     "section": 13,
+     "candidates": 37,
+     "picked": 2
+    },
+    {
+     "section": 14,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 15,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 16,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 17,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 18,
+     "candidates": 400,
+     "picked": 2
+    }
+   ]
+  },
+  {
+   "tag": "geo_k1_usgs_programbook",
+   "url": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/atoms/files/USGS-Program-Book_5.26.2_508.pdf",
+   "usable_total": 1505,
+   "sections": 15,
+   "level": 1,
+   "picked": 26,
+   "detail": [
+    {
+     "section": 0,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 1,
+     "candidates": 19,
+     "picked": 2
+    },
+    {
+     "section": 2,
+     "candidates": 214,
+     "picked": 2
+    },
+    {
+     "section": 3,
+     "candidates": 170,
+     "picked": 2
+    },
+    {
+     "section": 4,
+     "candidates": 21,
+     "picked": 2
+    },
+    {
+     "section": 5,
+     "candidates": 12,
+     "picked": 2
+    },
+    {
+     "section": 6,
+     "candidates": 184,
+     "picked": 2
+    },
+    {
+     "section": 7,
+     "candidates": 407,
+     "picked": 2
+    },
+    {
+     "section": 8,
+     "candidates": 222,
+     "picked": 2
+    },
+    {
+     "section": 9,
+     "candidates": 16,
+     "picked": 2
+    },
+    {
+     "section": 10,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 11,
+     "candidates": 60,
+     "picked": 2
+    },
+    {
+     "section": 12,
+     "candidates": 11,
+     "picked": 2
+    },
+    {
+     "section": 13,
+     "candidates": 53,
+     "picked": 2
+    },
+    {
+     "section": 14,
+     "candidates": 115,
+     "picked": 2
+    }
+   ]
+  },
+  {
+   "tag": "io_k1_who_budget",
+   "url": "https://apps.who.int/gb/ebwha/pdf_files/WHA78/A78_6-en.pdf",
+   "usable_total": 931,
+   "sections": 28,
+   "level": 1,
+   "picked": 50,
+   "detail": [
+    {
+     "section": 0,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 1,
+     "candidates": 43,
+     "picked": 2
+    },
+    {
+     "section": 2,
+     "candidates": 136,
+     "picked": 2
+    },
+    {
+     "section": 3,
+     "candidates": 13,
+     "picked": 2
+    },
+    {
+     "section": 4,
+     "candidates": 95,
+     "picked": 2
+    },
+    {
+     "section": 5,
+     "candidates": 48,
+     "picked": 2
+    },
+    {
+     "section": 6,
+     "candidates": 9,
+     "picked": 2
+    },
+    {
+     "section": 7,
+     "candidates": 16,
+     "picked": 2
+    },
+    {
+     "section": 8,
+     "candidates": 34,
+     "picked": 2
+    },
+    {
+     "section": 9,
+     "candidates": 11,
+     "picked": 2
+    },
+    {
+     "section": 10,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 11,
+     "candidates": 19,
+     "picked": 2
+    },
+    {
+     "section": 12,
+     "candidates": 93,
+     "picked": 2
+    },
+    {
+     "section": 13,
+     "candidates": 76,
+     "picked": 2
+    },
+    {
+     "section": 14,
+     "candidates": 104,
+     "picked": 2
+    },
+    {
+     "section": 15,
+     "candidates": 34,
+     "picked": 2
+    },
+    {
+     "section": 16,
+     "candidates": 23,
+     "picked": 2
+    },
+    {
+     "section": 17,
+     "candidates": 58,
+     "picked": 2
+    },
+    {
+     "section": 18,
+     "candidates": 40,
+     "picked": 2
+    },
+    {
+     "section": 19,
+     "candidates": 31,
+     "picked": 2
+    },
+    {
+     "section": 20,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 21,
+     "candidates": 12,
+     "picked": 2
+    },
+    {
+     "section": 22,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 23,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 24,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 25,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 26,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 27,
+     "candidates": 7,
+     "picked": 2
+    }
+   ]
+  },
+  {
+   "tag": "industry_k2_cta_directives",
+   "url": "https://www.cta.tech/media/tcmji2rz/iso-iec-directives-part-1plusiec-supplement.pdf",
+   "usable_total": 1679,
+   "sections": 110,
+   "level": 1,
+   "picked": 130,
+   "detail": [
+    {
+     "section": 0,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 1,
+     "candidates": 80,
+     "picked": 2
+    },
+    {
+     "section": 2,
+     "candidates": 24,
+     "picked": 2
+    },
+    {
+     "section": 3,
+     "candidates": 13,
+     "picked": 2
+    },
+    {
+     "section": 4,
+     "candidates": 289,
+     "picked": 2
+    },
+    {
+     "section": 5,
+     "candidates": 260,
+     "picked": 2
+    },
+    {
+     "section": 6,
+     "candidates": 39,
+     "picked": 2
+    },
+    {
+     "section": 7,
+     "candidates": 37,
+     "picked": 2
+    },
+    {
+     "section": 8,
+     "candidates": 21,
+     "picked": 2
+    },
+    {
+     "section": 9,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 10,
+     "candidates": 14,
+     "picked": 2
+    },
+    {
+     "section": 11,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 12,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 13,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 14,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 15,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 16,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 17,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 18,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 19,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 20,
+     "candidates": 34,
+     "picked": 2
+    },
+    {
+     "section": 21,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 22,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 23,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 24,
+     "candidates": 44,
+     "picked": 2
+    },
+    {
+     "section": 25,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 26,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 27,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 28,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 29,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 30,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 31,
+     "candidates": 12,
+     "picked": 2
+    },
+    {
+     "section": 32,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 33,
+     "candidates": 8,
+     "picked": 2
+    },
+    {
+     "section": 34,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 35,
+     "candidates": 5,
+     "picked": 2
+    },
+    {
+     "section": 36,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 37,
+     "candidates": 13,
+     "picked": 2
+    },
+    {
+     "section": 38,
+     "candidates": 5,
+     "picked": 2
+    },
+    {
+     "section": 39,
+     "candidates": 10,
+     "picked": 2
+    },
+    {
+     "section": 40,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 41,
+     "candidates": 8,
+     "picked": 2
+    },
+    {
+     "section": 42,
+     "candidates": 57,
+     "picked": 2
+    },
+    {
+     "section": 43,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 44,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 45,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 46,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 47,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 48,
+     "candidates": 13,
+     "picked": 2
+    },
+    {
+     "section": 49,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 50,
+     "candidates": 11,
+     "picked": 2
+    },
+    {
+     "section": 51,
+     "candidates": 9,
+     "picked": 2
+    },
+    {
+     "section": 52,
+     "candidates": 8,
+     "picked": 2
+    },
+    {
+     "section": 53,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 54,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 55,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 56,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 57,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 58,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 59,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 60,
+     "candidates": 21,
+     "picked": 2
+    },
+    {
+     "section": 61,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 62,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 63,
+     "candidates": 20,
+     "picked": 2
+    },
+    {
+     "section": 64,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 65,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 66,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 67,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 68,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 69,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 70,
+     "candidates": 5,
+     "picked": 2
+    },
+    {
+     "section": 71,
+     "candidates": 8,
+     "picked": 2
+    },
+    {
+     "section": 72,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 73,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 74,
+     "candidates": 21,
+     "picked": 2
+    },
+    {
+     "section": 75,
+     "candidates": 139,
+     "picked": 2
+    },
+    {
+     "section": 76,
+     "candidates": 31,
+     "picked": 2
+    },
+    {
+     "section": 77,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 78,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 79,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 80,
+     "candidates": 8,
+     "picked": 2
+    },
+    {
+     "section": 81,
+     "candidates": 91,
+     "picked": 2
+    },
+    {
+     "section": 82,
+     "candidates": 5,
+     "picked": 2
+    },
+    {
+     "section": 83,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 84,
+     "candidates": 36,
+     "picked": 2
+    },
+    {
+     "section": 85,
+     "candidates": 11,
+     "picked": 2
+    },
+    {
+     "section": 86,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 87,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 88,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 89,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 90,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 91,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 92,
+     "candidates": 9,
+     "picked": 2
+    },
+    {
+     "section": 93,
+     "candidates": 18,
+     "picked": 2
+    },
+    {
+     "section": 94,
+     "candidates": 12,
+     "picked": 2
+    },
+    {
+     "section": 95,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 96,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 97,
+     "candidates": 16,
+     "picked": 2
+    },
+    {
+     "section": 98,
+     "candidates": 18,
+     "picked": 2
+    },
+    {
+     "section": 99,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 100,
+     "candidates": 30,
+     "picked": 2
+    },
+    {
+     "section": 101,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 102,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 103,
+     "candidates": 15,
+     "picked": 2
+    },
+    {
+     "section": 104,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 105,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 106,
+     "candidates": 12,
+     "picked": 2
+    },
+    {
+     "section": 107,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 108,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 109,
+     "candidates": 0,
+     "picked": 0
+    }
+   ]
+  },
+  {
+   "tag": "museums_k3_nbmaa_annual",
+   "url": "https://www.nbmaa.org/pdfs/NBMAA-AnnualReport-2024-25-FINAL-LowRes-Pages-101425.pdf",
+   "usable_total": 455,
+   "sections": 18,
+   "level": 1,
+   "picked": 24,
+   "detail": [
+    {
+     "section": 0,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 1,
+     "candidates": 32,
+     "picked": 2
+    },
+    {
+     "section": 2,
+     "candidates": 46,
+     "picked": 2
+    },
+    {
+     "section": 3,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 4,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 5,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 6,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 7,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 8,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 9,
+     "candidates": 98,
+     "picked": 2
+    },
+    {
+     "section": 10,
+     "candidates": 22,
+     "picked": 2
+    },
+    {
+     "section": 11,
+     "candidates": 96,
+     "picked": 2
+    },
+    {
+     "section": 12,
+     "candidates": 9,
+     "picked": 2
+    },
+    {
+     "section": 13,
+     "candidates": 21,
+     "picked": 2
+    },
+    {
+     "section": 14,
+     "candidates": 34,
+     "picked": 2
+    },
+    {
+     "section": 15,
+     "candidates": 54,
+     "picked": 2
+    },
+    {
+     "section": 16,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 17,
+     "candidates": 28,
+     "picked": 2
+    }
+   ]
+  },
+  {
+   "tag": "geo_k2_usgs_mcs2025",
+   "url": "https://pubs.usgs.gov/periodicals/mcs2025/mcs2025.pdf",
+   "usable_total": 3477,
+   "sections": 18,
+   "level": 1,
+   "picked": 44,
+   "detail": [
+    {
+     "section": 0,
+     "candidates": 9,
+     "picked": 2
+    },
+    {
+     "section": 1,
+     "candidates": 37,
+     "picked": 2
+    },
+    {
+     "section": 2,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 3,
+     "candidates": 11,
+     "picked": 2
+    },
+    {
+     "section": 4,
+     "candidates": 65,
+     "picked": 2
+    },
+    {
+     "section": 5,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 6,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 7,
+     "candidates": 50,
+     "picked": 2
+    },
+    {
+     "section": 8,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 9,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 10,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 11,
+     "candidates": 27,
+     "picked": 2
+    },
+    {
+     "section": 12,
+     "candidates": 145,
+     "picked": 2
+    },
+    {
+     "section": 13,
+     "candidates": 5,
+     "picked": 2
+    },
+    {
+     "section": 14,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 15,
+     "candidates": 2953,
+     "picked": 20
+    },
+    {
+     "section": 16,
+     "candidates": 108,
+     "picked": 2
+    },
+    {
+     "section": 17,
+     "candidates": 59,
+     "picked": 2
+    }
+   ]
+  },
+  {
+   "tag": "remeasure_iaea_pub1222",
+   "url": "https://www-pub.iaea.org/MTCD/Publications/PDF/Pub1222_web.pdf",
+   "usable_total": 2198,
+   "sections": 19,
+   "level": 1,
+   "picked": 27,
+   "detail": [
+    {
+     "section": 0,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 1,
+     "candidates": 60,
+     "picked": 2
+    },
+    {
+     "section": 2,
+     "candidates": 69,
+     "picked": 2
+    },
+    {
+     "section": 3,
+     "candidates": 82,
+     "picked": 2
+    },
+    {
+     "section": 4,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 5,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 6,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 7,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 8,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 9,
+     "candidates": 182,
+     "picked": 2
+    },
+    {
+     "section": 10,
+     "candidates": 80,
+     "picked": 2
+    },
+    {
+     "section": 11,
+     "candidates": 808,
+     "picked": 5
+    },
+    {
+     "section": 12,
+     "candidates": 623,
+     "picked": 4
+    },
+    {
+     "section": 13,
+     "candidates": 200,
+     "picked": 2
+    },
+    {
+     "section": 14,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 15,
+     "candidates": 34,
+     "picked": 2
+    },
+    {
+     "section": 16,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 17,
+     "candidates": 54,
+     "picked": 2
+    },
+    {
+     "section": 18,
+     "candidates": 0,
+     "picked": 0
+    }
+   ]
+  },
+  {
+   "tag": "remeasure_bmv_plan2030",
+   "url": "https://www.bmv.de/SharedDocs/EN/publications/2030-federal-transport-infrastructure-plan.pdf?__blob=publicationFile",
+   "usable_total": 1426,
+   "sections": 6,
+   "level": 1,
+   "picked": 10,
+   "detail": [
+    {
+     "section": 0,
+     "candidates": 366,
+     "picked": 2
+    },
+    {
+     "section": 1,
+     "candidates": 53,
+     "picked": 2
+    },
+    {
+     "section": 2,
+     "candidates": 614,
+     "picked": 4
+    },
+    {
+     "section": 3,
+     "candidates": 391,
+     "picked": 2
+    },
+    {
+     "section": 4,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 5,
+     "candidates": 2,
+     "picked": 0
+    }
+   ]
+  },
+  {
+   "tag": "agriculture_k2_fsrp_manual",
+   "url": "https://fsrp.go.ke/sites/default/files/2025-08/Agriculture%20Extension%20Manual%20v1%20final.pdf",
+   "usable_total": 516,
+   "sections": 30,
+   "level": 1,
+   "picked": 44,
+   "detail": [
+    {
+     "section": 0,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 1,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 2,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 3,
+     "candidates": 9,
+     "picked": 2
+    },
+    {
+     "section": 4,
+     "candidates": 10,
+     "picked": 2
+    },
+    {
+     "section": 5,
+     "candidates": 43,
+     "picked": 2
+    },
+    {
+     "section": 6,
+     "candidates": 25,
+     "picked": 2
+    },
+    {
+     "section": 7,
+     "candidates": 112,
+     "picked": 2
+    },
+    {
+     "section": 8,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 9,
+     "candidates": 10,
+     "picked": 2
+    },
+    {
+     "section": 10,
+     "candidates": 12,
+     "picked": 2
+    },
+    {
+     "section": 11,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 12,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 13,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 14,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 15,
+     "candidates": 74,
+     "picked": 2
+    },
+    {
+     "section": 16,
+     "candidates": 31,
+     "picked": 2
+    },
+    {
+     "section": 17,
+     "candidates": 38,
+     "picked": 2
+    },
+    {
+     "section": 18,
+     "candidates": 14,
+     "picked": 2
+    },
+    {
+     "section": 19,
+     "candidates": 15,
+     "picked": 2
+    },
+    {
+     "section": 20,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 21,
+     "candidates": 34,
+     "picked": 2
+    },
+    {
+     "section": 22,
+     "candidates": 50,
+     "picked": 2
+    },
+    {
+     "section": 23,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 24,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 25,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 26,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 27,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 28,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 29,
+     "candidates": 4,
+     "picked": 2
+    }
+   ]
+  },
+  {
+   "tag": "agriculture_k3_farmd_manual",
+   "url": "https://farm-d.org/wp-content/uploads/2024/03/Improving-AgEx.-FAO.pdf",
+   "usable_total": 5867,
+   "sections": 171,
+   "level": 1,
+   "picked": 334,
+   "detail": [
+    {
+     "section": 0,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 1,
+     "candidates": 15,
+     "picked": 2
+    },
+    {
+     "section": 2,
+     "candidates": 11,
+     "picked": 2
+    },
+    {
+     "section": 3,
+     "candidates": 13,
+     "picked": 2
+    },
+    {
+     "section": 4,
+     "candidates": 9,
+     "picked": 2
+    },
+    {
+     "section": 5,
+     "candidates": 38,
+     "picked": 2
+    },
+    {
+     "section": 6,
+     "candidates": 112,
+     "picked": 2
+    },
+    {
+     "section": 7,
+     "candidates": 38,
+     "picked": 2
+    },
+    {
+     "section": 8,
+     "candidates": 69,
+     "picked": 2
+    },
+    {
+     "section": 9,
+     "candidates": 10,
+     "picked": 2
+    },
+    {
+     "section": 10,
+     "candidates": 34,
+     "picked": 2
+    },
+    {
+     "section": 11,
+     "candidates": 196,
+     "picked": 2
+    },
+    {
+     "section": 12,
+     "candidates": 23,
+     "picked": 2
+    },
+    {
+     "section": 13,
+     "candidates": 36,
+     "picked": 2
+    },
+    {
+     "section": 14,
+     "candidates": 26,
+     "picked": 2
+    },
+    {
+     "section": 15,
+     "candidates": 64,
+     "picked": 2
+    },
+    {
+     "section": 16,
+     "candidates": 59,
+     "picked": 2
+    },
+    {
+     "section": 17,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 18,
+     "candidates": 43,
+     "picked": 2
+    },
+    {
+     "section": 19,
+     "candidates": 41,
+     "picked": 2
+    },
+    {
+     "section": 20,
+     "candidates": 60,
+     "picked": 2
+    },
+    {
+     "section": 21,
+     "candidates": 34,
+     "picked": 2
+    },
+    {
+     "section": 22,
+     "candidates": 41,
+     "picked": 2
+    },
+    {
+     "section": 23,
+     "candidates": 19,
+     "picked": 2
+    },
+    {
+     "section": 24,
+     "candidates": 26,
+     "picked": 2
+    },
+    {
+     "section": 25,
+     "candidates": 236,
+     "picked": 2
+    },
+    {
+     "section": 26,
+     "candidates": 33,
+     "picked": 2
+    },
+    {
+     "section": 27,
+     "candidates": 25,
+     "picked": 2
+    },
+    {
+     "section": 28,
+     "candidates": 17,
+     "picked": 2
+    },
+    {
+     "section": 29,
+     "candidates": 27,
+     "picked": 2
+    },
+    {
+     "section": 30,
+     "candidates": 29,
+     "picked": 2
+    },
+    {
+     "section": 31,
+     "candidates": 104,
+     "picked": 2
+    },
+    {
+     "section": 32,
+     "candidates": 53,
+     "picked": 2
+    },
+    {
+     "section": 33,
+     "candidates": 15,
+     "picked": 2
+    },
+    {
+     "section": 34,
+     "candidates": 67,
+     "picked": 2
+    },
+    {
+     "section": 35,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 36,
+     "candidates": 59,
+     "picked": 2
+    },
+    {
+     "section": 37,
+     "candidates": 83,
+     "picked": 2
+    },
+    {
+     "section": 38,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 39,
+     "candidates": 46,
+     "picked": 2
+    },
+    {
+     "section": 40,
+     "candidates": 41,
+     "picked": 2
+    },
+    {
+     "section": 41,
+     "candidates": 43,
+     "picked": 2
+    },
+    {
+     "section": 42,
+     "candidates": 10,
+     "picked": 2
+    },
+    {
+     "section": 43,
+     "candidates": 81,
+     "picked": 2
+    },
+    {
+     "section": 44,
+     "candidates": 13,
+     "picked": 2
+    },
+    {
+     "section": 45,
+     "candidates": 8,
+     "picked": 2
+    },
+    {
+     "section": 46,
+     "candidates": 32,
+     "picked": 2
+    },
+    {
+     "section": 47,
+     "candidates": 125,
+     "picked": 2
+    },
+    {
+     "section": 48,
+     "candidates": 37,
+     "picked": 2
+    },
+    {
+     "section": 49,
+     "candidates": 13,
+     "picked": 2
+    },
+    {
+     "section": 50,
+     "candidates": 73,
+     "picked": 2
+    },
+    {
+     "section": 51,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 52,
+     "candidates": 65,
+     "picked": 2
+    },
+    {
+     "section": 53,
+     "candidates": 21,
+     "picked": 2
+    },
+    {
+     "section": 54,
+     "candidates": 21,
+     "picked": 2
+    },
+    {
+     "section": 55,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 56,
+     "candidates": 15,
+     "picked": 2
+    },
+    {
+     "section": 57,
+     "candidates": 55,
+     "picked": 2
+    },
+    {
+     "section": 58,
+     "candidates": 27,
+     "picked": 2
+    },
+    {
+     "section": 59,
+     "candidates": 31,
+     "picked": 2
+    },
+    {
+     "section": 60,
+     "candidates": 73,
+     "picked": 2
+    },
+    {
+     "section": 61,
+     "candidates": 23,
+     "picked": 2
+    },
+    {
+     "section": 62,
+     "candidates": 68,
+     "picked": 2
+    },
+    {
+     "section": 63,
+     "candidates": 53,
+     "picked": 2
+    },
+    {
+     "section": 64,
+     "candidates": 27,
+     "picked": 2
+    },
+    {
+     "section": 65,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 66,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 67,
+     "candidates": 41,
+     "picked": 2
+    },
+    {
+     "section": 68,
+     "candidates": 41,
+     "picked": 2
+    },
+    {
+     "section": 69,
+     "candidates": 10,
+     "picked": 2
+    },
+    {
+     "section": 70,
+     "candidates": 31,
+     "picked": 2
+    },
+    {
+     "section": 71,
+     "candidates": 99,
+     "picked": 2
+    },
+    {
+     "section": 72,
+     "candidates": 8,
+     "picked": 2
+    },
+    {
+     "section": 73,
+     "candidates": 51,
+     "picked": 2
+    },
+    {
+     "section": 74,
+     "candidates": 74,
+     "picked": 2
+    },
+    {
+     "section": 75,
+     "candidates": 28,
+     "picked": 2
+    },
+    {
+     "section": 76,
+     "candidates": 73,
+     "picked": 2
+    },
+    {
+     "section": 77,
+     "candidates": 29,
+     "picked": 2
+    },
+    {
+     "section": 78,
+     "candidates": 9,
+     "picked": 2
+    },
+    {
+     "section": 79,
+     "candidates": 12,
+     "picked": 2
+    },
+    {
+     "section": 80,
+     "candidates": 11,
+     "picked": 2
+    },
+    {
+     "section": 81,
+     "candidates": 39,
+     "picked": 2
+    },
+    {
+     "section": 82,
+     "candidates": 87,
+     "picked": 2
+    },
+    {
+     "section": 83,
+     "candidates": 8,
+     "picked": 2
+    },
+    {
+     "section": 84,
+     "candidates": 35,
+     "picked": 2
+    },
+    {
+     "section": 85,
+     "candidates": 46,
+     "picked": 2
+    },
+    {
+     "section": 86,
+     "candidates": 21,
+     "picked": 2
+    },
+    {
+     "section": 87,
+     "candidates": 27,
+     "picked": 2
+    },
+    {
+     "section": 88,
+     "candidates": 35,
+     "picked": 2
+    },
+    {
+     "section": 89,
+     "candidates": 27,
+     "picked": 2
+    },
+    {
+     "section": 90,
+     "candidates": 9,
+     "picked": 2
+    },
+    {
+     "section": 91,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 92,
+     "candidates": 44,
+     "picked": 2
+    },
+    {
+     "section": 93,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 94,
+     "candidates": 10,
+     "picked": 2
+    },
+    {
+     "section": 95,
+     "candidates": 12,
+     "picked": 2
+    },
+    {
+     "section": 96,
+     "candidates": 43,
+     "picked": 2
+    },
+    {
+     "section": 97,
+     "candidates": 115,
+     "picked": 2
+    },
+    {
+     "section": 98,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 99,
+     "candidates": 23,
+     "picked": 2
+    },
+    {
+     "section": 100,
+     "candidates": 33,
+     "picked": 2
+    },
+    {
+     "section": 101,
+     "candidates": 19,
+     "picked": 2
+    },
+    {
+     "section": 102,
+     "candidates": 14,
+     "picked": 2
+    },
+    {
+     "section": 103,
+     "candidates": 17,
+     "picked": 2
+    },
+    {
+     "section": 104,
+     "candidates": 27,
+     "picked": 2
+    },
+    {
+     "section": 105,
+     "candidates": 15,
+     "picked": 2
+    },
+    {
+     "section": 106,
+     "candidates": 16,
+     "picked": 2
+    },
+    {
+     "section": 107,
+     "candidates": 18,
+     "picked": 2
+    },
+    {
+     "section": 108,
+     "candidates": 13,
+     "picked": 2
+    },
+    {
+     "section": 109,
+     "candidates": 14,
+     "picked": 2
+    },
+    {
+     "section": 110,
+     "candidates": 32,
+     "picked": 2
+    },
+    {
+     "section": 111,
+     "candidates": 33,
+     "picked": 2
+    },
+    {
+     "section": 112,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 113,
+     "candidates": 20,
+     "picked": 2
+    },
+    {
+     "section": 114,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 115,
+     "candidates": 23,
+     "picked": 2
+    },
+    {
+     "section": 116,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 117,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 118,
+     "candidates": 5,
+     "picked": 2
+    },
+    {
+     "section": 119,
+     "candidates": 30,
+     "picked": 2
+    },
+    {
+     "section": 120,
+     "candidates": 13,
+     "picked": 2
+    },
+    {
+     "section": 121,
+     "candidates": 14,
+     "picked": 2
+    },
+    {
+     "section": 122,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 123,
+     "candidates": 40,
+     "picked": 2
+    },
+    {
+     "section": 124,
+     "candidates": 18,
+     "picked": 2
+    },
+    {
+     "section": 125,
+     "candidates": 54,
+     "picked": 2
+    },
+    {
+     "section": 126,
+     "candidates": 81,
+     "picked": 2
+    },
+    {
+     "section": 127,
+     "candidates": 14,
+     "picked": 2
+    },
+    {
+     "section": 128,
+     "candidates": 35,
+     "picked": 2
+    },
+    {
+     "section": 129,
+     "candidates": 5,
+     "picked": 2
+    },
+    {
+     "section": 130,
+     "candidates": 11,
+     "picked": 2
+    },
+    {
+     "section": 131,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 132,
+     "candidates": 12,
+     "picked": 2
+    },
+    {
+     "section": 133,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 134,
+     "candidates": 16,
+     "picked": 2
+    },
+    {
+     "section": 135,
+     "candidates": 9,
+     "picked": 2
+    },
+    {
+     "section": 136,
+     "candidates": 29,
+     "picked": 2
+    },
+    {
+     "section": 137,
+     "candidates": 12,
+     "picked": 2
+    },
+    {
+     "section": 138,
+     "candidates": 50,
+     "picked": 2
+    },
+    {
+     "section": 139,
+     "candidates": 9,
+     "picked": 2
+    },
+    {
+     "section": 140,
+     "candidates": 30,
+     "picked": 2
+    },
+    {
+     "section": 141,
+     "candidates": 16,
+     "picked": 2
+    },
+    {
+     "section": 142,
+     "candidates": 11,
+     "picked": 2
+    },
+    {
+     "section": 143,
+     "candidates": 19,
+     "picked": 2
+    },
+    {
+     "section": 144,
+     "candidates": 31,
+     "picked": 2
+    },
+    {
+     "section": 145,
+     "candidates": 30,
+     "picked": 2
+    },
+    {
+     "section": 146,
+     "candidates": 44,
+     "picked": 2
+    },
+    {
+     "section": 147,
+     "candidates": 33,
+     "picked": 2
+    },
+    {
+     "section": 148,
+     "candidates": 56,
+     "picked": 2
+    },
+    {
+     "section": 149,
+     "candidates": 33,
+     "picked": 2
+    },
+    {
+     "section": 150,
+     "candidates": 147,
+     "picked": 2
+    },
+    {
+     "section": 151,
+     "candidates": 14,
+     "picked": 2
+    },
+    {
+     "section": 152,
+     "candidates": 20,
+     "picked": 2
+    },
+    {
+     "section": 153,
+     "candidates": 42,
+     "picked": 2
+    },
+    {
+     "section": 154,
+     "candidates": 108,
+     "picked": 2
+    },
+    {
+     "section": 155,
+     "candidates": 42,
+     "picked": 2
+    },
+    {
+     "section": 156,
+     "candidates": 18,
+     "picked": 2
+    },
+    {
+     "section": 157,
+     "candidates": 43,
+     "picked": 2
+    },
+    {
+     "section": 158,
+     "candidates": 25,
+     "picked": 2
+    },
+    {
+     "section": 159,
+     "candidates": 51,
+     "picked": 2
+    },
+    {
+     "section": 160,
+     "candidates": 19,
+     "picked": 2
+    },
+    {
+     "section": 161,
+     "candidates": 45,
+     "picked": 2
+    },
+    {
+     "section": 162,
+     "candidates": 36,
+     "picked": 2
+    },
+    {
+     "section": 163,
+     "candidates": 11,
+     "picked": 2
+    },
+    {
+     "section": 164,
+     "candidates": 5,
+     "picked": 2
+    },
+    {
+     "section": 165,
+     "candidates": 59,
+     "picked": 2
+    },
+    {
+     "section": 166,
+     "candidates": 38,
+     "picked": 2
+    },
+    {
+     "section": 167,
+     "candidates": 48,
+     "picked": 2
+    },
+    {
+     "section": 168,
+     "candidates": 28,
+     "picked": 2
+    },
+    {
+     "section": 169,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 170,
+     "candidates": 69,
+     "picked": 2
+    }
+   ]
+  },
+  {
+   "tag": "pubadmin_k4_ks_policy_manual",
+   "url": "https://admin.ks.gov/media/cms/Policy_and_Procedure_Manual_e7a759b160238.pdf",
+   "usable_total": 778,
+   "sections": 3,
+   "level": 1,
+   "picked": 7,
+   "detail": [
+    {
+     "section": 0,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 1,
+     "candidates": 768,
+     "picked": 5
+    },
+    {
+     "section": 2,
+     "candidates": 10,
+     "picked": 2
+    }
+   ]
+  },
+  {
+   "tag": "health_k5_fao_climate_change",
+   "url": "https://climate-diplomacy.org/sites/default/files/2020-10/FAO%27s%20Work%20on%20Climate%20Change.pdf",
+   "usable_total": 367,
+   "sections": 18,
+   "level": 1,
+   "picked": 24,
+   "detail": [
+    {
+     "section": 0,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 1,
+     "candidates": 9,
+     "picked": 2
+    },
+    {
+     "section": 2,
+     "candidates": 33,
+     "picked": 2
+    },
+    {
+     "section": 3,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 4,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 5,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 6,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 7,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 8,
+     "candidates": 14,
+     "picked": 2
+    },
+    {
+     "section": 9,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 10,
+     "candidates": 25,
+     "picked": 2
+    },
+    {
+     "section": 11,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 12,
+     "candidates": 65,
+     "picked": 2
+    },
+    {
+     "section": 13,
+     "candidates": 52,
+     "picked": 2
+    },
+    {
+     "section": 14,
+     "candidates": 79,
+     "picked": 2
+    },
+    {
+     "section": 15,
+     "candidates": 23,
+     "picked": 2
+    },
+    {
+     "section": 16,
+     "candidates": 21,
+     "picked": 2
+    },
+    {
+     "section": 17,
+     "candidates": 30,
+     "picked": 2
+    }
+   ]
+  },
+  {
+   "tag": "science_k4_nas_annual_1906",
+   "url": "https://www.govinfo.gov/content/pkg/SERIALSET-05072_00_00-076-0308-0000/pdf/SERIALSET-05072_00_00-076-0308-0000.pdf",
+   "usable_total": 429,
+   "sections": 5,
+   "level": 1,
+   "picked": 4,
+   "detail": [
+    {
+     "section": 0,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 1,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 2,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 3,
+     "candidates": 24,
+     "picked": 2
+    },
+    {
+     "section": 4,
+     "candidates": 403,
+     "picked": 2
+    }
+   ]
+  },
+  {
+   "tag": "science_k6_harvard_nasem",
+   "url": "https://sciencepolicy.hsites.harvard.edu/file_url/238",
+   "usable_total": 340,
+   "sections": 9,
+   "level": 1,
+   "picked": 16,
+   "detail": [
+    {
+     "section": 0,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 1,
+     "candidates": 106,
+     "picked": 2
+    },
+    {
+     "section": 2,
+     "candidates": 26,
+     "picked": 2
+    },
+    {
+     "section": 3,
+     "candidates": 44,
+     "picked": 2
+    },
+    {
+     "section": 4,
+     "candidates": 47,
+     "picked": 2
+    },
+    {
+     "section": 5,
+     "candidates": 36,
+     "picked": 2
+    },
+    {
+     "section": 6,
+     "candidates": 33,
+     "picked": 2
+    },
+    {
+     "section": 7,
+     "candidates": 24,
+     "picked": 2
+    },
+    {
+     "section": 8,
+     "candidates": 24,
+     "picked": 2
+    }
+   ]
+  },
+  {
+   "tag": "labour_k4_ilo_labour_standards_guide",
+   "url": "https://www.ilo.org/media/330471/download",
+   "usable_total": 1185,
+   "sections": 40,
+   "level": 1,
+   "picked": 74,
+   "detail": [
+    {
+     "section": 0,
+     "candidates": 16,
+     "picked": 2
+    },
+    {
+     "section": 1,
+     "candidates": 10,
+     "picked": 2
+    },
+    {
+     "section": 2,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 3,
+     "candidates": 62,
+     "picked": 2
+    },
+    {
+     "section": 4,
+     "candidates": 9,
+     "picked": 2
+    },
+    {
+     "section": 5,
+     "candidates": 20,
+     "picked": 2
+    },
+    {
+     "section": 6,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 7,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 8,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 9,
+     "candidates": 16,
+     "picked": 2
+    },
+    {
+     "section": 10,
+     "candidates": 13,
+     "picked": 2
+    },
+    {
+     "section": 11,
+     "candidates": 38,
+     "picked": 2
+    },
+    {
+     "section": 12,
+     "candidates": 30,
+     "picked": 2
+    },
+    {
+     "section": 13,
+     "candidates": 27,
+     "picked": 2
+    },
+    {
+     "section": 14,
+     "candidates": 27,
+     "picked": 2
+    },
+    {
+     "section": 15,
+     "candidates": 51,
+     "picked": 2
+    },
+    {
+     "section": 16,
+     "candidates": 21,
+     "picked": 2
+    },
+    {
+     "section": 17,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 18,
+     "candidates": 27,
+     "picked": 2
+    },
+    {
+     "section": 19,
+     "candidates": 44,
+     "picked": 2
+    },
+    {
+     "section": 20,
+     "candidates": 10,
+     "picked": 2
+    },
+    {
+     "section": 21,
+     "candidates": 25,
+     "picked": 2
+    },
+    {
+     "section": 22,
+     "candidates": 25,
+     "picked": 2
+    },
+    {
+     "section": 23,
+     "candidates": 62,
+     "picked": 2
+    },
+    {
+     "section": 24,
+     "candidates": 22,
+     "picked": 2
+    },
+    {
+     "section": 25,
+     "candidates": 46,
+     "picked": 2
+    },
+    {
+     "section": 26,
+     "candidates": 14,
+     "picked": 2
+    },
+    {
+     "section": 27,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 28,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 29,
+     "candidates": 17,
+     "picked": 2
+    },
+    {
+     "section": 30,
+     "candidates": 15,
+     "picked": 2
+    },
+    {
+     "section": 31,
+     "candidates": 41,
+     "picked": 2
+    },
+    {
+     "section": 32,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 33,
+     "candidates": 5,
+     "picked": 2
+    },
+    {
+     "section": 34,
+     "candidates": 11,
+     "picked": 2
+    },
+    {
+     "section": 35,
+     "candidates": 5,
+     "picked": 2
+    },
+    {
+     "section": 36,
+     "candidates": 27,
+     "picked": 2
+    },
+    {
+     "section": 37,
+     "candidates": 52,
+     "picked": 2
+    },
+    {
+     "section": 38,
+     "candidates": 106,
+     "picked": 2
+    },
+    {
+     "section": 39,
+     "candidates": 264,
+     "picked": 2
+    }
+   ]
+  },
+  {
+   "tag": "labour_k5_iba_ils_global_economy",
+   "url": "https://www.ibanet.org/MediaHandler?id=363b3171-0afc-489e-812b-3de2460bce67",
+   "usable_total": 635,
+   "sections": 17,
+   "level": 1,
+   "picked": 18,
+   "detail": [
+    {
+     "section": 0,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 1,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 2,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 3,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 4,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 5,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 6,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 7,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 8,
+     "candidates": 21,
+     "picked": 2
+    },
+    {
+     "section": 9,
+     "candidates": 44,
+     "picked": 2
+    },
+    {
+     "section": 10,
+     "candidates": 121,
+     "picked": 2
+    },
+    {
+     "section": 11,
+     "candidates": 14,
+     "picked": 2
+    },
+    {
+     "section": 12,
+     "candidates": 86,
+     "picked": 2
+    },
+    {
+     "section": 13,
+     "candidates": 32,
+     "picked": 2
+    },
+    {
+     "section": 14,
+     "candidates": 98,
+     "picked": 2
+    },
+    {
+     "section": 15,
+     "candidates": 197,
+     "picked": 2
+    },
+    {
+     "section": 16,
+     "candidates": 21,
+     "picked": 2
+    }
+   ]
+  },
+  {
+   "tag": "education_k9_unesco_teacher_education_framework",
+   "url": "https://files.eric.ed.gov/fulltext/ED497053.pdf",
+   "usable_total": 1086,
+   "sections": 20,
+   "level": 1,
+   "picked": 30,
+   "detail": [
+    {
+     "section": 0,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 1,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 2,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 3,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 4,
+     "candidates": 35,
+     "picked": 2
+    },
+    {
+     "section": 5,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 6,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 7,
+     "candidates": 15,
+     "picked": 2
+    },
+    {
+     "section": 8,
+     "candidates": 73,
+     "picked": 2
+    },
+    {
+     "section": 9,
+     "candidates": 104,
+     "picked": 2
+    },
+    {
+     "section": 10,
+     "candidates": 180,
+     "picked": 2
+    },
+    {
+     "section": 11,
+     "candidates": 57,
+     "picked": 2
+    },
+    {
+     "section": 12,
+     "candidates": 143,
+     "picked": 2
+    },
+    {
+     "section": 13,
+     "candidates": 37,
+     "picked": 2
+    },
+    {
+     "section": 14,
+     "candidates": 54,
+     "picked": 2
+    },
+    {
+     "section": 15,
+     "candidates": 15,
+     "picked": 2
+    },
+    {
+     "section": 16,
+     "candidates": 17,
+     "picked": 2
+    },
+    {
+     "section": 17,
+     "candidates": 91,
+     "picked": 2
+    },
+    {
+     "section": 18,
+     "candidates": 213,
+     "picked": 2
+    },
+    {
+     "section": 19,
+     "candidates": 45,
+     "picked": 2
+    }
+   ]
+  },
+  {
+   "tag": "io_k8_ifrc_mhpss_evaluation",
+   "url": "https://mhpsshub.org/wp-content/uploads/2022/07/Fed-wide_COVID19_Evaluation-Report_EN-2.pdf",
+   "usable_total": 1002,
+   "sections": 89,
+   "level": 1,
+   "picked": 152,
+   "detail": [
+    {
+     "section": 0,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 1,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 2,
+     "candidates": 24,
+     "picked": 2
+    },
+    {
+     "section": 3,
+     "candidates": 5,
+     "picked": 2
+    },
+    {
+     "section": 4,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 5,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 6,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 7,
+     "candidates": 5,
+     "picked": 2
+    },
+    {
+     "section": 8,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 9,
+     "candidates": 8,
+     "picked": 2
+    },
+    {
+     "section": 10,
+     "candidates": 12,
+     "picked": 2
+    },
+    {
+     "section": 11,
+     "candidates": 5,
+     "picked": 2
+    },
+    {
+     "section": 12,
+     "candidates": 5,
+     "picked": 2
+    },
+    {
+     "section": 13,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 14,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 15,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 16,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 17,
+     "candidates": 0,
+     "picked": 0
+    },
+    {
+     "section": 18,
+     "candidates": 10,
+     "picked": 2
+    },
+    {
+     "section": 19,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 20,
+     "candidates": 29,
+     "picked": 2
+    },
+    {
+     "section": 21,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 22,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 23,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 24,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 25,
+     "candidates": 5,
+     "picked": 2
+    },
+    {
+     "section": 26,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 27,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 28,
+     "candidates": 11,
+     "picked": 2
+    },
+    {
+     "section": 29,
+     "candidates": 23,
+     "picked": 2
+    },
+    {
+     "section": 30,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 31,
+     "candidates": 33,
+     "picked": 2
+    },
+    {
+     "section": 32,
+     "candidates": 10,
+     "picked": 2
+    },
+    {
+     "section": 33,
+     "candidates": 39,
+     "picked": 2
+    },
+    {
+     "section": 34,
+     "candidates": 52,
+     "picked": 2
+    },
+    {
+     "section": 35,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 36,
+     "candidates": 1,
+     "picked": 0
+    },
+    {
+     "section": 37,
+     "candidates": 8,
+     "picked": 2
+    },
+    {
+     "section": 38,
+     "candidates": 5,
+     "picked": 2
+    },
+    {
+     "section": 39,
+     "candidates": 10,
+     "picked": 2
+    },
+    {
+     "section": 40,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 41,
+     "candidates": 17,
+     "picked": 2
+    },
+    {
+     "section": 42,
+     "candidates": 23,
+     "picked": 2
+    },
+    {
+     "section": 43,
+     "candidates": 2,
+     "picked": 0
+    },
+    {
+     "section": 44,
+     "candidates": 19,
+     "picked": 2
+    },
+    {
+     "section": 45,
+     "candidates": 34,
+     "picked": 2
+    },
+    {
+     "section": 46,
+     "candidates": 30,
+     "picked": 2
+    },
+    {
+     "section": 47,
+     "candidates": 24,
+     "picked": 2
+    },
+    {
+     "section": 48,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 49,
+     "candidates": 26,
+     "picked": 2
+    },
+    {
+     "section": 50,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 51,
+     "candidates": 15,
+     "picked": 2
+    },
+    {
+     "section": 52,
+     "candidates": 24,
+     "picked": 2
+    },
+    {
+     "section": 53,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 54,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 55,
+     "candidates": 10,
+     "picked": 2
+    },
+    {
+     "section": 56,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 57,
+     "candidates": 19,
+     "picked": 2
+    },
+    {
+     "section": 58,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 59,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 60,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 61,
+     "candidates": 10,
+     "picked": 2
+    },
+    {
+     "section": 62,
+     "candidates": 16,
+     "picked": 2
+    },
+    {
+     "section": 63,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 64,
+     "candidates": 9,
+     "picked": 2
+    },
+    {
+     "section": 65,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 66,
+     "candidates": 28,
+     "picked": 2
+    },
+    {
+     "section": 67,
+     "candidates": 12,
+     "picked": 2
+    },
+    {
+     "section": 68,
+     "candidates": 22,
+     "picked": 2
+    },
+    {
+     "section": 69,
+     "candidates": 6,
+     "picked": 2
+    },
+    {
+     "section": 70,
+     "candidates": 37,
+     "picked": 2
+    },
+    {
+     "section": 71,
+     "candidates": 9,
+     "picked": 2
+    },
+    {
+     "section": 72,
+     "candidates": 3,
+     "picked": 2
+    },
+    {
+     "section": 73,
+     "candidates": 5,
+     "picked": 2
+    },
+    {
+     "section": 74,
+     "candidates": 10,
+     "picked": 2
+    },
+    {
+     "section": 75,
+     "candidates": 21,
+     "picked": 2
+    },
+    {
+     "section": 76,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 77,
+     "candidates": 8,
+     "picked": 2
+    },
+    {
+     "section": 78,
+     "candidates": 5,
+     "picked": 2
+    },
+    {
+     "section": 79,
+     "candidates": 25,
+     "picked": 2
+    },
+    {
+     "section": 80,
+     "candidates": 5,
+     "picked": 2
+    },
+    {
+     "section": 81,
+     "candidates": 17,
+     "picked": 2
+    },
+    {
+     "section": 82,
+     "candidates": 7,
+     "picked": 2
+    },
+    {
+     "section": 83,
+     "candidates": 4,
+     "picked": 2
+    },
+    {
+     "section": 84,
+     "candidates": 11,
+     "picked": 2
+    },
+    {
+     "section": 85,
+     "candidates": 14,
+     "picked": 2
+    },
+    {
+     "section": 86,
+     "candidates": 10,
+     "picked": 2
+    },
+    {
+     "section": 87,
+     "candidates": 32,
+     "picked": 2
+    },
+    {
+     "section": 88,
+     "candidates": 16,
+     "picked": 2
+    }
+   ]
+  }
+ ]
+}

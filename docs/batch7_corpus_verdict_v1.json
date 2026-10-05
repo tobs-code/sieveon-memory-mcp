@@ -1,0 +1,45 @@
+{
+ "audit_id": "batch7-corpus-build-verdict",
+ "date": "2026-10-05",
+ "build": "single build run, docs/batch7_corpus_v1.json, digest fa7f529094d0c648353e3b83563180168c4a1ccf7c7753773cebc13b6c281081",
+ "status": "BUILD EXECUTED ONCE; TWO DEFECTS FOUND; NO PIPELINE RUN; NO N=80 SAMPLE",
+
+ "checks_passed": {
+  "exactly_23_documents_as_input": true,
+  "builder_guards": "23 documents, all >= 300 usable sentences",
+  "snapshot_bytes_verified_against_pins": "23 of 23",
+  "all_23_documents_contribute": true,
+  "minimum_per_document": 2,
+  "section_wise_stride_mechanism": "ran as specified, per surviving section",
+  "degenerate_kytc_visible": "2 sentences, section marker -1, document-wide stride, explicitly recorded",
+  "duplicates_in_final_corpus": 0,
+  "cross_document_duplicates_removed_and_recorded": 3,
+  "digest_recomputed_independently": "match"},
+
+ "defect_1_size": {
+  "severity": "BLOCKING for any downstream use",
+  "specified": "global ratio 200 divided by total usable sentences",
+  "observed": "1316 sentences, overshoot factor 6.58",
+  "cause": "the inherited minimum-two-per-section floor fires on hundreds of small sections and dominates the global ratio; the floor and the ratio cannot both hold",
+  "status_of_floor": "inherited implementation from the unfinished builder, never explicitly frozen and never explicitly approved",
+  "not_done": "neither the floor nor the ratio was changed; no second build was run"},
+
+ "defect_2_header_leak": {
+  "severity": "BLOCKING for any downstream use",
+  "finding": "3 of 1316 corpus sentences are jina reader metadata, not document text",
+  "sentences": [
+   "geo_k2_usgs_mcs2025 section 0: Title/URL Source/Published Time/Number of Pages/Markdown Content preamble",
+   "remeasure_bmv_plan2030 section 0: same preamble pattern",
+   "labour_k4_ilo_labour_standards_guide section 0: same preamble pattern, merged into the first content sentence"],
+  "cause": "the builder clean() never strips the jina reader header lines, while the qualification path in scripts/jina_fetch.py does; the preamble sits in section 0 before the first heading",
+  "classification": "implementation defect of the same class as the two earlier builder findings; the qualification text and the corpus text diverge on unregistered ground",
+  "not_done": "no header strip was added; that change needs an explicit decision"},
+
+ "false_alarm_cleared": {
+  "check": "verbatim-substring provenance of every corpus sentence",
+  "result": "53 sentences are not verbatim substrings; 40 are explained by the documented URL-removal step of clean() and the remainder by equivalent documented cleaning operations",
+  "conclusion": "the check as designed was stricter than the cleaning operation permits; the sentences derive deterministically from the pinned bytes through the frozen clean(); the only genuine contamination is the 3 header-leak sentences above"},
+
+ "downstream_blocked": ["pipeline run", "N=80 sample", "any annotation"],
+ "decision_requested": "how to resolve the floor-vs-ratio conflict and whether to add the qualification-identical header strip to the builder clean()"
+}

@@ -43,6 +43,18 @@ ABBREV = {"mr", "mrs", "ms", "dr", "st", "jr", "sr", "vs", "etc",
           "nov", "dec", "prof", "rep", "sen", "gov", "gen", "col",
           "sgt", "capt", "cmdr", "ave", "blvd", "rd", "mt"}
 
+HEADING_MAXLEN = 140
+HEADING_NUMERIC = re.compile(r"^[\d\s.,:;]+$")
+HEADING_TOC = re.compile(r"^\s*(table of )?contents\s*$", re.I)
+HEADING_URLCOPY = re.compile(
+    r"copyright|\u00a9|all rights reserved|https?://|www\.\S+")
+
+
+def section_heading_artefact(t: str) -> bool:
+    """Frozen artefact predicates: purely syntactic, no semantic judgement."""
+    return bool(HEADING_NUMERIC.match(t) or HEADING_TOC.match(t)
+                or HEADING_URLCOPY.search(t) or len(t) > HEADING_MAXLEN)
+
 MIN_SENTENCES_PER_SECTION = 3
 MIN_SECTION_SENTENCES = 2
 # Implements the frozen Batch 7 qualification criterion (>=300 usable
@@ -85,11 +97,35 @@ def split_sentences(text: str):
     return [s.strip() for s in out if s.strip()]
 
 
-def sections(md: str):
-    """Split on top-level headings, preserving document order."""
-    md = CUT_SECTIONS.split(md)[0]
-    parts = re.split(r"^##\s+.*$", md, flags=re.M)
-    return [p for p in parts if p.strip()]
+CORPUS_TARGET_SENTENCES = 200
+
+
+def frozen_sections(cut):
+    """Partition the raw text per the frozen section rule. Returns (L, secs)
+    where secs holds only surviving candidates at level L; rejected headings
+    are plain text. L is None when nothing qualifies (DEGENERATE)."""
+    heads = [(len(m.group(1)), m.group(2).strip())
+             for m in re.finditer(r"^(#{1,6})\s+(\S.*)$", cut, flags=re.M)]
+    kept = [(l, t) for l, t in heads if not section_heading_artefact(t)]
+    per_level = {}
+    for l, _ in kept:
+        per_level[l] = per_level.get(l, 0) + 1
+    eligible = [l for l, n in sorted(per_level.items()) if n >= 2]
+    L = eligible[0] if eligible else None
+    if L is None:
+        return None, [cut]
+    pat = re.compile(rf"^#{{{L}}}\s+\S.*$", flags=re.M)
+    secs, buf = [], []
+    for line in cut.split("\n"):
+        m = pat.match(line)
+        if m and not section_heading_artefact(
+                re.sub(r"^#{1,6}\s+", "", line).strip()):
+            secs.append("\n".join(buf))
+            buf = []
+            continue
+        buf.append(line)
+    secs.append("\n".join(buf))
+    return L, [x for x in secs if x.strip()]
 
 
 def keep(s: str) -> bool:
@@ -164,6 +200,92 @@ def main() -> int:
     if not sel:
         raise SystemExit("no documents selected yet")
     audit_selection(sel)
+
+    # pass 1: usable sentences per document, total for the global ratio
+    docs = []
+    for d in sel:
+        snap = ROOT / d["snapshot"]
+        raw = snap.read_text(encoding="utf-8")
+        assert hashlib.sha256(raw.encode()).hexdigest() == d["raw_sha256"], (
+            f"snapshot bytes changed under pinning: {d['snapshot']}")
+        cut = CUT_SECTIONS.split(raw)[0]
+        L, secs = frozen_sections(cut)
+        sec_usable = [dedup([s for s in split_sentences(clean(x)) if keep(s)])
+                      for x in secs]
+        docs.append({"record": d, "L": L, "secs": sec_usable,
+                     "total": sum(len(c) for c in sec_usable)})
+    grand = sum(x["total"] for x in docs)
+    ratio = CORPUS_TARGET_SENTENCES / grand
+    print(f"usable sentences total: {grand}  "
+          f"global ratio: {CORPUS_TARGET_SENTENCES}/{grand} = {ratio:.6f}")
+
+    # pass 2: stride per section, document-wide stride for DEGENERATE
+    corpus, per_doc = [], []
+    for x in docs:
+        d = x["record"]
+        tag = d["snapshot"].split("/")[-1].replace(".md", "")
+        got, sec_report = [], []
+        if x["L"] is None:
+            cands = dedup([s for sec in x["secs"] for s in sec])
+            picks = stride_pick(cands, ratio)
+            got = [(s, -1, i) for i, s in enumerate(picks)]
+            sec_report.append({"section": "DEGENERATE document-wide",
+                               "candidates": len(cands),
+                               "picked": len(picks)})
+        else:
+            for si, cands in enumerate(x["secs"]):
+                picks = stride_pick(cands, ratio)
+                got.extend((s, si, i) for i, s in enumerate(picks))
+                sec_report.append({"section": si, "candidates": len(cands),
+                                   "picked": len(picks)})
+        per_doc.append({"tag": tag, "url": d["url"],
+                        "usable_total": x["total"],
+                        "sections": len(x["secs"]), "level": x["L"],
+                        "picked": len(got), "detail": sec_report})
+        for s, si, pi in got:
+            corpus.append({"doc": tag, "url": d["url"],
+                           "doc_sha256": d["raw_sha256"],
+                           "section": si, "pick_index": pi,
+                           "sentence": s})
+    print(f"picked sentences: {len(corpus)} "
+          f"(target {CORPUS_TARGET_SENTENCES})")
+
+    # global dedup preserving first occurrence; every removal is recorded
+    seen, clean_corpus, removed = set(), [], 0
+    for r in corpus:
+        k = r["sentence"].strip().lower()
+        if k in seen:
+            removed += 1
+            continue
+        seen.add(k)
+        r["corpus_index"] = len(clean_corpus)
+        clean_corpus.append(r)
+    print(f"cross-document duplicates removed: {removed}")
+
+    digest = hashlib.sha256(
+        json.dumps(clean_corpus, ensure_ascii=False,
+                   sort_keys=True).encode()).hexdigest()
+    out = {"corpus_id": "batch7_corpus_v1",
+           "documents": 23, "target_sentences": CORPUS_TARGET_SENTENCES,
+           "global_ratio": ratio,
+           "usable_total": grand,
+           "sentences": len(clean_corpus),
+           "cross_doc_duplicates_removed": removed,
+           "digest_sha256": digest,
+           "rule": "v3 qualification, frozen section rule, "
+                   "stride per section, document-wide stride for DEGENERATE",
+           "records": clean_corpus}
+    (ROOT / "docs" / "batch7_corpus_v1.json").write_text(
+        json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
+    (ROOT / "docs" / "batch7_corpus_build_audit_v1.json").write_text(
+        json.dumps({"ratio": ratio, "usable_total": grand,
+                    "sentences": len(clean_corpus), "digest": digest,
+                    "per_document": per_doc}, ensure_ascii=False, indent=1),
+        encoding="utf-8")
+    print("digest:", digest)
+    print("\nper-document contributions:")
+    for p in per_doc:
+        print(f"  {p['picked']:4d}  {p['tag']}")
     return 0
 
 
