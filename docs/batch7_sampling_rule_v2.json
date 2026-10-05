@@ -1,0 +1,36 @@
+{
+ "rule_id": "batch7-sampling-rule-v2",
+ "date": "2026-10-05",
+ "status": "FROZEN",
+ "replaces": "global-ratio stride with implicit size (which produced 1316, then 72 with 7 silent documents); the ratio mechanism is superseded, the stride mechanism is kept",
+ "assumption_requiring_confirmation": "The stage-1 base sentence per document is NOT drawn from a designated section; it is folded into the document budget, which is then allocated across the document sections proportionally. If a designated origin for the base sentence is wanted instead, this freeze must be revised before building.",
+
+ "budget": {"total": 200, "stage1_per_document": 1, "stage2_total": 177},
+
+ "stage1": "every one of the 23 selected documents receives 1 sentence; no qualified document can vanish by rounding",
+
+ "stage2": {
+  "distribution": "the remaining 177 sentences are distributed across the 23 documents proportionally to their audited section counts",
+  "method": "Largest Remainder (Hamilton): ideal quota, integer floor, remaining seats by largest fractional remainder",
+  "tie_break": "deterministic; frozen document order as listed in selected_documents of docs/batch7_fetch_log_v1.json"},
+
+ "within_document": {
+  "distribution": "each document budget is distributed across its own sections proportionally to usable sentences per section",
+  "method": "Largest Remainder (Hamilton) with deterministic tie-break by section order in document order",
+  "picks": "within each section, the frozen even-stride mechanism takes the first k picks of that section quota"},
+
+ "degenerate": "transport_k1_kytc_acfr keeps its single section and contributes its budget through the document-wide stride; marked DEGENERATE, otherwise a normal contribution",
+
+ "forbidden": ["ceil", "any implicit minimum per section or document beyond the explicit stage-1 base", "semantic section evaluation", "reordering", "post-hoc quota correction"],
+
+ "audit": {
+  "result": "GREEN",
+  "structure_recomputed_matches_frozen_audit": "23 of 23",
+  "sum_of_budgets": 200,
+  "documents_with_at_least_1": "23 of 23",
+  "section_quota_exceeding_candidates": "none",
+  "degenerate_included": true,
+  "note": "usable counts recomputed under the builder text definition differ slightly from the qualification counts (same documents, same verdicts, all >= 300); quotas use section structure, not either count, so the difference does not enter the allocation"},
+
+ "downstream": "one production build under exactly this rule, then digest pin; N=80 only from pipeline records afterwards"
+}
