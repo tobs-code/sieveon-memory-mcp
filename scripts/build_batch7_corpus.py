@@ -11,6 +11,8 @@ import json
 import re
 from pathlib import Path
 
+from batch7_textclean import strip_links
+
 ROOT = Path(__file__).resolve().parents[1]
 SNAP_DIR = Path("C:/Users/tobs/.local/share/opencode/tool-output")
 
@@ -40,10 +42,7 @@ MIN_DOC_SENTENCES = 1200
 
 def clean(md: str) -> str:
     md = CUT_SECTIONS.split(md)[0]
-    link = (r"!?\[((?:[^\[\]]|\([^()]*\))*)"
-            r"\]\s*\((?:[^()\"]|\([^()]*\)|\"[^\"]*\")*\)")
-    for _ in range(3):
-        md = re.sub(link, r"\1", md)
+    md = strip_links(md)
     md = re.sub(r"\]\s*\([^)]*\)", "", md)
     md = re.sub(r"!\s*\(\s*", "", md)
     md = re.sub(r"\(\s*\)", "", md)

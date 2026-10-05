@@ -9,6 +9,8 @@ import re
 import sys
 from pathlib import Path
 
+from batch7_textclean import strip_links
+
 TOOL_DIR = Path("C:/Users/tobs/.local/share/opencode/tool-output")
 
 CUT = re.compile(r"^##\s+(References|External links|See also|Further reading|"
@@ -28,10 +30,7 @@ MIN_SECTIONS = 3
 
 def clean(md):
     md = CUT.split(md)[0]
-    link = (r"!?\[((?:[^\[\]]|\([^()]*\))*)"
-            r"\]\s*\((?:[^()\"]|\([^()]*\)|\"[^\"]*\")*\)")
-    for _ in range(3):
-        md = re.sub(link, r"\1", md)
+    md = strip_links(md)
     md = re.sub(r"\]\s*\([^)]*\)", "", md)
     md = re.sub(r"\*\*+", "", md)
     md = re.sub(r"https?://\S+", "", md)

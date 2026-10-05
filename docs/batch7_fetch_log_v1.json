@@ -179,6 +179,24 @@
      "reason": "3 usable sentences, far below 300",
      "raw_sha256": "df0b028a2060be276f12f01d083c68fcbe3c49990e15b8110fe581bb84fa8af1",
      "snapshot": "docs/batch7_snapshots/pubadmin_k3_nih_rppr.md"
+    },
+    {
+     "rank": "next-K batch rank",
+     "url": "https://admin.ks.gov/media/cms/Policy_and_Procedure_Manual_e7a759b160238.pdf",
+     "fetch": "not attempted",
+     "verdict": "pending"
+    },
+    {
+     "rank": "next-K batch rank",
+     "url": "https://www.marylandcomptroller.gov/content/dam/mdcomp/md/state-accounting/manual/APPM.pdf",
+     "fetch": "not attempted",
+     "verdict": "pending"
+    },
+    {
+     "rank": "next-K batch rank",
+     "url": "https://budget.delaware.gov/accounting-manual/documents/chapter01.pdf?ver=0103",
+     "fetch": "not attempted",
+     "verdict": "pending"
     }
    ],
    "selected": [
@@ -230,6 +248,24 @@
      "reason": "55 usable sentences below 300",
      "raw_sha256": "77687eff7e26bf507ccc23d17a61e353f3aba8d7e2e54588e311146a0e3d4628ef",
      "snapshot": "docs/batch7_snapshots/health_k3_uams_guidelines.md"
+    },
+    {
+     "rank": "next-K batch rank",
+     "url": "https://openknowledge.fao.org/server/api/core/bitstreams/d7e5b4ae-80b6-4173-9adf-6f9f845be8a1/content",
+     "fetch": "not attempted",
+     "verdict": "pending"
+    },
+    {
+     "rank": "next-K batch rank",
+     "url": "https://climate-diplomacy.org/sites/default/files/2020-10/FAO%27s%20Work%20on%20Climate%20Change.pdf",
+     "fetch": "not attempted",
+     "verdict": "pending"
+    },
+    {
+     "rank": "next-K batch rank",
+     "url": "https://openknowledge.fao.org/server/api/core/bitstreams/2c6bd7b4-181e-4117-a90d-32a1bda8b27c/content",
+     "fetch": "not attempted",
+     "verdict": "pending"
     }
    ],
    "selected": [
@@ -238,7 +274,8 @@
    "shortfall": "1 of 2; all K exhausted, next K batch required",
    "selected_sha256": [
     "5f8edeafbd1261aa4e4192dbe2e3d7748eeced83815e09649b6dc91008896539"
-   ]
+   ],
+   "domain_fidelity_note": "The new-K batch query returned FAO food-system documents; food safety and nutrition sit inside the public-health remit (WHO maintains a food safety programme), so the batch is used as returned. The query wording is recorded verbatim; no post-hoc query rewrite was performed."
   },
   {
    "domain": "agriculture",
@@ -268,14 +305,25 @@
      "usable_sentences_v3": 499,
      "raw_sha256": "6df5e0d1dfb9f46305a6de1bae440b4f8493826be9074c17414a5f0e4720e00a",
      "snapshot": "docs/batch7_snapshots/agriculture_k2_fsrp_manual.md"
+    },
+    {
+     "url": "https://farm-d.org/wp-content/uploads/2024/03/Improving-AgEx.-FAO.pdf",
+     "fetch": "ok via jina (HTTP 200, 303 pages)",
+     "verdict": "PASS",
+     "usable_sentences_v3": 5674,
+     "raw_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0",
+     "snapshot": "docs/batch7_snapshots/agriculture_k3_farmd_manual.md",
+     "note": "first measurement attempt hung in the legacy clean(); resolved by the O(n) cleaner, see infrastructure_notes. Verdict computed only after the fix; no rule change."
     }
    ],
    "selected": [
-    "https://fsrp.go.ke/sites/default/files/2025-08/Agriculture%20Extension%20Manual%20v1%20final.pdf"
+    "https://fsrp.go.ke/sites/default/files/2025-08/Agriculture%20Extension%20Manual%20v1%20final.pdf",
+    "https://farm-d.org/wp-content/uploads/2024/03/Improving-AgEx.-FAO.pdf"
    ],
-   "shortfall": "1 of 2 still needed",
+   "shortfall": "COMPLETE (2/2)",
    "selected_sha256": [
-    "6df5e0d1dfb9f46305a6de1bae440b4f8493826be9074c17414a5f0e4720e00a"
+    "6df5e0d1dfb9f46305a6de1bae440b4f8493826be9074c17414a5f0e4720e00a",
+    "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
    ]
   },
   {
@@ -439,6 +487,24 @@
      "usable_sentences_v3": 153,
      "reason": "153 usable sentences below 300",
      "raw_sha256": "2aaafd558b6d92c7c029a7b5b25c348e9c0239486aa8b453bb312168073e01f9"
+    },
+    {
+     "rank": "next-K batch rank",
+     "url": "https://www.govinfo.gov/content/pkg/SERIALSET-05072_00_00-076-0308-0000/pdf/SERIALSET-05072_00_00-076-0308-0000.pdf",
+     "fetch": "not attempted",
+     "verdict": "pending"
+    },
+    {
+     "rank": "next-K batch rank",
+     "url": "https://www.jstor.org/stable/41503",
+     "fetch": "not attempted",
+     "verdict": "pending"
+    },
+    {
+     "rank": "next-K batch rank",
+     "url": "https://sciencepolicy.hsites.harvard.edu/file_url/238",
+     "fetch": "not attempted",
+     "verdict": "pending"
     }
    ],
    "selected": [],
@@ -469,6 +535,24 @@
      "usable_sentences_v3": 224,
      "reason": "224 usable sentences below 300",
      "raw_sha256": "e76babb5fa64a68b17fbceb5312712395a1c62f9860def7fea86de59a8978315"
+    },
+    {
+     "rank": "next-K batch rank",
+     "url": "https://www.oecd.org/content/dam/oecd/en/about/directorates/EDU/EDU-brochure-2025-26_final.pdf",
+     "fetch": "not attempted",
+     "verdict": "pending"
+    },
+    {
+     "rank": "next-K batch rank",
+     "url": "https://read.oecd-ilibrary.org/content/dam/oecd/en/publications/reports/2025/03/policies-for-the-digital-transformation-of-school-education_aee58b2f/464dab4d-en.pdf",
+     "fetch": "not attempted",
+     "verdict": "pending"
+    },
+    {
+     "rank": "next-K batch rank",
+     "url": "https://observatorioeducacion.org/sites/default/files/oecd-education-2030-position-paper.pdf",
+     "fetch": "not attempted",
+     "verdict": "pending"
     }
    ],
    "selected": [],
@@ -532,6 +616,24 @@
      "reason": "EXCLUDED_TYPE by the frozen mechanical URL rule, same news.release path as K1",
      "raw_sha256": "c0d1f3d8a010b322c168ed63cc85511e2153f17705df76186853e7ad26f548c7",
      "snapshot": "docs/batch7_snapshots/labour_k3_bls_empsit_dec25.md"
+    },
+    {
+     "rank": "next-K batch rank",
+     "url": "https://www.ilo.org/media/330471/download",
+     "fetch": "not attempted",
+     "verdict": "pending"
+    },
+    {
+     "rank": "next-K batch rank",
+     "url": "https://www.ibanet.org/MediaHandler?id=363b3171-0afc-489e-812b-3de2460bce67",
+     "fetch": "not attempted",
+     "verdict": "pending"
+    },
+    {
+     "rank": "next-K batch rank",
+     "url": "https://www.ilawnetwork.com/wp-content/uploads/2024/03/ILAW-Applying-International-Labour-Standards-to-the-Informal-Economy-Intro.pdf",
+     "fetch": "not attempted",
+     "verdict": "pending"
     }
    ],
    "selected": [],
@@ -565,6 +667,24 @@
      "reason": "88 usable sentences below 300",
      "raw_sha256": "30740a750219e37fbbe66f92ece2b8cf3773a71a7874909c285d984b60e30b44",
      "snapshot": "docs/batch7_snapshots/io_k3_ibp_covidfunds.md"
+    },
+    {
+     "rank": "next-K batch rank",
+     "url": "https://www.undp.org/sites/g/files/zskgke326/files/2024-03/annual-report-2023.pdf",
+     "fetch": "not attempted",
+     "verdict": "pending"
+    },
+    {
+     "rank": "next-K batch rank",
+     "url": "https://effectivecooperation.org/wp-content/uploads/2015/12/UNDP-Discussion-Paper_Final.pdf",
+     "fetch": "not attempted",
+     "verdict": "pending"
+    },
+    {
+     "rank": "next-K batch rank",
+     "url": "https://digitallibrary.un.org/record/497441/files/DP_2003_12-EN.pdf",
+     "fetch": "not attempted",
+     "verdict": "pending"
     }
    ],
    "selected": [
@@ -577,10 +697,10 @@
   }
  ],
  "progress": {
-  "documents_selected": 14,
+  "documents_selected": 15,
   "documents_needed": 24,
-  "domains_complete": 5,
-  "note": "agriculture K2 PASS; labour K1-K3 all EXCLUDED by the same frozen URL rule (news.release path); labour, science, education, public admin, health and IO all need next-K batches with new searches"
+  "domains_complete": 6,
+  "note": "agriculture COMPLETE 2/2 (FSRP 499 + FARM-D/FAO 5674). Missing second documents: public admin, health, labour, science, education, IO/NGO; one new K batch is logged for each, scrape in K order"
  },
  "observations": [
   "qualification works as an objective gate: it rejected a 1-page bulletin and a 248-sentence WHO document without analyst judgement",
@@ -723,6 +843,16 @@
    "raw_sha256": "6df5e0d1dfb9f46305a6de1bae440b4f8493826be9074c17414a5f0e4720e00a",
    "usable_sentences": 499,
    "rule": "v3 direct",
+   "parser": "jina-reader (local docker)",
+   "snapshot": "docs/batch7_snapshots/agriculture_k2_fsrp_manual.md"
+  },
+  {
+   "domain": "agriculture",
+   "url": "https://farm-d.org/wp-content/uploads/2024/03/Improving-AgEx.-FAO.pdf",
+   "raw_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0",
+   "snapshot": "docs/batch7_snapshots/agriculture_k3_farmd_manual.md",
+   "usable_sentences": 5674,
+   "rule": "v3 direct",
    "parser": "jina-reader (local docker)"
   }
  ],
@@ -765,5 +895,21 @@
   "no rule change"
  ],
  "fetch_backend": "local jina-reader (docker jina-reader, h2c prior knowledge) since the firecrawl credit stop; no API credits consumed",
- "parser_mix_status": "kept as decided: 3 firecrawl pins stand, all new fetches via jina-reader, parser recorded per document; no parser-quality comparison performed"
+ "parser_mix_status": "kept as decided: 3 firecrawl pins stand, all new fetches via jina-reader, parser recorded per document; no parser-quality comparison performed",
+ "new_batches": "6 new searches executed, one per domain with exhausted K pools (public admin, health, science, education, labour, IO/NGO); K order continues from the new batch; no query targeted constructions",
+ "infrastructure_notes": [
+  {
+   "date": "batch7 round 5",
+   "component": "scripts/batch7_textclean.py (new), scripts/batch7_qualify.py, scripts/build_batch7_corpus.py",
+   "issue": "the frozen clean() stripped markdown links with a nested alternation that backtracks catastrophically; a 1 MB FAO manual (303 pages) did not complete a single re.sub pass within 180 s, which blocked measurement for that document",
+   "fix": "linear bracket-stack replacement, same normalisation, O(n)",
+   "equivalence_evidence": "reproduces the usable-sentence count frozen in this log for all 16 previously measured snapshots, 0 mismatches; production regression 8/8 GREEN; consistency audit 20/20 exit 0",
+   "not_changed": [
+    "no selection rule",
+    "no threshold",
+    "no verdict",
+    "scripts/build_production_corpus_v6.py left untouched (frozen production pipeline, byte identity with the Batch 6 corpora is preserved)"
+   ]
+  }
+ ]
 }
