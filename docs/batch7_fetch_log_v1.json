@@ -260,10 +260,23 @@
      "url": "https://farm-d.org/wp-content/uploads/2024/03/Improving-AgEx.-FAO.pdf",
      "fetch": "not attempted",
      "verdict": "pending"
+    },
+    {
+     "url": "https://fsrp.go.ke/sites/default/files/2025-08/Agriculture%20Extension%20Manual%20v1%20final.pdf",
+     "fetch": "ok via jina",
+     "verdict": "PASS",
+     "usable_sentences_v3": 499,
+     "raw_sha256": "6df5e0d1dfb9f46305a6de1bae440b4f8493826be9074c17414a5f0e4720e00a",
+     "snapshot": "docs/batch7_snapshots/agriculture_k2_fsrp_manual.md"
     }
    ],
-   "selected": [],
-   "shortfall": "in progress"
+   "selected": [
+    "https://fsrp.go.ke/sites/default/files/2025-08/Agriculture%20Extension%20Manual%20v1%20final.pdf"
+   ],
+   "shortfall": "1 of 2 still needed",
+   "selected_sha256": [
+    "6df5e0d1dfb9f46305a6de1bae440b4f8493826be9074c17414a5f0e4720e00a"
+   ]
   },
   {
    "domain": "industry / technical",
@@ -501,10 +514,28 @@
      "usable_sentences_v3": 1057,
      "reason": "EXCLUDED_TYPE by the frozen mechanical URL rule: the path contains 'news.release' and BLS titles the series as a news release; the news/press-release exclusion applies. EDGE CASE FLAGGED: a statistical release is arguably not a news article; the verdict follows the frozen implementation without analyst judgement and stands unless the rule is changed by a new frozen version",
      "raw_sha256": "cc21965d2f14fb67aac37d0db598510e8d5f972761533b0d4ed5f63c4ddc5de8"
+    },
+    {
+     "url": "https://www.bls.gov/news.release/archives/empsit_02072025.pdf",
+     "fetch": "ok via jina (1099 usable sentences extracted)",
+     "verdict": "FAIL",
+     "usable_sentences_v3": 1099,
+     "reason": "EXCLUDED_TYPE by the frozen mechanical URL rule, same news.release path as K1",
+     "raw_sha256": "b17e7e47bc6595a32bd88bf7425a280e336b60ca02e6fe6c3109a272d88dfd1f",
+     "snapshot": "docs/batch7_snapshots/labour_k2_bls_empsit_jan25.md"
+    },
+    {
+     "url": "https://www.bls.gov/news.release/archives/empsit_01092026.pdf",
+     "fetch": "ok via jina (1108 usable sentences extracted)",
+     "verdict": "FAIL",
+     "usable_sentences_v3": 1108,
+     "reason": "EXCLUDED_TYPE by the frozen mechanical URL rule, same news.release path as K1",
+     "raw_sha256": "c0d1f3d8a010b322c168ed63cc85511e2153f17705df76186853e7ad26f548c7",
+     "snapshot": "docs/batch7_snapshots/labour_k3_bls_empsit_dec25.md"
     }
    ],
    "selected": [],
-   "shortfall": "K2/K3 pending (same path, likely same verdict; then next K batch)"
+   "shortfall": "0 of 2; all K exhausted with the same mechanical exclusion, next K batch required (different source family)"
   },
   {
    "domain": "international organisations / NGOs",
@@ -546,24 +577,10 @@
   }
  ],
  "progress": {
-  "documents_selected": 13,
+  "documents_selected": 14,
   "documents_needed": 24,
-  "domains_complete": [
-   "industry / technical",
-   "museums / cultural institutions",
-   "earth and natural sciences",
-   "energy / environment",
-   "transport / infrastructure"
-  ],
-  "domains_open": [
-   "public administration (next K batch)",
-   "health (next K batch)",
-   "agriculture (K2 pending)",
-   "science (next K batch)",
-   "education (next K batch)",
-   "economy / labour market (K2/K3 pending)",
-   "international organisations / NGOs (next K batch)"
-  ]
+  "domains_complete": 5,
+  "note": "agriculture K2 PASS; labour K1-K3 all EXCLUDED by the same frozen URL rule (news.release path); labour, science, education, public admin, health and IO all need next-K batches with new searches"
  },
  "observations": [
   "qualification works as an objective gate: it rejected a 1-page bulletin and a 248-sentence WHO document without analyst judgement",
@@ -698,6 +715,14 @@
    "raw_sha256": "b09467cce2e6e0443a34762f47b7b940",
    "usable_sentences": 1384,
    "rule": "v3 direct, K-order repair documented",
+   "parser": "jina-reader (local docker)"
+  },
+  {
+   "domain": "agriculture",
+   "url": "https://fsrp.go.ke/sites/default/files/2025-08/Agriculture%20Extension%20Manual%20v1%20final.pdf",
+   "raw_sha256": "6df5e0d1dfb9f46305a6de1bae440b4f8493826be9074c17414a5f0e4720e00a",
+   "usable_sentences": 499,
+   "rule": "v3 direct",
    "parser": "jina-reader (local docker)"
   }
  ],
