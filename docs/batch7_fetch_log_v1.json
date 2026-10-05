@@ -159,13 +159,20 @@
      "usable_sentences": 30,
      "sections": 17,
      "verdict": "FAIL",
-     "reason": "1-page bulletin, far below 300 usable sentences"
+     "reason": "1-page bulletin, far below 300 usable sentences",
+     "v2_verdict": "FAIL",
+     "v3_requalification": "FAIL",
+     "requalification_reason": "unchanged: sentence count below minimum; pinned snapshot reused, no re-fetch"
     },
     {
      "rank": 2,
      "url": "https://www.huduser.gov/portal/About/style-guide-for-reports.pdf",
      "fetch": "not attempted",
-     "verdict": "pending"
+     "verdict": "pending",
+     "v2_verdict": "PASS",
+     "v3_requalification": "PASS",
+     "requalification_reason": "unchanged: qualified under both rules; pinned snapshot reused, no re-fetch",
+     "usable_sentences_v3": 405
     },
     {
      "rank": 3,
@@ -180,7 +187,11 @@
      "usable_sentences": 403,
      "sections": 3,
      "verdict": "PASS",
-     "raw_sha256": "393f8e122f8fbbb83cfaaa7f7b68d4d321983511a9138ebed207b7f906809fa0"
+     "raw_sha256": "393f8e122f8fbbb83cfaaa7f7b68d4d321983511a9138ebed207b7f906809fa0",
+     "v2_verdict": "PASS",
+     "v3_requalification": "PASS",
+     "requalification_reason": "unchanged: qualified under both rules; pinned snapshot reused, no re-fetch",
+     "usable_sentences_v3": 405
     }
    ],
    "selected": [
@@ -202,7 +213,11 @@
      "sections": 17,
      "verdict": "FAIL",
      "reason": "248 usable sentences, below the 300 minimum",
-     "raw_sha256": "f31be5fcade1098963e0710085b956fd"
+     "raw_sha256": "f31be5fcade1098963e0710085b956fd",
+     "v2_verdict": "FAIL",
+     "v3_requalification": "FAIL",
+     "requalification_reason": "unchanged: 239 usable sentences recomputed from the pinned snapshot, below the 300 minimum",
+     "usable_sentences_v3": 239
     },
     {
      "rank": 2,
@@ -219,10 +234,26 @@
      "url": "https://publichealth.uams.edu/wp-content/uploads/2022/02/Integrative-Learning-Experience-Product-EXAMPLE-Guidelines-for-techinical-report.pdf",
      "fetch": "not attempted",
      "verdict": "pending"
+    },
+    {
+     "rank": "K1b (same search rank family, second K1 PDF result)",
+     "url": "https://syntheticdrugs.unodc.org/uploads/syntheticdrugs/res/library/access_html/WHO_good_distribution_practices_for_pharmaceutical_products_WHO_Technical_Report_Series_No._957.pdf",
+     "fetch": "ok",
+     "v2_verdict": "FAIL",
+     "v2_reason": "sections=1 from flat PDF text (non-format-independent sections gate)",
+     "v3_requalification": "PASS",
+     "requalification_reason": "sections_gate_removed; 2379 usable sentences RECOMPUTED from the pinned snapshot (not the old 2365); document type mechanically derived from URL/title (WHO Technical Report Series PDF); pinned snapshot reused, no re-fetch",
+     "usable_sentences_v3": 2379,
+     "raw_sha256": "5f8edeafbd1261aa4e4192dbe2e3d7748eeced83815e09649b6dc91008896539"
     }
    ],
-   "selected": [],
-   "shortfall": "in progress"
+   "selected": [
+    "https://syntheticdrugs.unodc.org/uploads/syntheticdrugs/res/library/access_html/WHO_good_distribution_practices_for_pharmaceutical_products_WHO_Technical_Report_Series_No._957.pdf"
+   ],
+   "shortfall": "1 of 2 still needed",
+   "selected_sha256": [
+    "5f8edeafbd1261aa4e4192dbe2e3d7748eeced83815e09649b6dc91008896539"
+   ]
   },
   {
    "domain": "agriculture",
@@ -271,7 +302,7 @@
   }
  ],
  "progress": {
-  "documents_selected": 2,
+  "documents_selected": 3,
   "documents_needed": 24,
   "domains_started": 4,
   "domains_complete": 0
@@ -321,6 +352,16 @@
    "raw_sha256": "5d4ba148b9938f91bbee1d3aa2fa41c0",
    "usable_sentences": 584,
    "sections": 9
+  },
+  {
+   "domain": "health / public health",
+   "url": "https://syntheticdrugs.unodc.org/uploads/syntheticdrugs/res/library/access_html/WHO_good_distribution_practices_for_pharmaceutical_products_WHO_Technical_Report_Series_No._957.pdf",
+   "raw_sha256": "5f8edeafbd1261aa4e4192dbe2e3d7748eeced83815e09649b6dc91008896539",
+   "usable_sentences": 2379,
+   "v2_verdict": "FAIL",
+   "v3_requalification": "PASS",
+   "reason": "sections_gate_removed"
   }
- ]
+ ],
+ "requalification_note": "v3 requalification is a deterministic re-evaluation of pinned snapshots under rule v3, not a new corpus selection. Batch-6 Wikipedia artifacts in the shared tool-output directory are contamination outside the batch-7 fetch and were excluded from the decision. No new corpus total, size or representativeness claim is made at this point."
 }
