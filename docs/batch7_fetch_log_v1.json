@@ -350,158 +350,144 @@
    "domain": "museums / cultural institutions",
    "candidates": [
     {
-     "rank": 1,
      "url": "https://www.britishmuseum.org/sites/default/files/2026-07/Annual_Report_and_Accounts_2025-26.pdf",
-     "fetch": "not attempted",
-     "verdict": "pending"
-    },
-    {
-     "rank": 2,
-     "url": "https://www.samuseum.sa.gov.au/getDocument/8mkc1vrd0",
-     "fetch": "not attempted",
-     "verdict": "pending"
-    },
-    {
-     "rank": 3,
-     "url": "https://www.nbmaa.org/pdfs/NBMAA-AnnualReport-2024-25-FINAL-LowRes-Pages-101425.pdf",
-     "fetch": "not attempted",
-     "verdict": "pending"
+     "fetch": "ok via jina",
+     "verdict": "PASS",
+     "usable_sentences_v3": 1098,
+     "raw_sha256": "30a632b548edbc333aef7b6dc8c6c921144994ce8eb64365db6b577749675e0c",
+     "snapshot": "docs/batch7_snapshots/museums_k1_britishmuseum_annual.md"
     }
    ],
-   "selected": [],
-   "shortfall": "in progress"
+   "selected": [
+    "https://www.britishmuseum.org/sites/default/files/2026-07/Annual_Report_and_Accounts_2025-26.pdf"
+   ],
+   "shortfall": "1 of 2 still needed",
+   "selected_sha256": [
+    "30a632b548edbc333aef7b6dc8c6c921144994ce8eb64365db6b577749675e0c"
+   ]
   },
   {
    "domain": "scientific institutions / research organisations",
    "candidates": [
     {
-     "rank": 1,
      "url": "https://publications.gc.ca/collections/collection_2025/cnrc-nrc/NR1-1-2025-eng.pdf",
-     "fetch": "not attempted",
-     "verdict": "pending"
+     "fetch": "ok via jina (archived landing page, not the PDF content)",
+     "verdict": "FAIL",
+     "usable_sentences_v3": 4,
+     "reason": "landing page with 4 usable sentences, not a long-form document",
+     "raw_sha256": "686acb0e8d5751084cf59d9480ba306eba36d4be9db6fc1ce875929c4ac45d00"
     },
     {
-     "rank": 2,
      "url": "https://depot-numerique-cnrc.canada.ca/fra/voir/td/?id=13c0ef5c-9a3c-4e50-a495-58920dc4953d",
-     "fetch": "not attempted",
-     "verdict": "pending"
+     "fetch": "ok via jina",
+     "verdict": "FAIL",
+     "usable_sentences_v3": 196,
+     "reason": "196 usable sentences below 300; HTML depot page, doc_type UNDETERMINED",
+     "raw_sha256": "6d8c9f9e621147e33291d052a206137844c94f5c43d3c26ee953296a6f7d3cdd"
     },
     {
-     "rank": 3,
      "url": "https://pmg.org.za/files/NACI_Annual_Report_2425_Final_0021_Sept_2025.pdf",
-     "fetch": "not attempted",
-     "verdict": "pending"
+     "fetch": "ok via jina",
+     "verdict": "FAIL",
+     "usable_sentences_v3": 153,
+     "reason": "153 usable sentences below 300",
+     "raw_sha256": "2aaafd558b6d92c7c029a7b5b25c348e9c0239486aa8b453bb312168073e01f9"
     }
    ],
    "selected": [],
-   "shortfall": "in progress"
+   "shortfall": "0 of 2; all K exhausted, next K batch required"
   },
   {
    "domain": "education / teaching materials",
    "candidates": [
     {
-     "rank": 1,
      "url": "https://ride.ri.gov/media/28346/download",
-     "fetch": "not attempted",
-     "verdict": "pending"
+     "fetch": "BLOCKED: Cloudflare 403 CAPTCHA wall",
+     "verdict": "FETCH_FAILED",
+     "reason": "target returned error 403; not a content verdict",
+     "raw_sha256": "1607e23d64d2d82c977b0e855d134b49e7e9d638db54cf9abdfed5a3bc9c343b"
     },
     {
-     "rank": 2,
      "url": "https://www.ed.gov/sites/ed/files/2023/11/Curriculum-Development-Toolkit.pdf",
-     "fetch": "not attempted",
-     "verdict": "pending"
+     "fetch": "ok via jina",
+     "verdict": "FAIL",
+     "usable_sentences_v3": 146,
+     "reason": "146 usable sentences below 300",
+     "raw_sha256": "c60f8d004537480450399b9ee269911f0253f2977afec3db20c56affc4c6d006"
     },
     {
-     "rank": 3,
      "url": "https://all4ed.org/wp-content/uploads/2015/01/Introduction-to-the-Framework.pdf",
-     "fetch": "not attempted",
-     "verdict": "pending"
+     "fetch": "ok via jina",
+     "verdict": "FAIL",
+     "usable_sentences_v3": 224,
+     "reason": "224 usable sentences below 300",
+     "raw_sha256": "e76babb5fa64a68b17fbceb5312712395a1c62f9860def7fea86de59a8978315"
     }
    ],
    "selected": [],
-   "shortfall": "in progress"
+   "shortfall": "0 of 2; all K exhausted (K1 fetch-blocked), next K batch required"
   },
   {
    "domain": "earth and natural sciences",
    "candidates": [
     {
-     "rank": 1,
      "url": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/atoms/files/USGS-Program-Book_5.26.2_508.pdf",
-     "fetch": "not attempted",
-     "verdict": "pending"
-    },
-    {
-     "rank": 2,
-     "url": "https://pubs.usgs.gov/periodicals/mcs2025/mcs2025.pdf",
-     "fetch": "not attempted",
-     "verdict": "pending"
-    },
-    {
-     "rank": 3,
-     "url": "https://eurogeosurveys.org/wp-content/uploads/2025/10/Mineral-Resources_2025-Biennial-Report.pdf",
-     "fetch": "not attempted",
-     "verdict": "pending"
+     "fetch": "ok via jina",
+     "verdict": "PASS",
+     "usable_sentences_v3": 1494,
+     "raw_sha256": "cf8c90c8148f24b301ead7fbf42ea158006571883892564864dc6e1fa11944f5",
+     "snapshot": "docs/batch7_snapshots/geo_k1_usgs_programbook.md"
     }
    ],
-   "selected": [],
-   "shortfall": "in progress"
+   "selected": [
+    "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/atoms/files/USGS-Program-Book_5.26.2_508.pdf"
+   ],
+   "shortfall": "1 of 2 still needed",
+   "selected_sha256": [
+    "cf8c90c8148f24b301ead7fbf42ea158006571883892564864dc6e1fa11944f5"
+   ]
   },
   {
    "domain": "economy / labour market",
    "candidates": [
     {
-     "rank": 1,
      "url": "https://www.bls.gov/news.release/pdf/empsit.pdf",
-     "fetch": "not attempted",
-     "verdict": "pending"
-    },
-    {
-     "rank": 2,
-     "url": "https://www.bls.gov/news.release/archives/empsit_02072025.pdf",
-     "fetch": "not attempted",
-     "verdict": "pending"
-    },
-    {
-     "rank": 3,
-     "url": "https://www.bls.gov/news.release/archives/empsit_01092026.pdf",
-     "fetch": "not attempted",
-     "verdict": "pending"
+     "fetch": "ok via jina (1057 usable sentences extracted)",
+     "verdict": "FAIL",
+     "usable_sentences_v3": 1057,
+     "reason": "EXCLUDED_TYPE by the frozen mechanical URL rule: the path contains 'news.release' and BLS titles the series as a news release; the news/press-release exclusion applies. EDGE CASE FLAGGED: a statistical release is arguably not a news article; the verdict follows the frozen implementation without analyst judgement and stands unless the rule is changed by a new frozen version",
+     "raw_sha256": "cc21965d2f14fb67aac37d0db598510e8d5f972761533b0d4ed5f63c4ddc5de8"
     }
    ],
    "selected": [],
-   "shortfall": "in progress"
+   "shortfall": "K2/K3 pending (same path, likely same verdict; then next K batch)"
   },
   {
    "domain": "international organisations / NGOs",
    "candidates": [
     {
-     "rank": 1,
      "url": "https://apps.who.int/gb/ebwha/pdf_files/WHA78/A78_6-en.pdf",
-     "fetch": "not attempted",
-     "verdict": "pending"
-    },
-    {
-     "rank": 2,
-     "url": "https://www.unjiu.org/sites/www.unjiu.org/files/jiu_rep_1995_2b_english.pdf",
-     "fetch": "not attempted",
-     "verdict": "pending"
-    },
-    {
-     "rank": 3,
-     "url": "https://internationalbudget.org/covid/wp-content/uploads/2021/05/Report_English-2.pdf",
-     "fetch": "not attempted",
-     "verdict": "pending"
+     "fetch": "ok via jina",
+     "verdict": "PASS",
+     "usable_sentences_v3": 940,
+     "raw_sha256": "8c09cabcb8f81d80d258d1b223375618dc4ffa9111a5986c72f8ec282491dbdd",
+     "snapshot": "docs/batch7_snapshots/io_k1_who_budget.md"
     }
    ],
-   "selected": [],
-   "shortfall": "in progress"
+   "selected": [
+    "https://apps.who.int/gb/ebwha/pdf_files/WHA78/A78_6-en.pdf"
+   ],
+   "shortfall": "1 of 2 still needed",
+   "selected_sha256": [
+    "8c09cabcb8f81d80d258d1b223375618dc4ffa9111a5986c72f8ec282491dbdd"
+   ]
   }
  ],
  "progress": {
-  "documents_selected": 5,
+  "documents_selected": 8,
   "documents_needed": 24,
-  "domains_started": 6,
-  "domains_complete": 0
+  "domains_complete": 0,
+  "note": "8/12 K1 attempted: 5 PASS (museums, geo, IO + energy, transport from prior round), 2 content FAIL, 1 EXCLUDED edge case; science and education need next-K batches; every domain still needs its 2nd document"
  },
  "observations": [
   "qualification works as an objective gate: it rejected a 1-page bulletin and a 248-sentence WHO document without analyst judgement",
@@ -573,6 +559,30 @@
    "usable_sentences": 340,
    "rule": "v3 direct",
    "parser": "jina-reader (local docker)"
+  },
+  {
+   "domain": "museums / cultural institutions",
+   "url": "https://www.britishmuseum.org/sites/default/files/2026-07/Annual_Report_and_Accounts_2025-26.pdf",
+   "raw_sha256": "30a632b548edbc333aef7b6dc8c6c921144994ce8eb64365db6b577749675e0c",
+   "usable_sentences": 1098,
+   "rule": "v3 direct",
+   "parser": "jina-reader (local docker)"
+  },
+  {
+   "domain": "earth and natural sciences",
+   "url": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/atoms/files/USGS-Program-Book_5.26.2_508.pdf",
+   "raw_sha256": "cf8c90c8148f24b301ead7fbf42ea158006571883892564864dc6e1fa11944f5",
+   "usable_sentences": 1494,
+   "rule": "v3 direct",
+   "parser": "jina-reader (local docker)"
+  },
+  {
+   "domain": "international organisations / NGOs",
+   "url": "https://apps.who.int/gb/ebwha/pdf_files/WHA78/A78_6-en.pdf",
+   "raw_sha256": "8c09cabcb8f81d80d258d1b223375618dc4ffa9111a5986c72f8ec282491dbdd",
+   "usable_sentences": 940,
+   "rule": "v3 direct",
+   "parser": "jina-reader (local docker)"
   }
  ],
  "requalification_note": "v3 requalification is a deterministic re-evaluation of pinned snapshots under rule v3, not a new corpus selection. Batch-6 Wikipedia artifacts in the shared tool-output directory are contamination outside the batch-7 fetch and were excluded from the decision. No new corpus total, size or representativeness claim is made at this point.",
@@ -612,6 +622,6 @@
   "no silence inspection before annotation",
   "no rule change"
  ],
- "parser_mix_open_question": "3 pinned documents were fetched via firecrawl (ISO Directives, HUD Style Guide, WHO TRS 957); new fetches use the local jina-reader. The v3 rule names no parser, and the parser is recorded per document, but a mixed-parser corpus adds extraction variance. Options: (a) keep both with per-document parser provenance, (b) re-fetch the 3 firecrawl documents via jina and re-measure (their firecrawl snapshots stay in history; pins would change with documentation). Decision required before corpus assembly.",
- "fetch_backend": "local jina-reader (docker jina-reader, h2c prior knowledge) since the firecrawl credit stop; no API credits consumed"
+ "fetch_backend": "local jina-reader (docker jina-reader, h2c prior knowledge) since the firecrawl credit stop; no API credits consumed",
+ "parser_mix_status": "kept as decided: 3 firecrawl pins stand, all new fetches via jina-reader, parser recorded per document; no parser-quality comparison performed"
 }
