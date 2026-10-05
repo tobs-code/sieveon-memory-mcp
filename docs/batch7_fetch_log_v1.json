@@ -212,6 +212,18 @@
      "fetch": "ok via jina (HTTP 200)",
      "verdict": "PASS",
      "reason": null
+    },
+    {
+     "rank": "remeasurement (authorized substitution)",
+     "url": "https://www.huduser.gov/portal/About/style-guide-for-reports.pdf",
+     "fetch": "ok via jina (HTTP 200)",
+     "verdict": "PASS",
+     "usable_sentences_v3": 313,
+     "raw_sha256": "59c4da42cc3d3900f44304ef4756c862927d2fabc7b62faf173a2e03e7924bb0",
+     "snapshot": "docs/batch7_snapshots/remeasure_hud_style_guide.md",
+     "fetch_date": "2026-10-05",
+     "cleaning_version": "batch7-textclean-on-v1",
+     "parser": "jina-reader (local docker, h2c)"
     }
    ],
    "selected": [
@@ -220,7 +232,7 @@
    ],
    "shortfall": "COMPLETE (2/2)",
    "selected_sha256": [
-    "393f8e122f8fbbb83cfaaa7f7b68d4d321983511a9138ebed207b7f906809fa0",
+    "59c4da42cc3d3900f44304ef4756c862927d2fabc7b62faf173a2e03e7924bb0",
     "ae7ae61a1fccd32fd1e32301967f5987d19d52518ecda92ceba1c4d04aae782f"
    ]
   },
@@ -313,6 +325,18 @@
      "fetch": "ok via jina (HTTP 200)",
      "verdict": "PASS",
      "reason": null
+    },
+    {
+     "rank": "remeasurement (authorized substitution)",
+     "url": "https://syntheticdrugs.unodc.org/uploads/syntheticdrugs/res/library/access_html/WHO_good_distribution_practices_for_pharmaceutical_products_WHO_Technical_Report_Series_No._957.pdf",
+     "fetch": "ok via jina (HTTP 200)",
+     "verdict": "PASS",
+     "usable_sentences_v3": 2393,
+     "raw_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04",
+     "snapshot": "docs/batch7_snapshots/remeasure_who_trs_957.md",
+     "fetch_date": "2026-10-05",
+     "cleaning_version": "batch7-textclean-on-v1",
+     "parser": "jina-reader (local docker, h2c)"
     }
    ],
    "selected": [
@@ -321,7 +345,7 @@
    ],
    "shortfall": "COMPLETE (2/2)",
    "selected_sha256": [
-    "5f8edeafbd1261aa4e4192dbe2e3d7748eeced83815e09649b6dc91008896539",
+    "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04",
     "505a9b9be37ca91b6c97b1748e1677e38795eca271a24b258e2b1d345d7f08bd"
    ],
    "domain_fidelity_note": "The new-K batch query returned FAO food-system documents; food safety and nutrition sit inside the public-health remit (WHO maintains a food safety programme), so the batch is used as returned. The query wording is recorded verbatim; no post-hoc query rewrite was performed."
@@ -395,6 +419,18 @@
      "usable_sentences_v3": 1550,
      "raw_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27",
      "snapshot": "docs/batch7_snapshots/industry_k2_cta_directives.md"
+    },
+    {
+     "rank": "remeasurement (authorized substitution)",
+     "url": "https://boss.cen.eu/media/yypjl3mn/iso_iec_directives_part2.pdf",
+     "fetch": "ok via jina (HTTP 200)",
+     "verdict": "PASS",
+     "usable_sentences_v3": 696,
+     "raw_sha256": "5834c2f71030cf5a4ba9ca64dc869bb1435e7b3c0582e4a354ac54f4a484ad07",
+     "snapshot": "docs/batch7_snapshots/remeasure_iso_directives_part2.md",
+     "fetch_date": "2026-10-05",
+     "cleaning_version": "batch7-textclean-on-v1",
+     "parser": "jina-reader (local docker, h2c)"
     }
    ],
    "selected": [
@@ -402,7 +438,7 @@
     "https://www.cta.tech/media/tcmji2rz/iso-iec-directives-part-1plusiec-supplement.pdf"
    ],
    "selected_sha256": [
-    "5d4ba148b9938f91bbee1d3aa2fa41c0",
+    "5834c2f71030cf5a4ba9ca64dc869bb1435e7b3c0582e4a354ac54f4a484ad07",
     "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27"
    ],
    "shortfall": "COMPLETE (2/2)"
@@ -427,6 +463,18 @@
      "verdict": "PASS",
      "usable_sentences_v3": 1734,
      "raw_sha256": "be2e89a2cdc2ea18932aff456252428e"
+    },
+    {
+     "rank": "remeasurement (authorized substitution)",
+     "url": "https://www-pub.iaea.org/MTCD/Publications/PDF/Pub1222_web.pdf",
+     "fetch": "ok via jina (HTTP 200)",
+     "verdict": "PASS",
+     "usable_sentences_v3": 2134,
+     "raw_sha256": "cbb801f1d171cc2f12455a367ea28b3e3a2f6bf407f7ecbadf2fd2150c80d3b3",
+     "snapshot": "docs/batch7_snapshots/remeasure_iaea_pub1222.md",
+     "fetch_date": "2026-10-05",
+     "cleaning_version": "batch7-textclean-on-v1",
+     "parser": "jina-reader (local docker, h2c)"
     }
    ],
    "selected": [
@@ -436,7 +484,7 @@
    "shortfall": "COMPLETE (2/2)",
    "selected_sha256": [
     "176d093d10dbabf944a2bbdbd7470c4ebafdb36b7710f6784d66e09a8d3d672b",
-    "be2e89a2cdc2ea18932aff456252428e"
+    "cbb801f1d171cc2f12455a367ea28b3e3a2f6bf407f7ecbadf2fd2150c80d3b3"
    ]
   },
   {
@@ -459,6 +507,18 @@
      "verdict": "PASS",
      "usable_sentences_v3": 1384,
      "raw_sha256": "b09467cce2e6e0443a34762f47b7b940"
+    },
+    {
+     "rank": "remeasurement (authorized substitution)",
+     "url": "https://www.bmv.de/SharedDocs/EN/publications/2030-federal-transport-infrastructure-plan.pdf?__blob=publicationFile",
+     "fetch": "ok via jina (HTTP 200)",
+     "verdict": "PASS",
+     "usable_sentences_v3": 1450,
+     "raw_sha256": "231b90398689aae1be2aaeb4038cf7bd3901bd95a77b9d9a8811f21d6d2dfc6e",
+     "snapshot": "docs/batch7_snapshots/remeasure_bmv_plan2030.md",
+     "fetch_date": "2026-10-05",
+     "cleaning_version": "batch7-textclean-on-v1",
+     "parser": "jina-reader (local docker, h2c)"
     }
    ],
    "selected": [
@@ -468,7 +528,7 @@
    "shortfall": "COMPLETE (2/2)",
    "selected_sha256": [
     "caa0085bfd079bcac1814569409d6aff8456647d1926fd531714777ec1a944d7",
-    "b09467cce2e6e0443a34762f47b7b940"
+    "231b90398689aae1be2aaeb4038cf7bd3901bd95a77b9d9a8811f21d6d2dfc6e"
    ]
   },
   {
@@ -1054,40 +1114,76 @@
   {
    "domain": "public administration / government reports",
    "url": "https://www.huduser.gov/portal/About/style-guide-for-reports.pdf",
-   "raw_sha256": "393f8e122f8fbbb83cfaaa7f7b68d4d321983511a9138ebed207b7f906809fa0",
-   "usable_sentences": 403,
+   "raw_sha256": "59c4da42cc3d3900f44304ef4756c862927d2fabc7b62faf173a2e03e7924bb0",
+   "usable_sentences": 313,
    "sections": 3,
-   "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
-   "fetch_date": "unknown",
-   "parser": "firecrawl (credits, pinned earlier)",
+   "cleaning_version": "batch7-textclean-on-v1",
+   "fetch_date": "2026-10-05",
+   "parser": "jina-reader (local docker, h2c)",
    "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
-   "sha_status": "full sha256 pinned"
+   "sha_status": "full sha256 pinned, verified by recomputation",
+   "historical_measurement": {
+    "usable_sentences": 403,
+    "raw_sha256": "393f8e122f8fbbb83cfaaa7f7b68d4d321983511a9138ebed207b7f906809fa0",
+    "parser": "firecrawl (credits, pinned earlier)",
+    "fetch_date": "unknown",
+    "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
+    "snapshot": null,
+    "sha_status": "full sha256 pinned",
+    "status": "superseded, preserved"
+   },
+   "snapshot": "docs/batch7_snapshots/remeasure_hud_style_guide.md",
+   "substitution": "authorized substitution under docs/batch7_remeasure_protocol_v1.json; the document keeps its selected position, its provenance line changes to the remeasurement"
   },
   {
    "domain": "industry / technical",
    "url": "https://boss.cen.eu/media/yypjl3mn/iso_iec_directives_part2.pdf",
-   "raw_sha256": "5d4ba148b9938f91bbee1d3aa2fa41c0",
-   "usable_sentences": 584,
+   "raw_sha256": "5834c2f71030cf5a4ba9ca64dc869bb1435e7b3c0582e4a354ac54f4a484ad07",
+   "usable_sentences": 696,
    "sections": 9,
-   "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
-   "fetch_date": "unknown",
-   "parser": "firecrawl (credits, pinned earlier)",
+   "cleaning_version": "batch7-textclean-on-v1",
+   "fetch_date": "2026-10-05",
+   "parser": "jina-reader (local docker, h2c)",
    "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
-   "sha_status": "TRUNCATED_IN_LOG_UNRESOLVABLE: only a 32-character prefix was recorded and no local snapshot exists to recompute the full digest; the prefix is preserved verbatim and no digest was invented. Binding therefore rests on URL + parser + recorded sentence count."
+   "sha_status": "full sha256 pinned, verified by recomputation",
+   "historical_measurement": {
+    "usable_sentences": 584,
+    "raw_sha256": "5d4ba148b9938f91bbee1d3aa2fa41c0",
+    "parser": "firecrawl (credits, pinned earlier)",
+    "fetch_date": "unknown",
+    "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
+    "snapshot": null,
+    "sha_status": "TRUNCATED_IN_LOG_UNRESOLVABLE: only a 32-character prefix was recorded and no local snapshot exists to recompute the full digest; the prefix is preserved verbatim and no digest was invented. Binding therefore rests on URL + parser + recorded sentence count.",
+    "status": "superseded, preserved"
+   },
+   "snapshot": "docs/batch7_snapshots/remeasure_iso_directives_part2.md",
+   "substitution": "authorized substitution under docs/batch7_remeasure_protocol_v1.json; the document keeps its selected position, its provenance line changes to the remeasurement"
   },
   {
    "domain": "health / public health",
    "url": "https://syntheticdrugs.unodc.org/uploads/syntheticdrugs/res/library/access_html/WHO_good_distribution_practices_for_pharmaceutical_products_WHO_Technical_Report_Series_No._957.pdf",
-   "raw_sha256": "5f8edeafbd1261aa4e4192dbe2e3d7748eeced83815e09649b6dc91008896539",
-   "usable_sentences": 2379,
+   "raw_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04",
+   "usable_sentences": 2393,
    "v2_verdict": "FAIL",
    "v3_requalification": "PASS",
    "reason": "sections_gate_removed",
-   "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
-   "fetch_date": "unknown",
-   "parser": "firecrawl (credits, pinned earlier)",
+   "cleaning_version": "batch7-textclean-on-v1",
+   "fetch_date": "2026-10-05",
+   "parser": "jina-reader (local docker, h2c)",
    "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
-   "sha_status": "full sha256 pinned"
+   "sha_status": "full sha256 pinned, verified by recomputation",
+   "historical_measurement": {
+    "usable_sentences": 2379,
+    "raw_sha256": "5f8edeafbd1261aa4e4192dbe2e3d7748eeced83815e09649b6dc91008896539",
+    "parser": "firecrawl (credits, pinned earlier)",
+    "fetch_date": "unknown",
+    "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
+    "snapshot": null,
+    "sha_status": "full sha256 pinned",
+    "status": "superseded, preserved"
+   },
+   "snapshot": "docs/batch7_snapshots/remeasure_who_trs_957.md",
+   "substitution": "authorized substitution under docs/batch7_remeasure_protocol_v1.json; the document keeps its selected position, its provenance line changes to the remeasurement"
   },
   {
    "domain": "energy / environment",
@@ -1204,26 +1300,50 @@
   {
    "domain": "energy / environment",
    "url": "https://www-pub.iaea.org/MTCD/Publications/PDF/Pub1222_web.pdf",
-   "raw_sha256": "be2e89a2cdc2ea18932aff456252428e",
-   "usable_sentences": 1734,
+   "raw_sha256": "cbb801f1d171cc2f12455a367ea28b3e3a2f6bf407f7ecbadf2fd2150c80d3b3",
+   "usable_sentences": 2134,
    "rule": "v3 direct, K-order repair documented",
-   "parser": "jina-reader (local docker)",
-   "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
-   "fetch_date": "unknown",
+   "parser": "jina-reader (local docker, h2c)",
+   "cleaning_version": "batch7-textclean-on-v1",
+   "fetch_date": "2026-10-05",
    "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
-   "sha_status": "TRUNCATED_IN_LOG_UNRESOLVABLE: only a 32-character prefix was recorded and no local snapshot exists to recompute the full digest; the prefix is preserved verbatim and no digest was invented. Binding therefore rests on URL + parser + recorded sentence count."
+   "sha_status": "full sha256 pinned, verified by recomputation",
+   "historical_measurement": {
+    "usable_sentences": 1734,
+    "raw_sha256": "be2e89a2cdc2ea18932aff456252428e",
+    "parser": "jina-reader (local docker)",
+    "fetch_date": "unknown",
+    "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
+    "snapshot": null,
+    "sha_status": "TRUNCATED_IN_LOG_UNRESOLVABLE: only a 32-character prefix was recorded and no local snapshot exists to recompute the full digest; the prefix is preserved verbatim and no digest was invented. Binding therefore rests on URL + parser + recorded sentence count.",
+    "status": "superseded, preserved"
+   },
+   "snapshot": "docs/batch7_snapshots/remeasure_iaea_pub1222.md",
+   "substitution": "authorized substitution under docs/batch7_remeasure_protocol_v1.json; the document keeps its selected position, its provenance line changes to the remeasurement"
   },
   {
    "domain": "transport / infrastructure",
    "url": "https://www.bmv.de/SharedDocs/EN/publications/2030-federal-transport-infrastructure-plan.pdf?__blob=publicationFile",
-   "raw_sha256": "b09467cce2e6e0443a34762f47b7b940",
-   "usable_sentences": 1384,
+   "raw_sha256": "231b90398689aae1be2aaeb4038cf7bd3901bd95a77b9d9a8811f21d6d2dfc6e",
+   "usable_sentences": 1450,
    "rule": "v3 direct, K-order repair documented",
-   "parser": "jina-reader (local docker)",
-   "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
-   "fetch_date": "unknown",
+   "parser": "jina-reader (local docker, h2c)",
+   "cleaning_version": "batch7-textclean-on-v1",
+   "fetch_date": "2026-10-05",
    "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
-   "sha_status": "TRUNCATED_IN_LOG_UNRESOLVABLE: only a 32-character prefix was recorded and no local snapshot exists to recompute the full digest; the prefix is preserved verbatim and no digest was invented. Binding therefore rests on URL + parser + recorded sentence count."
+   "sha_status": "full sha256 pinned, verified by recomputation",
+   "historical_measurement": {
+    "usable_sentences": 1384,
+    "raw_sha256": "b09467cce2e6e0443a34762f47b7b940",
+    "parser": "jina-reader (local docker)",
+    "fetch_date": "unknown",
+    "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
+    "snapshot": null,
+    "sha_status": "TRUNCATED_IN_LOG_UNRESOLVABLE: only a 32-character prefix was recorded and no local snapshot exists to recompute the full digest; the prefix is preserved verbatim and no digest was invented. Binding therefore rests on URL + parser + recorded sentence count.",
+    "status": "superseded, preserved"
+   },
+   "snapshot": "docs/batch7_snapshots/remeasure_bmv_plan2030.md",
+   "substitution": "authorized substitution under docs/batch7_remeasure_protocol_v1.json; the document keeps its selected position, its provenance line changes to the remeasurement"
   },
   {
    "domain": "agriculture",
@@ -1452,133 +1572,17 @@
  "provenance_audit": {
   "documents": 23,
   "sha_state_counts": {
-   "NO_SNAPSHOT": 5,
-   "VERIFIED": 18
+   "VERIFIED": 23
   },
-  "verifiable_fraction": "18/23",
-  "corpus_build_gate": 1200,
-  "documents_below_corpus_gate": 15,
-  "below_gate_detail": [
-   {
-    "domain": "public administration / government reports",
-    "usable_sentences": 403,
-    "url": "https://www.huduser.gov/portal/About/style-guide-for-reports.pdf"
-   },
-   {
-    "domain": "industry / technical",
-    "usable_sentences": 584,
-    "url": "https://boss.cen.eu/media/yypjl3mn/iso_iec_directives_part2.pdf"
-   },
-   {
-    "domain": "energy / environment",
-    "usable_sentences": 639,
-    "url": "https://www.sustainability.gov/pdfs/EO_14057_Implementing_Instructions.pdf"
-   },
-   {
-    "domain": "transport / infrastructure",
-    "usable_sentences": 340,
-    "url": "https://transportation.ky.gov/KPTIA/Financial%20Statements/FY%202025%20Annual%20Comprehensive%20Financial%20Report.pdf"
-   },
-   {
-    "domain": "museums / cultural institutions",
-    "usable_sentences": 1098,
-    "url": "https://www.britishmuseum.org/sites/default/files/2026-07/Annual_Report_and_Accounts_2025-26.pdf"
-   },
-   {
-    "domain": "international organisations / NGOs",
-    "usable_sentences": 940,
-    "url": "https://apps.who.int/gb/ebwha/pdf_files/WHA78/A78_6-en.pdf"
-   },
-   {
-    "domain": "museums / cultural institutions",
-    "usable_sentences": 382,
-    "url": "https://www.nbmaa.org/pdfs/NBMAA-AnnualReport-2024-25-FINAL-LowRes-Pages-101425.pdf"
-   },
-   {
-    "domain": "agriculture",
-    "usable_sentences": 499,
-    "url": "https://fsrp.go.ke/sites/default/files/2025-08/Agriculture%20Extension%20Manual%20v1%20final.pdf"
-   },
-   {
-    "domain": "public administration / government reports",
-    "usable_sentences": 792,
-    "url": "https://admin.ks.gov/media/cms/Policy_and_Procedure_Manual_e7a759b160238.pdf"
-   },
-   {
-    "domain": "health / public health",
-    "usable_sentences": 369,
-    "url": "https://climate-diplomacy.org/sites/default/files/2020-10/FAO%27s%20Work%20on%20Climate%20Change.pdf"
-   },
-   {
-    "domain": "scientific institutions / research organisations",
-    "usable_sentences": 515,
-    "url": "https://www.govinfo.gov/content/pkg/SERIALSET-05072_00_00-076-0308-0000/pdf/SERIALSET-05072_00_00-076-0308-0000.pdf"
-   },
-   {
-    "domain": "scientific institutions / research organisations",
-    "usable_sentences": 337,
-    "url": "https://sciencepolicy.hsites.harvard.edu/file_url/238"
-   },
-   {
-    "domain": "economy / labour market",
-    "usable_sentences": 662,
-    "url": "https://www.ibanet.org/MediaHandler?id=363b3171-0afc-489e-812b-3de2460bce67"
-   },
-   {
-    "domain": "education / teaching materials",
-    "usable_sentences": 1060,
-    "url": "https://files.eric.ed.gov/fulltext/ED497053.pdf"
-   },
-   {
-    "domain": "international organisations / NGOs",
-    "usable_sentences": 909,
-    "url": "https://mhpsshub.org/wp-content/uploads/2022/07/Fed-wide_COVID19_Evaluation-Report_EN-2.pdf"
-   }
-  ],
-  "verdict": "PROVENANCE DEFECT: not all selected documents are cryptographically pinned. See provenance_defect_summary.",
+  "verifiable_fraction": "23/23",
+  "corpus_build_gate": 300,
+  "documents_below_corpus_gate": 0,
+  "below_gate_detail": [],
+  "verdict": "PROVENANCE CLOSED: all 23 selected documents carry a full sha256 recomputed from a local snapshot. See provenance_defect_summary.",
   "hard_conflict": "Qualification admitted documents with >=300 usable sentences, but scripts/build_batch7_corpus.py drops any document below 1200. 15 of 23 selected documents fall between those two thresholds and would be silently discarded at corpus build. Neither threshold may be moved silently; this needs an explicit decision before any corpus is built.",
-  "defects": [
-   {
-    "domain": "public administration / government reports",
-    "url": "https://www.huduser.gov/portal/About/style-guide-for-reports.pdf",
-    "snapshot": null,
-    "sha_state": "NO_SNAPSHOT",
-    "logged_sha": "393f8e122f8fbbb83cfaaa7f7b68d4d321983511a9138ebed207b7f906809fa0",
-    "recomputed_sha": null
-   },
-   {
-    "domain": "industry / technical",
-    "url": "https://boss.cen.eu/media/yypjl3mn/iso_iec_directives_part2.pdf",
-    "snapshot": null,
-    "sha_state": "NO_SNAPSHOT",
-    "logged_sha": "5d4ba148b9938f91bbee1d3aa2fa41c0",
-    "recomputed_sha": null
-   },
-   {
-    "domain": "health / public health",
-    "url": "https://syntheticdrugs.unodc.org/uploads/syntheticdrugs/res/library/access_html/WHO_good_distribution_practices_for_pharmaceutical_products_WHO_Technical_Report_Series_No._957.pdf",
-    "snapshot": null,
-    "sha_state": "NO_SNAPSHOT",
-    "logged_sha": "5f8edeafbd1261aa4e4192dbe2e3d7748eeced83815e09649b6dc91008896539",
-    "recomputed_sha": null
-   },
-   {
-    "domain": "energy / environment",
-    "url": "https://www-pub.iaea.org/MTCD/Publications/PDF/Pub1222_web.pdf",
-    "snapshot": null,
-    "sha_state": "NO_SNAPSHOT",
-    "logged_sha": "be2e89a2cdc2ea18932aff456252428e",
-    "recomputed_sha": null
-   },
-   {
-    "domain": "transport / infrastructure",
-    "url": "https://www.bmv.de/SharedDocs/EN/publications/2030-federal-transport-infrastructure-plan.pdf?__blob=publicationFile",
-    "snapshot": null,
-    "sha_state": "NO_SNAPSHOT",
-    "logged_sha": "b09467cce2e6e0443a34762f47b7b940",
-    "recomputed_sha": null
-   }
-  ]
+  "defects": [],
+  "corpus_build_gate_note": "corrected from 1200 to 300 under docs/batch7_builder_defect_v1.json; the builder implements the frozen qualification criterion",
+  "documents_below_former_1200_gate": 15
  },
  "provenance_defect_summary": {
   "status": "OPEN, disclosed",
@@ -1586,5 +1590,15 @@
   "consequence": "these documents are bound by weaker provenance than the rest of the corpus; a future re-fetch could not be proven identical",
   "not_done": "no digest was reconstructed or invented, no document was re-fetched (Firecrawl credits exhausted and a re-fetch would constitute a further K round), no document was dropped to hide the defect",
   "possible_closure": "re-fetch under a documented exception once fetch budget exists, or accept the defect explicitly in the final Batch 7 status"
- }
+ },
+ "selection_substitutions": [
+  {
+   "date": "2026-10-05",
+   "authorized": true,
+   "protocol": "docs/batch7_remeasure_protocol_v1.json",
+   "documents": 5,
+   "requalification": "5/5 PASS",
+   "silent": false
+  }
+ ]
 }

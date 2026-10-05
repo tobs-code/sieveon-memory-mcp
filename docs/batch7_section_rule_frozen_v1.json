@@ -1,0 +1,31 @@
+{
+ "freeze_id": "batch7-section-rule-freeze",
+ "date": "2026-10-05",
+ "status": "FROZEN on exactly the 23 pinned snapshots",
+ "rule_source": "Candidate Rule v2, audited in docs/batch7_section_audit_v2.json, reproduced with zero mismatches on the 18 earlier documents and applied to the 5 substituted documents",
+
+ "rule": {
+  "statement": "Sectionization is a syntactic partitioning operation, not semantic document-structure recognition.",
+  "heading_source": "raw snapshot, before any cleaning",
+  "candidate_section": "ATX heading AND not numeric-only AND not exactly contents/table of contents AND no copyright or URL marker AND length at most 140 characters",
+  "section_level": "shallowest heading level with at least 2 surviving candidates",
+  "split_points": "only surviving candidates at the chosen level; rejected headings are plain text, never split points",
+  "classification": "NORMAL when at least 2 sections survive, DEGENERATE when fewer than 2 survive",
+  "degenerate_handling": "document-wide stride, explicitly recorded as DEGENERATE, never silently replaced by another sampling rule",
+  "forbidden_after_this_point": ["manual correction", "semantic heading evaluation", "selection by section size", "reordering", "any further section heuristic"]
+ },
+
+ "audit_result_on_frozen_corpus": {
+  "audited": "23 of 23",
+  "NORMAL": 22,
+  "DEGENERATE": 1,
+  "degenerate_document": "transport_k1_kytc_acfr; zero surviving candidates, its single heading is itself an artefact",
+  "largest_section_ratio_above_0.9": {
+   "transport_k1_kytc_acfr": 1.0,
+   "pubadmin_k4_ks_policy_manual": 0.986,
+   "science_k4_nas_annual_1906": 0.941,
+   "treatment": "reported observation, not a quality gate"}
+ },
+
+ "scope_of_freeze": "this rule is frozen for the Batch 7 corpus build only; it makes no claim to recognise genuine scientific sections in general"
+}

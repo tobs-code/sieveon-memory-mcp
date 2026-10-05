@@ -1,0 +1,32 @@
+{
+ "freeze_id": "batch7-selection-freeze",
+ "date": "2026-10-05",
+ "status": "FROZEN",
+
+ "corpus": {
+  "documents_selected": 23,
+  "documents_target": 24,
+  "pinned_raw_bytes": "23 of 23",
+  "sha_verified_by_recomputation": "23 of 23",
+  "domains_complete": 10,
+  "education": "1 of 2, FROZEN shortfall; not a reason to reopen selection"},
+
+ "substitution": {
+  "authorized": true,
+  "protocol": "docs/batch7_remeasure_protocol_v1.json",
+  "results": "docs/batch7_remeasure_results_v1.json",
+  "documents": 5,
+  "requalification": "5 of 5 PASS",
+  "history": "historical measurements preserved as historical_measurement on each record; nothing overwritten",
+  "silent": false},
+
+ "what_is_frozen": [
+  "the 23 selected documents and their pinned snapshots",
+  "the v3 qualification verdicts",
+  "education at 1 of 2, frozen shortfall",
+  "the provenance closure of the five"],
+
+ "what_is_not_frozen_yet": ["nothing remains open on selection"],
+
+ "downstream": "corpus may now be built from exactly these 23 snapshots; the builder guards abort on any divergence"
+}
