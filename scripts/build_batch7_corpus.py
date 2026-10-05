@@ -12,6 +12,18 @@ an unregistered second selection stage that would have silently discarded 15
 of the 23 selected documents. The builder now implements the frozen
 criterion instead; no qualification rule, threshold or selection changed.
 See docs/batch7_builder_defect_v1.json.
+
+Second correction round (explicitly decided, not inferred), after the single
+first build produced 1316 sentences instead of 200:
+- the minimum-two-per-section floor was removed entirely. It was never a
+  frozen protocol rule; the protocol specifies only ratio r = 200 / total
+  usable sentences with stride per section. A section that mathematically
+  yields zero samples contributes zero; that is a rule outcome, not an
+  error to repair with a minimum.
+- the jina reader header strip (Title / URL Source / Published Time /
+  Number of Pages) is taken over 1:1 from the qualification path in
+  scripts/jina_fetch.py. No extension, no new heuristics.
+See docs/batch7_corpus_verdict_v1.json.
 """
 
 import hashlib
@@ -55,8 +67,10 @@ def section_heading_artefact(t: str) -> bool:
     return bool(HEADING_NUMERIC.match(t) or HEADING_TOC.match(t)
                 or HEADING_URLCOPY.search(t) or len(t) > HEADING_MAXLEN)
 
-MIN_SENTENCES_PER_SECTION = 3
-MIN_SECTION_SENTENCES = 2
+# NOTE: an earlier revision carried MIN_SENTENCES_PER_SECTION = 3 and
+# MIN_SECTION_SENTENCES = 2 as a minimum-two-per-section floor. The floor was
+# removed by explicit decision (it was never a frozen protocol rule); the
+# constants are deleted rather than left to invite misreading.
 # Implements the frozen Batch 7 qualification criterion (>=300 usable
 # sentences). The previous value of 1200 was an unregistered second selection
 # stage; it is recorded, not silently deleted.
@@ -66,6 +80,10 @@ EXPECTED_SELECTED_DOCUMENTS = 23
 
 
 def clean(md: str) -> str:
+    # Header strip, 1:1 from the qualification path (scripts/jina_fetch.py).
+    # The builder must use the same text definition as qualification.
+    md = re.sub(r"^(Title|URL Source|Published Time|Number of Pages):.*$",
+                "", md, flags=re.M)
     md = CUT_SECTIONS.split(md)[0]
     md = strip_links(md)
     md = re.sub(r"\]\s*\([^)]*\)", "", md)
@@ -145,12 +163,13 @@ def dedup(seq):
     return out
 
 
-def stride_pick(cands, per_section_ratio=0.18):
+def stride_pick(cands, ratio):
     """Even stride within one section. Ratio keeps sections proportional to
-    their own length (no per-document cap, no equalisation)."""
-    keep_n = int(len(cands) * per_section_ratio)
-    if keep_n < MIN_SECTION_SENTENCES and len(cands) >= MIN_SENTENCES_PER_SECTION:
-        keep_n = MIN_SECTION_SENTENCES
+    their own length (no per-document cap, no equalisation). No minimum: a
+    section that mathematically yields zero samples contributes zero. That
+    is a rule outcome, not an error; the removed minimum-two floor was never
+    a frozen protocol rule (see module docstring)."""
+    keep_n = int(len(cands) * ratio)
     if keep_n <= 0:
         return []
     step = len(cands) / keep_n
@@ -251,16 +270,28 @@ def main() -> int:
           f"(target {CORPUS_TARGET_SENTENCES})")
 
     # global dedup preserving first occurrence; every removal is recorded
-    seen, clean_corpus, removed = set(), [], 0
+    # global dedup preserving first occurrence. Removals are not silent:
+    # each dropped duplicate records where it was kept and where it
+    # reappeared, so it is visible whether the stride selected the same
+    # sentence twice or whether repeated source boilerplate recurs.
+    seen, clean_corpus, removed = {}, [], []
     for r in corpus:
         k = r["sentence"].strip().lower()
         if k in seen:
-            removed += 1
+            kept = seen[k]
+            removed.append({"sentence_head": r["sentence"][:90],
+                            "kept_at": {"doc": kept["doc"],
+                                        "section": kept["section"]},
+                            "dropped_at": {"doc": r["doc"],
+                                           "section": r["section"]},
+                            "same_section_reselect": (
+                                kept["doc"] == r["doc"]
+                                and kept["section"] == r["section"])})
             continue
-        seen.add(k)
+        seen[k] = r
         r["corpus_index"] = len(clean_corpus)
         clean_corpus.append(r)
-    print(f"cross-document duplicates removed: {removed}")
+    print(f"cross-document duplicates removed: {len(removed)}")
 
     digest = hashlib.sha256(
         json.dumps(clean_corpus, ensure_ascii=False,

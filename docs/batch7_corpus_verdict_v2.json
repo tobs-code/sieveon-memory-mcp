@@ -1,0 +1,50 @@
+{
+ "audit_id": "batch7-corpus-build-verdict-v2",
+ "date": "2026-10-05",
+ "build": "second and only production build after the two decided changes, docs/batch7_corpus_v1.json, digest 5155873b220365dba94a771dba5b4b641dc52e5d5707451100f0fb7d751b43e0",
+ "status": "BUILD EXECUTED ONCE UNDER THE DECIDED CHANGES; SIZE AND COVERAGE DEVIATE FROM TARGET; NO PIPELINE RUN; NO N=80 SAMPLE",
+
+ "decisions_implemented": {
+  "min_2_floor": "removed entirely, no replacement minimum invented",
+  "ratio": "200 divided by total usable sentences, unchanged",
+  "stride_per_section": "unchanged frozen mechanism",
+  "header_strip": "the qualification-identical 4-line pattern taken over 1:1, not extended",
+  "duplicate_handling": "global dedup kept, every removal would record kept-at and dropped-at origins"},
+
+ "checks": {
+  "exactly_23_documents_as_input": true,
+  "builder_guards": "23 documents, all >= 300 usable sentences",
+  "snapshot_bytes_verified_against_pins": "23 of 23",
+  "section_wise_stride_mechanism": "ran as specified",
+  "degenerate_kytc_visible": "2 sentences, section marker -1, document-wide stride, explicitly recorded",
+  "duplicates_in_final_corpus": 0,
+  "duplicates_removed": 0,
+  "duplicate_origin_question": "moot: the stride selected nothing twice; no silent dedup occurred at all",
+  "digest_recomputed_independently": "match"},
+
+ "deviation_1_size": {
+  "specified": "global ratio 200/29445",
+  "observed": "72 sentences, factor 0.36 of target",
+  "cause": "without the floor, every section below 148 usable sentences yields zero; most sections are below that line",
+  "zero_contribution_documents": 7,
+  "zero_contribution_list": [
+   {"document": "remeasure_hud_style_guide", "usable": 313},
+   {"document": "io_k1_who_budget", "usable": 940},
+   {"document": "museums_k3_nbmaa_annual", "usable": 382},
+   {"document": "agriculture_k2_fsrp_manual", "usable": 499},
+   {"document": "health_k5_fao_climate_change", "usable": 369},
+   {"document": "science_k6_harvard_nasem", "usable": 337},
+   {"document": "io_k8_ifrc_mhpss_evaluation", "usable": 909}],
+  "note": "two of the silent seven hold 940 and 909 usable sentences; their sections are individually too small for the global ratio, so the documents vanish from the corpus while remaining in the selection",
+  "classification": "mathematically correct outcome of the decided rule; whether a corpus that silently drops 7 of 23 selected documents answers the replication question is a design decision, not a bug"},
+
+ "remainder_1_header_edge": {
+  "finding": "1 of 72 sentences carries the unstripped Markdown Content: prefix",
+  "sentence": "remeasure_bmv_plan2030 section 0: Markdown Content: The 2030 Federal Transport Infrastructure Plan ...",
+  "cause": "the 1:1 strip covers exactly Title, URL Source, Published Time and Number of Pages; Markdown Content: is not among them, by explicit decision not to extend",
+  "consistency": "the qualification path uses the identical pattern, so both paths share the same text definition including this edge",
+  "classification": "visible price of the no-extension decision, not a new defect; recorded, not repaired"},
+
+ "downstream_blocked": ["pipeline run", "N=80 sample", "any annotation"],
+ "decision_requested": "whether a corpus of 72 sentences with 7 silent documents is the intended replication corpus, or whether the sampling design needs a further explicit decision"
+}
