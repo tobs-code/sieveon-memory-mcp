@@ -699,10 +699,60 @@
      "fetch": "ok via jina (HTTP 200)",
      "verdict": "FAIL",
      "reason": "217 usable sentences below 300"
+    },
+    {
+     "raw_sentences": 83,
+     "usable_sentences": 77,
+     "raw_bytes": 17512,
+     "raw_sha256": "e0e2314101411ae13524e570376eb7e91cc5a0f69943ea8bb28f9a456e98ff1c",
+     "snapshot": "docs/batch7_snapshots/education_k7_unesco_policy_paper.md",
+     "fetch_date": "2026-10-05",
+     "cleaning_version": "batch7-textclean-on-v1",
+     "parser": "jina-reader (local docker, h2c)",
+     "url": "https://media.unesco.org/sites/default/files/webform/ed3002/388523eng_0.pdf",
+     "rank": "final-batch K1",
+     "fetch": "ok via jina (HTTP 200)",
+     "verdict": "FAIL",
+     "reason": "77 usable sentences below 300"
+    },
+    {
+     "raw_sentences": 3,
+     "usable_sentences": 3,
+     "raw_bytes": 646,
+     "raw_sha256": "de8f1f6cf5cd22d399e987163d7eb8f537f9ce458a874b124268ab493b20ffcd",
+     "snapshot": "docs/batch7_snapshots/education_k8_unesco_teacher_taskforce.md",
+     "fetch_date": "2026-10-05",
+     "cleaning_version": "batch7-textclean-on-v1",
+     "parser": "jina-reader (local docker, h2c)",
+     "url": "https://teachertaskforce.org/sites/default/files/2023-05/2023-web_27April_UNESCO-TTF_Supporting%20Teachers%20through%20Policy%20Development_EN.pdf",
+     "rank": "final-batch K2",
+     "fetch": "ok via jina (HTTP 200)",
+     "verdict": "FAIL",
+     "reason": "3 usable sentences below 300"
+    },
+    {
+     "raw_sentences": 1531,
+     "usable_sentences": 1060,
+     "raw_bytes": 196738,
+     "raw_sha256": "f351c5cc5d492bcd1538978f62fec875beb5db506b53f746941e29d5c62c4d81",
+     "snapshot": "docs/batch7_snapshots/education_k9_unesco_teacher_education_framework.md",
+     "fetch_date": "2026-10-05",
+     "cleaning_version": "batch7-textclean-on-v1",
+     "parser": "jina-reader (local docker, h2c)",
+     "url": "https://files.eric.ed.gov/fulltext/ED497053.pdf",
+     "rank": "final-batch K3",
+     "fetch": "ok via jina (HTTP 200)",
+     "verdict": "PASS",
+     "reason": null
     }
    ],
-   "selected": [],
-   "shortfall": "0 of 2; new K batch exhausted with all three candidates below 300 usable sentences (75 / 3 / 217); documented shortfall, next K batch required"
+   "selected": [
+    "https://files.eric.ed.gov/fulltext/ED497053.pdf"
+   ],
+   "shortfall": "FROZEN at 1 of 2. Final K batch (K1 77, K2 3, K3 1060 PASS) exhausted; no further search round permitted. Documented shortfall, not a substitutable gap.",
+   "selected_sha256": [
+    "f351c5cc5d492bcd1538978f62fec875beb5db506b53f746941e29d5c62c4d81"
+   ]
   },
   {
    "domain": "earth and natural sciences",
@@ -913,37 +963,61 @@
      "fetch": "ok via jina (HTTP 200)",
      "verdict": "FAIL",
      "reason": "1 usable sentences below 300"
+    },
+    {
+     "raw_sentences": 359,
+     "usable_sentences": 284,
+     "raw_bytes": 62232,
+     "raw_sha256": "ca883bcb72dd27876a38c598604511f4b5226462f5834155932eb1a612a3d3a1",
+     "snapshot": "docs/batch7_snapshots/io_k7_ifrc_oiai_annual_2022.md",
+     "fetch_date": "2026-10-05",
+     "cleaning_version": "batch7-textclean-on-v1",
+     "parser": "jina-reader (local docker, h2c)",
+     "url": "https://www.ifrc.org/sites/default/files/2024-05/20240430_OIAI_AnnualRpeort2022.pdf",
+     "rank": "final-batch K1",
+     "fetch": "ok via jina (HTTP 200)",
+     "verdict": "FAIL",
+     "reason": "284 usable sentences below 300"
+    },
+    {
+     "raw_sentences": 1267,
+     "usable_sentences": 909,
+     "raw_bytes": 383554,
+     "raw_sha256": "61f2f6c490b6d47eddd2247bc088ef6710a86bed7b40be50b326d5acc9e64d24",
+     "snapshot": "docs/batch7_snapshots/io_k8_ifrc_mhpss_evaluation.md",
+     "fetch_date": "2026-10-05",
+     "cleaning_version": "batch7-textclean-on-v1",
+     "parser": "jina-reader (local docker, h2c)",
+     "url": "https://mhpsshub.org/wp-content/uploads/2022/07/Fed-wide_COVID19_Evaluation-Report_EN-2.pdf",
+     "rank": "final-batch K2",
+     "fetch": "ok via jina (HTTP 200)",
+     "verdict": "PASS",
+     "reason": null
     }
    ],
    "selected": [
-    "https://apps.who.int/gb/ebwha/pdf_files/WHA78/A78_6-en.pdf"
+    "https://apps.who.int/gb/ebwha/pdf_files/WHA78/A78_6-en.pdf",
+    "https://mhpsshub.org/wp-content/uploads/2022/07/Fed-wide_COVID19_Evaluation-Report_EN-2.pdf"
    ],
-   "shortfall": "1 of 2; new K batch exhausted with all three candidates below 300 usable sentences (171 / 132 / 1); documented shortfall, next K batch required",
+   "shortfall": "COMPLETE (2/2)",
    "selected_sha256": [
-    "8c09cabcb8f81d80d258d1b223375618dc4ffa9111a5986c72f8ec282491dbdd"
+    "8c09cabcb8f81d80d258d1b223375618dc4ffa9111a5986c72f8ec282491dbdd",
+    "61f2f6c490b6d47eddd2247bc088ef6710a86bed7b40be50b326d5acc9e64d24"
    ]
   }
  ],
  "progress": {
-  "documents_selected": 21,
+  "documents_selected": 23,
   "documents_needed": 24,
-  "domains_complete": 9,
-  "domains_complete_names": [
-   "public administration / government reports",
-   "health / public health",
-   "scientific institutions / research organisations",
-   "industry / technical",
-   "energy / environment",
-   "transport / infrastructure",
-   "museums / cultural institutions",
-   "earth and natural sciences",
-   "economy / labour market"
-  ],
+  "domains_complete": 10,
   "domains_open": {
-   "education / teaching materials": "0 of 2",
-   "international organisations / NGOs": "1 of 2"
+   "education / teaching materials": "1 of 2"
   },
-  "note": "new K batch round executed: 14 scrapes in K order, 6 PASS. 4 planned scrapes dropped because their domains reached 2/2 before their K position was reached. No re-evaluation of previously rejected candidates. education and IO/NGO remain open with documented shortfalls."
+  "search_rounds_used": {
+   "education": 3,
+   "IO/NGO": 3
+  },
+  "hard_stop": "search budget exhausted as instructed; 23/24 is the final selection state"
  },
  "observations": [
   "qualification works as an objective gate: it rejected a 1-page bulletin and a 248-sentence WHO document without analyst judgement",
@@ -1025,7 +1099,9 @@
    "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
    "fetch_date": "2026-10-05",
    "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
-   "sha_status": "full sha256 pinned"
+   "sha_status": "full sha256 pinned",
+   "snapshot": "docs/batch7_snapshots/energy_k1_sustainability_eo14057.md",
+   "snapshot_path_note": "path re-linked to the pinned file on disk; digest unchanged"
   },
   {
    "domain": "transport / infrastructure",
@@ -1037,7 +1113,9 @@
    "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
    "fetch_date": "2026-10-05",
    "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
-   "sha_status": "full sha256 pinned"
+   "sha_status": "full sha256 pinned",
+   "snapshot": "docs/batch7_snapshots/transport_k1_kytc_acfr.md",
+   "snapshot_path_note": "path re-linked to the pinned file on disk; digest unchanged"
   },
   {
    "domain": "museums / cultural institutions",
@@ -1049,7 +1127,9 @@
    "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
    "fetch_date": "2026-10-05",
    "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
-   "sha_status": "full sha256 pinned"
+   "sha_status": "full sha256 pinned",
+   "snapshot": "docs/batch7_snapshots/museums_k1_britishmuseum_annual.md",
+   "snapshot_path_note": "path re-linked to the pinned file on disk; digest unchanged"
   },
   {
    "domain": "earth and natural sciences",
@@ -1061,7 +1141,9 @@
    "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
    "fetch_date": "2026-10-05",
    "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
-   "sha_status": "full sha256 pinned"
+   "sha_status": "full sha256 pinned",
+   "snapshot": "docs/batch7_snapshots/geo_k1_usgs_programbook.md",
+   "snapshot_path_note": "path re-linked to the pinned file on disk; digest unchanged"
   },
   {
    "domain": "international organisations / NGOs",
@@ -1073,7 +1155,9 @@
    "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
    "fetch_date": "2026-10-05",
    "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
-   "sha_status": "full sha256 pinned"
+   "sha_status": "full sha256 pinned",
+   "snapshot": "docs/batch7_snapshots/io_k1_who_budget.md",
+   "snapshot_path_note": "path re-linked to the pinned file on disk; digest unchanged"
   },
   {
    "domain": "industry / technical",
@@ -1085,7 +1169,9 @@
    "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
    "fetch_date": "2026-10-05",
    "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
-   "sha_status": "full sha256 pinned"
+   "sha_status": "full sha256 pinned",
+   "snapshot": "docs/batch7_snapshots/industry_k2_cta_directives.md",
+   "snapshot_path_note": "path re-linked to the pinned file on disk; digest unchanged"
   },
   {
    "domain": "museums / cultural institutions",
@@ -1097,7 +1183,9 @@
    "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
    "fetch_date": "2026-10-05",
    "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
-   "sha_status": "full sha256 pinned"
+   "sha_status": "full sha256 pinned",
+   "snapshot": "docs/batch7_snapshots/museums_k3_nbmaa_annual.md",
+   "snapshot_path_note": "path re-linked to the pinned file on disk; digest unchanged"
   },
   {
    "domain": "earth and natural sciences",
@@ -1109,7 +1197,9 @@
    "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
    "fetch_date": "2026-10-05",
    "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
-   "sha_status": "full sha256 pinned"
+   "sha_status": "full sha256 pinned",
+   "snapshot": "docs/batch7_snapshots/geo_k2_usgs_mcs2025.md",
+   "snapshot_path_note": "path re-linked to the pinned file on disk; digest unchanged"
   },
   {
    "domain": "energy / environment",
@@ -1250,6 +1340,36 @@
    "rule": "v3 direct",
    "k_position": "new-batch K2",
    "sha_status": "full sha256 pinned"
+  },
+  {
+   "domain": "education / teaching materials",
+   "url": "https://files.eric.ed.gov/fulltext/ED497053.pdf",
+   "raw_sha256": "f351c5cc5d492bcd1538978f62fec875beb5db506b53f746941e29d5c62c4d81",
+   "sha_status": "full sha256 pinned",
+   "snapshot": "docs/batch7_snapshots/education_k9_unesco_teacher_education_framework.md",
+   "raw_sentences": 1531,
+   "usable_sentences": 1060,
+   "raw_bytes": 196738,
+   "fetch_date": "2026-10-05",
+   "cleaning_version": "batch7-textclean-on-v1",
+   "parser": "jina-reader (local docker, h2c)",
+   "rule": "v3 direct",
+   "k_position": "final-batch K3"
+  },
+  {
+   "domain": "international organisations / NGOs",
+   "url": "https://mhpsshub.org/wp-content/uploads/2022/07/Fed-wide_COVID19_Evaluation-Report_EN-2.pdf",
+   "raw_sha256": "61f2f6c490b6d47eddd2247bc088ef6710a86bed7b40be50b326d5acc9e64d24",
+   "sha_status": "full sha256 pinned",
+   "snapshot": "docs/batch7_snapshots/io_k8_ifrc_mhpss_evaluation.md",
+   "raw_sentences": 1267,
+   "usable_sentences": 909,
+   "raw_bytes": 383554,
+   "fetch_date": "2026-10-05",
+   "cleaning_version": "batch7-textclean-on-v1",
+   "parser": "jina-reader (local docker, h2c)",
+   "rule": "v3 direct",
+   "k_position": "final-batch K2"
   }
  ],
  "requalification_note": "v3 requalification is a deterministic re-evaluation of pinned snapshots under rule v3, not a new corpus selection. Batch-6 Wikipedia artifacts in the shared tool-output directory are contamination outside the batch-7 fetch and were excluded from the decision. No new corpus total, size or representativeness claim is made at this point.",
@@ -1319,5 +1439,152 @@
    ],
    "handling": "recorded explicitly rather than reconstructed; re-fetch is not possible (Firecrawl credits exhausted), and the held-snapshot origin of the last two is documented in protocol_violations"
   }
- ]
+ ],
+ "frozen_shortfalls": [
+  {
+   "domain": "education / teaching materials",
+   "documents_have": 1,
+   "documents_needed": 2,
+   "history": "K1 FETCH_FAILED (Cloudflare 403), K2 146, K3 224, then batch K1 75, K2 3, K3 217, then final K1 77, K2 3, K3 1060 PASS",
+   "decision": "shortfall frozen; no replacement document, no threshold change, no near-miss admission, no domain substitution"
+  }
+ ],
+ "provenance_audit": {
+  "documents": 23,
+  "sha_state_counts": {
+   "NO_SNAPSHOT": 5,
+   "VERIFIED": 18
+  },
+  "verifiable_fraction": "18/23",
+  "corpus_build_gate": 1200,
+  "documents_below_corpus_gate": 15,
+  "below_gate_detail": [
+   {
+    "domain": "public administration / government reports",
+    "usable_sentences": 403,
+    "url": "https://www.huduser.gov/portal/About/style-guide-for-reports.pdf"
+   },
+   {
+    "domain": "industry / technical",
+    "usable_sentences": 584,
+    "url": "https://boss.cen.eu/media/yypjl3mn/iso_iec_directives_part2.pdf"
+   },
+   {
+    "domain": "energy / environment",
+    "usable_sentences": 639,
+    "url": "https://www.sustainability.gov/pdfs/EO_14057_Implementing_Instructions.pdf"
+   },
+   {
+    "domain": "transport / infrastructure",
+    "usable_sentences": 340,
+    "url": "https://transportation.ky.gov/KPTIA/Financial%20Statements/FY%202025%20Annual%20Comprehensive%20Financial%20Report.pdf"
+   },
+   {
+    "domain": "museums / cultural institutions",
+    "usable_sentences": 1098,
+    "url": "https://www.britishmuseum.org/sites/default/files/2026-07/Annual_Report_and_Accounts_2025-26.pdf"
+   },
+   {
+    "domain": "international organisations / NGOs",
+    "usable_sentences": 940,
+    "url": "https://apps.who.int/gb/ebwha/pdf_files/WHA78/A78_6-en.pdf"
+   },
+   {
+    "domain": "museums / cultural institutions",
+    "usable_sentences": 382,
+    "url": "https://www.nbmaa.org/pdfs/NBMAA-AnnualReport-2024-25-FINAL-LowRes-Pages-101425.pdf"
+   },
+   {
+    "domain": "agriculture",
+    "usable_sentences": 499,
+    "url": "https://fsrp.go.ke/sites/default/files/2025-08/Agriculture%20Extension%20Manual%20v1%20final.pdf"
+   },
+   {
+    "domain": "public administration / government reports",
+    "usable_sentences": 792,
+    "url": "https://admin.ks.gov/media/cms/Policy_and_Procedure_Manual_e7a759b160238.pdf"
+   },
+   {
+    "domain": "health / public health",
+    "usable_sentences": 369,
+    "url": "https://climate-diplomacy.org/sites/default/files/2020-10/FAO%27s%20Work%20on%20Climate%20Change.pdf"
+   },
+   {
+    "domain": "scientific institutions / research organisations",
+    "usable_sentences": 515,
+    "url": "https://www.govinfo.gov/content/pkg/SERIALSET-05072_00_00-076-0308-0000/pdf/SERIALSET-05072_00_00-076-0308-0000.pdf"
+   },
+   {
+    "domain": "scientific institutions / research organisations",
+    "usable_sentences": 337,
+    "url": "https://sciencepolicy.hsites.harvard.edu/file_url/238"
+   },
+   {
+    "domain": "economy / labour market",
+    "usable_sentences": 662,
+    "url": "https://www.ibanet.org/MediaHandler?id=363b3171-0afc-489e-812b-3de2460bce67"
+   },
+   {
+    "domain": "education / teaching materials",
+    "usable_sentences": 1060,
+    "url": "https://files.eric.ed.gov/fulltext/ED497053.pdf"
+   },
+   {
+    "domain": "international organisations / NGOs",
+    "usable_sentences": 909,
+    "url": "https://mhpsshub.org/wp-content/uploads/2022/07/Fed-wide_COVID19_Evaluation-Report_EN-2.pdf"
+   }
+  ],
+  "verdict": "PROVENANCE DEFECT: not all selected documents are cryptographically pinned. See provenance_defect_summary.",
+  "hard_conflict": "Qualification admitted documents with >=300 usable sentences, but scripts/build_batch7_corpus.py drops any document below 1200. 15 of 23 selected documents fall between those two thresholds and would be silently discarded at corpus build. Neither threshold may be moved silently; this needs an explicit decision before any corpus is built.",
+  "defects": [
+   {
+    "domain": "public administration / government reports",
+    "url": "https://www.huduser.gov/portal/About/style-guide-for-reports.pdf",
+    "snapshot": null,
+    "sha_state": "NO_SNAPSHOT",
+    "logged_sha": "393f8e122f8fbbb83cfaaa7f7b68d4d321983511a9138ebed207b7f906809fa0",
+    "recomputed_sha": null
+   },
+   {
+    "domain": "industry / technical",
+    "url": "https://boss.cen.eu/media/yypjl3mn/iso_iec_directives_part2.pdf",
+    "snapshot": null,
+    "sha_state": "NO_SNAPSHOT",
+    "logged_sha": "5d4ba148b9938f91bbee1d3aa2fa41c0",
+    "recomputed_sha": null
+   },
+   {
+    "domain": "health / public health",
+    "url": "https://syntheticdrugs.unodc.org/uploads/syntheticdrugs/res/library/access_html/WHO_good_distribution_practices_for_pharmaceutical_products_WHO_Technical_Report_Series_No._957.pdf",
+    "snapshot": null,
+    "sha_state": "NO_SNAPSHOT",
+    "logged_sha": "5f8edeafbd1261aa4e4192dbe2e3d7748eeced83815e09649b6dc91008896539",
+    "recomputed_sha": null
+   },
+   {
+    "domain": "energy / environment",
+    "url": "https://www-pub.iaea.org/MTCD/Publications/PDF/Pub1222_web.pdf",
+    "snapshot": null,
+    "sha_state": "NO_SNAPSHOT",
+    "logged_sha": "be2e89a2cdc2ea18932aff456252428e",
+    "recomputed_sha": null
+   },
+   {
+    "domain": "transport / infrastructure",
+    "url": "https://www.bmv.de/SharedDocs/EN/publications/2030-federal-transport-infrastructure-plan.pdf?__blob=publicationFile",
+    "snapshot": null,
+    "sha_state": "NO_SNAPSHOT",
+    "logged_sha": "b09467cce2e6e0443a34762f47b7b940",
+    "recomputed_sha": null
+   }
+  ]
+ },
+ "provenance_defect_summary": {
+  "status": "OPEN, disclosed",
+  "statement": "ISO/IEC CEN, IAEA and BMV are part of the selected corpus but their sha256 cannot be reproduced: the audit log carried only a truncated prefix and no local snapshot exists to recompute the full digest. URL, parser and sentence count are not a cryptographic pinning guarantee.",
+  "consequence": "these documents are bound by weaker provenance than the rest of the corpus; a future re-fetch could not be proven identical",
+  "not_done": "no digest was reconstructed or invented, no document was re-fetched (Firecrawl credits exhausted and a re-fetch would constitute a further K round), no document was dropped to hide the defect",
+  "possible_closure": "re-fetch under a documented exception once fetch budget exists, or accept the defect explicitly in the final Batch 7 status"
+ }
 }
