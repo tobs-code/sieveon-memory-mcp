@@ -1,6 +1,6 @@
 {
  "version": "batch7_fetch_log_v1",
- "status": "CHECKPOINT_INCOMPLETE",
+ "status": "BLOCKED_on_gate_measurement_bias",
  "date": "2026-10-04",
  "rule_reference": "docs/batch7_source_selection_v1.json (a2fcb33, unchanged)",
  "pre_fetch_events": [
@@ -128,6 +128,18 @@
    "id": "LANDING-PAGE-DENSITY",
    "problem": "Many top-ranked results are navigation/landing pages whose content is tables, links and boilerplate rather than prose.",
    "consequence": "Section-wise sampling presupposes real sections; landing pages would yield almost no qualifying sentences."
+  },
+  {
+   "id": "SECTION-DETECTION-BIAS-PDF",
+   "problem": "The frozen >=3 real sections criterion is measured by counting markdown '##' headings. The PDF parser returns flat text, so long and genuinely sectioned PDFs are scored sections=1 and rejected, while HTML pages with proper heading markup pass.",
+   "evidence": "WHO Technical Report Series No. 957: 2365 usable sentences - by far the richest document seen so far - rejected solely on sections=1.",
+   "consequence": "Continuing the fetch as-is would systematically bias the corpus toward HTML documents with heading markup and away from long-form PDFs. That is a silent selection artifact and would distort exactly the corpus this replication test depends on.",
+   "not_done": "The section counter was NOT loosened and no fallback section detection was added. Either would be a post-hoc change to a frozen qualification criterion and must come as a new frozen rule version.",
+   "decision_required": [
+    "new frozen rule version with format-robust section detection",
+    "or change the corpus unit back to HTML long-form documents",
+    "or accept the bias knowingly and document it as a limitation"
+   ]
   }
  ],
  "decision_required": [
@@ -160,10 +172,24 @@
      "url": "https://grants.nih.gov/sites/default/files/rppr_instruction_guide.pdf",
      "fetch": "not attempted",
      "verdict": "pending"
+    },
+    {
+     "rank": 2,
+     "url": "https://www.huduser.gov/portal/About/style-guide-for-reports.pdf",
+     "fetch": "ok",
+     "usable_sentences": 403,
+     "sections": 3,
+     "verdict": "PASS",
+     "raw_sha256": "393f8e122f8fbbb83cfaaa7f7b68d4d321983511a9138ebed207b7f906809fa0"
     }
    ],
-   "selected": [],
-   "shortfall": "in progress"
+   "selected": [
+    "https://www.huduser.gov/portal/About/style-guide-for-reports.pdf"
+   ],
+   "shortfall": "1 of 2 still needed",
+   "selected_sha256": [
+    "393f8e122f8fbbb83cfaaa7f7b68d4d321983511a9138ebed207b7f906809fa0"
+   ]
   },
   {
    "domain": "health / public health",
@@ -181,8 +207,12 @@
     {
      "rank": 2,
      "url": "https://syntheticdrugs.unodc.org/uploads/syntheticdrugs/res/library/access_html/WHO_good_distribution_practices_for_pharmaceutical_products_WHO_Technical_Report_Series_No._957.pdf",
-     "fetch": "not attempted",
-     "verdict": "pending"
+     "fetch": "ok",
+     "verdict": "FAIL",
+     "usable_sentences": 2365,
+     "sections": 1,
+     "reason": "2365 usable sentences (far above the minimum) but sections=1: the PDF parser emitted flat text without markdown headings, so the >=3 section criterion could not be met",
+     "raw_sha256": "5f8edeafbd1261aa4e4192dbe2e3d7748eeced83815e09649b6dc91008896539"
     },
     {
      "rank": 3,
@@ -241,7 +271,7 @@
   }
  ],
  "progress": {
-  "documents_selected": 1,
+  "documents_selected": 2,
   "documents_needed": 24,
   "domains_started": 4,
   "domains_complete": 0
@@ -276,5 +306,21 @@
    "seeded N=80 sample, then blind annotation"
   ],
   "bottleneck_honest": "pass rate is low (1 of 4 first candidates): the constraint is the 300-sentence minimum combined with scraper reachability, not document availability. If the next session wants a smaller fetch, that requires a NEW frozen rule version, not a silent threshold change"
- }
+ },
+ "selected_documents": [
+  {
+   "domain": "public administration / government reports",
+   "url": "https://www.huduser.gov/portal/About/style-guide-for-reports.pdf",
+   "raw_sha256": "393f8e122f8fbbb83cfaaa7f7b68d4d321983511a9138ebed207b7f906809fa0",
+   "usable_sentences": 403,
+   "sections": 3
+  },
+  {
+   "domain": "industry / technical",
+   "url": "https://boss.cen.eu/media/yypjl3mn/iso_iec_directives_part2.pdf",
+   "raw_sha256": "5d4ba148b9938f91bbee1d3aa2fa41c0",
+   "usable_sentences": 584,
+   "sections": 9
+  }
+ ]
 }
