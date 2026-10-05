@@ -1,6 +1,6 @@
 {
  "version": "batch7_fetch_log_v1",
- "status": "BLOCKED_on_credits_and_K_order_repair",
+ "status": "PAUSED_TECHNICAL",
  "date": "2026-10-04",
  "rule_reference": "docs/batch7_source_selection_v1.json (a2fcb33, unchanged)",
  "pre_fetch_events": [
@@ -584,5 +584,22 @@
    "handling": "measurements are HELD, not used as selections. They become usable ONLY if the rank-1 candidate of the same domain is attempted first and FAILS, per snapshot-reuse allowance. No verdict is recorded for either document."
   }
  ],
- "credit_stop": "firecrawl account out of credits during batch-7 fetch; 2 further scrapes (museums, science rank 1) failed with insufficient-credits errors and were NOT recorded as document verdicts; resume needs a funded account"
+ "credit_stop": "firecrawl account out of credits during batch-7 fetch; 2 further scrapes (museums, science rank 1) failed with insufficient-credits errors and were NOT recorded as document verdicts; resume needs a funded account",
+ "pause_statement": "Batch 7 pausiert technisch, nicht wissenschaftlich. 3/24 Dokumente qualifiziert und gepinnt (ISO Directives, HUD Style Guide, WHO TRS 957). IAEA/BMV bleiben als K-ORDER-VIOLATION außerhalb der Auswahl. 12/12 Queries und K=3-Kandidaten vorhanden. Firecrawl-Creditmangel ist ein externer Ausführungsblocker, kein Experimentbefund. ec017a5 gilt unverändert. Keine Requalifikation, kein Sampling, kein Pipeline-Lauf, keine Replikationsaussage.",
+ "resume_order": [
+  "energy K1 sustainability.gov first, K2 only on K1 FAIL",
+  "transport K1 KYTC first, K2 only on K1 FAIL",
+  "six remaining open domains K1->K2->K3",
+  "K-ORDER-VIOLATION snapshots usable only after documented K1 FAIL",
+  "corpus pinning and global sampling only after 24 qualified",
+  "pipeline run, seeded N=80, blind annotation",
+  "no batch-6 factors reintroduced"
+ ],
+ "explicitly_not_done": [
+  "no content-based pre-selection of candidates",
+  "no quality or sentence-count guessing before scraping",
+  "no analysis of the 3 pinned documents (not a mini-corpus)",
+  "no silence inspection before annotation",
+  "no rule change"
+ ]
 }
