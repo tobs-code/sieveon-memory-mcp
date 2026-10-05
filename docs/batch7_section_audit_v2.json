@@ -1,0 +1,62 @@
+{
+ "audit_id": "batch7-section-parser-audit-v2",
+ "date": "2026-10-05",
+ "status": "DRAFT RULE, NOT FROZEN, NO CORPUS BUILT, NO N=80 SAMPLE",
+ "scope": {
+  "auditable": "18 of 23 selected documents",
+  "blocked_by_provenance_gate": "5 documents have no local snapshot, so their heading structure is unknown and the rule cannot be shown to apply to them",
+  "no_fallback_to_18": "the corpus is not reduced to the auditable subset; that would be a post-selection corpus reduction"},
+ "rule_as_specified": {
+  "candidate_section": "ATX heading AND not numeric AND not TOC AND not URL/copyright AND length <= 140",
+  "section_level": "shallowest level with at least 2 surviving headings",
+  "classification": "NORMAL if at least 2 sections, DEGENERATE if fewer than 2",
+  "semantics": "syntactic partitioning only; no judgement whether something really is a section"},
+
+ "implementation_bugs_found_and_corrected": [
+  "Sections were first split at every heading of the chosen level or deeper, including headings already rejected as artefacts. The rule requires rejected headings to be plain text, not split points. On the ILO guide this produced 331 sections from 77 surviving candidates. Corrected to split only at surviving candidates of the chosen level; split_consistency_ok is now true for all 18 documents.",
+  "ATX.finditer(cut, re.M) passed the re.M integer as the `pos` argument rather than as a flag, so the census started at offset 8 and reported zero headings. Corrected to a re.M-compiled pattern.",
+  "An earlier pass (v1) profiled clean() output, in which heading lines have already been deleted, and reported zero headings corpus-wide. Headings must be read from the raw snapshot."],
+
+ "per_document": [
+  {"snapshot": "agriculture_k2_fsrp_manual", "usable": 514, "raw_headings": 37, "surviving": 37, "level": "h1", "sections": 30, "largest_ratio": 0.218, "tiny": 8, "class": "NORMAL"},
+  {"snapshot": "agriculture_k3_farmd_manual", "usable": 5905, "raw_headings": 173, "surviving": 173, "level": "h1", "sections": 171, "largest_ratio": 0.04, "tiny": 4, "class": "NORMAL"},
+  {"snapshot": "education_k9_unesco_teacher_education_framework", "usable": 1094, "raw_headings": 21, "surviving": 20, "level": "h1", "sections": 20, "largest_ratio": 0.204, "tiny": 5, "class": "NORMAL"},
+  {"snapshot": "energy_k1_sustainability_eo14057", "usable": 637, "raw_headings": 15, "surviving": 14, "level": "h1", "sections": 10, "largest_ratio": 0.732, "tiny": 1, "class": "NORMAL"},
+  {"snapshot": "geo_k1_usgs_programbook", "usable": 1513, "raw_headings": 186, "surviving": 150, "level": "h1", "sections": 15, "largest_ratio": 0.273, "tiny": 2, "class": "NORMAL"},
+  {"snapshot": "geo_k2_usgs_mcs2025", "usable": 3571, "raw_headings": 150, "surviving": 146, "level": "h1", "sections": 18, "largest_ratio": 0.854, "tiny": 5, "class": "NORMAL"},
+  {"snapshot": "health_k5_fao_climate_change", "usable": 365, "raw_headings": 79, "surviving": 54, "level": "h1", "sections": 18, "largest_ratio": 0.216, "tiny": 6, "class": "NORMAL"},
+  {"snapshot": "industry_k2_cta_directives", "usable": 1661, "raw_headings": 266, "surviving": 244, "level": "h1", "sections": 110, "largest_ratio": 0.174, "tiny": 45, "class": "NORMAL"},
+  {"snapshot": "io_k1_who_budget", "usable": 930, "raw_headings": 136, "surviving": 136, "level": "h1", "sections": 28, "largest_ratio": 0.146, "tiny": 3, "class": "NORMAL"},
+  {"snapshot": "io_k8_ifrc_mhpss_evaluation", "usable": 957, "raw_headings": 138, "surviving": 103, "level": "h1", "sections": 89, "largest_ratio": 0.054, "tiny": 13, "class": "NORMAL"},
+  {"snapshot": "labour_k4_ilo_labour_standards_guide", "usable": 1159, "raw_headings": 334, "surviving": 77, "level": "h1", "sections": 40, "largest_ratio": 0.229, "tiny": 3, "class": "NORMAL"},
+  {"snapshot": "labour_k5_iba_ils_global_economy", "usable": 633, "raw_headings": 22, "surviving": 18, "level": "h1", "sections": 17, "largest_ratio": 0.311, "tiny": 8, "class": "NORMAL"},
+  {"snapshot": "museums_k1_britishmuseum_annual", "usable": 1138, "raw_headings": 69, "surviving": 68, "level": "h1", "sections": 19, "largest_ratio": 0.355, "tiny": 7, "class": "NORMAL"},
+  {"snapshot": "museums_k3_nbmaa_annual", "usable": 450, "raw_headings": 38, "surviving": 22, "level": "h1", "sections": 18, "largest_ratio": 0.222, "tiny": 6, "class": "NORMAL"},
+  {"snapshot": "pubadmin_k4_ks_policy_manual", "usable": 806, "raw_headings": 9, "surviving": 8, "level": "h1", "sections": 3, "largest_ratio": 0.986, "tiny": 1, "class": "NORMAL"},
+  {"snapshot": "science_k4_nas_annual_1906", "usable": 438, "raw_headings": 5, "surviving": 5, "level": "h1", "sections": 5, "largest_ratio": 0.941, "tiny": 3, "class": "NORMAL"},
+  {"snapshot": "science_k6_harvard_nasem", "usable": 338, "raw_headings": 11, "surviving": 11, "level": "h1", "sections": 9, "largest_ratio": 0.314, "tiny": 1, "class": "NORMAL"},
+  {"snapshot": "transport_k1_kytc_acfr", "usable": 352, "raw_headings": 1, "surviving": 0, "level": null, "sections": 1, "largest_ratio": 1.0, "tiny": 0, "class": "DEGENERATE"}],
+
+ "summary": {
+  "NORMAL": 17,
+  "DEGENERATE": 1,
+  "degenerate_document": "transport_k1_kytc_acfr; its single heading is itself an artefact, so zero candidates survive",
+  "largest_section_ratio_above_0.9": ["transport_k1_kytc_acfr 1.0",
+    "pubadmin_k4_ks_policy_manual 0.986", "science_k4_nas_annual_1906 0.941"],
+  "interpretation": "a high largest_section_ratio is a measurable property of the source, not an error. USGS MCS2025 at 0.854 and the sustainability EO at 0.732 are reports whose usable text is genuinely concentrated in a few sections. It is reported, not corrected.",
+  "all_levels_resolve_to": "h1",
+  "note_on_deeper_levels": "h3 and deeper never occur in this corpus, and headings below the chosen level become inline text inside their parent section"},
+
+ "provenance_gate": {
+  "status": "OPEN, this is now the primary blocker, not the regex",
+  "unverifiable_documents": ["HUD Style Guide", "ISO/IEC Directives (CEN)",
+    "WHO TRS 957", "IAEA Pub 1222", "BMV transport infrastructure plan 2030"],
+  "consequence": "a 23-document corpus is not fully auditable; the section rule would be applied blind to 5 of 23 documents",
+  "explicitly_not_done": ["no assumption that the 5 look similar",
+    "no reduction to the 18 auditable documents",
+    "no silent document-wide fallback",
+    "no reconstructed digest"]},
+
+ "blocked_on": ["provenance gate for the 5 documents",
+                "explicit approval to freeze the section rule"]
+}
