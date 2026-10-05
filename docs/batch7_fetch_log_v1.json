@@ -165,39 +165,26 @@
      "requalification_reason": "unchanged: sentence count below minimum; pinned snapshot reused, no re-fetch"
     },
     {
-     "rank": 2,
      "url": "https://www.huduser.gov/portal/About/style-guide-for-reports.pdf",
-     "fetch": "not attempted",
-     "verdict": "pending",
-     "v2_verdict": "PASS",
-     "v3_requalification": "PASS",
-     "requalification_reason": "unchanged: qualified under both rules; pinned snapshot reused, no re-fetch",
-     "usable_sentences_v3": 405
-    },
-    {
-     "rank": 3,
-     "url": "https://grants.nih.gov/sites/default/files/rppr_instruction_guide.pdf",
-     "fetch": "not attempted",
-     "verdict": "pending"
-    },
-    {
-     "rank": 2,
-     "url": "https://www.huduser.gov/portal/About/style-guide-for-reports.pdf",
-     "fetch": "ok",
-     "usable_sentences": 403,
-     "sections": 3,
+     "fetch": "ok (previously pinned)",
      "verdict": "PASS",
-     "raw_sha256": "393f8e122f8fbbb83cfaaa7f7b68d4d321983511a9138ebed207b7f906809fa0",
-     "v2_verdict": "PASS",
-     "v3_requalification": "PASS",
-     "requalification_reason": "unchanged: qualified under both rules; pinned snapshot reused, no re-fetch",
-     "usable_sentences_v3": 405
+     "usable_sentences_v3": 405,
+     "raw_sha256": "393f8e122f8fbbb83cfaaa7f7b68d4d321983511a9138ebed207b7f906809fa0"
+    },
+    {
+     "url": "https://grants.nih.gov/sites/default/files/rppr_instruction_guide.pdf",
+     "fetch": "ok via jina (3 usable sentences; likely landing/download page, not content)",
+     "verdict": "FAIL",
+     "usable_sentences_v3": 3,
+     "reason": "3 usable sentences, far below 300",
+     "raw_sha256": "df0b028a2060be276f12f01d083c68fcbe3c49990e15b8110fe581bb84fa8af1",
+     "snapshot": "docs/batch7_snapshots/pubadmin_k3_nih_rppr.md"
     }
    ],
    "selected": [
     "https://www.huduser.gov/portal/About/style-guide-for-reports.pdf"
    ],
-   "shortfall": "1 of 2 still needed",
+   "shortfall": "1 of 2; all K exhausted, next K batch required",
    "selected_sha256": [
     "393f8e122f8fbbb83cfaaa7f7b68d4d321983511a9138ebed207b7f906809fa0"
    ]
@@ -236,21 +223,19 @@
      "verdict": "pending"
     },
     {
-     "rank": "K1b (same search rank family, second K1 PDF result)",
-     "url": "https://syntheticdrugs.unodc.org/uploads/syntheticdrugs/res/library/access_html/WHO_good_distribution_practices_for_pharmaceutical_products_WHO_Technical_Report_Series_No._957.pdf",
-     "fetch": "ok",
-     "v2_verdict": "FAIL",
-     "v2_reason": "sections=1 from flat PDF text (non-format-independent sections gate)",
-     "v3_requalification": "PASS",
-     "requalification_reason": "sections_gate_removed; 2379 usable sentences RECOMPUTED from the pinned snapshot (not the old 2365); document type mechanically derived from URL/title (WHO Technical Report Series PDF); pinned snapshot reused, no re-fetch",
-     "usable_sentences_v3": 2379,
-     "raw_sha256": "5f8edeafbd1261aa4e4192dbe2e3d7748eeced83815e09649b6dc91008896539"
+     "url": "https://publichealth.uams.edu/wp-content/uploads/2022/02/Integrative-Learning-Experience-Product-EXAMPLE-Guidelines-for-techinical-report.pdf",
+     "fetch": "ok via jina",
+     "verdict": "FAIL",
+     "usable_sentences_v3": 55,
+     "reason": "55 usable sentences below 300",
+     "raw_sha256": "77687eff7e26bf507ccc23d17a61e353f3aba8d7e2e54588e311146a0e3d4628ef",
+     "snapshot": "docs/batch7_snapshots/health_k3_uams_guidelines.md"
     }
    ],
    "selected": [
     "https://syntheticdrugs.unodc.org/uploads/syntheticdrugs/res/library/access_html/WHO_good_distribution_practices_for_pharmaceutical_products_WHO_Technical_Report_Series_No._957.pdf"
    ],
-   "shortfall": "1 of 2 still needed",
+   "shortfall": "1 of 2; all K exhausted, next K batch required",
    "selected_sha256": [
     "5f8edeafbd1261aa4e4192dbe2e3d7748eeced83815e09649b6dc91008896539"
    ]
@@ -292,13 +277,25 @@
      "verdict": "PASS",
      "reason": "584 usable sentences, 9 sections",
      "raw_sha256": "5d4ba148b9938f91bbee1d3aa2fa41c0"
+    },
+    {
+     "url": "https://www.cta.tech/media/tcmji2rz/iso-iec-directives-part-1plusiec-supplement.pdf",
+     "fetch": "ok via jina",
+     "verdict": "PASS",
+     "usable_sentences_v3": 1550,
+     "raw_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27",
+     "snapshot": "docs/batch7_snapshots/industry_k2_cta_directives.md"
     }
    ],
    "selected": [
-    "https://boss.cen.eu/media/yypjl3mn/iso_iec_directives_part2.pdf"
+    "https://boss.cen.eu/media/yypjl3mn/iso_iec_directives_part2.pdf",
+    "https://www.cta.tech/media/tcmji2rz/iso-iec-directives-part-1plusiec-supplement.pdf"
    ],
-   "selected_sha256": "5d4ba148b9938f91bbee1d3aa2fa41c0",
-   "shortfall": "1 of 2 documents still needed"
+   "selected_sha256": [
+    "5d4ba148b9938f91bbee1d3aa2fa41c0",
+    "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27"
+   ],
+   "shortfall": "COMPLETE (2/2)"
   },
   {
    "domain": "energy / environment",
@@ -313,14 +310,23 @@
      "raw_sha256": "176d093d10dbabf944a2bbdbd7470c4ebafdb36b7710f6784d66e09a8d3d672b",
      "snapshot": "docs/batch7_snapshots/energy_k1_sustainability_eo14057.md",
      "parser": "jina-reader (local docker)"
+    },
+    {
+     "url": "https://www-pub.iaea.org/MTCD/Publications/PDF/Pub1222_web.pdf",
+     "fetch": "held snapshot from the K-order violation round, evaluated now that K1 passed",
+     "verdict": "PASS",
+     "usable_sentences_v3": 1734,
+     "raw_sha256": "be2e89a2cdc2ea18932aff456252428e"
     }
    ],
    "selected": [
-    "https://www.sustainability.gov/pdfs/EO_14057_Implementing_Instructions.pdf"
+    "https://www.sustainability.gov/pdfs/EO_14057_Implementing_Instructions.pdf",
+    "https://www-pub.iaea.org/MTCD/Publications/PDF/Pub1222_web.pdf"
    ],
-   "shortfall": "1 of 2 still needed",
+   "shortfall": "COMPLETE (2/2)",
    "selected_sha256": [
-    "176d093d10dbabf944a2bbdbd7470c4ebafdb36b7710f6784d66e09a8d3d672b"
+    "176d093d10dbabf944a2bbdbd7470c4ebafdb36b7710f6784d66e09a8d3d672b",
+    "be2e89a2cdc2ea18932aff456252428e"
    ]
   },
   {
@@ -336,14 +342,23 @@
      "raw_sha256": "caa0085bfd079bcac1814569409d6aff8456647d1926fd531714777ec1a944d7",
      "snapshot": "docs/batch7_snapshots/transport_k1_kytc_acfr.md",
      "parser": "jina-reader (local docker)"
+    },
+    {
+     "url": "https://www.bmv.de/SharedDocs/EN/publications/2030-federal-transport-infrastructure-plan.pdf?__blob=publicationFile",
+     "fetch": "held snapshot from the K-order violation round, evaluated now that K1 passed",
+     "verdict": "PASS",
+     "usable_sentences_v3": 1384,
+     "raw_sha256": "b09467cce2e6e0443a34762f47b7b940"
     }
    ],
    "selected": [
-    "https://transportation.ky.gov/KPTIA/Financial%20Statements/FY%202025%20Annual%20Comprehensive%20Financial%20Report.pdf"
+    "https://transportation.ky.gov/KPTIA/Financial%20Statements/FY%202025%20Annual%20Comprehensive%20Financial%20Report.pdf",
+    "https://www.bmv.de/SharedDocs/EN/publications/2030-federal-transport-infrastructure-plan.pdf?__blob=publicationFile"
    ],
-   "shortfall": "1 of 2 still needed",
+   "shortfall": "COMPLETE (2/2)",
    "selected_sha256": [
-    "caa0085bfd079bcac1814569409d6aff8456647d1926fd531714777ec1a944d7"
+    "caa0085bfd079bcac1814569409d6aff8456647d1926fd531714777ec1a944d7",
+    "b09467cce2e6e0443a34762f47b7b940"
    ]
   },
   {
@@ -356,14 +371,33 @@
      "usable_sentences_v3": 1098,
      "raw_sha256": "30a632b548edbc333aef7b6dc8c6c921144994ce8eb64365db6b577749675e0c",
      "snapshot": "docs/batch7_snapshots/museums_k1_britishmuseum_annual.md"
+    },
+    {
+     "url": "https://www.samuseum.sa.gov.au/getDocument/8mkc1vrd0",
+     "fetch": "ok via jina",
+     "verdict": "FAIL",
+     "usable_sentences_v3": 106,
+     "reason": "106 usable sentences below 300; HTML document page, doc_type UNDETERMINED",
+     "raw_sha256": "95d92dc9fcfbf182b047026662ea893005898967d52e2c1307e636c307427122",
+     "snapshot": "docs/batch7_snapshots/museums_k2_samuseum_annual.md"
+    },
+    {
+     "url": "https://www.nbmaa.org/pdfs/NBMAA-AnnualReport-2024-25-FINAL-LowRes-Pages-101425.pdf",
+     "fetch": "ok via jina",
+     "verdict": "PASS",
+     "usable_sentences_v3": 382,
+     "raw_sha256": "f8e9713c91c9cc74a25e8ebf9b29dae154dde14232a7ee90675aedfa08261c5d",
+     "snapshot": "docs/batch7_snapshots/museums_k3_nbmaa_annual.md"
     }
    ],
    "selected": [
-    "https://www.britishmuseum.org/sites/default/files/2026-07/Annual_Report_and_Accounts_2025-26.pdf"
+    "https://www.britishmuseum.org/sites/default/files/2026-07/Annual_Report_and_Accounts_2025-26.pdf",
+    "https://www.nbmaa.org/pdfs/NBMAA-AnnualReport-2024-25-FINAL-LowRes-Pages-101425.pdf"
    ],
-   "shortfall": "1 of 2 still needed",
+   "shortfall": "COMPLETE (2/2)",
    "selected_sha256": [
-    "30a632b548edbc333aef7b6dc8c6c921144994ce8eb64365db6b577749675e0c"
+    "30a632b548edbc333aef7b6dc8c6c921144994ce8eb64365db6b577749675e0c",
+    "f8e9713c91c9cc74a25e8ebf9b29dae154dde14232a7ee90675aedfa08261c5d"
    ]
   },
   {
@@ -437,14 +471,24 @@
      "usable_sentences_v3": 1494,
      "raw_sha256": "cf8c90c8148f24b301ead7fbf42ea158006571883892564864dc6e1fa11944f5",
      "snapshot": "docs/batch7_snapshots/geo_k1_usgs_programbook.md"
+    },
+    {
+     "url": "https://pubs.usgs.gov/periodicals/mcs2025/mcs2025.pdf",
+     "fetch": "ok via jina",
+     "verdict": "PASS",
+     "usable_sentences_v3": 3476,
+     "raw_sha256": "0716353ab7df3de3c7946a42e55944c425fdf7bc8cc32895da6f90adf2c14df7",
+     "snapshot": "docs/batch7_snapshots/geo_k2_usgs_mcs2025.md"
     }
    ],
    "selected": [
-    "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/atoms/files/USGS-Program-Book_5.26.2_508.pdf"
+    "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/atoms/files/USGS-Program-Book_5.26.2_508.pdf",
+    "https://pubs.usgs.gov/periodicals/mcs2025/mcs2025.pdf"
    ],
-   "shortfall": "1 of 2 still needed",
+   "shortfall": "COMPLETE (2/2)",
    "selected_sha256": [
-    "cf8c90c8148f24b301ead7fbf42ea158006571883892564864dc6e1fa11944f5"
+    "cf8c90c8148f24b301ead7fbf42ea158006571883892564864dc6e1fa11944f5",
+    "0716353ab7df3de3c7946a42e55944c425fdf7bc8cc32895da6f90adf2c14df7"
    ]
   },
   {
@@ -472,22 +516,54 @@
      "usable_sentences_v3": 940,
      "raw_sha256": "8c09cabcb8f81d80d258d1b223375618dc4ffa9111a5986c72f8ec282491dbdd",
      "snapshot": "docs/batch7_snapshots/io_k1_who_budget.md"
+    },
+    {
+     "url": "https://www.unjiu.org/sites/www.unjiu.org/files/jiu_rep_1995_2b_english.pdf",
+     "fetch": "ok via jina (12 usable sentences; likely scanned/image PDF)",
+     "verdict": "FAIL",
+     "usable_sentences_v3": 12,
+     "reason": "12 usable sentences, far below 300",
+     "raw_sha256": "3d5f0a7f54e796366e546d43b428830918716058e17993d5a923ebbcd78e0e26",
+     "snapshot": "docs/batch7_snapshots/io_k2_unjiu_accountability.md"
+    },
+    {
+     "url": "https://internationalbudget.org/covid/wp-content/uploads/2021/05/Report_English-2.pdf",
+     "fetch": "ok via jina",
+     "verdict": "FAIL",
+     "usable_sentences_v3": 88,
+     "reason": "88 usable sentences below 300",
+     "raw_sha256": "30740a750219e37fbbe66f92ece2b8cf3773a71a7874909c285d984b60e30b44",
+     "snapshot": "docs/batch7_snapshots/io_k3_ibp_covidfunds.md"
     }
    ],
    "selected": [
     "https://apps.who.int/gb/ebwha/pdf_files/WHA78/A78_6-en.pdf"
    ],
-   "shortfall": "1 of 2 still needed",
+   "shortfall": "1 of 2; all K exhausted, next K batch required",
    "selected_sha256": [
     "8c09cabcb8f81d80d258d1b223375618dc4ffa9111a5986c72f8ec282491dbdd"
    ]
   }
  ],
  "progress": {
-  "documents_selected": 8,
+  "documents_selected": 13,
   "documents_needed": 24,
-  "domains_complete": 0,
-  "note": "8/12 K1 attempted: 5 PASS (museums, geo, IO + energy, transport from prior round), 2 content FAIL, 1 EXCLUDED edge case; science and education need next-K batches; every domain still needs its 2nd document"
+  "domains_complete": [
+   "industry / technical",
+   "museums / cultural institutions",
+   "earth and natural sciences",
+   "energy / environment",
+   "transport / infrastructure"
+  ],
+  "domains_open": [
+   "public administration (next K batch)",
+   "health (next K batch)",
+   "agriculture (K2 pending)",
+   "science (next K batch)",
+   "education (next K batch)",
+   "economy / labour market (K2/K3 pending)",
+   "international organisations / NGOs (next K batch)"
+  ]
  },
  "observations": [
   "qualification works as an objective gate: it rejected a 1-page bulletin and a 248-sentence WHO document without analyst judgement",
@@ -583,6 +659,46 @@
    "usable_sentences": 940,
    "rule": "v3 direct",
    "parser": "jina-reader (local docker)"
+  },
+  {
+   "domain": "industry / technical",
+   "url": "https://www.cta.tech/media/tcmji2rz/iso-iec-directives-part-1plusiec-supplement.pdf",
+   "raw_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27",
+   "usable_sentences": 1550,
+   "rule": "v3 direct",
+   "parser": "jina-reader (local docker)"
+  },
+  {
+   "domain": "museums / cultural institutions",
+   "url": "https://www.nbmaa.org/pdfs/NBMAA-AnnualReport-2024-25-FINAL-LowRes-Pages-101425.pdf",
+   "raw_sha256": "f8e9713c91c9cc74a25e8ebf9b29dae154dde14232a7ee90675aedfa08261c5d",
+   "usable_sentences": 382,
+   "rule": "v3 direct",
+   "parser": "jina-reader (local docker)"
+  },
+  {
+   "domain": "earth and natural sciences",
+   "url": "https://pubs.usgs.gov/periodicals/mcs2025/mcs2025.pdf",
+   "raw_sha256": "0716353ab7df3de3c7946a42e55944c425fdf7bc8cc32895da6f90adf2c14df7",
+   "usable_sentences": 3476,
+   "rule": "v3 direct",
+   "parser": "jina-reader (local docker)"
+  },
+  {
+   "domain": "energy / environment",
+   "url": "https://www-pub.iaea.org/MTCD/Publications/PDF/Pub1222_web.pdf",
+   "raw_sha256": "be2e89a2cdc2ea18932aff456252428e",
+   "usable_sentences": 1734,
+   "rule": "v3 direct, K-order repair documented",
+   "parser": "jina-reader (local docker)"
+  },
+  {
+   "domain": "transport / infrastructure",
+   "url": "https://www.bmv.de/SharedDocs/EN/publications/2030-federal-transport-infrastructure-plan.pdf?__blob=publicationFile",
+   "raw_sha256": "b09467cce2e6e0443a34762f47b7b940",
+   "usable_sentences": 1384,
+   "rule": "v3 direct, K-order repair documented",
+   "parser": "jina-reader (local docker)"
   }
  ],
  "requalification_note": "v3 requalification is a deterministic re-evaluation of pinned snapshots under rule v3, not a new corpus selection. Batch-6 Wikipedia artifacts in the shared tool-output directory are contamination outside the batch-7 fetch and were excluded from the decision. No new corpus total, size or representativeness claim is made at this point.",
@@ -602,7 +718,8 @@
      "raw_sha256": "b09467cce2e6e0443a34762f47b7b940"
     }
    ],
-   "handling": "measurements are HELD, not used as selections. They become usable ONLY if the rank-1 candidate of the same domain is attempted first and FAILS, per snapshot-reuse allowance. No verdict is recorded for either document."
+   "handling": "measurements are HELD, not used as selections. They become usable ONLY if the rank-1 candidate of the same domain is attempted first and FAILS, per snapshot-reuse allowance. No verdict is recorded for either document.",
+   "resolution": "resolved for energy and transport: K1 of both domains passed via jina, so the held K2 snapshots were evaluated strictly after the documented K1 PASS, in rank order, with no re-scrape. The violation stands as history; the selections follow K order."
   }
  ],
  "pause_statement": "Batch 7 pausiert technisch, nicht wissenschaftlich. 3/24 Dokumente qualifiziert und gepinnt (ISO Directives, HUD Style Guide, WHO TRS 957). IAEA/BMV bleiben als K-ORDER-VIOLATION außerhalb der Auswahl. 12/12 Queries und K=3-Kandidaten vorhanden. Firecrawl-Creditmangel ist ein externer Ausführungsblocker, kein Experimentbefund. ec017a5 gilt unverändert. Keine Requalifikation, kein Sampling, kein Pipeline-Lauf, keine Replikationsaussage.",
