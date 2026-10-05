@@ -1,0 +1,60 @@
+{
+ "audit_id": "batch7-section-parser-audit",
+ "date": "2026-10-05",
+ "scope": "18 of 23 selected documents; the 5 provenance-defect documents have no local snapshot and therefore cannot be section-audited at all",
+ "status": "AUDIT COMPLETE, PARSER RULE NOT FROZEN, NO CORPUS BUILT",
+ "method": "ATX heading census on the raw snapshot (before clean(), which deletes heading lines), four candidate rules compared, then manual inspection of CTA, USGS x2, FAO, ILO, IFRC, UNESCO and the British Museum control",
+
+ "self_correction": "The first audit pass reported zero headings for every document. That was wrong: it profiled clean() output, and clean() removes heading lines via re.sub(r'^[#{1,6}\\s+.*$', '', md, flags=re.M). The census was rerun on raw snapshots. A second error (ATX compiled without re.M, and sentences counted on uncleaned section text while the denominator came from cleaned text) was fixed in the same pass.",
+
+ "structural_finding": "Only heading levels h1 and h2 occur anywhere in the corpus; h3 and deeper never occur. Therefore the currently implemented rule (^## split) and the rule 'split at h2 or deeper' are byte-identical in behaviour on every document. The level choice alone cannot fix anything; the current parser fails for a different reason.",
+
+ "rule_comparison": {
+  "R1_h2_current": "6 of 18 documents collapse to a single section; 9 of 18 have one section holding more than 90 percent of the sentences. Under this rule the frozen 'stride per section' ratio degenerates into document-level sampling for half the corpus.",
+  "R2_any_level": "0 single-section documents, but 3 documents still have a section above 90 percent, because h1 carries the real section titles in those files.",
+  "R3_h2plus": "identical to R1 on this corpus (no h3 exists)",
+  "R4_shallowest_level": "0 single-section documents, 5 with a section above 90 percent"
+ },
+
+ "why_the_naive_fix_is_wrong": {
+  "warning_confirmed": "Replacing '^##' with '^#' is not safe. The h1 level mixes genuine section titles with artefacts, so simple level substitution would manufacture artificial sections.",
+  "evidence": [
+   "USGS MCS2025 h1 lines such as 'Abrasives Fluorspar Mercury Silicon Talc' are commodity index rows, not sections",
+   "USGS Program Book h2 line 'The U.S. Geological Survey (USGS) provides science for a' is a body sentence promoted to a heading by the PDF parser",
+   "ILO contains the h1 heading '1', i.e. a bare page number promoted to a heading",
+   "IFRC opens with 'ifrc.org March 2022' and 'Dedication Table of contents', i.e. cover and front matter",
+   "CTA h1s are the real clause structure ('Clause 1', '1 Organizational structure and responsibilities'), while its h2s are only 45 in number"]
+ },
+
+ "artefact_census": {
+  "total_atx_headings": 1690,
+  "numeric_only": 284,
+  "cover_artifact": 75,
+  "toc_word": 20,
+  "very_long_likely_body": 101,
+  "artefact_share": "roughly 28 percent of all headings",
+  "worst_offenders": {"labour_k4_ilo_labour_standards_guide": 257,
+                      "geo_k1_usgs_programbook": 36,
+                      "io_k8_ifrc_mhpss_evaluation": 35,
+                      "industry_k2_cta_directives": 22}
+ },
+
+ "candidate_rule_for_approval": {
+  "description": "Sections are the split points of the raw snapshot at ATX headings, after removing heading artefacts by testable syntactic predicates: numeric-only headings, headings that are exactly 'contents' or 'table of contents', headings containing a copyright or URL marker, and headings longer than 140 characters. The split level is the shallowest level that still has surviving headings. If fewer than 2 sections survive, the document is recorded as DEGENERATE and sampled at document level, visibly and not silently.",
+  "artefact_predicates_are": "purely syntactic and character-level, no semantic judgement about whether something 'really' is a section",
+  "measured_result": "17 of 18 auditable documents become genuinely sectioned; 1 document (transport_k1_kytc_acfr) is DEGENERATE because its single heading is itself an artefact",
+  "all_resolve_to": "h1",
+  "not_yet_frozen": true
+ },
+
+ "residual_risk": "The candidate rule is validated on 18 of 23 documents only. WHO TRS 957, IAEA, BMV and the HUD style guide have no local snapshot, so the frozen rule would be applied to them without having been audited on them; their heading structure is unknown.",
+
+ "no_interpretation_after_sampling": "Once the rule is frozen and the corpus is built, no section interpretation will be performed against the generated samples.",
+
+ "actions_not_taken": [
+  "no parser rule frozen",
+  "no corpus built",
+  "no N=80 sample drawn",
+  "no document re-fetched",
+  "no heading data inspected for selection purposes"]
+}
