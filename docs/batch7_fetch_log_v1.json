@@ -306,24 +306,22 @@
     {
      "rank": 1,
      "url": "https://www.sustainability.gov/pdfs/EO_14057_Implementing_Instructions.pdf",
-     "fetch": "not attempted",
-     "verdict": "pending"
-    },
-    {
-     "rank": 2,
-     "url": "https://www-pub.iaea.org/MTCD/Publications/PDF/Pub1222_web.pdf",
-     "fetch": "not attempted",
-     "verdict": "pending"
-    },
-    {
-     "rank": 3,
-     "url": "https://iea.blob.core.windows.net/assets/deebef5d-0c34-4539-9d0c-10b13d840027/NetZeroby2050-ARoadmapfortheGlobalEnergySector_CORR.pdf",
-     "fetch": "not attempted",
-     "verdict": "pending"
+     "fetch": "ok via local jina-reader (docker, h2c)",
+     "v3_requalification": "PASS",
+     "requalification_reason": "639 usable sentences recomputed from the pinned jina snapshot (>= 300); document type mechanically derived from URL/title (federal implementing instructions PDF); no section gate under v3",
+     "usable_sentences_v3": 639,
+     "raw_sha256": "176d093d10dbabf944a2bbdbd7470c4ebafdb36b7710f6784d66e09a8d3d672b",
+     "snapshot": "docs/batch7_snapshots/energy_k1_sustainability_eo14057.md",
+     "parser": "jina-reader (local docker)"
     }
    ],
-   "selected": [],
-   "shortfall": "in progress"
+   "selected": [
+    "https://www.sustainability.gov/pdfs/EO_14057_Implementing_Instructions.pdf"
+   ],
+   "shortfall": "1 of 2 still needed",
+   "selected_sha256": [
+    "176d093d10dbabf944a2bbdbd7470c4ebafdb36b7710f6784d66e09a8d3d672b"
+   ]
   },
   {
    "domain": "transport / infrastructure",
@@ -331,24 +329,22 @@
     {
      "rank": 1,
      "url": "https://transportation.ky.gov/KPTIA/Financial%20Statements/FY%202025%20Annual%20Comprehensive%20Financial%20Report.pdf",
-     "fetch": "not attempted",
-     "verdict": "pending"
-    },
-    {
-     "rank": 2,
-     "url": "https://www.bmv.de/SharedDocs/EN/publications/2030-federal-transport-infrastructure-plan.pdf?__blob=publicationFile",
-     "fetch": "not attempted",
-     "verdict": "pending"
-    },
-    {
-     "rank": 3,
-     "url": "https://reason.org/wp-content/uploads/annual-surface-transportation-infrastructure-report-2025.pdf",
-     "fetch": "not attempted",
-     "verdict": "pending"
+     "fetch": "ok via local jina-reader (docker, h2c)",
+     "v3_requalification": "PASS",
+     "requalification_reason": "340 usable sentences recomputed from the pinned jina snapshot (>= 300); document type mechanically derived from URL/title (state transport authority financial report PDF); no section gate under v3",
+     "usable_sentences_v3": 340,
+     "raw_sha256": "caa0085bfd079bcac1814569409d6aff8456647d1926fd531714777ec1a944d7",
+     "snapshot": "docs/batch7_snapshots/transport_k1_kytc_acfr.md",
+     "parser": "jina-reader (local docker)"
     }
    ],
-   "selected": [],
-   "shortfall": "in progress"
+   "selected": [
+    "https://transportation.ky.gov/KPTIA/Financial%20Statements/FY%202025%20Annual%20Comprehensive%20Financial%20Report.pdf"
+   ],
+   "shortfall": "1 of 2 still needed",
+   "selected_sha256": [
+    "caa0085bfd079bcac1814569409d6aff8456647d1926fd531714777ec1a944d7"
+   ]
   },
   {
    "domain": "museums / cultural institutions",
@@ -502,11 +498,10 @@
   }
  ],
  "progress": {
-  "documents_selected": 3,
+  "documents_selected": 5,
   "documents_needed": 24,
   "domains_started": 6,
-  "domains_complete": 0,
-  "note": "3 pinned selections stand; 2 further measurements are held pending K-order repair"
+  "domains_complete": 0
  },
  "observations": [
   "qualification works as an objective gate: it rejected a 1-page bulletin and a 248-sentence WHO document without analyst judgement",
@@ -562,6 +557,22 @@
    "v2_verdict": "FAIL",
    "v3_requalification": "PASS",
    "reason": "sections_gate_removed"
+  },
+  {
+   "domain": "energy / environment",
+   "url": "https://www.sustainability.gov/pdfs/EO_14057_Implementing_Instructions.pdf",
+   "raw_sha256": "176d093d10dbabf944a2bbdbd7470c4ebafdb36b7710f6784d66e09a8d3d672b",
+   "usable_sentences": 639,
+   "rule": "v3 direct",
+   "parser": "jina-reader (local docker)"
+  },
+  {
+   "domain": "transport / infrastructure",
+   "url": "https://transportation.ky.gov/KPTIA/Financial%20Statements/FY%202025%20Annual%20Comprehensive%20Financial%20Report.pdf",
+   "raw_sha256": "caa0085bfd079bcac1814569409d6aff8456647d1926fd531714777ec1a944d7",
+   "usable_sentences": 340,
+   "rule": "v3 direct",
+   "parser": "jina-reader (local docker)"
   }
  ],
  "requalification_note": "v3 requalification is a deterministic re-evaluation of pinned snapshots under rule v3, not a new corpus selection. Batch-6 Wikipedia artifacts in the shared tool-output directory are contamination outside the batch-7 fetch and were excluded from the decision. No new corpus total, size or representativeness claim is made at this point.",
@@ -584,7 +595,6 @@
    "handling": "measurements are HELD, not used as selections. They become usable ONLY if the rank-1 candidate of the same domain is attempted first and FAILS, per snapshot-reuse allowance. No verdict is recorded for either document."
   }
  ],
- "credit_stop": "firecrawl account out of credits during batch-7 fetch; 2 further scrapes (museums, science rank 1) failed with insufficient-credits errors and were NOT recorded as document verdicts; resume needs a funded account",
  "pause_statement": "Batch 7 pausiert technisch, nicht wissenschaftlich. 3/24 Dokumente qualifiziert und gepinnt (ISO Directives, HUD Style Guide, WHO TRS 957). IAEA/BMV bleiben als K-ORDER-VIOLATION außerhalb der Auswahl. 12/12 Queries und K=3-Kandidaten vorhanden. Firecrawl-Creditmangel ist ein externer Ausführungsblocker, kein Experimentbefund. ec017a5 gilt unverändert. Keine Requalifikation, kein Sampling, kein Pipeline-Lauf, keine Replikationsaussage.",
  "resume_order": [
   "energy K1 sustainability.gov first, K2 only on K1 FAIL",
@@ -601,5 +611,7 @@
   "no analysis of the 3 pinned documents (not a mini-corpus)",
   "no silence inspection before annotation",
   "no rule change"
- ]
+ ],
+ "parser_mix_open_question": "3 pinned documents were fetched via firecrawl (ISO Directives, HUD Style Guide, WHO TRS 957); new fetches use the local jina-reader. The v3 rule names no parser, and the parser is recorded per document, but a mixed-parser corpus adds extraction variance. Options: (a) keep both with per-document parser provenance, (b) re-fetch the 3 firecrawl documents via jina and re-measure (their firecrawl snapshots stay in history; pins would change with documentation). Decision required before corpus assembly.",
+ "fetch_backend": "local jina-reader (docker jina-reader, h2c prior knowledge) since the firecrawl credit stop; no API credits consumed"
 }
