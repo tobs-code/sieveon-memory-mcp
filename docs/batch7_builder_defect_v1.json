@@ -1,0 +1,38 @@
+{
+ "finding_id": "batch7-builder-doc-sentence-guard",
+ "date": "2026-10-05",
+ "component": "scripts/build_batch7_corpus.py",
+ "pre_correction_value": "MIN_DOC_SENTENCES = 1200",
+ "post_correction_value": "MIN_DOC_SENTENCES = 300",
+ "classification": "implementation defect, not a design change",
+ "finding": (
+  "MIN_DOC_SENTENCES was 1200, inconsistent with the frozen Batch 7 "
+  "qualification criterion of >=300 usable sentences (docs/batch7_source_"
+  "selection_v3.json). Left as it was, the builder acted as an unregistered "
+  "second selection stage: 15 of the 23 selected documents fall between 337 "
+  "and 1098 usable sentences and would have been silently discarded, yielding "
+  "an 8-document corpus instead of the declared 23."),
+ "why_it_matters": (
+  "The declared sample would no longer be the analysed sample, and the "
+  "document distribution would be silently reshaped. This is precisely the "
+  "silent rule shift between selection and build that Batch 7 exists to "
+  "detect, so the discrepancy was caught before any corpus was generated."),
+ "remediation": (
+  "The builder was corrected to implement the frozen criterion. No "
+  "qualification rule changed, no threshold moved, no document was selected, "
+  "reordered, replaced or dropped, and no research question was touched. "
+  "Education remains frozen at 1 of 2."),
+ "guards_added": [
+  "assert len(selected_documents) == 23, else abort before building",
+  "assert every selected document has usable_sentences >= 300, else abort",
+  "both guards raise SystemExit, so no partial corpus can be produced"],
+ "prior_value_retained": (
+  "The 1200 threshold is not deleted from the record; it is documented here "
+  "and in the module docstring and constant name as an implementation "
+  "finding."),
+ "corpus_generated_under_defect": false,
+ "verification": [
+  "scripts/trackb_regression.py 8/8 GREEN",
+  "scripts/consistency_audit.py 20/20 exit 0",
+  "builder guard verified to abort on a 22-document input"]
+}

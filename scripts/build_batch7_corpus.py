@@ -4,6 +4,14 @@ Section-wise sampling: clean text, split into top-level sections, drop
 structural sections, then apply the batch-6 stride formula PER SECTION.
 No per-document sentence cap and no keyword criterion. Mechanical filters only.
 Corpus digest is computed before any pipeline run.
+
+Implementation defect corrected before any corpus was generated:
+MIN_DOC_SENTENCES was 1200, which contradicted the frozen Batch 7
+qualification criterion of >=300 usable sentences. Left unchanged it acted as
+an unregistered second selection stage that would have silently discarded 15
+of the 23 selected documents. The builder now implements the frozen
+criterion instead; no qualification rule, threshold or selection changed.
+See docs/batch7_builder_defect_v1.json.
 """
 
 import hashlib
@@ -37,7 +45,12 @@ ABBREV = {"mr", "mrs", "ms", "dr", "st", "jr", "sr", "vs", "etc",
 
 MIN_SENTENCES_PER_SECTION = 3
 MIN_SECTION_SENTENCES = 2
-MIN_DOC_SENTENCES = 1200
+# Implements the frozen Batch 7 qualification criterion (>=300 usable
+# sentences). The previous value of 1200 was an unregistered second selection
+# stage; it is recorded, not silently deleted.
+MIN_DOC_SENTENCES = 300
+QUALIFYING_SENTENCES = 300
+EXPECTED_SELECTED_DOCUMENTS = 23
 
 
 def clean(md: str) -> str:
@@ -118,13 +131,39 @@ def dedup(seq):
     return out
 
 
+def audit_selection(sel):
+    """Hard guard: the corpus must contain exactly the documents that were
+    selected under the frozen qualification rule. Raises on any divergence so
+    that a selection-to-build discrepancy can never pass silently."""
+    if len(sel) != EXPECTED_SELECTED_DOCUMENTS:
+        raise SystemExit(
+            f"selection guard: expected {EXPECTED_SELECTED_DOCUMENTS} selected "
+            f"documents, found {len(sel)}. Refusing to build: the corpus must "
+            f"implement the frozen selection, not a subset of it.")
+    problems = []
+    for d in sel:
+        name = d.get("snapshot") or d.get("url")
+        usable = d.get("usable_sentences")
+        if not isinstance(usable, int):
+            problems.append(f"{name}: no usable_sentences recorded")
+        elif usable < QUALIFYING_SENTENCES:
+            problems.append(
+                f"{name}: {usable} usable sentences is below the frozen "
+                f"qualification criterion of {QUALIFYING_SENTENCES}")
+    if problems:
+        raise SystemExit("qualification guard failed:\n  " + "\n  ".join(problems))
+    print(f"guards OK: {len(sel)} documents, all >= {QUALIFYING_SENTENCES} "
+          f"usable sentences")
+
+
 def main() -> int:
     log = json.loads(
         (ROOT / "docs" / "batch7_fetch_log_v1.json").read_text(encoding="utf-8"))
-    sel = [d for d in log["domains"] if d.get("selected")]
+    sel = list(log.get("selected_documents", []))
     print("selected documents:", len(sel))
     if not sel:
         raise SystemExit("no documents selected yet")
+    audit_selection(sel)
     return 0
 
 
