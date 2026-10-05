@@ -1,6 +1,10 @@
 """Linear-time markdown-link stripping for the Batch 7 text cleaner.
 
+CLEANING_VERSION identifies the text cleaner used for every Batch 7
+measurement and must be recorded alongside each snapshot in the fetch log.
+
 The legacy pattern
+
 
     !?\\[((?:[^\\[\\]]|\\([^()]*\\))*)\\]\\s*\\((?:[^()\\"]|\\([^()]*\\)|"[^"]*")*\\)
 
@@ -14,6 +18,8 @@ the usable-sentence count frozen in docs/batch7_fetch_log_v1.json for all 16
 previously measured snapshots, with zero mismatches. The frozen verdicts are
 therefore unchanged and no selection rule was altered.
 """
+
+CLEANING_VERSION = "batch7-textclean-on-v1"
 
 
 def _strip_links_once(md: str) -> str:

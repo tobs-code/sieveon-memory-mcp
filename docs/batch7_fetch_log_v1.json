@@ -197,14 +197,31 @@
      "url": "https://budget.delaware.gov/accounting-manual/documents/chapter01.pdf?ver=0103",
      "fetch": "not attempted",
      "verdict": "pending"
+    },
+    {
+     "raw_sentences": 1159,
+     "usable_sentences": 792,
+     "raw_bytes": 158326,
+     "raw_sha256": "ae7ae61a1fccd32fd1e32301967f5987d19d52518ecda92ceba1c4d04aae782f",
+     "snapshot": "docs/batch7_snapshots/pubadmin_k4_ks_policy_manual.md",
+     "fetch_date": "2026-10-05",
+     "cleaning_version": "batch7-textclean-on-v1",
+     "parser": "jina-reader (local docker, h2c)",
+     "url": "https://admin.ks.gov/media/cms/Policy_and_Procedure_Manual_e7a759b160238.pdf",
+     "rank": "new-batch K1",
+     "fetch": "ok via jina (HTTP 200)",
+     "verdict": "PASS",
+     "reason": null
     }
    ],
    "selected": [
-    "https://www.huduser.gov/portal/About/style-guide-for-reports.pdf"
+    "https://www.huduser.gov/portal/About/style-guide-for-reports.pdf",
+    "https://admin.ks.gov/media/cms/Policy_and_Procedure_Manual_e7a759b160238.pdf"
    ],
-   "shortfall": "1 of 2; all K exhausted, next K batch required",
+   "shortfall": "COMPLETE (2/2)",
    "selected_sha256": [
-    "393f8e122f8fbbb83cfaaa7f7b68d4d321983511a9138ebed207b7f906809fa0"
+    "393f8e122f8fbbb83cfaaa7f7b68d4d321983511a9138ebed207b7f906809fa0",
+    "ae7ae61a1fccd32fd1e32301967f5987d19d52518ecda92ceba1c4d04aae782f"
    ]
   },
   {
@@ -266,14 +283,46 @@
      "url": "https://openknowledge.fao.org/server/api/core/bitstreams/2c6bd7b4-181e-4117-a90d-32a1bda8b27c/content",
      "fetch": "not attempted",
      "verdict": "pending"
+    },
+    {
+     "raw_sentences": 358,
+     "usable_sentences": 285,
+     "raw_bytes": 106288,
+     "raw_sha256": "c20b695742352e183508418152c753417f83096e96df808b14aa01af6e656dd6",
+     "snapshot": "docs/batch7_snapshots/health_k4_fao_food_agri_guidelines.md",
+     "fetch_date": "2026-10-05",
+     "cleaning_version": "batch7-textclean-on-v1",
+     "parser": "jina-reader (local docker, h2c)",
+     "url": "https://openknowledge.fao.org/server/api/core/bitstreams/d7e5b4ae-80b6-4173-9adf-6f9f845be8a1/content",
+     "rank": "new-batch K1",
+     "fetch": "ok via jina (HTTP 200)",
+     "verdict": "FAIL",
+     "reason": "285 usable sentences below 300"
+    },
+    {
+     "raw_sentences": 436,
+     "usable_sentences": 369,
+     "raw_bytes": 86851,
+     "raw_sha256": "505a9b9be37ca91b6c97b1748e1677e38795eca271a24b258e2b1d345d7f08bd",
+     "snapshot": "docs/batch7_snapshots/health_k5_fao_climate_change.md",
+     "fetch_date": "2026-10-05",
+     "cleaning_version": "batch7-textclean-on-v1",
+     "parser": "jina-reader (local docker, h2c)",
+     "url": "https://climate-diplomacy.org/sites/default/files/2020-10/FAO%27s%20Work%20on%20Climate%20Change.pdf",
+     "rank": "new-batch K2",
+     "fetch": "ok via jina (HTTP 200)",
+     "verdict": "PASS",
+     "reason": null
     }
    ],
    "selected": [
-    "https://syntheticdrugs.unodc.org/uploads/syntheticdrugs/res/library/access_html/WHO_good_distribution_practices_for_pharmaceutical_products_WHO_Technical_Report_Series_No._957.pdf"
+    "https://syntheticdrugs.unodc.org/uploads/syntheticdrugs/res/library/access_html/WHO_good_distribution_practices_for_pharmaceutical_products_WHO_Technical_Report_Series_No._957.pdf",
+    "https://climate-diplomacy.org/sites/default/files/2020-10/FAO%27s%20Work%20on%20Climate%20Change.pdf"
    ],
-   "shortfall": "1 of 2; all K exhausted, next K batch required",
+   "shortfall": "COMPLETE (2/2)",
    "selected_sha256": [
-    "5f8edeafbd1261aa4e4192dbe2e3d7748eeced83815e09649b6dc91008896539"
+    "5f8edeafbd1261aa4e4192dbe2e3d7748eeced83815e09649b6dc91008896539",
+    "505a9b9be37ca91b6c97b1748e1677e38795eca271a24b258e2b1d345d7f08bd"
    ],
    "domain_fidelity_note": "The new-K batch query returned FAO food-system documents; food safety and nutrition sit inside the public-health remit (WHO maintains a food safety programme), so the batch is used as returned. The query wording is recorded verbatim; no post-hoc query rewrite was performed."
   },
@@ -505,10 +554,62 @@
      "url": "https://sciencepolicy.hsites.harvard.edu/file_url/238",
      "fetch": "not attempted",
      "verdict": "pending"
+    },
+    {
+     "raw_sentences": 1682,
+     "usable_sentences": 515,
+     "raw_bytes": 85712,
+     "raw_sha256": "763eb5088daaf43557efea1fa40a522ac5c8ef2e5203e7be51b56e118d2c909d",
+     "snapshot": "docs/batch7_snapshots/science_k4_nas_annual_1906.md",
+     "fetch_date": "2026-10-05",
+     "cleaning_version": "batch7-textclean-on-v1",
+     "parser": "jina-reader (local docker, h2c)",
+     "url": "https://www.govinfo.gov/content/pkg/SERIALSET-05072_00_00-076-0308-0000/pdf/SERIALSET-05072_00_00-076-0308-0000.pdf",
+     "rank": "new-batch K1",
+     "fetch": "ok via jina (HTTP 200)",
+     "verdict": "PASS",
+     "reason": null
+    },
+    {
+     "raw_sentences": 5,
+     "usable_sentences": 5,
+     "raw_bytes": 646,
+     "raw_sha256": "35b9c13b0e46925ee2c357460994b137071172ff76f01dbf28b13044a0057c93",
+     "snapshot": "docs/batch7_snapshots/science_k5_jstor_nas.md",
+     "fetch_date": "2026-10-05",
+     "cleaning_version": "batch7-textclean-on-v1",
+     "parser": "jina-reader (local docker, h2c)",
+     "url": "https://www.jstor.org/stable/41503",
+     "rank": "new-batch K2",
+     "fetch": "ok via jina (HTTP 200)",
+     "verdict": "FAIL",
+     "reason": "5 usable sentences below 300"
+    },
+    {
+     "raw_sentences": 373,
+     "usable_sentences": 337,
+     "raw_bytes": 52082,
+     "raw_sha256": "fe3ede671d26df3327cca6c570ed585c232fd3728c76192cecec1f768cafe38a",
+     "snapshot": "docs/batch7_snapshots/science_k6_harvard_nasem.md",
+     "fetch_date": "2026-10-05",
+     "cleaning_version": "batch7-textclean-on-v1",
+     "parser": "jina-reader (local docker, h2c)",
+     "url": "https://sciencepolicy.hsites.harvard.edu/file_url/238",
+     "rank": "new-batch K3",
+     "fetch": "ok via jina (HTTP 200)",
+     "verdict": "PASS",
+     "reason": null
     }
    ],
-   "selected": [],
-   "shortfall": "0 of 2; all K exhausted, next K batch required"
+   "selected": [
+    "https://www.govinfo.gov/content/pkg/SERIALSET-05072_00_00-076-0308-0000/pdf/SERIALSET-05072_00_00-076-0308-0000.pdf",
+    "https://sciencepolicy.hsites.harvard.edu/file_url/238"
+   ],
+   "shortfall": "COMPLETE (2/2)",
+   "selected_sha256": [
+    "763eb5088daaf43557efea1fa40a522ac5c8ef2e5203e7be51b56e118d2c909d",
+    "fe3ede671d26df3327cca6c570ed585c232fd3728c76192cecec1f768cafe38a"
+   ]
   },
   {
    "domain": "education / teaching materials",
@@ -553,10 +654,55 @@
      "url": "https://observatorioeducacion.org/sites/default/files/oecd-education-2030-position-paper.pdf",
      "fetch": "not attempted",
      "verdict": "pending"
+    },
+    {
+     "raw_sentences": 88,
+     "usable_sentences": 75,
+     "raw_bytes": 20480,
+     "raw_sha256": "96ad7e7e9a6e8493c7ffe269ec4fa5d5f12152d2010fb434c5b58766ee470ed8",
+     "snapshot": "docs/batch7_snapshots/education_k4_oecd_edu_brochure.md",
+     "fetch_date": "2026-10-05",
+     "cleaning_version": "batch7-textclean-on-v1",
+     "parser": "jina-reader (local docker, h2c)",
+     "url": "https://www.oecd.org/content/dam/oecd/en/about/directorates/EDU/EDU-brochure-2025-26_final.pdf",
+     "rank": "new-batch K1",
+     "fetch": "ok via jina (HTTP 200)",
+     "verdict": "FAIL",
+     "reason": "75 usable sentences below 300"
+    },
+    {
+     "raw_sentences": 3,
+     "usable_sentences": 3,
+     "raw_bytes": 667,
+     "raw_sha256": "84ddf24dbefa1b29ef1188513db19357ea4222846c4d1d12d64b034c4eff5c8b",
+     "snapshot": "docs/batch7_snapshots/education_k5_oecd_digital_transformation.md",
+     "fetch_date": "2026-10-05",
+     "cleaning_version": "batch7-textclean-on-v1",
+     "parser": "jina-reader (local docker, h2c)",
+     "url": "https://read.oecd-ilibrary.org/content/dam/oecd/en/publications/reports/2025/03/policies-for-the-digital-transformation-of-school-education_aee58b2f/464dab4d-en.pdf",
+     "rank": "new-batch K2",
+     "fetch": "ok via jina (HTTP 200)",
+     "verdict": "FAIL",
+     "reason": "3 usable sentences below 300"
+    },
+    {
+     "raw_sentences": 334,
+     "usable_sentences": 217,
+     "raw_bytes": 68721,
+     "raw_sha256": "f0646f0cccef9a8eedec853f59a78c1d26facec93f8aa36a649811d699a18940",
+     "snapshot": "docs/batch7_snapshots/education_k6_oecd_edu2030.md",
+     "fetch_date": "2026-10-05",
+     "cleaning_version": "batch7-textclean-on-v1",
+     "parser": "jina-reader (local docker, h2c)",
+     "url": "https://observatorioeducacion.org/sites/default/files/oecd-education-2030-position-paper.pdf",
+     "rank": "new-batch K3",
+     "fetch": "ok via jina (HTTP 200)",
+     "verdict": "FAIL",
+     "reason": "217 usable sentences below 300"
     }
    ],
    "selected": [],
-   "shortfall": "0 of 2; all K exhausted (K1 fetch-blocked), next K batch required"
+   "shortfall": "0 of 2; new K batch exhausted with all three candidates below 300 usable sentences (75 / 3 / 217); documented shortfall, next K batch required"
   },
   {
    "domain": "earth and natural sciences",
@@ -634,10 +780,47 @@
      "url": "https://www.ilawnetwork.com/wp-content/uploads/2024/03/ILAW-Applying-International-Labour-Standards-to-the-Informal-Economy-Intro.pdf",
      "fetch": "not attempted",
      "verdict": "pending"
+    },
+    {
+     "raw_sentences": 2193,
+     "usable_sentences": 1447,
+     "raw_bytes": 506550,
+     "raw_sha256": "50e9ece3344c62ac001a0b0671537bd91caeb8c36a0c56a9a0b773734d6f7c79",
+     "snapshot": "docs/batch7_snapshots/labour_k4_ilo_labour_standards_guide.md",
+     "fetch_date": "2026-10-05",
+     "cleaning_version": "batch7-textclean-on-v1",
+     "parser": "jina-reader (local docker, h2c)",
+     "url": "https://www.ilo.org/media/330471/download",
+     "rank": "new-batch K1",
+     "fetch": "ok via jina (HTTP 200)",
+     "verdict": "PASS",
+     "reason": null
+    },
+    {
+     "raw_sentences": 732,
+     "usable_sentences": 662,
+     "raw_bytes": 146918,
+     "raw_sha256": "6790d66cb0ab45a92155cc0dd03551cef11624a1718123b03f07bb810b55bf02",
+     "snapshot": "docs/batch7_snapshots/labour_k5_iba_ils_global_economy.md",
+     "fetch_date": "2026-10-05",
+     "cleaning_version": "batch7-textclean-on-v1",
+     "parser": "jina-reader (local docker, h2c)",
+     "url": "https://www.ibanet.org/MediaHandler?id=363b3171-0afc-489e-812b-3de2460bce67",
+     "rank": "new-batch K2",
+     "fetch": "ok via jina (HTTP 200)",
+     "verdict": "PASS",
+     "reason": null
     }
    ],
-   "selected": [],
-   "shortfall": "0 of 2; all K exhausted with the same mechanical exclusion, next K batch required (different source family)"
+   "selected": [
+    "https://www.ilo.org/media/330471/download",
+    "https://www.ibanet.org/MediaHandler?id=363b3171-0afc-489e-812b-3de2460bce67"
+   ],
+   "shortfall": "COMPLETE (2/2)",
+   "selected_sha256": [
+    "50e9ece3344c62ac001a0b0671537bd91caeb8c36a0c56a9a0b773734d6f7c79",
+    "6790d66cb0ab45a92155cc0dd03551cef11624a1718123b03f07bb810b55bf02"
+   ]
   },
   {
    "domain": "international organisations / NGOs",
@@ -685,22 +868,82 @@
      "url": "https://digitallibrary.un.org/record/497441/files/DP_2003_12-EN.pdf",
      "fetch": "not attempted",
      "verdict": "pending"
+    },
+    {
+     "raw_sentences": 205,
+     "usable_sentences": 171,
+     "raw_bytes": 54851,
+     "raw_sha256": "b862bedb9f6cffe9a5e3b6b1020bceded5547b077aa97262341b3d4857b43745",
+     "snapshot": "docs/batch7_snapshots/io_k4_undp_annual_2023.md",
+     "fetch_date": "2026-10-05",
+     "cleaning_version": "batch7-textclean-on-v1",
+     "parser": "jina-reader (local docker, h2c)",
+     "url": "https://www.undp.org/sites/g/files/zskgke326/files/2024-03/annual-report-2023.pdf",
+     "rank": "new-batch K1",
+     "fetch": "ok via jina (HTTP 200)",
+     "verdict": "FAIL",
+     "reason": "171 usable sentences below 300"
+    },
+    {
+     "raw_sentences": 227,
+     "usable_sentences": 132,
+     "raw_bytes": 54378,
+     "raw_sha256": "f27140c3e03fcd52f104b722e89b38a0267c0d21aa4681f371d163ff504bb105",
+     "snapshot": "docs/batch7_snapshots/io_k5_undp_discussion_paper.md",
+     "fetch_date": "2026-10-05",
+     "cleaning_version": "batch7-textclean-on-v1",
+     "parser": "jina-reader (local docker, h2c)",
+     "url": "https://effectivecooperation.org/wp-content/uploads/2015/12/UNDP-Discussion-Paper_Final.pdf",
+     "rank": "new-batch K2",
+     "fetch": "ok via jina (HTTP 200)",
+     "verdict": "FAIL",
+     "reason": "132 usable sentences below 300"
+    },
+    {
+     "raw_sentences": 2,
+     "usable_sentences": 1,
+     "raw_bytes": 179,
+     "raw_sha256": "89394c4811eec8b3e50e421ab8a34fd00cc87a379bada90a9624ad2f10ca6945",
+     "snapshot": "docs/batch7_snapshots/io_k6_undp_board_2003.md",
+     "fetch_date": "2026-10-05",
+     "cleaning_version": "batch7-textclean-on-v1",
+     "parser": "jina-reader (local docker, h2c)",
+     "url": "https://digitallibrary.un.org/record/497441/files/DP_2003_12-EN.pdf",
+     "rank": "new-batch K3",
+     "fetch": "ok via jina (HTTP 200)",
+     "verdict": "FAIL",
+     "reason": "1 usable sentences below 300"
     }
    ],
    "selected": [
     "https://apps.who.int/gb/ebwha/pdf_files/WHA78/A78_6-en.pdf"
    ],
-   "shortfall": "1 of 2; all K exhausted, next K batch required",
+   "shortfall": "1 of 2; new K batch exhausted with all three candidates below 300 usable sentences (171 / 132 / 1); documented shortfall, next K batch required",
    "selected_sha256": [
     "8c09cabcb8f81d80d258d1b223375618dc4ffa9111a5986c72f8ec282491dbdd"
    ]
   }
  ],
  "progress": {
-  "documents_selected": 15,
+  "documents_selected": 21,
   "documents_needed": 24,
-  "domains_complete": 6,
-  "note": "agriculture COMPLETE 2/2 (FSRP 499 + FARM-D/FAO 5674). Missing second documents: public admin, health, labour, science, education, IO/NGO; one new K batch is logged for each, scrape in K order"
+  "domains_complete": 9,
+  "domains_complete_names": [
+   "public administration / government reports",
+   "health / public health",
+   "scientific institutions / research organisations",
+   "industry / technical",
+   "energy / environment",
+   "transport / infrastructure",
+   "museums / cultural institutions",
+   "earth and natural sciences",
+   "economy / labour market"
+  ],
+  "domains_open": {
+   "education / teaching materials": "0 of 2",
+   "international organisations / NGOs": "1 of 2"
+  },
+  "note": "new K batch round executed: 14 scrapes in K order, 6 PASS. 4 planned scrapes dropped because their domains reached 2/2 before their K position was reached. No re-evaluation of previously rejected candidates. education and IO/NGO remain open with documented shortfalls."
  },
  "observations": [
   "qualification works as an objective gate: it rejected a 1-page bulletin and a 248-sentence WHO document without analyst judgement",
@@ -739,14 +982,24 @@
    "url": "https://www.huduser.gov/portal/About/style-guide-for-reports.pdf",
    "raw_sha256": "393f8e122f8fbbb83cfaaa7f7b68d4d321983511a9138ebed207b7f906809fa0",
    "usable_sentences": 403,
-   "sections": 3
+   "sections": 3,
+   "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
+   "fetch_date": "unknown",
+   "parser": "firecrawl (credits, pinned earlier)",
+   "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
+   "sha_status": "full sha256 pinned"
   },
   {
    "domain": "industry / technical",
    "url": "https://boss.cen.eu/media/yypjl3mn/iso_iec_directives_part2.pdf",
    "raw_sha256": "5d4ba148b9938f91bbee1d3aa2fa41c0",
    "usable_sentences": 584,
-   "sections": 9
+   "sections": 9,
+   "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
+   "fetch_date": "unknown",
+   "parser": "firecrawl (credits, pinned earlier)",
+   "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
+   "sha_status": "TRUNCATED_IN_LOG_UNRESOLVABLE: only a 32-character prefix was recorded and no local snapshot exists to recompute the full digest; the prefix is preserved verbatim and no digest was invented. Binding therefore rests on URL + parser + recorded sentence count."
   },
   {
    "domain": "health / public health",
@@ -755,7 +1008,12 @@
    "usable_sentences": 2379,
    "v2_verdict": "FAIL",
    "v3_requalification": "PASS",
-   "reason": "sections_gate_removed"
+   "reason": "sections_gate_removed",
+   "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
+   "fetch_date": "unknown",
+   "parser": "firecrawl (credits, pinned earlier)",
+   "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
+   "sha_status": "full sha256 pinned"
   },
   {
    "domain": "energy / environment",
@@ -763,7 +1021,11 @@
    "raw_sha256": "176d093d10dbabf944a2bbdbd7470c4ebafdb36b7710f6784d66e09a8d3d672b",
    "usable_sentences": 639,
    "rule": "v3 direct",
-   "parser": "jina-reader (local docker)"
+   "parser": "jina-reader (local docker)",
+   "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
+   "fetch_date": "2026-10-05",
+   "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
+   "sha_status": "full sha256 pinned"
   },
   {
    "domain": "transport / infrastructure",
@@ -771,7 +1033,11 @@
    "raw_sha256": "caa0085bfd079bcac1814569409d6aff8456647d1926fd531714777ec1a944d7",
    "usable_sentences": 340,
    "rule": "v3 direct",
-   "parser": "jina-reader (local docker)"
+   "parser": "jina-reader (local docker)",
+   "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
+   "fetch_date": "2026-10-05",
+   "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
+   "sha_status": "full sha256 pinned"
   },
   {
    "domain": "museums / cultural institutions",
@@ -779,7 +1045,11 @@
    "raw_sha256": "30a632b548edbc333aef7b6dc8c6c921144994ce8eb64365db6b577749675e0c",
    "usable_sentences": 1098,
    "rule": "v3 direct",
-   "parser": "jina-reader (local docker)"
+   "parser": "jina-reader (local docker)",
+   "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
+   "fetch_date": "2026-10-05",
+   "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
+   "sha_status": "full sha256 pinned"
   },
   {
    "domain": "earth and natural sciences",
@@ -787,7 +1057,11 @@
    "raw_sha256": "cf8c90c8148f24b301ead7fbf42ea158006571883892564864dc6e1fa11944f5",
    "usable_sentences": 1494,
    "rule": "v3 direct",
-   "parser": "jina-reader (local docker)"
+   "parser": "jina-reader (local docker)",
+   "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
+   "fetch_date": "2026-10-05",
+   "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
+   "sha_status": "full sha256 pinned"
   },
   {
    "domain": "international organisations / NGOs",
@@ -795,7 +1069,11 @@
    "raw_sha256": "8c09cabcb8f81d80d258d1b223375618dc4ffa9111a5986c72f8ec282491dbdd",
    "usable_sentences": 940,
    "rule": "v3 direct",
-   "parser": "jina-reader (local docker)"
+   "parser": "jina-reader (local docker)",
+   "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
+   "fetch_date": "2026-10-05",
+   "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
+   "sha_status": "full sha256 pinned"
   },
   {
    "domain": "industry / technical",
@@ -803,7 +1081,11 @@
    "raw_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27",
    "usable_sentences": 1550,
    "rule": "v3 direct",
-   "parser": "jina-reader (local docker)"
+   "parser": "jina-reader (local docker)",
+   "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
+   "fetch_date": "2026-10-05",
+   "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
+   "sha_status": "full sha256 pinned"
   },
   {
    "domain": "museums / cultural institutions",
@@ -811,7 +1093,11 @@
    "raw_sha256": "f8e9713c91c9cc74a25e8ebf9b29dae154dde14232a7ee90675aedfa08261c5d",
    "usable_sentences": 382,
    "rule": "v3 direct",
-   "parser": "jina-reader (local docker)"
+   "parser": "jina-reader (local docker)",
+   "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
+   "fetch_date": "2026-10-05",
+   "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
+   "sha_status": "full sha256 pinned"
   },
   {
    "domain": "earth and natural sciences",
@@ -819,7 +1105,11 @@
    "raw_sha256": "0716353ab7df3de3c7946a42e55944c425fdf7bc8cc32895da6f90adf2c14df7",
    "usable_sentences": 3476,
    "rule": "v3 direct",
-   "parser": "jina-reader (local docker)"
+   "parser": "jina-reader (local docker)",
+   "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
+   "fetch_date": "2026-10-05",
+   "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
+   "sha_status": "full sha256 pinned"
   },
   {
    "domain": "energy / environment",
@@ -827,7 +1117,11 @@
    "raw_sha256": "be2e89a2cdc2ea18932aff456252428e",
    "usable_sentences": 1734,
    "rule": "v3 direct, K-order repair documented",
-   "parser": "jina-reader (local docker)"
+   "parser": "jina-reader (local docker)",
+   "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
+   "fetch_date": "unknown",
+   "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
+   "sha_status": "TRUNCATED_IN_LOG_UNRESOLVABLE: only a 32-character prefix was recorded and no local snapshot exists to recompute the full digest; the prefix is preserved verbatim and no digest was invented. Binding therefore rests on URL + parser + recorded sentence count."
   },
   {
    "domain": "transport / infrastructure",
@@ -835,7 +1129,11 @@
    "raw_sha256": "b09467cce2e6e0443a34762f47b7b940",
    "usable_sentences": 1384,
    "rule": "v3 direct, K-order repair documented",
-   "parser": "jina-reader (local docker)"
+   "parser": "jina-reader (local docker)",
+   "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
+   "fetch_date": "unknown",
+   "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
+   "sha_status": "TRUNCATED_IN_LOG_UNRESOLVABLE: only a 32-character prefix was recorded and no local snapshot exists to recompute the full digest; the prefix is preserved verbatim and no digest was invented. Binding therefore rests on URL + parser + recorded sentence count."
   },
   {
    "domain": "agriculture",
@@ -844,7 +1142,11 @@
    "usable_sentences": 499,
    "rule": "v3 direct",
    "parser": "jina-reader (local docker)",
-   "snapshot": "docs/batch7_snapshots/agriculture_k2_fsrp_manual.md"
+   "snapshot": "docs/batch7_snapshots/agriculture_k2_fsrp_manual.md",
+   "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
+   "fetch_date": "2026-10-05",
+   "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
+   "sha_status": "full sha256 pinned"
   },
   {
    "domain": "agriculture",
@@ -853,7 +1155,101 @@
    "snapshot": "docs/batch7_snapshots/agriculture_k3_farmd_manual.md",
    "usable_sentences": 5674,
    "rule": "v3 direct",
-   "parser": "jina-reader (local docker)"
+   "parser": "jina-reader (local docker)",
+   "cleaning_version": "legacy-clean-regex (numerically equivalent to batch7-textclean-on-v1, 16/16 reproduction on the measured snapshots)",
+   "fetch_date": "2026-10-05",
+   "provenance_note": "fetch date recovered from git history of the pinned snapshot; no value was invented",
+   "sha_status": "full sha256 pinned"
+  },
+  {
+   "domain": "public administration / government reports",
+   "url": "https://admin.ks.gov/media/cms/Policy_and_Procedure_Manual_e7a759b160238.pdf",
+   "raw_sha256": "ae7ae61a1fccd32fd1e32301967f5987d19d52518ecda92ceba1c4d04aae782f",
+   "snapshot": "docs/batch7_snapshots/pubadmin_k4_ks_policy_manual.md",
+   "raw_sentences": 1159,
+   "usable_sentences": 792,
+   "raw_bytes": 158326,
+   "fetch_date": "2026-10-05",
+   "cleaning_version": "batch7-textclean-on-v1",
+   "parser": "jina-reader (local docker, h2c)",
+   "rule": "v3 direct",
+   "k_position": "new-batch K1",
+   "sha_status": "full sha256 pinned"
+  },
+  {
+   "domain": "health / public health",
+   "url": "https://climate-diplomacy.org/sites/default/files/2020-10/FAO%27s%20Work%20on%20Climate%20Change.pdf",
+   "raw_sha256": "505a9b9be37ca91b6c97b1748e1677e38795eca271a24b258e2b1d345d7f08bd",
+   "snapshot": "docs/batch7_snapshots/health_k5_fao_climate_change.md",
+   "raw_sentences": 436,
+   "usable_sentences": 369,
+   "raw_bytes": 86851,
+   "fetch_date": "2026-10-05",
+   "cleaning_version": "batch7-textclean-on-v1",
+   "parser": "jina-reader (local docker, h2c)",
+   "rule": "v3 direct",
+   "k_position": "new-batch K2",
+   "sha_status": "full sha256 pinned"
+  },
+  {
+   "domain": "scientific institutions / research organisations",
+   "url": "https://www.govinfo.gov/content/pkg/SERIALSET-05072_00_00-076-0308-0000/pdf/SERIALSET-05072_00_00-076-0308-0000.pdf",
+   "raw_sha256": "763eb5088daaf43557efea1fa40a522ac5c8ef2e5203e7be51b56e118d2c909d",
+   "snapshot": "docs/batch7_snapshots/science_k4_nas_annual_1906.md",
+   "raw_sentences": 1682,
+   "usable_sentences": 515,
+   "raw_bytes": 85712,
+   "fetch_date": "2026-10-05",
+   "cleaning_version": "batch7-textclean-on-v1",
+   "parser": "jina-reader (local docker, h2c)",
+   "rule": "v3 direct",
+   "k_position": "new-batch K1",
+   "sha_status": "full sha256 pinned"
+  },
+  {
+   "domain": "scientific institutions / research organisations",
+   "url": "https://sciencepolicy.hsites.harvard.edu/file_url/238",
+   "raw_sha256": "fe3ede671d26df3327cca6c570ed585c232fd3728c76192cecec1f768cafe38a",
+   "snapshot": "docs/batch7_snapshots/science_k6_harvard_nasem.md",
+   "raw_sentences": 373,
+   "usable_sentences": 337,
+   "raw_bytes": 52082,
+   "fetch_date": "2026-10-05",
+   "cleaning_version": "batch7-textclean-on-v1",
+   "parser": "jina-reader (local docker, h2c)",
+   "rule": "v3 direct",
+   "k_position": "new-batch K3",
+   "sha_status": "full sha256 pinned"
+  },
+  {
+   "domain": "economy / labour market",
+   "url": "https://www.ilo.org/media/330471/download",
+   "raw_sha256": "50e9ece3344c62ac001a0b0671537bd91caeb8c36a0c56a9a0b773734d6f7c79",
+   "snapshot": "docs/batch7_snapshots/labour_k4_ilo_labour_standards_guide.md",
+   "raw_sentences": 2193,
+   "usable_sentences": 1447,
+   "raw_bytes": 506550,
+   "fetch_date": "2026-10-05",
+   "cleaning_version": "batch7-textclean-on-v1",
+   "parser": "jina-reader (local docker, h2c)",
+   "rule": "v3 direct",
+   "k_position": "new-batch K1",
+   "sha_status": "full sha256 pinned"
+  },
+  {
+   "domain": "economy / labour market",
+   "url": "https://www.ibanet.org/MediaHandler?id=363b3171-0afc-489e-812b-3de2460bce67",
+   "raw_sha256": "6790d66cb0ab45a92155cc0dd03551cef11624a1718123b03f07bb810b55bf02",
+   "snapshot": "docs/batch7_snapshots/labour_k5_iba_ils_global_economy.md",
+   "raw_sentences": 732,
+   "usable_sentences": 662,
+   "raw_bytes": 146918,
+   "fetch_date": "2026-10-05",
+   "cleaning_version": "batch7-textclean-on-v1",
+   "parser": "jina-reader (local docker, h2c)",
+   "rule": "v3 direct",
+   "k_position": "new-batch K2",
+   "sha_status": "full sha256 pinned"
   }
  ],
  "requalification_note": "v3 requalification is a deterministic re-evaluation of pinned snapshots under rule v3, not a new corpus selection. Batch-6 Wikipedia artifacts in the shared tool-output directory are contamination outside the batch-7 fetch and were excluded from the decision. No new corpus total, size or representativeness claim is made at this point.",
@@ -910,6 +1306,18 @@
     "no verdict",
     "scripts/build_production_corpus_v6.py left untouched (frozen production pipeline, byte identity with the Batch 6 corpora is preserved)"
    ]
+  }
+ ],
+ "provenance_gaps": [
+  {
+   "scope": "3 selected documents",
+   "issue": "truncated or absent sha256, no local snapshot to recompute",
+   "documents": [
+    "https://boss.cen.eu/media/yypjl3mn/iso_iec_directives_part2.pdf",
+    "https://www-pub.iaea.org/MTCD/Publications/PDF/Pub1222_web.pdf",
+    "https://www.bmv.de/SharedDocs/EN/publications/2030-federal-transport-infrastructure-plan.pdf"
+   ],
+   "handling": "recorded explicitly rather than reconstructed; re-fetch is not possible (Firecrawl credits exhausted), and the held-snapshot origin of the last two is documented in protocol_violations"
   }
  ]
 }
