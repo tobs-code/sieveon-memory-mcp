@@ -1,0 +1,39 @@
+{
+ "protocol_id": "batch7-remeasure-five",
+ "frozen": true,
+ "date": "2026-10-05",
+
+ "purpose": "Re-measure the five previously selected documents whose original bytes are irrecoverably unavailable. This is a new measurement, not reconstruction of the original Firecrawl measurements.",
+
+ "input_documents": [
+  {"label": "HUD Style Guide",
+   "url": "https://www.huduser.gov/portal/About/style-guide-for-reports.pdf",
+   "old_recorded": {"verdict": "PASS", "usable_sentences": 405}},
+  {"label": "ISO/IEC Directives Part 2 (CEN)",
+   "url": "https://boss.cen.eu/media/yypjl3mn/iso_iec_directives_part2.pdf",
+   "old_recorded": {"verdict": "PASS", "usable_sentences": 584}},
+  {"label": "WHO TRS 957",
+   "url": "https://syntheticdrugs.unodc.org/uploads/syntheticdrugs/res/library/access_html/WHO_good_distribution_practices_for_pharmaceutical_products_WHO_Technical_Report_Series_No._957.pdf",
+   "old_recorded": {"verdict": "PASS", "usable_sentences": 2379}},
+  {"label": "IAEA Pub 1222",
+   "url": "https://www-pub.iaea.org/MTCD/Publications/PDF/Pub1222_web.pdf",
+   "old_recorded": {"verdict": "PASS", "usable_sentences": 1734}},
+  {"label": "BMV transport infrastructure plan 2030",
+   "url": "https://www.bmv.de/SharedDocs/EN/publications/2030-federal-transport-infrastructure-plan.pdf?__blob=publicationFile",
+   "old_recorded": {"verdict": "PASS", "usable_sentences": 1384}}],
+
+ "no_rule_change": "v3 qualification is unchanged: at least 300 usable sentences, permitted institutional long-form document type, no section gate.",
+
+ "parser": "Jina Reader (local docker, h2c), the operational parser of the later Batch-7 fetches. The original measurements used Firecrawl; the parser difference is the explicit reason this is remeasurement rather than repair.",
+
+ "snapshots": "New snapshot tags use the remeasure_ prefix and are never confused with K-series candidates. Pinning: new URL, retrieval timestamp, raw snapshot SHA-256. Old provenance remains in history and is never overwritten.",
+
+ "requalification": "Run the frozen v3 qualification and the audited section parser independently on the new snapshots.",
+
+ "outcome_per_document": ["old verdict", "new sentence count",
+   "new qualification verdict", "new SHA", "parser", "section-audit result"],
+
+ "no_silent_substitution": "A changed verdict does not automatically restore the two-per-domain quota. Any replacement follows the original K-order and is explicitly recorded as a consequence of the remeasurement.",
+
+ "no_corpus_build": "until all five remeasurements and their consequences are frozen."
+}

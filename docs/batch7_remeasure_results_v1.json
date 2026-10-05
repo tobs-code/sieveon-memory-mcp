@@ -1,0 +1,47 @@
+{
+ "report_id": "batch7-remeasure-five-results",
+ "date": "2026-10-05",
+ "protocol": "docs/batch7_remeasure_protocol_v1.json",
+ "status": "REMEASUREMENTS COMPLETE, 5 OF 5 PASS; NO SUBSTITUTION PERFORMED",
+ "note_on_counts": "Canonical verdict counts are the jina_fetch v3 qualification numbers. The section-audit counts use the corpus builder clean and differ slightly; both are above the threshold and the qualification verdicts agree.",
+
+ "results": [
+  {"label": "HUD Style Guide",
+   "old": {"verdict": "PASS", "usable": 405, "parser": "firecrawl", "pin": "full sha, no bytes"},
+   "new": {"verdict": "PASS", "usable": 313, "parser": "jina-reader",
+           "snapshot": "docs/batch7_snapshots/remeasure_hud_style_guide.md",
+           "sha256": "59c4da42cc3d3900f44304ef4756c862927d2fabc7b62faf173a2e03e7924bb0"},
+   "sections": {"level": "h1", "sections": 7, "largest_ratio": 0.288, "class": "NORMAL"}},
+  {"label": "ISO/IEC Directives Part 2 (CEN)",
+   "old": {"verdict": "PASS", "usable": 584, "parser": "firecrawl", "pin": "truncated sha, no bytes"},
+   "new": {"verdict": "PASS", "usable": 696, "parser": "jina-reader",
+           "snapshot": "docs/batch7_snapshots/remeasure_iso_directives_part2.md",
+           "sha256": "5834c2f71030cf5a4ba9ca64dc869bb1435e7b3c0582e4a354ac54f4a484ad07"},
+   "sections": {"level": "h1", "sections": 14, "largest_ratio": 0.557, "class": "NORMAL"}},
+  {"label": "WHO TRS 957",
+   "old": {"verdict": "PASS", "usable": 2379, "parser": "firecrawl", "pin": "full sha, no bytes"},
+   "new": {"verdict": "PASS", "usable": 2393, "parser": "jina-reader",
+           "snapshot": "docs/batch7_snapshots/remeasure_who_trs_957.md",
+           "sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"},
+   "sections": {"level": "h1", "sections": 139, "largest_ratio": 0.075, "class": "NORMAL"}},
+  {"label": "IAEA Pub 1222",
+   "old": {"verdict": "PASS", "usable": 1734, "parser": "jina-reader (held snapshot, never written)", "pin": "truncated sha, no bytes"},
+   "new": {"verdict": "PASS", "usable": 2134, "parser": "jina-reader",
+           "snapshot": "docs/batch7_snapshots/remeasure_iaea_pub1222.md",
+           "sha256": "cbb801f1d171cc2f12455a367ea28b3e3a2f6bf407f7ecbadf2fd2150c80d3b3"},
+   "sections": {"level": "h1", "sections": 19, "largest_ratio": 0.389, "class": "NORMAL"}},
+  {"label": "BMV transport infrastructure plan 2030",
+   "old": {"verdict": "PASS", "usable": 1384, "parser": "jina-reader (held snapshot, never written)", "pin": "truncated sha, no bytes"},
+   "new": {"verdict": "PASS", "usable": 1450, "parser": "jina-reader",
+           "snapshot": "docs/batch7_snapshots/remeasure_bmv_plan2030.md",
+           "sha256": "231b90398689aae1be2aaeb4038cf7bd3901bd95a77b9d9a8811f21d6d2dfc6e"},
+   "sections": {"level": "h1", "sections": 6, "largest_ratio": 0.427, "class": "NORMAL"}}],
+
+ "verdict_summary": "5 of 5 re-measurements PASS the frozen v3 qualification. All five new snapshots are NORMAL under the audited section rule, with unremarkable largest_section_ratios. No historical measurement was overwritten; old and new values coexist as old versus new records.",
+
+ "not_done": ["no substitution into the selected documents",
+   "no change to the frozen 23", "no corpus build", "no N=80 sample",
+   "no section-rule freeze"],
+
+ "decision_now_requested": "whether the five re-measurements may replace the five historical pins in the selected corpus, which would close the provenance gate at 23 of 23 pinned"
+}
