@@ -1,0 +1,48 @@
+{
+ "gate_id": "batch7-provenance-five",
+ "date": "2026-10-05",
+ "status": "OPEN, UNRESOLVABLE BY RECONSTRUCTION",
+ "task": "clarify what exists for exactly the five documents without a local snapshot; nothing else",
+
+ "recovery_search": {
+  "git_history": "complete snapshot inventory taken; the five were never committed as snapshot files in any commit",
+  "repo_workspace": "no file outside the batch7 JSONs mentions any of the five URLs",
+  "_unused": "contains only an unrelated FAO PDF placed for agriculture K3; nothing for the five",
+  "temp_and_tool_output": "largest files are model pickles and section-audit JSONs; no stored fetch bytes for the five",
+  "conclusion": "no bytes survive from the original measurements of any of the five"},
+
+ "per_document": [
+  {"document": "HUD Style Guide",
+   "url": "https://www.huduser.gov/portal/About/style-guide-for-reports.pdf",
+   "recorded": "PASS, 405 usable, full 64-char sha, no snapshot, no raw text"},
+  {"document": "ISO/IEC Directives Part 2 (CEN)",
+   "url": "https://boss.cen.eu/media/yypjl3mn/iso_iec_directives_part2.pdf",
+   "recorded": "PASS, 584 usable, truncated 32-char sha, no snapshot, no raw text"},
+  {"document": "WHO TRS 957 (good distribution practices)",
+   "url": "https://syntheticdrugs.unodc.org/uploads/syntheticdrugs/res/library/access_html/WHO_good_distribution_practices_for_pharmaceutical_products_WHO_Technical_Report_Series_No._957.pdf",
+   "recorded": "PASS, 2365/2379 usable across two records, full sha, no snapshot, no raw text"},
+  {"document": "IAEA Pub 1222",
+   "url": "https://www-pub.iaea.org/MTCD/Publications/PDF/Pub1222_web.pdf",
+   "recorded": "PASS, 1734 usable, truncated sha, no snapshot, no raw text; candidate from the K-order-violation round, evaluated after the documented K1 PASS"},
+  {"document": "BMV transport infrastructure plan 2030",
+   "url": "https://www.bmv.de/SharedDocs/EN/publications/2030-federal-transport-infrastructure-plan.pdf?__blob=publicationFile",
+   "recorded": "PASS, 1384 usable, truncated sha, no snapshot, no raw text; same origin as IAEA"}],
+
+ "what_reconstruction_cannot_do": [
+  "a full sha256 cannot be recomputed for ISO, IAEA or BMV because no bytes exist; the truncated prefixes are preserved verbatim and nothing is invented",
+  "a snapshot cannot be regenerated for any of the five without a new retrieval",
+  "the section rule cannot be shown to apply to any of the five, because their heading structures are unobserved"],
+
+ "consequence_for_the_freeze": "reconstruction is ruled out, not postponed. The remaining options are all methodological decisions, not repairs, and therefore require an explicit decision, not execution",
+
+ "options_not_taken": {
+  "re_fetch_via_jina": "possible (local reader works, credits irrelevant), but this is re-measurement with a different parser state than the original qualification, not repair; verdicts may change and would then invalidate parts of the frozen 23",
+  "user_supplied_pdfs": "same status as re-fetch: new bytes, new measurement, verdicts open",
+  "reduction_to_18": "a post-selection corpus reduction; refused already",
+  "assumption_of_similarity": "known to be false in general from audit v2; refused already"},
+
+ "decision_requested": "one of: re-fetch and re-qualify the five mechanically with verdicts open; or keep 18 pinned plus 5 disclosed defects as the final auditable state",
+
+ "untouched": ["section rule stays DRAFT", "no corpus built", "no N=80 sample",
+  "education stays 1 of 2 FROZEN", "no document dropped or replaced"]
+}
