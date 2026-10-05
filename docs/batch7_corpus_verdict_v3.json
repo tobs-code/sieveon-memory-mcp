@@ -1,0 +1,35 @@
+{
+ "audit_id": "batch7-corpus-build-verdict-v3",
+ "date": "2026-10-05",
+ "build": "v2 production build under docs/batch7_sampling_rule_v2.json, docs/batch7_corpus_v1.json, digest c820ada6bbaaebbd392b81b67b70380d7479d0ef4723eb6644693a8e55f3941f",
+ "status": "AUDIT GREEN WITH ONE DOCUMENTED CHECK CORRECTION; NO PIPELINE RUN; NO N=80 SAMPLE",
+
+ "checks": {
+  "exactly_200_sentences": "PASS",
+  "23_of_23_documents_represented": "PASS",
+  "per_document_quotas_match_frozen_allocation": "PASS, all 23 quotas identical to the frozen target allocation",
+  "no_document_uses_more_sections_than_audited": "PASS",
+  "no_duplicates": "PASS, 0 removed and 0 present, so nothing was silently deduped",
+  "no_header_or_metadata_leaks": "PASS, 0 of 200",
+  "digest_independently_reproduced": "PASS",
+  "every_sentence_resolves_to_pinned_snapshot": "PASS, sha verified per snapshot before reading",
+  "kytc_degenerate_visible": "PASS, 1 sentence, degenerate flag, document-wide stride"},
+
+ "check_correction": {
+  "check": "all sentences in snapshot whole-document usable sets",
+  "result": "70 of 200 outside",
+  "verdict": "CHECK WAS MISDESIGNED, corpus is not at fault",
+  "mechanism": "split_sentences carries an abbreviation buffer across sentence boundaries; at section edges the buffer flushes, mid-document it continues (e.g. U.S. joins the following sentence whole-document but terminates the section-final sentence per-section). First picks of sections therefore differ between whole-document and per-section processing. Both processings are frozen and deterministic; the corpus definition uses the per-section one.",
+  "replacement_property": "verbatim substring of the pinned snapshot modulo the documented cleaning operations",
+  "replacement_result": "191 of 200 verbatim; 9 explained by documented URL-removal leftovers of clean(), same artifact class as in the first build round; 0 header-metadata cases",
+  "precedent": "same correction standard as the earlier audit self-corrections, disclosed rather than silently redefined"},
+
+ "size_and_coverage": {
+  "sentences": 200,
+  "documents": "23 of 23, minimum 1, maximum 39",
+  "silent_documents": 0,
+  "contrast_to_prior_runs": "1316-run overshoot and 72-run with 7 silent documents remain as historical diagnostics only"},
+
+ "downstream": "corpus is released for the frozen pipeline run; the N=80 sample is drawn from pipeline records afterwards, not from this artifact",
+ "not_done": ["pipeline run", "N=80 sample", "any annotation"]
+}

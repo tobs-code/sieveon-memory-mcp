@@ -1,8 +1,9 @@
 {
- "ratio": 0.006792324673119375,
- "usable_total": 29445,
- "sentences": 72,
- "digest": "5155873b220365dba94a771dba5b4b641dc52e5d5707451100f0fb7d751b43e0",
+ "sampling_rule": "v2",
+ "stage2_budget": 177,
+ "sentences": 200,
+ "digest": "c820ada6bbaaebbd392b81b67b70380d7479d0ef4723eb6644693a8e55f3941f",
+ "duplicates_removed": [],
  "per_document": [
   {
    "tag": "remeasure_hud_style_guide",
@@ -10,42 +11,52 @@
    "usable_total": 318,
    "sections": 7,
    "level": 1,
-   "picked": 0,
+   "degenerate": false,
+   "stage2": 2,
+   "budget": 3,
+   "picked": 3,
    "detail": [
     {
      "section": 0,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 1,
      "candidates": 36,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 2,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 3,
      "candidates": 35,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 4,
      "candidates": 89,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 5,
      "candidates": 58,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 6,
      "candidates": 92,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     }
    ]
   },
@@ -55,76 +66,93 @@
    "usable_total": 671,
    "sections": 14,
    "level": 1,
-   "picked": 2,
+   "degenerate": false,
+   "stage2": 3,
+   "budget": 4,
+   "picked": 4,
    "detail": [
     {
      "section": 0,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 1,
      "candidates": 54,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 2,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 3,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 4,
      "candidates": 367,
+     "quota": 2,
      "picked": 2
     },
     {
      "section": 5,
      "candidates": 60,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 6,
      "candidates": 5,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 7,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 8,
      "candidates": 77,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 9,
      "candidates": 5,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 10,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 11,
      "candidates": 59,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 12,
      "candidates": 14,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 13,
      "candidates": 13,
+     "quota": 0,
      "picked": 0
     }
    ]
@@ -135,701 +163,843 @@
    "usable_total": 2471,
    "sections": 139,
    "level": 1,
-   "picked": 1,
+   "degenerate": false,
+   "stage2": 30,
+   "budget": 31,
+   "picked": 31,
    "detail": [
     {
      "section": 0,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 1,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 2,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 3,
      "candidates": 55,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 4,
      "candidates": 25,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 5,
      "candidates": 110,
-     "picked": 0
+     "quota": 2,
+     "picked": 2
     },
     {
      "section": 6,
      "candidates": 101,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 7,
      "candidates": 31,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 8,
      "candidates": 42,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 9,
      "candidates": 11,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 10,
      "candidates": 26,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 11,
      "candidates": 64,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 12,
      "candidates": 16,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 13,
      "candidates": 28,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 14,
      "candidates": 189,
-     "picked": 1
+     "quota": 3,
+     "picked": 3
     },
     {
      "section": 15,
      "candidates": 26,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 16,
      "candidates": 12,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 17,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 18,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 19,
      "candidates": 9,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 20,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 21,
      "candidates": 10,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 22,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 23,
      "candidates": 11,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 24,
      "candidates": 32,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 25,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 26,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 27,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 28,
      "candidates": 14,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 29,
      "candidates": 16,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 30,
      "candidates": 18,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 31,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 32,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 33,
      "candidates": 28,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 34,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 35,
      "candidates": 17,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 36,
      "candidates": 9,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 37,
      "candidates": 22,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 38,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 39,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 40,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 41,
      "candidates": 10,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 42,
      "candidates": 47,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 43,
      "candidates": 8,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 44,
      "candidates": 15,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 45,
      "candidates": 33,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 46,
      "candidates": 41,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 47,
      "candidates": 9,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 48,
      "candidates": 28,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 49,
      "candidates": 35,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 50,
      "candidates": 26,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 51,
      "candidates": 27,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 52,
      "candidates": 37,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 53,
      "candidates": 24,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 54,
      "candidates": 5,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 55,
      "candidates": 54,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 56,
      "candidates": 46,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 57,
      "candidates": 11,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 58,
      "candidates": 14,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 59,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 60,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 61,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 62,
      "candidates": 47,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 63,
      "candidates": 16,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 64,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 65,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 66,
      "candidates": 37,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 67,
      "candidates": 17,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 68,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 69,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 70,
      "candidates": 8,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 71,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 72,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 73,
      "candidates": 5,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 74,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 75,
      "candidates": 27,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 76,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 77,
      "candidates": 12,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 78,
      "candidates": 17,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 79,
      "candidates": 38,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 80,
      "candidates": 10,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 81,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 82,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 83,
      "candidates": 11,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 84,
      "candidates": 8,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 85,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 86,
      "candidates": 11,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 87,
      "candidates": 10,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 88,
      "candidates": 121,
-     "picked": 0
+     "quota": 2,
+     "picked": 2
     },
     {
      "section": 89,
      "candidates": 21,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 90,
      "candidates": 46,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 91,
      "candidates": 19,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 92,
      "candidates": 11,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 93,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 94,
      "candidates": 33,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 95,
      "candidates": 31,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 96,
      "candidates": 9,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 97,
      "candidates": 31,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 98,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 99,
      "candidates": 28,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 100,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 101,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 102,
      "candidates": 5,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 103,
      "candidates": 14,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 104,
      "candidates": 9,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 105,
      "candidates": 14,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 106,
      "candidates": 27,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 107,
      "candidates": 44,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 108,
      "candidates": 26,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 109,
      "candidates": 9,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 110,
      "candidates": 19,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 111,
      "candidates": 25,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 112,
      "candidates": 22,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 113,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 114,
      "candidates": 8,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 115,
      "candidates": 16,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 116,
      "candidates": 10,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 117,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 118,
      "candidates": 9,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 119,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 120,
      "candidates": 26,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 121,
      "candidates": 14,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 122,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 123,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 124,
      "candidates": 12,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 125,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 126,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 127,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 128,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 129,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 130,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 131,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 132,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 133,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 134,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 135,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 136,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 137,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 138,
      "candidates": 10,
+     "quota": 0,
      "picked": 0
     }
    ]
@@ -840,56 +1010,69 @@
    "usable_total": 636,
    "sections": 10,
    "level": 1,
+   "degenerate": false,
+   "stage2": 2,
+   "budget": 3,
    "picked": 3,
    "detail": [
     {
      "section": 0,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 1,
      "candidates": 27,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 2,
      "candidates": 11,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 3,
      "candidates": 17,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 4,
      "candidates": 34,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 5,
      "candidates": 45,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 6,
      "candidates": 466,
-     "picked": 3
+     "quota": 2,
+     "picked": 2
     },
     {
      "section": 7,
      "candidates": 29,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 8,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 9,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     }
    ]
@@ -900,12 +1083,16 @@
    "usable_total": 338,
    "sections": 1,
    "level": null,
-   "picked": 2,
+   "degenerate": true,
+   "stage2": 0,
+   "budget": 1,
+   "picked": 1,
    "detail": [
     {
-     "section": "DEGENERATE document-wide",
+     "section": 0,
      "candidates": 338,
-     "picked": 2
+     "quota": 1,
+     "picked": 1
     }
    ]
   },
@@ -915,101 +1102,123 @@
    "usable_total": 1136,
    "sections": 19,
    "level": 1,
-   "picked": 4,
+   "degenerate": false,
+   "stage2": 4,
+   "budget": 5,
+   "picked": 5,
    "detail": [
     {
      "section": 0,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 1,
      "candidates": 16,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 2,
      "candidates": 15,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 3,
      "candidates": 288,
+     "quota": 1,
      "picked": 1
     },
     {
      "section": 4,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 5,
      "candidates": 83,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 6,
      "candidates": 157,
+     "quota": 1,
      "picked": 1
     },
     {
      "section": 7,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 8,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 9,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 10,
      "candidates": 29,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 11,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 12,
      "candidates": 90,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 13,
      "candidates": 37,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 14,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 15,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 16,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 17,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 18,
      "candidates": 400,
+     "quota": 2,
      "picked": 2
     }
    ]
@@ -1020,81 +1229,99 @@
    "usable_total": 1505,
    "sections": 15,
    "level": 1,
-   "picked": 6,
+   "degenerate": false,
+   "stage2": 3,
+   "budget": 4,
+   "picked": 4,
    "detail": [
     {
      "section": 0,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 1,
      "candidates": 19,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 2,
      "candidates": 214,
+     "quota": 1,
      "picked": 1
     },
     {
      "section": 3,
      "candidates": 170,
-     "picked": 1
+     "quota": 0,
+     "picked": 0
     },
     {
      "section": 4,
      "candidates": 21,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 5,
      "candidates": 12,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 6,
      "candidates": 184,
+     "quota": 1,
      "picked": 1
     },
     {
      "section": 7,
      "candidates": 407,
-     "picked": 2
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 8,
      "candidates": 222,
+     "quota": 1,
      "picked": 1
     },
     {
      "section": 9,
      "candidates": 16,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 10,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 11,
      "candidates": 60,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 12,
      "candidates": 11,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 13,
      "candidates": 53,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 14,
      "candidates": 115,
+     "quota": 0,
      "picked": 0
     }
    ]
@@ -1105,146 +1332,177 @@
    "usable_total": 931,
    "sections": 28,
    "level": 1,
-   "picked": 0,
+   "degenerate": false,
+   "stage2": 6,
+   "budget": 7,
+   "picked": 7,
    "detail": [
     {
      "section": 0,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 1,
      "candidates": 43,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 2,
      "candidates": 136,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 3,
      "candidates": 13,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 4,
      "candidates": 95,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 5,
      "candidates": 48,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 6,
      "candidates": 9,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 7,
      "candidates": 16,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 8,
      "candidates": 34,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 9,
      "candidates": 11,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 10,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 11,
      "candidates": 19,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 12,
      "candidates": 93,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 13,
      "candidates": 76,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 14,
      "candidates": 104,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 15,
      "candidates": 34,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 16,
      "candidates": 23,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 17,
      "candidates": 58,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 18,
      "candidates": 40,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 19,
      "candidates": 31,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 20,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 21,
      "candidates": 12,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 22,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 23,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 24,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 25,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 26,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 27,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     }
    ]
@@ -1255,556 +1513,669 @@
    "usable_total": 1679,
    "sections": 110,
    "level": 1,
-   "picked": 2,
+   "degenerate": false,
+   "stage2": 24,
+   "budget": 25,
+   "picked": 25,
    "detail": [
     {
      "section": 0,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 1,
      "candidates": 80,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 2,
      "candidates": 24,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 3,
      "candidates": 13,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 4,
      "candidates": 289,
-     "picked": 1
+     "quota": 4,
+     "picked": 4
     },
     {
      "section": 5,
      "candidates": 260,
-     "picked": 1
+     "quota": 4,
+     "picked": 4
     },
     {
      "section": 6,
      "candidates": 39,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 7,
      "candidates": 37,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 8,
      "candidates": 21,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 9,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 10,
      "candidates": 14,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 11,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 12,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 13,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 14,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 15,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 16,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 17,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 18,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 19,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 20,
      "candidates": 34,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 21,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 22,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 23,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 24,
      "candidates": 44,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 25,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 26,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 27,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 28,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 29,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 30,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 31,
      "candidates": 12,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 32,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 33,
      "candidates": 8,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 34,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 35,
      "candidates": 5,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 36,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 37,
      "candidates": 13,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 38,
      "candidates": 5,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 39,
      "candidates": 10,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 40,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 41,
      "candidates": 8,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 42,
      "candidates": 57,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 43,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 44,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 45,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 46,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 47,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 48,
      "candidates": 13,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 49,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 50,
      "candidates": 11,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 51,
      "candidates": 9,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 52,
      "candidates": 8,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 53,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 54,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 55,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 56,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 57,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 58,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 59,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 60,
      "candidates": 21,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 61,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 62,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 63,
      "candidates": 20,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 64,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 65,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 66,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 67,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 68,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 69,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 70,
      "candidates": 5,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 71,
      "candidates": 8,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 72,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 73,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 74,
      "candidates": 21,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 75,
      "candidates": 139,
-     "picked": 0
+     "quota": 2,
+     "picked": 2
     },
     {
      "section": 76,
      "candidates": 31,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 77,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 78,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 79,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 80,
      "candidates": 8,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 81,
      "candidates": 91,
-     "picked": 0
+     "quota": 2,
+     "picked": 2
     },
     {
      "section": 82,
      "candidates": 5,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 83,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 84,
      "candidates": 36,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 85,
      "candidates": 11,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 86,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 87,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 88,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 89,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 90,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 91,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 92,
      "candidates": 9,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 93,
      "candidates": 18,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 94,
      "candidates": 12,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 95,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 96,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 97,
      "candidates": 16,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 98,
      "candidates": 18,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 99,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 100,
      "candidates": 30,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 101,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 102,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 103,
      "candidates": 15,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 104,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 105,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 106,
      "candidates": 12,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 107,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 108,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 109,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     }
    ]
@@ -1815,96 +2186,117 @@
    "usable_total": 455,
    "sections": 18,
    "level": 1,
-   "picked": 0,
+   "degenerate": false,
+   "stage2": 4,
+   "budget": 5,
+   "picked": 5,
    "detail": [
     {
      "section": 0,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 1,
      "candidates": 32,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 2,
      "candidates": 46,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 3,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 4,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 5,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 6,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 7,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 8,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 9,
      "candidates": 98,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 10,
      "candidates": 22,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 11,
      "candidates": 96,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 12,
      "candidates": 9,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 13,
      "candidates": 21,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 14,
      "candidates": 34,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 15,
      "candidates": 54,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 16,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 17,
      "candidates": 28,
+     "quota": 0,
      "picked": 0
     }
    ]
@@ -1915,96 +2307,117 @@
    "usable_total": 3476,
    "sections": 18,
    "level": 1,
-   "picked": 20,
+   "degenerate": false,
+   "stage2": 4,
+   "budget": 5,
+   "picked": 5,
    "detail": [
     {
      "section": 0,
      "candidates": 8,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 1,
      "candidates": 37,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 2,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 3,
      "candidates": 11,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 4,
      "candidates": 65,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 5,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 6,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 7,
      "candidates": 50,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 8,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 9,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 10,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 11,
      "candidates": 27,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 12,
      "candidates": 145,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 13,
      "candidates": 5,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 14,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 15,
      "candidates": 2953,
-     "picked": 20
+     "quota": 5,
+     "picked": 5
     },
     {
      "section": 16,
      "candidates": 108,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 17,
      "candidates": 59,
+     "quota": 0,
      "picked": 0
     }
    ]
@@ -2015,101 +2428,123 @@
    "usable_total": 2198,
    "sections": 19,
    "level": 1,
-   "picked": 11,
+   "degenerate": false,
+   "stage2": 4,
+   "budget": 5,
+   "picked": 5,
    "detail": [
     {
      "section": 0,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 1,
      "candidates": 60,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 2,
      "candidates": 69,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 3,
      "candidates": 82,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 4,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 5,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 6,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 7,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 8,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 9,
      "candidates": 182,
-     "picked": 1
+     "quota": 0,
+     "picked": 0
     },
     {
      "section": 10,
      "candidates": 80,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 11,
      "candidates": 808,
-     "picked": 5
+     "quota": 2,
+     "picked": 2
     },
     {
      "section": 12,
      "candidates": 623,
-     "picked": 4
+     "quota": 2,
+     "picked": 2
     },
     {
      "section": 13,
      "candidates": 200,
+     "quota": 1,
      "picked": 1
     },
     {
      "section": 14,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 15,
      "candidates": 34,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 16,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 17,
      "candidates": 54,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 18,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     }
    ]
@@ -2120,36 +2555,45 @@
    "usable_total": 1426,
    "sections": 6,
    "level": 1,
-   "picked": 8,
+   "degenerate": false,
+   "stage2": 1,
+   "budget": 2,
+   "picked": 2,
    "detail": [
     {
      "section": 0,
      "candidates": 366,
-     "picked": 2
+     "quota": 0,
+     "picked": 0
     },
     {
      "section": 1,
      "candidates": 53,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 2,
      "candidates": 614,
-     "picked": 4
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 3,
      "candidates": 391,
-     "picked": 2
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 4,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 5,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     }
    ]
@@ -2160,156 +2604,189 @@
    "usable_total": 516,
    "sections": 30,
    "level": 1,
-   "picked": 0,
+   "degenerate": false,
+   "stage2": 7,
+   "budget": 8,
+   "picked": 8,
    "detail": [
     {
      "section": 0,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 1,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 2,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 3,
      "candidates": 9,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 4,
      "candidates": 10,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 5,
      "candidates": 43,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 6,
      "candidates": 25,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 7,
      "candidates": 112,
-     "picked": 0
+     "quota": 2,
+     "picked": 2
     },
     {
      "section": 8,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 9,
      "candidates": 10,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 10,
      "candidates": 12,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 11,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 12,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 13,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 14,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 15,
      "candidates": 74,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 16,
      "candidates": 31,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 17,
      "candidates": 38,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 18,
      "candidates": 14,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 19,
      "candidates": 15,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 20,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 21,
      "candidates": 34,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 22,
      "candidates": 50,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 23,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 24,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 25,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 26,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 27,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 28,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 29,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     }
    ]
@@ -2320,862 +2797,1036 @@
    "usable_total": 5867,
    "sections": 171,
    "level": 1,
-   "picked": 2,
+   "degenerate": false,
+   "stage2": 38,
+   "budget": 39,
+   "picked": 39,
    "detail": [
     {
      "section": 0,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 1,
      "candidates": 15,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 2,
      "candidates": 11,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 3,
      "candidates": 13,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 4,
      "candidates": 9,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 5,
      "candidates": 38,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 6,
      "candidates": 112,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 7,
      "candidates": 38,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 8,
      "candidates": 69,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 9,
      "candidates": 10,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 10,
      "candidates": 34,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 11,
      "candidates": 196,
+     "quota": 1,
      "picked": 1
     },
     {
      "section": 12,
      "candidates": 23,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 13,
      "candidates": 36,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 14,
      "candidates": 26,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 15,
      "candidates": 64,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 16,
      "candidates": 59,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 17,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 18,
      "candidates": 43,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 19,
      "candidates": 41,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 20,
      "candidates": 60,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 21,
      "candidates": 34,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 22,
      "candidates": 41,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 23,
      "candidates": 19,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 24,
      "candidates": 26,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 25,
      "candidates": 236,
-     "picked": 1
+     "quota": 2,
+     "picked": 2
     },
     {
      "section": 26,
      "candidates": 33,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 27,
      "candidates": 25,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 28,
      "candidates": 17,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 29,
      "candidates": 27,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 30,
      "candidates": 29,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 31,
      "candidates": 104,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 32,
      "candidates": 53,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 33,
      "candidates": 15,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 34,
      "candidates": 67,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 35,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 36,
      "candidates": 59,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 37,
      "candidates": 83,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 38,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 39,
      "candidates": 46,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 40,
      "candidates": 41,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 41,
      "candidates": 43,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 42,
      "candidates": 10,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 43,
      "candidates": 81,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 44,
      "candidates": 13,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 45,
      "candidates": 8,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 46,
      "candidates": 32,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 47,
      "candidates": 125,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 48,
      "candidates": 37,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 49,
      "candidates": 13,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 50,
      "candidates": 73,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 51,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 52,
      "candidates": 65,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 53,
      "candidates": 21,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 54,
      "candidates": 21,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 55,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 56,
      "candidates": 15,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 57,
      "candidates": 55,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 58,
      "candidates": 27,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 59,
      "candidates": 31,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 60,
      "candidates": 73,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 61,
      "candidates": 23,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 62,
      "candidates": 68,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 63,
      "candidates": 53,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 64,
      "candidates": 27,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 65,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 66,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 67,
      "candidates": 41,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 68,
      "candidates": 41,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 69,
      "candidates": 10,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 70,
      "candidates": 31,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 71,
      "candidates": 99,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 72,
      "candidates": 8,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 73,
      "candidates": 51,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 74,
      "candidates": 74,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 75,
      "candidates": 28,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 76,
      "candidates": 73,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 77,
      "candidates": 29,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 78,
      "candidates": 9,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 79,
      "candidates": 12,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 80,
      "candidates": 11,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 81,
      "candidates": 39,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 82,
      "candidates": 87,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 83,
      "candidates": 8,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 84,
      "candidates": 35,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 85,
      "candidates": 46,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 86,
      "candidates": 21,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 87,
      "candidates": 27,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 88,
      "candidates": 35,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 89,
      "candidates": 27,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 90,
      "candidates": 9,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 91,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 92,
      "candidates": 44,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 93,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 94,
      "candidates": 10,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 95,
      "candidates": 12,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 96,
      "candidates": 43,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 97,
      "candidates": 115,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 98,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 99,
      "candidates": 23,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 100,
      "candidates": 33,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 101,
      "candidates": 19,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 102,
      "candidates": 14,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 103,
      "candidates": 17,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 104,
      "candidates": 27,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 105,
      "candidates": 15,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 106,
      "candidates": 16,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 107,
      "candidates": 18,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 108,
      "candidates": 13,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 109,
      "candidates": 14,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 110,
      "candidates": 32,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 111,
      "candidates": 33,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 112,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 113,
      "candidates": 20,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 114,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 115,
      "candidates": 23,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 116,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 117,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 118,
      "candidates": 5,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 119,
      "candidates": 30,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 120,
      "candidates": 13,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 121,
      "candidates": 14,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 122,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 123,
      "candidates": 40,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 124,
      "candidates": 18,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 125,
      "candidates": 54,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 126,
      "candidates": 81,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 127,
      "candidates": 14,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 128,
      "candidates": 35,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 129,
      "candidates": 5,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 130,
      "candidates": 11,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 131,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 132,
      "candidates": 12,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 133,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 134,
      "candidates": 16,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 135,
      "candidates": 9,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 136,
      "candidates": 29,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 137,
      "candidates": 12,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 138,
      "candidates": 50,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 139,
      "candidates": 9,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 140,
      "candidates": 30,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 141,
      "candidates": 16,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 142,
      "candidates": 11,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 143,
      "candidates": 19,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 144,
      "candidates": 31,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 145,
      "candidates": 30,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 146,
      "candidates": 44,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 147,
      "candidates": 33,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 148,
      "candidates": 56,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 149,
      "candidates": 33,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 150,
      "candidates": 147,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 151,
      "candidates": 14,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 152,
      "candidates": 20,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 153,
      "candidates": 42,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 154,
      "candidates": 108,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 155,
      "candidates": 42,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 156,
      "candidates": 18,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 157,
      "candidates": 43,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 158,
      "candidates": 25,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 159,
      "candidates": 51,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 160,
      "candidates": 19,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 161,
      "candidates": 45,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 162,
      "candidates": 36,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 163,
      "candidates": 11,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 164,
      "candidates": 5,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 165,
      "candidates": 59,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 166,
      "candidates": 38,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 167,
      "candidates": 48,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 168,
      "candidates": 28,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 169,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 170,
      "candidates": 69,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     }
    ]
   },
@@ -3185,21 +3836,27 @@
    "usable_total": 778,
    "sections": 3,
    "level": 1,
-   "picked": 5,
+   "degenerate": false,
+   "stage2": 1,
+   "budget": 2,
+   "picked": 2,
    "detail": [
     {
      "section": 0,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 1,
      "candidates": 768,
-     "picked": 5
+     "quota": 2,
+     "picked": 2
     },
     {
      "section": 2,
      "candidates": 10,
+     "quota": 0,
      "picked": 0
     }
    ]
@@ -3210,97 +3867,118 @@
    "usable_total": 367,
    "sections": 18,
    "level": 1,
-   "picked": 0,
+   "degenerate": false,
+   "stage2": 4,
+   "budget": 5,
+   "picked": 5,
    "detail": [
     {
      "section": 0,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 1,
      "candidates": 9,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 2,
      "candidates": 33,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 3,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 4,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 5,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 6,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 7,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 8,
      "candidates": 14,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 9,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 10,
      "candidates": 25,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 11,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 12,
      "candidates": 65,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 13,
      "candidates": 52,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 14,
      "candidates": 79,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 15,
      "candidates": 23,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 16,
      "candidates": 21,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 17,
      "candidates": 30,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     }
    ]
   },
@@ -3310,31 +3988,39 @@
    "usable_total": 429,
    "sections": 5,
    "level": 1,
+   "degenerate": false,
+   "stage2": 1,
+   "budget": 2,
    "picked": 2,
    "detail": [
     {
      "section": 0,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 1,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 2,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 3,
      "candidates": 24,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 4,
      "candidates": 403,
+     "quota": 2,
      "picked": 2
     }
    ]
@@ -3345,51 +4031,63 @@
    "usable_total": 340,
    "sections": 9,
    "level": 1,
-   "picked": 0,
+   "degenerate": false,
+   "stage2": 2,
+   "budget": 3,
+   "picked": 3,
    "detail": [
     {
      "section": 0,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 1,
      "candidates": 106,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 2,
      "candidates": 26,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 3,
      "candidates": 44,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 4,
      "candidates": 47,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 5,
      "candidates": 36,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 6,
      "candidates": 33,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 7,
      "candidates": 24,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 8,
      "candidates": 24,
+     "quota": 0,
      "picked": 0
     }
    ]
@@ -3400,207 +4098,250 @@
    "usable_total": 1185,
    "sections": 40,
    "level": 1,
-   "picked": 1,
+   "degenerate": false,
+   "stage2": 9,
+   "budget": 10,
+   "picked": 10,
    "detail": [
     {
      "section": 0,
      "candidates": 16,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 1,
      "candidates": 10,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 2,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 3,
      "candidates": 62,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 4,
      "candidates": 9,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 5,
      "candidates": 20,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 6,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 7,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 8,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 9,
      "candidates": 16,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 10,
      "candidates": 13,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 11,
      "candidates": 38,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 12,
      "candidates": 30,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 13,
      "candidates": 27,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 14,
      "candidates": 27,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 15,
      "candidates": 51,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 16,
      "candidates": 21,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 17,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 18,
      "candidates": 27,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 19,
      "candidates": 44,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 20,
      "candidates": 10,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 21,
      "candidates": 25,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 22,
      "candidates": 25,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 23,
      "candidates": 62,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 24,
      "candidates": 22,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 25,
      "candidates": 46,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 26,
      "candidates": 14,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 27,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 28,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 29,
      "candidates": 17,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 30,
      "candidates": 15,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 31,
      "candidates": 41,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 32,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 33,
      "candidates": 5,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 34,
      "candidates": 11,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 35,
      "candidates": 5,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 36,
      "candidates": 27,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 37,
      "candidates": 52,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 38,
      "candidates": 106,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 39,
      "candidates": 264,
-     "picked": 1
+     "quota": 2,
+     "picked": 2
     }
    ]
   },
@@ -3610,91 +4351,111 @@
    "usable_total": 635,
    "sections": 17,
    "level": 1,
-   "picked": 1,
+   "degenerate": false,
+   "stage2": 4,
+   "budget": 5,
+   "picked": 5,
    "detail": [
     {
      "section": 0,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 1,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 2,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 3,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 4,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 5,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 6,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 7,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 8,
      "candidates": 21,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 9,
      "candidates": 44,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 10,
      "candidates": 121,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 11,
      "candidates": 14,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 12,
      "candidates": 86,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 13,
      "candidates": 32,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 14,
      "candidates": 98,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 15,
      "candidates": 197,
-     "picked": 1
+     "quota": 2,
+     "picked": 2
     },
     {
      "section": 16,
      "candidates": 21,
+     "quota": 0,
      "picked": 0
     }
    ]
@@ -3705,106 +4466,129 @@
    "usable_total": 1086,
    "sections": 20,
    "level": 1,
-   "picked": 2,
+   "degenerate": false,
+   "stage2": 4,
+   "budget": 5,
+   "picked": 5,
    "detail": [
     {
      "section": 0,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 1,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 2,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 3,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 4,
      "candidates": 35,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 5,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 6,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 7,
      "candidates": 15,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 8,
      "candidates": 73,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 9,
      "candidates": 104,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 10,
      "candidates": 180,
+     "quota": 1,
      "picked": 1
     },
     {
      "section": 11,
      "candidates": 57,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 12,
      "candidates": 143,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 13,
      "candidates": 37,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 14,
      "candidates": 54,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 15,
      "candidates": 15,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 16,
      "candidates": 17,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 17,
      "candidates": 91,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 18,
      "candidates": 213,
+     "quota": 1,
      "picked": 1
     },
     {
      "section": 19,
      "candidates": 45,
+     "quota": 0,
      "picked": 0
     }
    ]
@@ -3815,451 +4599,543 @@
    "usable_total": 1002,
    "sections": 89,
    "level": 1,
-   "picked": 0,
+   "degenerate": false,
+   "stage2": 20,
+   "budget": 21,
+   "picked": 21,
    "detail": [
     {
      "section": 0,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 1,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 2,
      "candidates": 24,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 3,
      "candidates": 5,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 4,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 5,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 6,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 7,
      "candidates": 5,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 8,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 9,
      "candidates": 8,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 10,
      "candidates": 12,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 11,
      "candidates": 5,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 12,
      "candidates": 5,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 13,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 14,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 15,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 16,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 17,
      "candidates": 0,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 18,
      "candidates": 10,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 19,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 20,
      "candidates": 29,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 21,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 22,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 23,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 24,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 25,
      "candidates": 5,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 26,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 27,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 28,
      "candidates": 11,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 29,
      "candidates": 23,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 30,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 31,
      "candidates": 33,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 32,
      "candidates": 10,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 33,
      "candidates": 39,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 34,
      "candidates": 52,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 35,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 36,
      "candidates": 1,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 37,
      "candidates": 8,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 38,
      "candidates": 5,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 39,
      "candidates": 10,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 40,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 41,
      "candidates": 17,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 42,
      "candidates": 23,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 43,
      "candidates": 2,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 44,
      "candidates": 19,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 45,
      "candidates": 34,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 46,
      "candidates": 30,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 47,
      "candidates": 24,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 48,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 49,
      "candidates": 26,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 50,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 51,
      "candidates": 15,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 52,
      "candidates": 24,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 53,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 54,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 55,
      "candidates": 10,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 56,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 57,
      "candidates": 19,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 58,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 59,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 60,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 61,
      "candidates": 10,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 62,
      "candidates": 16,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 63,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 64,
      "candidates": 9,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 65,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 66,
      "candidates": 28,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 67,
      "candidates": 12,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 68,
      "candidates": 22,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 69,
      "candidates": 6,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 70,
      "candidates": 37,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 71,
      "candidates": 9,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 72,
      "candidates": 3,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 73,
      "candidates": 5,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 74,
      "candidates": 10,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 75,
      "candidates": 21,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 76,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 77,
      "candidates": 8,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 78,
      "candidates": 5,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 79,
      "candidates": 25,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 80,
      "candidates": 5,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 81,
      "candidates": 17,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 82,
      "candidates": 7,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 83,
      "candidates": 4,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 84,
      "candidates": 11,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 85,
      "candidates": 14,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 86,
      "candidates": 10,
+     "quota": 0,
      "picked": 0
     },
     {
      "section": 87,
      "candidates": 32,
-     "picked": 0
+     "quota": 1,
+     "picked": 1
     },
     {
      "section": 88,
      "candidates": 16,
+     "quota": 0,
      "picked": 0
     }
    ]

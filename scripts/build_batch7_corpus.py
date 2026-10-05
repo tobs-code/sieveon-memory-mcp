@@ -116,6 +116,23 @@ def split_sentences(text: str):
 
 
 CORPUS_TARGET_SENTENCES = 200
+STAGE1_PER_DOCUMENT = 1
+
+
+def hamilton(weights, seats, order):
+    """Largest Remainder allocation with deterministic tie-break by the
+    given frozen order. Returns integer quotas summing to exactly seats."""
+    tot = sum(weights)
+    if tot <= 0 or seats <= 0:
+        return [0] * len(weights)
+    ideal = [seats * w / tot for w in weights]
+    base = [int(x) for x in ideal]
+    rem = [x - b for x, b in zip(ideal, base)]
+    left = seats - sum(base)
+    rank = sorted(range(len(weights)), key=lambda i: (-rem[i], order[i]))
+    for i in rank[:left]:
+        base[i] += 1
+    return base
 
 
 def frozen_sections(cut):
@@ -163,17 +180,15 @@ def dedup(seq):
     return out
 
 
-def stride_pick(cands, ratio):
-    """Even stride within one section. Ratio keeps sections proportional to
-    their own length (no per-document cap, no equalisation). No minimum: a
-    section that mathematically yields zero samples contributes zero. That
-    is a rule outcome, not an error; the removed minimum-two floor was never
-    a frozen protocol rule (see module docstring)."""
-    keep_n = int(len(cands) * ratio)
-    if keep_n <= 0:
+def stride_pick(cands, k):
+    """Even stride: first k evenly spaced picks of the candidate list.
+    k comes from the frozen Hamilton allocation; this function invents no
+    minimum and no rounding of its own."""
+    if k <= 0 or not cands:
         return []
-    step = len(cands) / keep_n
-    return [cands[int(i * step)] for i in range(keep_n)]
+    k = min(k, len(cands))
+    step = len(cands) / k
+    return [cands[int(i * step)] for i in range(k)]
 
 
 def dedup(seq):
@@ -220,9 +235,9 @@ def main() -> int:
         raise SystemExit("no documents selected yet")
     audit_selection(sel)
 
-    # pass 1: usable sentences per document, total for the global ratio
+    # pass 1: usable sentences per document and per section
     docs = []
-    for d in sel:
+    for di, d in enumerate(sel):
         snap = ROOT / d["snapshot"]
         raw = snap.read_text(encoding="utf-8")
         assert hashlib.sha256(raw.encode()).hexdigest() == d["raw_sha256"], (
@@ -231,43 +246,48 @@ def main() -> int:
         L, secs = frozen_sections(cut)
         sec_usable = [dedup([s for s in split_sentences(clean(x)) if keep(s)])
                       for x in secs]
-        docs.append({"record": d, "L": L, "secs": sec_usable,
+        docs.append({"record": d, "order": di, "L": L, "secs": sec_usable,
                      "total": sum(len(c) for c in sec_usable)})
-    grand = sum(x["total"] for x in docs)
-    ratio = CORPUS_TARGET_SENTENCES / grand
-    print(f"usable sentences total: {grand}  "
-          f"global ratio: {CORPUS_TARGET_SENTENCES}/{grand} = {ratio:.6f}")
+    stage2 = CORPUS_TARGET_SENTENCES - STAGE1_PER_DOCUMENT * len(docs)
+    extra = hamilton([len(x["secs"]) for x in docs], stage2,
+                     [x["order"] for x in docs])
+    print(f"stage 1 base: {STAGE1_PER_DOCUMENT * len(docs)}  "
+          f"stage 2 budget: {stage2}")
 
-    # pass 2: stride per section, document-wide stride for DEGENERATE
+    # pass 2: document budget, then section quotas, then stride picks
     corpus, per_doc = [], []
-    for x in docs:
+    for x, e in zip(docs, extra):
         d = x["record"]
         tag = d["snapshot"].split("/")[-1].replace(".md", "")
+        budget = STAGE1_PER_DOCUMENT + e
+        quotas = hamilton([len(c) for c in x["secs"]], budget,
+                          list(range(len(x["secs"]))))
         got, sec_report = [], []
-        if x["L"] is None:
-            cands = dedup([s for sec in x["secs"] for s in sec])
-            picks = stride_pick(cands, ratio)
-            got = [(s, -1, i) for i, s in enumerate(picks)]
-            sec_report.append({"section": "DEGENERATE document-wide",
-                               "candidates": len(cands),
-                               "picked": len(picks)})
-        else:
-            for si, cands in enumerate(x["secs"]):
-                picks = stride_pick(cands, ratio)
-                got.extend((s, si, i) for i, s in enumerate(picks))
-                sec_report.append({"section": si, "candidates": len(cands),
-                                   "picked": len(picks)})
+        for si, (cands, q) in enumerate(zip(x["secs"], quotas)):
+            picks = stride_pick(cands, q)
+            assert len(picks) == min(q, len(cands)), (
+                f"stride under-delivered in {tag} section {si}")
+            got.extend((s, si, i) for i, s in enumerate(picks))
+            sec_report.append({"section": si, "candidates": len(cands),
+                               "quota": q, "picked": len(picks)})
+        assert len(got) == budget, (
+            f"document budget mismatch in {tag}: {len(got)} != {budget}")
         per_doc.append({"tag": tag, "url": d["url"],
                         "usable_total": x["total"],
                         "sections": len(x["secs"]), "level": x["L"],
+                        "degenerate": x["L"] is None,
+                        "stage2": e, "budget": budget,
                         "picked": len(got), "detail": sec_report})
         for s, si, pi in got:
             corpus.append({"doc": tag, "url": d["url"],
                            "doc_sha256": d["raw_sha256"],
                            "section": si, "pick_index": pi,
+                           "degenerate": x["L"] is None,
                            "sentence": s})
     print(f"picked sentences: {len(corpus)} "
           f"(target {CORPUS_TARGET_SENTENCES})")
+    assert len(corpus) == CORPUS_TARGET_SENTENCES, (
+        "budget-exact allocation must sum to the target")
 
     # global dedup preserving first occurrence; every removal is recorded
     # global dedup preserving first occurrence. Removals are not silent:
@@ -298,8 +318,7 @@ def main() -> int:
                    sort_keys=True).encode()).hexdigest()
     out = {"corpus_id": "batch7_corpus_v1",
            "documents": 23, "target_sentences": CORPUS_TARGET_SENTENCES,
-           "global_ratio": ratio,
-           "usable_total": grand,
+           "sampling_rule": "batch7-sampling-rule-v2",
            "sentences": len(clean_corpus),
            "cross_doc_duplicates_removed": removed,
            "digest_sha256": digest,
@@ -309,8 +328,9 @@ def main() -> int:
     (ROOT / "docs" / "batch7_corpus_v1.json").write_text(
         json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
     (ROOT / "docs" / "batch7_corpus_build_audit_v1.json").write_text(
-        json.dumps({"ratio": ratio, "usable_total": grand,
+        json.dumps({"sampling_rule": "v2", "stage2_budget": stage2,
                     "sentences": len(clean_corpus), "digest": digest,
+                    "duplicates_removed": removed,
                     "per_document": per_doc}, ensure_ascii=False, indent=1),
         encoding="utf-8")
     print("digest:", digest)
