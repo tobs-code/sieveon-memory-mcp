@@ -1,0 +1,1 @@
+{"version": "batch7_asti_eval_v1", "pattern": {"C1": "True->True", "C2": "True->True", "E2": "False->True", "F1": "False->False", "F2": "False->False", "H5": "False->False"}, "verdict": "SAFE_IMPROVEMENT"}

@@ -1,0 +1,1 @@
+{"version": "batch7_astg_eval_v1", "per_item": {"fn_A1": "replicated", "fn_A2": "replicated", "fn_C1": "replicated", "fn_C2": "replicated", "fn_F1": "replicated", "fn_F2": "replicated"}, "probe_verdict": "replication_confirmed_under_this_setup", "originals": "fn-diag run verdicts"}
