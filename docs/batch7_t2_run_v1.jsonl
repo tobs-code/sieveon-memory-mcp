@@ -1,0 +1,16 @@
+{"pair_id": "R1", "cell": "responsibility", "role": "positive", "text": "The Harrow Foundation provides annual grants to rural schools.", "candidates": [["The Harrow Foundation", "rural schools"]]}
+{"pair_id": "R1", "cell": "responsibility", "role": "negative", "text": "The Harrow Foundation has responsibility for reviewing rural schools.", "candidates": [["The Harrow Foundation", "rural schools"]]}
+{"pair_id": "R2", "cell": "responsibility", "role": "positive", "text": "The Aldgate Trust transfers surplus equipment to city clinics.", "candidates": [["The Aldgate Trust", "city clinics"]]}
+{"pair_id": "R2", "cell": "responsibility", "role": "negative", "text": "The Aldgate Trust has responsibility for inspecting city clinics.", "candidates": [["The Aldgate Trust", "city clinics"]]}
+{"pair_id": "D1", "cell": "duty", "role": "positive", "text": "The Relief Agency gives emergency funds to flood victims.", "candidates": [["The Relief Agency", "flood victims"]]}
+{"pair_id": "D1", "cell": "duty", "role": "negative", "text": "The Relief Agency has a duty to register flood victims.", "candidates": [["The Relief Agency", "flood victims"]]}
+{"pair_id": "D2", "cell": "duty", "role": "positive", "text": "The Grants Committee awards travel stipends to junior researchers.", "candidates": [["The Grants Committee", "junior researchers"]]}
+{"pair_id": "D2", "cell": "duty", "role": "negative", "text": "The Grants Committee has a duty to evaluate junior researchers.", "candidates": [["The Grants Committee", "junior researchers"]]}
+{"pair_id": "G1", "cell": "right", "role": "positive", "text": "The Field Cooperative supplies seed loans to member farms.", "candidates": [["The Field Cooperative", "member farms"]]}
+{"pair_id": "G1", "cell": "right", "role": "negative", "text": "The Field Cooperative has the right to audit member farms.", "candidates": [["The Field Cooperative", "member farms"]]}
+{"pair_id": "G2", "cell": "right", "role": "positive", "text": "The Science Endowment donates laboratory instruments to the university.", "candidates": [["The Science Endowment", "the university"]]}
+{"pair_id": "G2", "cell": "right", "role": "negative", "text": "The Science Endowment has the right to inspect the university.", "candidates": [["The Science Endowment", "the university"]]}
+{"pair_id": "A1", "cell": "authority", "role": "positive", "text": "The Health Board provides mobile clinics to remote districts.", "candidates": [["The Health Board", "remote districts"]]}
+{"pair_id": "A1", "cell": "authority", "role": "negative", "text": "The Health Board has authority to close remote districts.", "candidates": []}
+{"pair_id": "A2", "cell": "authority", "role": "positive", "text": "The Interior Ministry donates relief convoys to border towns.", "candidates": [["The Interior Ministry", "border towns"]]}
+{"pair_id": "A2", "cell": "authority", "role": "negative", "text": "The Interior Ministry has authority to evacuate border towns.", "candidates": [["The Interior Ministry", "border towns"]]}

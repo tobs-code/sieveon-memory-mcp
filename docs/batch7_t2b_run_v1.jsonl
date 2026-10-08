@@ -1,0 +1,18 @@
+{"triple_id": "Q1", "frame": "responsibility", "role": "p", "text": "The Northgate Trust donates mobile libraries to mountain villages.", "candidates": [["The Northgate Trust", "mountain villages"]]}
+{"triple_id": "Q1", "frame": "responsibility", "role": "n1", "text": "The Northgate Trust has responsibility for inspecting mountain villages.", "candidates": [["The Northgate Trust", "mountain villages"]]}
+{"triple_id": "Q1", "frame": "responsibility", "role": "n2", "text": "The Northgate Trust photographed mountain villages for the annual report.", "candidates": [["The Northgate Trust", "mountain villages"]]}
+{"triple_id": "Q2", "frame": "duty", "role": "p", "text": "The Coastal Fund provides storm shelters to fishing towns.", "candidates": [["The Coastal Fund", "fishing towns"]]}
+{"triple_id": "Q2", "frame": "duty", "role": "n1", "text": "The Coastal Fund has a duty to list fishing towns.", "candidates": []}
+{"triple_id": "Q2", "frame": "duty", "role": "n2", "text": "The Coastal Fund mentioned fishing towns in its newsletter.", "candidates": [["The Coastal Fund", "fishing towns"]]}
+{"triple_id": "Q3", "frame": "right", "role": "p", "text": "The Crafts Guild awards tool grants to apprentice workshops.", "candidates": [["The Crafts Guild", "apprentice workshops"]]}
+{"triple_id": "Q3", "frame": "right", "role": "n1", "text": "The Crafts Guild has the right to visit apprentice workshops.", "candidates": [["The Crafts Guild", "apprentice workshops"]]}
+{"triple_id": "Q3", "frame": "right", "role": "n2", "text": "The Crafts Guild met apprentice workshops at the trade fair.", "candidates": [["The Crafts Guild", "apprentice workshops"]]}
+{"triple_id": "Q4", "frame": "authority", "role": "p", "text": "The Parks Service supplies water pumps to desert ranger stations.", "candidates": [["The Parks Service", "desert ranger stations"]]}
+{"triple_id": "Q4", "frame": "authority", "role": "n1", "text": "The Parks Service has authority to close desert ranger stations.", "candidates": []}
+{"triple_id": "Q4", "frame": "authority", "role": "n2", "text": "The Parks Service mapped desert ranger stations during the survey.", "candidates": [["The Parks Service", "desert ranger stations"]]}
+{"triple_id": "Q5", "frame": "responsibility", "role": "p", "text": "The Harbor Commission transfers decommissioned buoys to sailing clubs.", "candidates": [["The Harbor Commission", "sailing clubs"]]}
+{"triple_id": "Q5", "frame": "responsibility", "role": "n1", "text": "The Harbor Commission has responsibility for rating sailing clubs.", "candidates": [["The Harbor Commission", "sailing clubs"]]}
+{"triple_id": "Q5", "frame": "responsibility", "role": "n2", "text": "The Harbor Commission discussed sailing clubs at the hearing.", "candidates": []}
+{"triple_id": "Q6", "frame": "right", "role": "p", "text": "The Medical Board gives training mannequins to rural clinics.", "candidates": [["The Medical Board", "rural clinics"]]}
+{"triple_id": "Q6", "frame": "right", "role": "n1", "text": "The Medical Board has the right to certify rural clinics.", "candidates": [["The Medical Board", "rural clinics"]]}
+{"triple_id": "Q6", "frame": "right", "role": "n2", "text": "The Medical Board visited rural clinics last spring.", "candidates": [["The Medical Board", "rural clinics"]]}

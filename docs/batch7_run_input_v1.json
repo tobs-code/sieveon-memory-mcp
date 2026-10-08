@@ -1,0 +1,1607 @@
+{
+ "derived_from": "docs/batch7_corpus_v1.json",
+ "derived_from_digest": "c820ada6bbaaebbd392b81b67b70380d7479d0ef4723eb6644693a8e55f3941f",
+ "mapping": "sentence_id=batch7_{corpus_index:04d}, document_id=snapshot tag, text=sentence verbatim",
+ "sentences": [
+  {
+   "sentence_id": "batch7_0000",
+   "document_id": "remeasure_hud_style_guide",
+   "text": "Software Recommendations Use only Microsoft Word for text (refrain from exporting or converting text from other applications to Word; instead copy and paste plain text into a clean, blank Word document).",
+   "corpus_index": 0,
+   "section": 4,
+   "doc_sha256": "59c4da42cc3d3900f44304ef4756c862927d2fabc7b62faf173a2e03e7924bb0"
+  },
+  {
+   "sentence_id": "batch7_0001",
+   "document_id": "remeasure_hud_style_guide",
+   "text": "A professional editor, using track changes, will edit all content and reports for author and COR review and approval.",
+   "corpus_index": 1,
+   "section": 5,
+   "doc_sha256": "59c4da42cc3d3900f44304ef4756c862927d2fabc7b62faf173a2e03e7924bb0"
+  },
+  {
+   "sentence_id": "batch7_0002",
+   "document_id": "remeasure_hud_style_guide",
+   "text": "As a federal government agency, HUD uses a modified version of the U.S.",
+   "corpus_index": 2,
+   "section": 6,
+   "doc_sha256": "59c4da42cc3d3900f44304ef4756c862927d2fabc7b62faf173a2e03e7924bb0"
+  },
+  {
+   "sentence_id": "batch7_0003",
+   "document_id": "remeasure_iso_directives_part2",
+   "text": "1 Scope This part of the ISO/IEC Directives specifies rules for the structure and drafting of documents intended to become International Standards, Technical Specifications or Publicly Available Specifications.",
+   "corpus_index": 3,
+   "section": 4,
+   "doc_sha256": "5834c2f71030cf5a4ba9ca64dc869bb1435e7b3c0582e4a354ac54f4a484ad07"
+  },
+  {
+   "sentence_id": "batch7_0004",
+   "document_id": "remeasure_iso_directives_part2",
+   "text": "Such marks are ordinarily to be applied under the rules of a certification system — see ISO/IEC Guide 23.",
+   "corpus_index": 4,
+   "section": 4,
+   "doc_sha256": "5834c2f71030cf5a4ba9ca64dc869bb1435e7b3c0582e4a354ac54f4a484ad07"
+  },
+  {
+   "sentence_id": "batch7_0005",
+   "document_id": "remeasure_iso_directives_part2",
+   "text": "A.1 General Although the principles for drafting given in Annex A are expressed in terms of product documents, they also apply, where appropriate, to any other kind of document.",
+   "corpus_index": 5,
+   "section": 5,
+   "doc_sha256": "5834c2f71030cf5a4ba9ca64dc869bb1435e7b3c0582e4a354ac54f4a484ad07"
+  },
+  {
+   "sentence_id": "batch7_0006",
+   "document_id": "remeasure_iso_directives_part2",
+   "text": "D.1 General principles D.1.1 Scope of rules and examples provided in Annex D Annex D provides a synthesis of the rules and examples given in ISO 10241-1:2011, and is intended to cover those rules applicable to the forms of terms and definitions most commonly present in ISO and IEC standards.",
+   "corpus_index": 6,
+   "section": 8,
+   "doc_sha256": "5834c2f71030cf5a4ba9ca64dc869bb1435e7b3c0582e4a354ac54f4a484ad07"
+  },
+  {
+   "sentence_id": "batch7_0007",
+   "document_id": "remeasure_who_trs_957",
+   "text": "Geneva 2007 WHO Library Cataloguing-in-Publication DataPublications of the World Health Organization enjoy copyright protection in accordance with the ii WHO Library Cataloguing-in-Publication Data: Forty-fourth report of the WHO Expert Committee on specifications for pharmaceutical preparations.",
+   "corpus_index": 7,
+   "section": 3,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0008",
+   "document_id": "remeasure_who_trs_957",
+   "text": "EDQM is at the centre of the European regulatory framework for medicines and one of its tasks since 2008 has been to protect patients in Europe from counterfeit medicines.",
+   "corpus_index": 8,
+   "section": 5,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0009",
+   "document_id": "remeasure_who_trs_957",
+   "text": "These guidelines, if established, would set international expectations for the regulatory evaluation of this increasingly important and relatively new class of biological medicines.",
+   "corpus_index": 9,
+   "section": 5,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0010",
+   "document_id": "remeasure_who_trs_957",
+   "text": "While the format of this future publication was still to be defined (electronic, CD-ROM or book), a tentative table of contents of about 45 texts for inclusion in this publication was discussed and adopted.",
+   "corpus_index": 10,
+   "section": 6,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0011",
+   "document_id": "remeasure_who_trs_957",
+   "text": "The system was aimed at reinforcing mutual confidence within this network.",
+   "corpus_index": 11,
+   "section": 7,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0012",
+   "document_id": "remeasure_who_trs_957",
+   "text": "The main changes recommended were: — Quality unit concept — Quality risk management — Product quality review — Responsibilities of key personnel.",
+   "corpus_index": 12,
+   "section": 8,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0013",
+   "document_id": "remeasure_who_trs_957",
+   "text": "This was supported by building national regulatory capacity, providing technical assistance to selected manufacturers and postmarket monitoring through quality control (QC) testing by prequalified quality control laboratories.",
+   "corpus_index": 13,
+   "section": 11,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0014",
+   "document_id": "remeasure_who_trs_957",
+   "text": "The Expert Committee broadly endorsed the QSM proposals concerning: • dosage form terminology; and • expression of medicine strength.",
+   "corpus_index": 14,
+   "section": 13,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0015",
+   "document_id": "remeasure_who_trs_957",
+   "text": "The Expert Committee on Specifications for Pharmaceutical Preparations provides recommendations and tools to assure the quality of medicines from their development phase to their final distribution to the patients.",
+   "corpus_index": 15,
+   "section": 14,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0016",
+   "document_id": "remeasure_who_trs_957",
+   "text": "FitzGerald, Legal Adviser, European Association of Pharmaceutical Full-line Wholesalers, Brussels, Belgium; Dr A.",
+   "corpus_index": 16,
+   "section": 14,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0017",
+   "document_id": "remeasure_who_trs_957",
+   "text": "Nodop, Inspections, European Medicines Agency, London, England; Dr T.",
+   "corpus_index": 17,
+   "section": 14,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0018",
+   "document_id": "remeasure_who_trs_957",
+   "text": "7.1 The laboratory facilities are to be of a suitable size, construction and location.",
+   "corpus_index": 18,
+   "section": 24,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0019",
+   "document_id": "remeasure_who_trs_957",
+   "text": "Sections 14.1–14.3 are applicable to national pharmaceutical quality control laboratories.",
+   "corpus_index": 19,
+   "section": 33,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0020",
+   "document_id": "remeasure_who_trs_957",
+   "text": "A compendium of guidelines and related materials.",
+   "corpus_index": 20,
+   "section": 42,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0021",
+   "document_id": "remeasure_who_trs_957",
+   "text": "It is also intended to help ensure that APIs meet the requirements for quality and purity that they purport or are represented to possess.",
+   "corpus_index": 21,
+   "section": 45,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0022",
+   "document_id": "remeasure_who_trs_957",
+   "text": "2.11 Each manufacturer should establish, document and implement an effective system for managing quality that involves the active participation of management and appropriate manufacturing personnel.",
+   "corpus_index": 22,
+   "section": 46,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0023",
+   "document_id": "remeasure_who_trs_957",
+   "text": "Facilities should also be designed to minimize potential contamination.",
+   "corpus_index": 23,
+   "section": 48,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0024",
+   "document_id": "remeasure_who_trs_957",
+   "text": "5.11 Equipment should be constructed so that surfaces that contact raw materials, intermediates or APIs do not alter the quality of the intermediates and APIs beyond the official or other established specifi cations.",
+   "corpus_index": 24,
+   "section": 49,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0025",
+   "document_id": "remeasure_who_trs_957",
+   "text": "Weighing and measuring devices should be of suitable accuracy for the intended use.",
+   "corpus_index": 25,
+   "section": 52,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0026",
+   "document_id": "remeasure_who_trs_957",
+   "text": "11.11 There should be documented procedures describing sampling, testing, approval or rejection of materials and recording and storage of laboratory data.",
+   "corpus_index": 26,
+   "section": 55,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0027",
+   "document_id": "remeasure_who_trs_957",
+   "text": "12.11 The critical parameters and attributes should normally be identified during the development stage or from historical data and the ranges necessary for the reproducible operation should be defined.",
+   "corpus_index": 27,
+   "section": 56,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0028",
+   "document_id": "remeasure_who_trs_957",
+   "text": "It is not intended to be a stand-alone section.",
+   "corpus_index": 28,
+   "section": 62,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0029",
+   "document_id": "remeasure_who_trs_957",
+   "text": "( distribution/en/) Good trade and distribution practices for pharmaceutical starting materials.",
+   "corpus_index": 29,
+   "section": 66,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0030",
+   "document_id": "remeasure_who_trs_957",
+   "text": "10.1 The air-handling units (AHUs) supplying air to the facility should conform to AHU requirements as detailed in Quality assurance of pharmaceuticals.",
+   "corpus_index": 30,
+   "section": 79,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0031",
+   "document_id": "remeasure_who_trs_957",
+   "text": "4.1 Clean areas for the manufacture of sterile products are classified according to the required characteristics of the environment.",
+   "corpus_index": 31,
+   "section": 88,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0032",
+   "document_id": "remeasure_who_trs_957",
+   "text": "4.7.9 Other characteristics such as temperature and relative humidity depend on the product and nature of the operations carried out.",
+   "corpus_index": 32,
+   "section": 88,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0033",
+   "document_id": "remeasure_who_trs_957",
+   "text": "The temperature should be recorded by a probe situated at the coolest part of the load or loaded chamber, this point having been determined during the validation; the temperature should preferably be checked against a second independent temperature probe located at the same position.",
+   "corpus_index": 33,
+   "section": 90,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0034",
+   "document_id": "remeasure_who_trs_957",
+   "text": "10.1 Only the minimum number of personnel required should be present in clean areas; this is particularly important during aseptic processes.",
+   "corpus_index": 34,
+   "section": 94,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0035",
+   "document_id": "remeasure_who_trs_957",
+   "text": "11.1 All premises should as far as possible be designed to avoid the unnecessary entry of supervisory or control personnel.",
+   "corpus_index": 35,
+   "section": 95,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0036",
+   "document_id": "remeasure_who_trs_957",
+   "text": "13.1 Containers should be closed by appropriately validated methods.",
+   "corpus_index": 36,
+   "section": 97,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0037",
+   "document_id": "remeasure_who_trs_957",
+   "text": "9.1 Good storage practices (GSP) are applicable in all circumstances where pharmaceutical products are stored and throughout the distribution process.",
+   "corpus_index": 37,
+   "section": 107,
+   "doc_sha256": "d64f945515e34c99c8cae2cc3ea073f63beaff393709957ef0cdf21c91d2fe04"
+  },
+  {
+   "sentence_id": "batch7_0038",
+   "document_id": "energy_k1_sustainability_eo14057",
+   "text": "4.1 GHG Emissions Reduction 4.1.1 Policy It is therefore the policy of my Administration for the Federal Government to lead by example in order to achieve . . . net -zero emissions economy -wide by no later than 2050.",
+   "corpus_index": 38,
+   "section": 5,
+   "doc_sha256": "176d093d10dbabf944a2bbdbd7470c4ebafdb36b7710f6784d66e09a8d3d672b"
+  },
+  {
+   "sentence_id": "batch7_0039",
+   "document_id": "energy_k1_sustainability_eo14057",
+   "text": "EACs may be generated within six months prior to or three months after the net annual CFE compliance year.",
+   "corpus_index": 39,
+   "section": 6,
+   "doc_sha256": "176d093d10dbabf944a2bbdbd7470c4ebafdb36b7710f6784d66e09a8d3d672b"
+  },
+  {
+   "sentence_id": "batch7_0040",
+   "document_id": "energy_k1_sustainability_eo14057",
+   "text": "14057 requires all modernization and renovation projects at existing Federal facilities to implement CEQ’s Guiding Principles for Sustainable Federal Buildings (Guiding Principles ).",
+   "corpus_index": 40,
+   "section": 6,
+   "doc_sha256": "176d093d10dbabf944a2bbdbd7470c4ebafdb36b7710f6784d66e09a8d3d672b"
+  },
+  {
+   "sentence_id": "batch7_0041",
+   "document_id": "transport_k1_kytc_acfr",
+   "text": "1 List of Authority Members .........................................................................................................",
+   "corpus_index": 41,
+   "section": 0,
+   "doc_sha256": "caa0085bfd079bcac1814569409d6aff8456647d1926fd531714777ec1a944d7"
+  },
+  {
+   "sentence_id": "batch7_0042",
+   "document_id": "museums_k1_britishmuseum_annual",
+   "text": "The Annual Report and Accounts for 2025/26 summarises activity undertaken by the British Museum across the past financial year.",
+   "corpus_index": 42,
+   "section": 3,
+   "doc_sha256": "30a632b548edbc333aef7b6dc8c6c921144994ce8eb64365db6b577749675e0c"
+  },
+  {
+   "sentence_id": "batch7_0043",
+   "document_id": "museums_k1_britishmuseum_annual",
+   "text": "The British Museum today continues its tradition of responsibility to the public.",
+   "corpus_index": 43,
+   "section": 6,
+   "doc_sha256": "30a632b548edbc333aef7b6dc8c6c921144994ce8eb64365db6b577749675e0c"
+  },
+  {
+   "sentence_id": "batch7_0044",
+   "document_id": "museums_k1_britishmuseum_annual",
+   "text": "The governing body of the British Museum is the Board of Trustees.",
+   "corpus_index": 44,
+   "section": 12,
+   "doc_sha256": "30a632b548edbc333aef7b6dc8c6c921144994ce8eb64365db6b577749675e0c"
+  },
+  {
+   "sentence_id": "batch7_0045",
+   "document_id": "museums_k1_britishmuseum_annual",
+   "text": "The FRS 102 Periodic Review 2024 issued in September 2024, which is effective for accounting periods beginning on, or after, 1 January 2026, will result in changes to the accounting and disclosure of key areas such as income and leases.",
+   "corpus_index": 45,
+   "section": 18,
+   "doc_sha256": "30a632b548edbc333aef7b6dc8c6c921144994ce8eb64365db6b577749675e0c"
+  },
+  {
+   "sentence_id": "batch7_0046",
+   "document_id": "museums_k1_britishmuseum_annual",
+   "text": "Prints & Drawings This is the national collection of Western prints and drawings dating from the beginning of the fifteenth century to the present day.",
+   "corpus_index": 46,
+   "section": 18,
+   "doc_sha256": "30a632b548edbc333aef7b6dc8c6c921144994ce8eb64365db6b577749675e0c"
+  },
+  {
+   "sentence_id": "batch7_0047",
+   "document_id": "geo_k1_usgs_programbook",
+   "text": "Species Management Research Program Environmental Health Program Land Management Research Program Biological Threats and Invasive Species Research Program Climate Adaptation Science Centers and Land Change Science Cooperative Research Units Anne Kinsinger, Associate Director akinsinger@usgs.gov This page intentionally left blank.",
+   "corpus_index": 47,
+   "section": 2,
+   "doc_sha256": "cf8c90c8148f24b301ead7fbf42ea158006571883892564864dc6e1fa11944f5"
+  },
+  {
+   "sentence_id": "batch7_0048",
+   "document_id": "geo_k1_usgs_programbook",
+   "text": "The USGS provides the scientific information, situational awareness, and knowledge necessary to reduce deaths, injuries, and economic losses from earthquakes and earthquake-induced tsunamis, landslides, and soil liquefaction.",
+   "corpus_index": 48,
+   "section": 6,
+   "doc_sha256": "cf8c90c8148f24b301ead7fbf42ea158006571883892564864dc6e1fa11944f5"
+  },
+  {
+   "sentence_id": "batch7_0049",
+   "document_id": "geo_k1_usgs_programbook",
+   "text": "Water Availability and Use Science Program Groundwater and Streamflow Information Program National Water Quality Program Water Resources Research Act Program Don Cline, Associate Director dcline@usgs.gov This page intentionally left blank.",
+   "corpus_index": 49,
+   "section": 7,
+   "doc_sha256": "cf8c90c8148f24b301ead7fbf42ea158006571883892564864dc6e1fa11944f5"
+  },
+  {
+   "sentence_id": "batch7_0050",
+   "document_id": "geo_k1_usgs_programbook",
+   "text": "National Geospatial Program National Cooperative Geologic Mapping Program Science Synthesis, Analysis and Research Program National Land Imaging Program Kevin T.",
+   "corpus_index": 50,
+   "section": 8,
+   "doc_sha256": "cf8c90c8148f24b301ead7fbf42ea158006571883892564864dc6e1fa11944f5"
+  },
+  {
+   "sentence_id": "batch7_0051",
+   "document_id": "io_k1_who_budget",
+   "text": "The Proposed programme budget 2026 –2027 is the first to be fully developed based on the Fourteenth General Programme of Work, 2025 –2028 (GPW 14), which prioritizes advancing health equity and strengthening health systems resilience.",
+   "corpus_index": 51,
+   "section": 2,
+   "doc_sha256": "8c09cabcb8f81d80d258d1b223375618dc4ffa9111a5986c72f8ec282491dbdd"
+  },
+  {
+   "sentence_id": "batch7_0052",
+   "document_id": "io_k1_who_budget",
+   "text": "The base programmes budget segment is proposed to be set at US$ 4 267.1 million, compared with US$ 4 968.2 million for the Programme budget 2024 –2025 (Table 2) and with US$ 5 324.1 million proposed to the 156th session of the Executive Board .",
+   "corpus_index": 52,
+   "section": 4,
+   "doc_sha256": "8c09cabcb8f81d80d258d1b223375618dc4ffa9111a5986c72f8ec282491dbdd"
+  },
+  {
+   "sentence_id": "batch7_0053",
+   "document_id": "io_k1_who_budget",
+   "text": "The Proposed programme budget 2026 –2027 uses the GPW 14 results framework to track and assess results, using 42 outputs and 18 outcomes (Table 1).",
+   "corpus_index": 53,
+   "section": 5,
+   "doc_sha256": "8c09cabcb8f81d80d258d1b223375618dc4ffa9111a5986c72f8ec282491dbdd"
+  },
+  {
+   "sentence_id": "batch7_0054",
+   "document_id": "io_k1_who_budget",
+   "text": "Emphasis will be on both health sector and intersectoral actions that foster well -being and health equity as co -benefits across sectors and put health outcomes at the centre of relevant policies and processes.",
+   "corpus_index": 54,
+   "section": 12,
+   "doc_sha256": "8c09cabcb8f81d80d258d1b223375618dc4ffa9111a5986c72f8ec282491dbdd"
+  },
+  {
+   "sentence_id": "batch7_0055",
+   "document_id": "io_k1_who_budget",
+   "text": "The focus of this outcome is on strengthening core capacities and the approach used to scale primary healthcare in different contexts to leave no one behind, while monitoring the impact of such initiatives.",
+   "corpus_index": 55,
+   "section": 13,
+   "doc_sha256": "8c09cabcb8f81d80d258d1b223375618dc4ffa9111a5986c72f8ec282491dbdd"
+  },
+  {
+   "sentence_id": "batch7_0056",
+   "document_id": "io_k1_who_budget",
+   "text": "The early detection and ap propriate management of cardiovascular diseases, cancers, chronic respiratory diseases, diabetes, chronic pain, cognitive impairments, eye care, hearing and oral health, rare diseases and other noncommunicable diseases will be scaled up.",
+   "corpus_index": 56,
+   "section": 14,
+   "doc_sha256": "8c09cabcb8f81d80d258d1b223375618dc4ffa9111a5986c72f8ec282491dbdd"
+  },
+  {
+   "sentence_id": "batch7_0057",
+   "document_id": "io_k1_who_budget",
+   "text": "Under this corporate outcome, WHO will facilitate the strengthening of its governing bodies to set global he alth priorities more efficiently and effectively.",
+   "corpus_index": 57,
+   "section": 17,
+   "doc_sha256": "8c09cabcb8f81d80d258d1b223375618dc4ffa9111a5986c72f8ec282491dbdd"
+  },
+  {
+   "sentence_id": "batch7_0058",
+   "document_id": "industry_k2_cta_directives",
+   "text": "Directives Part 1 Edition 19.0 IEC Supplement Edition 17.0 © ISO/IEC 202 3 – 2 ISO/IEC Directives Part1 + IEC Supp lement THIS PUBLICATION IS COPYRIGHT PROTECTED 202 3 ISO/IEC, Geneva, Switzerland .",
+   "corpus_index": 58,
+   "section": 1,
+   "doc_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27"
+  },
+  {
+   "sentence_id": "batch7_0059",
+   "document_id": "industry_k2_cta_directives",
+   "text": "The respective websites of ISO , IEC , and ISO/IEC JTC 1 offer supplementary guidance and tools for individuals involved in the technical work .",
+   "corpus_index": 59,
+   "section": 2,
+   "doc_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27"
+  },
+  {
+   "sentence_id": "batch7_0060",
+   "document_id": "industry_k2_cta_directives",
+   "text": "NOTE 1 Explanations of the terms “new work item proposal” , “committee draft”, “enquiry draft” and “final draft International Standard” are given in Clause 2.",
+   "corpus_index": 60,
+   "section": 4,
+   "doc_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27"
+  },
+  {
+   "sentence_id": "batch7_0061",
+   "document_id": "industry_k2_cta_directives",
+   "text": "1.6.2 At the time of its establishment, a subcommittee shall comprise at least 5 members of the pare nt technical committee having expressed their intention to participate actively (see 1.7.1 ) in the work of the subcommittee.",
+   "corpus_index": 61,
+   "section": 4,
+   "doc_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27"
+  },
+  {
+   "sentence_id": "batch7_0062",
+   "document_id": "industry_k2_cta_directives",
+   "text": "A ranked ballot shall be conducted by asking the eligible National Bodies to rank the candidate National Bodies in order of their preference.",
+   "corpus_index": 62,
+   "section": 4,
+   "doc_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27"
+  },
+  {
+   "sentence_id": "batch7_0063",
+   "document_id": "industry_k2_cta_directives",
+   "text": "Committees may establish ad hoc groups, the purpose of which is to study a precisely defined problem o n which the group reports to its parent committee.",
+   "corpus_index": 63,
+   "section": 4,
+   "doc_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27"
+  },
+  {
+   "sentence_id": "batch7_0064",
+   "document_id": "industry_k2_cta_directives",
+   "text": "2.1.1 General The primary duty of a committee is the development and maintenance of International Standards.",
+   "corpus_index": 64,
+   "section": 5,
+   "doc_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27"
+  },
+  {
+   "sentence_id": "batch7_0065",
+   "document_id": "industry_k2_cta_directives",
+   "text": "Votes shall be returned within 12 weeks.",
+   "corpus_index": 65,
+   "section": 5,
+   "doc_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27"
+  },
+  {
+   "sentence_id": "batch7_0066",
+   "document_id": "industry_k2_cta_directives",
+   "text": "Fragmented CDVs (multiple documents with a single vote on each document) may follow the enquiry stage.",
+   "corpus_index": 66,
+   "section": 5,
+   "doc_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27"
+  },
+  {
+   "sentence_id": "batch7_0067",
+   "document_id": "industry_k2_cta_directives",
+   "text": "NOTE In case of revision , a new edition of the International Standard will be issued.",
+   "corpus_index": 67,
+   "section": 5,
+   "doc_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27"
+  },
+  {
+   "sentence_id": "batch7_0068",
+   "document_id": "industry_k2_cta_directives",
+   "text": "3.1.1 A committee may decide to prepare and publish a Technical Specification when: ⎯ The subject in question is still under development, or ⎯ The committee has developed a document it wishes to publish as per 2.6.4 and 2.7.7 A Technical Specification may contain normative provisions.",
+   "corpus_index": 68,
+   "section": 6,
+   "doc_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27"
+  },
+  {
+   "sentence_id": "batch7_0069",
+   "document_id": "industry_k2_cta_directives",
+   "text": "4.1.1 National Bodies are reminded that they are not permitted to charge delegates/Experts any sort of participation fee, nor require accommodations at specific hotels or hotel rates for any meetings of technical committees, subcommittees, working groups, mainte nance and project teams.",
+   "corpus_index": 69,
+   "section": 7,
+   "doc_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27"
+  },
+  {
+   "sentence_id": "batch7_0070",
+   "document_id": "industry_k2_cta_directives",
+   "text": "5.1.1 National Bodies have the right of appeal a) to the parent technical committee on a decision of a subcommittee; b) to the technical management board on a decision of a technical committee; c) to the council board on a decision of the technical management board, with in 12 weeks in ISO and 8 weeks in IEC of the decision in question.",
+   "corpus_index": 70,
+   "section": 8,
+   "doc_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27"
+  },
+  {
+   "sentence_id": "batch7_0071",
+   "document_id": "industry_k2_cta_directives",
+   "text": "B.4.1 Formal liaison at th e committee level Most coordination needs arising between individual ISO and IEC committees are successfully dealt with through formal technical liaison arrangements.",
+   "corpus_index": 71,
+   "section": 20,
+   "doc_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27"
+  },
+  {
+   "sentence_id": "batch7_0072",
+   "document_id": "industry_k2_cta_directives",
+   "text": "C.4.1 Proposals for new fields of technical activity and new work items shall include the following fields of information ( C.4.2 to Annex C C.4.13 ).",
+   "corpus_index": 72,
+   "section": 24,
+   "doc_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27"
+  },
+  {
+   "sentence_id": "batch7_0073",
+   "document_id": "industry_k2_cta_directives",
+   "text": "H.4.1 Chronology This Policy addresses the various aspects of an RA in the order of the life cycle of a typical RA , noting that some stages may be done in par allel.",
+   "corpus_index": 73,
+   "section": 42,
+   "doc_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27"
+  },
+  {
+   "sentence_id": "batch7_0074",
+   "document_id": "industry_k2_cta_directives",
+   "text": "The success of any committee or working group is dependent on its leadership.",
+   "corpus_index": 74,
+   "section": 60,
+   "doc_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27"
+  },
+  {
+   "sentence_id": "batch7_0075",
+   "document_id": "industry_k2_cta_directives",
+   "text": "SJ.2.1 Introduction Clause SJ.2 has been prepared on the basis of both the experience acquired in the preparation of the IEV by IEC/TC 1, Terminology , and the work of ISO/TC 37, Terminology and other language and content resources , in which experts of IEC/TC 1 participate.",
+   "corpus_index": 75,
+   "section": 74,
+   "doc_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27"
+  },
+  {
+   "sentence_id": "batch7_0076",
+   "document_id": "industry_k2_cta_directives",
+   "text": "SJ.3.1 Elements of the terminological entries SJ.3.1.1 IEV number SJ.2.5 . the ISO/IEC Directives, Part 2, 20 21 , 16.4.",
+   "corpus_index": 76,
+   "section": 75,
+   "doc_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27"
+  },
+  {
+   "sentence_id": "batch7_0077",
+   "document_id": "industry_k2_cta_directives",
+   "text": "It shall, however, completely describe the concept from the viewpoint of the electrical engineer.",
+   "corpus_index": 77,
+   "section": 75,
+   "doc_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27"
+  },
+  {
+   "sentence_id": "batch7_0078",
+   "document_id": "industry_k2_cta_directives",
+   "text": "SJ.4.1 General – Technical Committee No. 1 responsibility IEC/TC 1, Terminology , has the overall responsibility for preparing the International Electrotechnical Vocabulary.",
+   "corpus_index": 78,
+   "section": 76,
+   "doc_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27"
+  },
+  {
+   "sentence_id": "batch7_0079",
+   "document_id": "industry_k2_cta_directives",
+   "text": "SK.4.1 Overview SK.4.1.1 The procedures described in this Annex are intended to be sufficiently generic and high level to be applicable to all SDBs, and to distinguish between the SDB management procedure (SK.3.2.2 ) and the SDB content procedure ( SK.3.2.3 ).",
+   "corpus_index": 79,
+   "section": 81,
+   "doc_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27"
+  },
+  {
+   "sentence_id": "batch7_0080",
+   "document_id": "industry_k2_cta_directives",
+   "text": "A proposal for modification shall also include the transition plan from the old to the new instance of the SDB.",
+   "corpus_index": 80,
+   "section": 81,
+   "doc_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27"
+  },
+  {
+   "sentence_id": "batch7_0081",
+   "document_id": "industry_k2_cta_directives",
+   "text": "SL.3.1 Chair The Chair of the CISPR is the Chair of th e Plenary Assembly.",
+   "corpus_index": 81,
+   "section": 84,
+   "doc_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27"
+  },
+  {
+   "sentence_id": "batch7_0082",
+   "document_id": "industry_k2_cta_directives",
+   "text": "All National Committees have the right to participate in the work of Systems Committees.",
+   "corpus_index": 82,
+   "section": 100,
+   "doc_sha256": "7b43c1140f3b8bee973c6d3b3bb46cb7f95034e7f6c905eee473c4ec47740c27"
+  },
+  {
+   "sentence_id": "batch7_0083",
+   "document_id": "museums_k3_nbmaa_annual",
+   "text": "6 ANNUAL REPORT FY 2024–25 FRITZ HORSTMAN: VALLEY & BLUE LIGHT SEPTEMBER 6, 2024–JULY 27, 2025 Light and shadows, landscapes, voids, and reversals; the subjects of Fritz Horstman’s exhibition were simultaneously very much of the everyday world and also something less easily defined.",
+   "corpus_index": 83,
+   "section": 2,
+   "doc_sha256": "f8e9713c91c9cc74a25e8ebf9b29dae154dde14232a7ee90675aedfa08261c5d"
+  },
+  {
+   "sentence_id": "batch7_0084",
+   "document_id": "museums_k3_nbmaa_annual",
+   "text": "22 ANNUAL REPORT FY 2024–25 The Monhegan Wildlands: Art, Ecology, and the Resilience of a Maine Island Bowdoin College Museum of Art, Brunswick, Maine December 1, 2024–June 1, 2025 Edward Hopper (1882 – 1967) Blackhead, Monhegan , c.",
+   "corpus_index": 84,
+   "section": 9,
+   "doc_sha256": "f8e9713c91c9cc74a25e8ebf9b29dae154dde14232a7ee90675aedfa08261c5d"
+  },
+  {
+   "sentence_id": "batch7_0085",
+   "document_id": "museums_k3_nbmaa_annual",
+   "text": "Through a wide range of generous contributions—from annual gifts and memberships to support for our special events, planned giving, and corporate partnerships—each of these individuals, households, foundations, and corporations has played a vital role.",
+   "corpus_index": 85,
+   "section": 11,
+   "doc_sha256": "f8e9713c91c9cc74a25e8ebf9b29dae154dde14232a7ee90675aedfa08261c5d"
+  },
+  {
+   "sentence_id": "batch7_0086",
+   "document_id": "museums_k3_nbmaa_annual",
+   "text": "Anonymous (10) Michael Antisdale & Mark Melanson Frederick & Joan Baekeland Barbara Belgrade Mitzi Bowman David J. & Mona B.",
+   "corpus_index": 86,
+   "section": 14,
+   "doc_sha256": "f8e9713c91c9cc74a25e8ebf9b29dae154dde14232a7ee90675aedfa08261c5d"
+  },
+  {
+   "sentence_id": "batch7_0087",
+   "document_id": "museums_k3_nbmaa_annual",
+   "text": "Harris Mr. and Mrs. Richard Healey Ms. Margaret Heiner and Mr. Oliver Tostmann Dr. and Mrs. Donald W.",
+   "corpus_index": 87,
+   "section": 15,
+   "doc_sha256": "f8e9713c91c9cc74a25e8ebf9b29dae154dde14232a7ee90675aedfa08261c5d"
+  },
+  {
+   "sentence_id": "batch7_0088",
+   "document_id": "geo_k2_usgs_mcs2025",
+   "text": "Exports are shown as negative percentages to indicate value of supply lost.",
+   "corpus_index": 88,
+   "section": 15,
+   "doc_sha256": "0716353ab7df3de3c7946a42e55944c425fdf7bc8cc32895da6f90adf2c14df7"
+  },
+  {
+   "sentence_id": "batch7_0089",
+   "document_id": "geo_k2_usgs_mcs2025",
+   "text": "In 2024, the United States enacted tariff rate increases on cobalt ores and concentrates originating from China, as well as cobalt-containing products including electric vehicles and lithium-ion batteries.",
+   "corpus_index": 89,
+   "section": 15,
+   "doc_sha256": "0716353ab7df3de3c7946a42e55944c425fdf7bc8cc32895da6f90adf2c14df7"
+  },
+  {
+   "sentence_id": "batch7_0090",
+   "document_id": "geo_k2_usgs_mcs2025",
+   "text": "Tuck (703) 648–4912, ctuck@usgs.gov (Data in million metric tons, metal, unless otherwise specified) Domestic Production and Use: In 2024, the total value of domestic purchases of iron and steel scrap (home scrap and net receipts of ferrous scrap by all domestic consumers from brokers, dealers, and other outside sources) was an estimated $24 billion, a 4% decrease from $24.7 billion in 2023.",
+   "corpus_index": 90,
+   "section": 15,
+   "doc_sha256": "0716353ab7df3de3c7946a42e55944c425fdf7bc8cc32895da6f90adf2c14df7"
+  },
+  {
+   "sentence_id": "batch7_0091",
+   "document_id": "geo_k2_usgs_mcs2025",
+   "text": "Shredded paper and straw are used to hold moisture for some grass-seeding applications.",
+   "corpus_index": 91,
+   "section": 15,
+   "doc_sha256": "0716353ab7df3de3c7946a42e55944c425fdf7bc8cc32895da6f90adf2c14df7"
+  },
+  {
+   "sentence_id": "batch7_0092",
+   "document_id": "geo_k2_usgs_mcs2025",
+   "text": "Geological Survey, Mineral Commodity Summaries, January 2025 Events, Trends, and Issues: The United States remained one of the world’s leading markets for dimension stone in 2024, but sales have slowed over the past few years.",
+   "corpus_index": 92,
+   "section": 15,
+   "doc_sha256": "0716353ab7df3de3c7946a42e55944c425fdf7bc8cc32895da6f90adf2c14df7"
+  },
+  {
+   "sentence_id": "batch7_0093",
+   "document_id": "remeasure_iaea_pub1222",
+   "text": "This chapter presents the methodology sheets for the Energy Indicators for Sustainable Development (EISD), grouped according to the social, economic and environmental dimensions.",
+   "corpus_index": 93,
+   "section": 11,
+   "doc_sha256": "cbb801f1d171cc2f12455a367ea28b3e3a2f6bf407f7ecbadf2fd2150c80d3b3"
+  },
+  {
+   "sentence_id": "batch7_0094",
+   "document_id": "remeasure_iaea_pub1222",
+   "text": "Total energy use in agriculture derives from the energy inputs at all the stages of agricultural production and processing.",
+   "corpus_index": 94,
+   "section": 11,
+   "doc_sha256": "cbb801f1d171cc2f12455a367ea28b3e3a2f6bf407f7ecbadf2fd2150c80d3b3"
+  },
+  {
+   "sentence_id": "batch7_0095",
+   "document_id": "remeasure_iaea_pub1222",
+   "text": "capita and per unit of GDP Brief Definition Emissions of greenhouse gases (GHGs) from energy production and use, per capita and per unit of gross domestic product (GDP), including carbon dioxide (CO 2 ), methane (CH 4 ) and nitrous oxide (N 2 O) Units Annual GHG emissions in tonnes, per capita or per US dollar.",
+   "corpus_index": 95,
+   "section": 12,
+   "doc_sha256": "cbb801f1d171cc2f12455a367ea28b3e3a2f6bf407f7ecbadf2fd2150c80d3b3"
+  },
+  {
+   "sentence_id": "batch7_0096",
+   "document_id": "remeasure_iaea_pub1222",
+   "text": "ASSESSMENT OF DATA (a) Data Needed to Compile the Indicator: Estimates of oil input to coastal areas and seas from the main sources of oil disposal.",
+   "corpus_index": 96,
+   "section": 12,
+   "doc_sha256": "cbb801f1d171cc2f12455a367ea28b3e3a2f6bf407f7ecbadf2fd2150c80d3b3"
+  },
+  {
+   "sentence_id": "batch7_0097",
+   "document_id": "remeasure_iaea_pub1222",
+   "text": "Energy Efficiency Indicators: The European Experience.",
+   "corpus_index": 97,
+   "section": 13,
+   "doc_sha256": "cbb801f1d171cc2f12455a367ea28b3e3a2f6bf407f7ecbadf2fd2150c80d3b3"
+  },
+  {
+   "sentence_id": "batch7_0098",
+   "document_id": "remeasure_bmv_plan2030",
+   "text": "For all three modes of transport, a comparison is shown between the bottleneck situation in the “without” scenario and that of the 2030 target network.",
+   "corpus_index": 98,
+   "section": 2,
+   "doc_sha256": "231b90398689aae1be2aaeb4038cf7bd3901bd95a77b9d9a8811f21d6d2dfc6e"
+  },
+  {
+   "sentence_id": "batch7_0099",
+   "document_id": "remeasure_bmv_plan2030",
+   "text": "Roads The need for structural maintenance and replacement for the entire federal trunk road network has been calculated for the period from 2016 to 2030 using better forecasting and the latest data.",
+   "corpus_index": 99,
+   "section": 3,
+   "doc_sha256": "231b90398689aae1be2aaeb4038cf7bd3901bd95a77b9d9a8811f21d6d2dfc6e"
+  },
+  {
+   "sentence_id": "batch7_0100",
+   "document_id": "agriculture_k2_fsrp_manual",
+   "text": "1 1.2 O BJECTIVES OF THE MANUAL ........................................................................................",
+   "corpus_index": 100,
+   "section": 5,
+   "doc_sha256": "6df5e0d1dfb9f46305a6de1bae440b4f8493826be9074c17414a5f0e4720e00a"
+  },
+  {
+   "sentence_id": "batch7_0101",
+   "document_id": "agriculture_k2_fsrp_manual",
+   "text": "Agriculture contributes 25% to the Gross Domestic Product (GDP) and a further 27% indirectly through linkages, and associated industries through processing (ASTGS, 2019-2029).",
+   "corpus_index": 101,
+   "section": 7,
+   "doc_sha256": "6df5e0d1dfb9f46305a6de1bae440b4f8493826be9074c17414a5f0e4720e00a"
+  },
+  {
+   "sentence_id": "batch7_0102",
+   "document_id": "agriculture_k2_fsrp_manual",
+   "text": "However, the system faces several challenges, including human resource capacity, infrastructure and funding.",
+   "corpus_index": 102,
+   "section": 7,
+   "doc_sha256": "6df5e0d1dfb9f46305a6de1bae440b4f8493826be9074c17414a5f0e4720e00a"
+  },
+  {
+   "sentence_id": "batch7_0103",
+   "document_id": "agriculture_k2_fsrp_manual",
+   "text": "The project will use the four-tier training model (Figure 3) to cascade the training on TIMPs.",
+   "corpus_index": 103,
+   "section": 15,
+   "doc_sha256": "6df5e0d1dfb9f46305a6de1bae440b4f8493826be9074c17414a5f0e4720e00a"
+  },
+  {
+   "sentence_id": "batch7_0104",
+   "document_id": "agriculture_k2_fsrp_manual",
+   "text": "The FSRP extension architecture is designed to empower farmers by organizing them into Common Interest Groups (CIGs) and Vulnerable and Marginal Groups (VMGs/IPs), with a designated lead farmer serving as the group's representative.",
+   "corpus_index": 104,
+   "section": 16,
+   "doc_sha256": "6df5e0d1dfb9f46305a6de1bae440b4f8493826be9074c17414a5f0e4720e00a"
+  },
+  {
+   "sentence_id": "batch7_0105",
+   "document_id": "agriculture_k2_fsrp_manual",
+   "text": "Researchers and/or extension workers will collaborate with farmers to establish field demonstrations.",
+   "corpus_index": 105,
+   "section": 17,
+   "doc_sha256": "6df5e0d1dfb9f46305a6de1bae440b4f8493826be9074c17414a5f0e4720e00a"
+  },
+  {
+   "sentence_id": "batch7_0106",
+   "document_id": "agriculture_k2_fsrp_manual",
+   "text": "Establishment of small plots TIMPs demonstrations in existing or newly formed CIGs / VMGs will be governed by the following guidelines: a) Selection process of potential host lead farmers The process for selecting potential host lead farmers involves several steps.",
+   "corpus_index": 106,
+   "section": 21,
+   "doc_sha256": "6df5e0d1dfb9f46305a6de1bae440b4f8493826be9074c17414a5f0e4720e00a"
+  },
+  {
+   "sentence_id": "batch7_0107",
+   "document_id": "agriculture_k2_fsrp_manual",
+   "text": "Based on peer-to-peer learning, the FFBSs approach has proven to be an effective way of assisting farmers in adopting TIMPs and in improving productivity of their respective agricultural value chains.",
+   "corpus_index": 107,
+   "section": 22,
+   "doc_sha256": "6df5e0d1dfb9f46305a6de1bae440b4f8493826be9074c17414a5f0e4720e00a"
+  },
+  {
+   "sentence_id": "batch7_0108",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "The first agricultural extension service of a modem kind came into existence as the result of a crisis and the initiative of the occupant of a high office of authority.",
+   "corpus_index": 108,
+   "section": 6,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0109",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "The role of the information system in development.",
+   "corpus_index": 109,
+   "section": 8,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0110",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "The goals of extension may vary, as was shown, within the overall system as well as between different extension organizations.",
+   "corpus_index": 110,
+   "section": 11,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0111",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "Agroecological Because the natural environment strongly influences extension planning and operations, extension Page 2 of 8Chapter 3 - The context of extension in agricultural and rural development 1/13/2001 file://C: Documents%20and%20Settings systech My%20Documents Documents AgEx -F...",
+   "corpus_index": 111,
+   "section": 15,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0112",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "Public agricultural extension organizations in most countries have the task of providing a two-way flow of improved technology and information between research and users, primarily farmers.",
+   "corpus_index": 112,
+   "section": 16,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0113",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "Two conceptual themes are relevant to extension impact.",
+   "corpus_index": 113,
+   "section": 20,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0114",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "Agricultural extension: The training and visit system.",
+   "corpus_index": 114,
+   "section": 25,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0115",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "Once the questionnaires have been completed, a final report based on the last questionnaire is prepared and sent to the participants.",
+   "corpus_index": 115,
+   "section": 25,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0116",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "The creative ingenuity of practitioners worldwide has greatly increased the range of participatory by Consultation external agents define both problems and solutions and may modify these in the light of people's responses.",
+   "corpus_index": 116,
+   "section": 31,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0117",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "Users who have presented findings arising from participatory learning are often asked a question along the lines of \"But how does it compare with the real data?\" (see Gill, 1991).",
+   "corpus_index": 117,
+   "section": 32,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0118",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "People's participation: NGOs and the flood action plan.",
+   "corpus_index": 118,
+   "section": 34,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0119",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "In today's world, the pace of change is accelerated, and people are continually involved in it, either as passive elements or as active citizens, more often as mere project recipients or targets.",
+   "corpus_index": 119,
+   "section": 36,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0120",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "Planning is currently recognized as a process and a social practice.",
+   "corpus_index": 120,
+   "section": 37,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0121",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "Albrecht, H., Bergman, H., Diederich, G., Grober, E., Hofman, V., Keller, P., Payr, G., & Sülzer, R.",
+   "corpus_index": 121,
+   "section": 39,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0122",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "As noted in chapter 2, a number of different approaches can be used to organize and deliver extension programmes.",
+   "corpus_index": 122,
+   "section": 43,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0123",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "The constraints affecting rural women's ability to improve yield, profit, and efficiency in agriculture include (1) women's legal and cultural status, which affects the degree of control women have over Page 3 of 16 Chapter 9 - Improving women farmers' access to extension services 1/13/2001 file://C: Documents%20and%20Settings systech My%20Documents Documents AgEx -F...",
+   "corpus_index": 123,
+   "section": 47,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0124",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "Female farmers and male extension workers: Women and agriculture in Tanzania II.",
+   "corpus_index": 124,
+   "section": 50,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0125",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "The strategic extension campaign (SEC) is not an alternative to the conventional extension programme or activity.",
+   "corpus_index": 125,
+   "section": 52,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0126",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "Although extension educators, funders, and administrators are in favour of evaluating extension programmes, honesty requires us to admit that most of us are not overly enthusiastic about undertaking it.",
+   "corpus_index": 126,
+   "section": 57,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0127",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "External Evaluator External Criteria Internal Evaluator External Criteria External Evaluator Internal Criteria Internal Evaluator Internal Criteria Page 5 of 18 Chapter 11 - Evaluating extension programmes 1/13/2001 file://C: Documents%20and%20Settings systech My%20Documents Documents AgEx -F...",
+   "corpus_index": 127,
+   "section": 60,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0128",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "The basic rule here is that the selection of methods follows the selection of focus, not the other way around.",
+   "corpus_index": 128,
+   "section": 62,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0129",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "The Perspective of Learners We have briefly considered methods for programme evaluation at the macro level.",
+   "corpus_index": 129,
+   "section": 63,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0130",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "Extension Mission and Goals Although extension has a generic and universal meaning, its mission and goals may need to be adjusted according to national objectives and the context and stage of agricultural and rural development in a given country.",
+   "corpus_index": 130,
+   "section": 71,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0131",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "Tokyo: Japan Agricultural Extension and Development Association.",
+   "corpus_index": 131,
+   "section": 73,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0132",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "Planning is the key management function of any extension worker.",
+   "corpus_index": 132,
+   "section": 74,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0133",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "Once strategic planning and management planning are implemented, organizing to get the job done is next.",
+   "corpus_index": 133,
+   "section": 76,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0134",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "Modern management is characterized by two approaches, the systems and the contingency approach.",
+   "corpus_index": 134,
+   "section": 82,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0135",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "Recruitment is important in selecting the right kind of extension personnel.",
+   "corpus_index": 135,
+   "section": 85,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0136",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "Training is a circular process that begins with needs identification and after a number of steps ends with evaluation of the training activity.",
+   "corpus_index": 136,
+   "section": 97,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0137",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "ACC (Administrative Committee on Coordination), United Nations (1984).",
+   "corpus_index": 137,
+   "section": 125,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0138",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "Data versus Information Data refers to raw, unevaluated facts, figures, symbols, objects, events, etc. Data may be a collection of facts lying in storage, like a telephone directory or census records.",
+   "corpus_index": 138,
+   "section": 126,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0139",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "Systems analysis is an effective procedure to use in identifying linkage problems, since it is a problem-solving methodology.",
+   "corpus_index": 139,
+   "section": 138,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0140",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "Extension has long been grounded in the diffusion model of agricultural development, in which technologies are passed from research scientists via extensionists to farmers (Rogers, 1962, 1983).",
+   "corpus_index": 140,
+   "section": 148,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0141",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "Changing the agenda of the universities.",
+   "corpus_index": 141,
+   "section": 150,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0142",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "Some of the principles and steps for social action models, community organizations, and management are used in designing the simplified step-wise approach in establishing FOs (Chamala, 1990).",
+   "corpus_index": 142,
+   "section": 154,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0143",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "Public sector extension, facing criticism for its cost and its lack of efficiency and for not pursuing programmes that foster equity, is confronted with a number of possibilities for change.",
+   "corpus_index": 143,
+   "section": 159,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0144",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "Gustafson (Eds.), Agricultural extension: Worldwide institutional evolution and forces for change.",
+   "corpus_index": 144,
+   "section": 165,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0145",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "The examples that follow illustrate the types of NGO-GO configurations that offer potential for replication and adaptation in three areas: providing technical advice and feedback, training, and working with groups.",
+   "corpus_index": 145,
+   "section": 167,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0146",
+   "document_id": "agriculture_k3_farmd_manual",
+   "text": "Complementarities and tensions in NGO-state relations in agricultural development: The trajectory of AGRARIA (Chile).",
+   "corpus_index": 146,
+   "section": 170,
+   "doc_sha256": "28ed02a3d2adf21d5a0ae10a84b598f24806ed407cad0b05f428fefa8c7ae8f0"
+  },
+  {
+   "sentence_id": "batch7_0147",
+   "document_id": "pubadmin_k4_ks_policy_manual",
+   "text": "FOREWORD This manual has been prepared in order to assist state agencies in the filing of regulations.",
+   "corpus_index": 147,
+   "section": 1,
+   "doc_sha256": "ae7ae61a1fccd32fd1e32301967f5987d19d52518ecda92ceba1c4d04aae782f"
+  },
+  {
+   "sentence_id": "batch7_0148",
+   "document_id": "pubadmin_k4_ks_policy_manual",
+   "text": "CONDITIONS Use the terms “if” and (as appropriate) “when” to introduce a condition .",
+   "corpus_index": 148,
+   "section": 1,
+   "doc_sha256": "ae7ae61a1fccd32fd1e32301967f5987d19d52518ecda92ceba1c4d04aae782f"
+  },
+  {
+   "sentence_id": "batch7_0149",
+   "document_id": "health_k5_fao_climate_change",
+   "text": "JOSÉ GRAZIANO DA SILVA, FAO Director-General BANGLADESH A boat passing by homes flooded by Cyclone Aila, which swept through Bangladesh in May 2009, flattening homes, killing livestock and damaging crops. ©FAO/M.",
+   "corpus_index": 149,
+   "section": 2,
+   "doc_sha256": "505a9b9be37ca91b6c97b1748e1677e38795eca271a24b258e2b1d345d7f08bd"
+  },
+  {
+   "sentence_id": "batch7_0150",
+   "document_id": "health_k5_fao_climate_change",
+   "text": "In response to increasing demands, FAO's climate change portfolio has expanded.",
+   "corpus_index": 150,
+   "section": 12,
+   "doc_sha256": "505a9b9be37ca91b6c97b1748e1677e38795eca271a24b258e2b1d345d7f08bd"
+  },
+  {
+   "sentence_id": "batch7_0151",
+   "document_id": "health_k5_fao_climate_change",
+   "text": "MAKING FISHERIES AND AQUACULTURE RESILIENT TO A CHANGING CLIMATE Oceans and freshwater aquatic systems are critical to global food security and the regulation of the world’s climate.",
+   "corpus_index": 151,
+   "section": 13,
+   "doc_sha256": "505a9b9be37ca91b6c97b1748e1677e38795eca271a24b258e2b1d345d7f08bd"
+  },
+  {
+   "sentence_id": "batch7_0152",
+   "document_id": "health_k5_fao_climate_change",
+   "text": "CUTTING EMISSIONS FROM ENERGY USE IN AGRICULTURE Globally, agrifood chains consume about 30 percent of available energy, mostly in post-harvest operations and in the form of fossil fuels.",
+   "corpus_index": 152,
+   "section": 14,
+   "doc_sha256": "505a9b9be37ca91b6c97b1748e1677e38795eca271a24b258e2b1d345d7f08bd"
+  },
+  {
+   "sentence_id": "batch7_0153",
+   "document_id": "health_k5_fao_climate_change",
+   "text": "The number and frequency of recorded natural disasters, along with the associated impact and damage to livelihoods and economies, are increasing significantly.",
+   "corpus_index": 153,
+   "section": 17,
+   "doc_sha256": "505a9b9be37ca91b6c97b1748e1677e38795eca271a24b258e2b1d345d7f08bd"
+  },
+  {
+   "sentence_id": "batch7_0154",
+   "document_id": "science_k4_nas_annual_1906",
+   "text": "During the year 1906 the academy held three sessions.",
+   "corpus_index": 154,
+   "section": 4,
+   "doc_sha256": "763eb5088daaf43557efea1fa40a522ac5c8ef2e5203e7be51b56e118d2c909d"
+  },
+  {
+   "sentence_id": "batch7_0155",
+   "document_id": "science_k4_nas_annual_1906",
+   "text": "The minutes of each session shall be duly engrossed before the next stated session, under the direction of the home secretary.",
+   "corpus_index": 155,
+   "section": 4,
+   "doc_sha256": "763eb5088daaf43557efea1fa40a522ac5c8ef2e5203e7be51b56e118d2c909d"
+  },
+  {
+   "sentence_id": "batch7_0156",
+   "document_id": "science_k6_harvard_nasem",
+   "text": "Authors: Alyson Warr and Marie Wu Date of Meeting: Tuesday, April 24th, 2018 Meeting with: Anne -Marie Mazza, Director of Committee on Science, Technology and Law Overview: The National Academy of Sciences was first established in 1863 by an act of Congress at the request of Abraham Lincoln.",
+   "corpus_index": 156,
+   "section": 1,
+   "doc_sha256": "fe3ede671d26df3327cca6c570ed585c232fd3728c76192cecec1f768cafe38a"
+  },
+  {
+   "sentence_id": "batch7_0157",
+   "document_id": "science_k6_harvard_nasem",
+   "text": "They are the public -facing arm of the NAS, and form the main contact point between the NAS and the press.",
+   "corpus_index": 157,
+   "section": 3,
+   "doc_sha256": "fe3ede671d26df3327cca6c570ed585c232fd3728c76192cecec1f768cafe38a"
+  },
+  {
+   "sentence_id": "batch7_0158",
+   "document_id": "science_k6_harvard_nasem",
+   "text": "Date: Wednesday April 25 th Meeting with: Jason Grumet, founder and president of the BPC Background on the organization and current state of politics, per Jason Grumet: The Bipartisan Policy Center is a 10 -year -old organization founded with the recognition that both parties have good ideas, productive policy comes from a constructive collision of ideas, and that consensus has a lasting impact.",
+   "corpus_index": 158,
+   "section": 4,
+   "doc_sha256": "fe3ede671d26df3327cca6c570ed585c232fd3728c76192cecec1f768cafe38a"
+  },
+  {
+   "sentence_id": "batch7_0159",
+   "document_id": "labour_k4_ilo_labour_standards_guide",
+   "text": "This publication is produced by the Standards and Principles and Fundamental Rights at Work Programme of the International Training Centre of the ILO in Turin.",
+   "corpus_index": 159,
+   "section": 3,
+   "doc_sha256": "50e9ece3344c62ac001a0b0671537bd91caeb8c36a0c56a9a0b773734d6f7c79"
+  },
+  {
+   "sentence_id": "batch7_0160",
+   "document_id": "labour_k4_ilo_labour_standards_guide",
+   "text": "Workers employed in any industrial enterprise (undertaking), public or private, must benefit in every period of seven days from a period of rest comprising at least 24 consecutive hours.",
+   "corpus_index": 160,
+   "section": 15,
+   "doc_sha256": "50e9ece3344c62ac001a0b0671537bd91caeb8c36a0c56a9a0b773734d6f7c79"
+  },
+  {
+   "sentence_id": "batch7_0161",
+   "document_id": "labour_k4_ilo_labour_standards_guide",
+   "text": "A State which ratifies the Convention undertakes to give effect to its provisions in consultation with representatives of employers and workers.",
+   "corpus_index": 161,
+   "section": 19,
+   "doc_sha256": "50e9ece3344c62ac001a0b0671537bd91caeb8c36a0c56a9a0b773734d6f7c79"
+  },
+  {
+   "sentence_id": "batch7_0162",
+   "document_id": "labour_k4_ilo_labour_standards_guide",
+   "text": "Convention No. 102, part II Convention No. 130 and Recommendation No. 134 Definition of the contingency The contingency covered includes: Ü any morbid condition, whatever its cause, and the medical care required as a result; Ü medical care of a preventive nature; Ü medical care necessitated by pregnancy, confinement and their consequences (Convention No. 102 only).",
+   "corpus_index": 162,
+   "section": 23,
+   "doc_sha256": "50e9ece3344c62ac001a0b0671537bd91caeb8c36a0c56a9a0b773734d6f7c79"
+  },
+  {
+   "sentence_id": "batch7_0163",
+   "document_id": "labour_k4_ilo_labour_standards_guide",
+   "text": "reflects principles of transparency and accountability.",
+   "corpus_index": 163,
+   "section": 25,
+   "doc_sha256": "50e9ece3344c62ac001a0b0671537bd91caeb8c36a0c56a9a0b773734d6f7c79"
+  },
+  {
+   "sentence_id": "batch7_0164",
+   "document_id": "labour_k4_ilo_labour_standards_guide",
+   "text": "Laws and regulations have to make appropriate persons responsible for compliance with these measures, namely as the case may be: Ü employers; Ü owners of gears; Ü masters; or Ü other persons.",
+   "corpus_index": 164,
+   "section": 31,
+   "doc_sha256": "50e9ece3344c62ac001a0b0671537bd91caeb8c36a0c56a9a0b773734d6f7c79"
+  },
+  {
+   "sentence_id": "batch7_0165",
+   "document_id": "labour_k4_ilo_labour_standards_guide",
+   "text": "The establishment of international labour standards is one of the ILO’s principal means of action.",
+   "corpus_index": 165,
+   "section": 37,
+   "doc_sha256": "50e9ece3344c62ac001a0b0671537bd91caeb8c36a0c56a9a0b773734d6f7c79"
+  },
+  {
+   "sentence_id": "batch7_0166",
+   "document_id": "labour_k4_ilo_labour_standards_guide",
+   "text": "ILO Systems of Control The regular system for supervising the application of standards The regular system of supervision is based on the examination by two ILO bodies of reports on the application in law and practice sent by member States and on observations in this regard sent by workers’ organizations and employers’ organizations.",
+   "corpus_index": 166,
+   "section": 38,
+   "doc_sha256": "50e9ece3344c62ac001a0b0671537bd91caeb8c36a0c56a9a0b773734d6f7c79"
+  },
+  {
+   "sentence_id": "batch7_0167",
+   "document_id": "labour_k4_ilo_labour_standards_guide",
+   "text": "The 1990 Protocol to Convention No. 89 was considered as being up-to-date by the Governing Body.",
+   "corpus_index": 167,
+   "section": 39,
+   "doc_sha256": "50e9ece3344c62ac001a0b0671537bd91caeb8c36a0c56a9a0b773734d6f7c79"
+  },
+  {
+   "sentence_id": "batch7_0168",
+   "document_id": "labour_k4_ilo_labour_standards_guide",
+   "text": "Protection in particular branches of activity . . . . . .",
+   "corpus_index": 168,
+   "section": 39,
+   "doc_sha256": "50e9ece3344c62ac001a0b0671537bd91caeb8c36a0c56a9a0b773734d6f7c79"
+  },
+  {
+   "sentence_id": "batch7_0169",
+   "document_id": "labour_k5_iba_ils_global_economy",
+   "text": "2.1 The ILO is a UN agency devoted to promoting social justice and labour rights, pursuing its mission that labour peace is essential to prosperity.",
+   "corpus_index": 169,
+   "section": 10,
+   "doc_sha256": "6790d66cb0ab45a92155cc0dd03551cef11624a1718123b03f07bb810b55bf02"
+  },
+  {
+   "sentence_id": "batch7_0170",
+   "document_id": "labour_k5_iba_ils_global_economy",
+   "text": "4.1 The CEACR, in assessing a country’s application of a ratified ILO Convention, might create uncertainty where a company has referenced a particular Convention in one of its agreements or codes of conduct.",
+   "corpus_index": 170,
+   "section": 12,
+   "doc_sha256": "6790d66cb0ab45a92155cc0dd03551cef11624a1718123b03f07bb810b55bf02"
+  },
+  {
+   "sentence_id": "batch7_0171",
+   "document_id": "labour_k5_iba_ils_global_economy",
+   "text": "6.1 ILO Conventions are directed to governments and only member states that have ratified these Conventions are bound by them.",
+   "corpus_index": 171,
+   "section": 14,
+   "doc_sha256": "6790d66cb0ab45a92155cc0dd03551cef11624a1718123b03f07bb810b55bf02"
+  },
+  {
+   "sentence_id": "batch7_0172",
+   "document_id": "labour_k5_iba_ils_global_economy",
+   "text": "7.1 Although ILS are not addressed to MNEs but to governments to implement national legislation that conforms to them, ILS have become relevant to companies in many ways, not only because the country in which the company is doing business did indeed ratify the particular ILO Convention and enacted legislation to conform to its content.",
+   "corpus_index": 172,
+   "section": 15,
+   "doc_sha256": "6790d66cb0ab45a92155cc0dd03551cef11624a1718123b03f07bb810b55bf02"
+  },
+  {
+   "sentence_id": "batch7_0173",
+   "document_id": "labour_k5_iba_ils_global_economy",
+   "text": "22 It was an obiter dictum from a committee that was, by its own avowal, not competent to deal with this matter.",
+   "corpus_index": 173,
+   "section": 15,
+   "doc_sha256": "6790d66cb0ab45a92155cc0dd03551cef11624a1718123b03f07bb810b55bf02"
+  },
+  {
+   "sentence_id": "batch7_0174",
+   "document_id": "education_k9_unesco_teacher_education_framework",
+   "text": "Pakistan has no overarching policy framework, which specifically addresses TPD.",
+   "corpus_index": 174,
+   "section": 9,
+   "doc_sha256": "f351c5cc5d492bcd1538978f62fec875beb5db506b53f746941e29d5c62c4d81"
+  },
+  {
+   "sentence_id": "batch7_0175",
+   "document_id": "education_k9_unesco_teacher_education_framework",
+   "text": "The lack of specific detail on the management of TPD issues in various policies has led to coordination issues among various tiers of government and with other stakeholders like the donor community and the private sector.",
+   "corpus_index": 175,
+   "section": 10,
+   "doc_sha256": "f351c5cc5d492bcd1538978f62fec875beb5db506b53f746941e29d5c62c4d81"
+  },
+  {
+   "sentence_id": "batch7_0176",
+   "document_id": "education_k9_unesco_teacher_education_framework",
+   "text": "The institutional failings of the TPD framework impact larger issues of educational development.",
+   "corpus_index": 176,
+   "section": 12,
+   "doc_sha256": "f351c5cc5d492bcd1538978f62fec875beb5db506b53f746941e29d5c62c4d81"
+  },
+  {
+   "sentence_id": "batch7_0177",
+   "document_id": "education_k9_unesco_teacher_education_framework",
+   "text": "Representation of qualified teachers should be mandatory in the formation and revision of educational policies.",
+   "corpus_index": 177,
+   "section": 17,
+   "doc_sha256": "f351c5cc5d492bcd1538978f62fec875beb5db506b53f746941e29d5c62c4d81"
+  },
+  {
+   "sentence_id": "batch7_0178",
+   "document_id": "education_k9_unesco_teacher_education_framework",
+   "text": "General References Academy for Educational Development (2006).",
+   "corpus_index": 178,
+   "section": 18,
+   "doc_sha256": "f351c5cc5d492bcd1538978f62fec875beb5db506b53f746941e29d5c62c4d81"
+  },
+  {
+   "sentence_id": "batch7_0179",
+   "document_id": "io_k8_ifrc_mhpss_evaluation",
+   "text": "EXECUTIVE SUMMARY 6 Introduction 8Relevance 9 Effectiveness 12 Coherence 14 Key opportunities and recommendations 16 ABOUT THIS REPORT 20 Acknowledgements 22 Acronyms, abbreviations and key terms 24 Background 26 Methodology 27 FINDINGS AND RECOMMENDATIONS 32 PART 1: THE GLOBAL RESPONSE 34 1.1.",
+   "corpus_index": 179,
+   "section": 2,
+   "doc_sha256": "61f2f6c490b6d47eddd2247bc088ef6710a86bed7b40be50b326d5acc9e64d24"
+  },
+  {
+   "sentence_id": "batch7_0180",
+   "document_id": "io_k8_ifrc_mhpss_evaluation",
+   "text": "This evaluation was conducted between March-September 2021 by a team comprising an independent Team Leader and seven team members identified by the Evaluation Management Team from the IFRC Secretariat and National Societies.",
+   "corpus_index": 180,
+   "section": 20,
+   "doc_sha256": "61f2f6c490b6d47eddd2247bc088ef6710a86bed7b40be50b326d5acc9e64d24"
+  },
+  {
+   "sentence_id": "batch7_0181",
+   "document_id": "io_k8_ifrc_mhpss_evaluation",
+   "text": "y In the early months of the operation, the tight timeframes for revisions of the Emergency Appeal, as well as travel and movement restrictions, meant it was not easy receive or integrate input from local assessments nor to manage information on a global scale.",
+   "corpus_index": 181,
+   "section": 29,
+   "doc_sha256": "61f2f6c490b6d47eddd2247bc088ef6710a86bed7b40be50b326d5acc9e64d24"
+  },
+  {
+   "sentence_id": "batch7_0182",
+   "document_id": "io_k8_ifrc_mhpss_evaluation",
+   "text": "y There was a significant divergence of views across IFRC network regarding the perceived emphasis given to each of the Priorities.",
+   "corpus_index": 182,
+   "section": 31,
+   "doc_sha256": "61f2f6c490b6d47eddd2247bc088ef6710a86bed7b40be50b326d5acc9e64d24"
+  },
+  {
+   "sentence_id": "batch7_0183",
+   "document_id": "io_k8_ifrc_mhpss_evaluation",
+   "text": "• From the outset, the IFRC Secretariat made considerable efforts to encourage flexible, unearmarked resources to respond to the fast-changing outbreak and did not accept earmarking at country level.",
+   "corpus_index": 183,
+   "section": 33,
+   "doc_sha256": "61f2f6c490b6d47eddd2247bc088ef6710a86bed7b40be50b326d5acc9e64d24"
+  },
+  {
+   "sentence_id": "batch7_0184",
+   "document_id": "io_k8_ifrc_mhpss_evaluation",
+   "text": "The traditional donors – those who have a longstanding engagement with the IFRC, often government international development agencies – found the structure of the 3 Priorities made good sense.",
+   "corpus_index": 184,
+   "section": 34,
+   "doc_sha256": "61f2f6c490b6d47eddd2247bc088ef6710a86bed7b40be50b326d5acc9e64d24"
+  },
+  {
+   "sentence_id": "batch7_0185",
+   "document_id": "io_k8_ifrc_mhpss_evaluation",
+   "text": "y Mental health and psychosocial support (MHPSS) was c ritically important in the response to COVID-19, with some describing it as a “pandemic within a pandemic” or a “shadow pandemic” (a term also used for gender-based violence during this period).",
+   "corpus_index": 185,
+   "section": 41,
+   "doc_sha256": "61f2f6c490b6d47eddd2247bc088ef6710a86bed7b40be50b326d5acc9e64d24"
+  },
+  {
+   "sentence_id": "batch7_0186",
+   "document_id": "io_k8_ifrc_mhpss_evaluation",
+   "text": "y The IFRC network has played a vital role in vaccination programmes around the world for many decades, such as routine vaccinations for measles and polio.",
+   "corpus_index": 186,
+   "section": 42,
+   "doc_sha256": "61f2f6c490b6d47eddd2247bc088ef6710a86bed7b40be50b326d5acc9e64d24"
+  },
+  {
+   "sentence_id": "batch7_0187",
+   "document_id": "io_k8_ifrc_mhpss_evaluation",
+   "text": "y The COVID-19 response was seen as an accelerator for Cash and Voucher Assistance (CVA) with a notable increase in National Societies’ interest in CVA and engagement in CVA delivery.",
+   "corpus_index": 187,
+   "section": 44,
+   "doc_sha256": "61f2f6c490b6d47eddd2247bc088ef6710a86bed7b40be50b326d5acc9e64d24"
+  },
+  {
+   "sentence_id": "batch7_0188",
+   "document_id": "io_k8_ifrc_mhpss_evaluation",
+   "text": "y The findings of IFRC regional needs assessments confirmed the importance of food security and livelihoods .",
+   "corpus_index": 188,
+   "section": 45,
+   "doc_sha256": "61f2f6c490b6d47eddd2247bc088ef6710a86bed7b40be50b326d5acc9e64d24"
+  },
+  {
+   "sentence_id": "batch7_0189",
+   "document_id": "io_k8_ifrc_mhpss_evaluation",
+   "text": "y Compared to other emergencies, the shelter response had relatively low visibility across the IFRC network during the pandemic.",
+   "corpus_index": 189,
+   "section": 46,
+   "doc_sha256": "61f2f6c490b6d47eddd2247bc088ef6710a86bed7b40be50b326d5acc9e64d24"
+  },
+  {
+   "sentence_id": "batch7_0190",
+   "document_id": "io_k8_ifrc_mhpss_evaluation",
+   "text": "y The work on CEA was considered an important aspect of the overall response, especially by those working closest to communities at country and branch level .",
+   "corpus_index": 190,
+   "section": 47,
+   "doc_sha256": "61f2f6c490b6d47eddd2247bc088ef6710a86bed7b40be50b326d5acc9e64d24"
+  },
+  {
+   "sentence_id": "batch7_0191",
+   "document_id": "io_k8_ifrc_mhpss_evaluation",
+   "text": "y The IFRC-wide pandemic response prioritised protection issues over other components of the Gender and Diversity Strategy.",
+   "corpus_index": 191,
+   "section": 49,
+   "doc_sha256": "61f2f6c490b6d47eddd2247bc088ef6710a86bed7b40be50b326d5acc9e64d24"
+  },
+  {
+   "sentence_id": "batch7_0192",
+   "document_id": "io_k8_ifrc_mhpss_evaluation",
+   "text": "y Addressing the impact of COVID-19 on migrants, particularly undocumented migrants, refugees and IDPs became a more prominent focus of the IFRC response .",
+   "corpus_index": 192,
+   "section": 52,
+   "doc_sha256": "61f2f6c490b6d47eddd2247bc088ef6710a86bed7b40be50b326d5acc9e64d24"
+  },
+  {
+   "sentence_id": "batch7_0193",
+   "document_id": "io_k8_ifrc_mhpss_evaluation",
+   "text": "y Contingency planning and preparedness were seen as critical areas for National Societies in this response and needed more support.",
+   "corpus_index": 193,
+   "section": 57,
+   "doc_sha256": "61f2f6c490b6d47eddd2247bc088ef6710a86bed7b40be50b326d5acc9e64d24"
+  },
+  {
+   "sentence_id": "batch7_0194",
+   "document_id": "io_k8_ifrc_mhpss_evaluation",
+   "text": "y Overall, the Secretariat was seen to have done a good job in its scaled-up support for Business Continuity and Staff Health , which was managed through separate teams, who worked very closely together.",
+   "corpus_index": 194,
+   "section": 66,
+   "doc_sha256": "61f2f6c490b6d47eddd2247bc088ef6710a86bed7b40be50b326d5acc9e64d24"
+  },
+  {
+   "sentence_id": "batch7_0195",
+   "document_id": "io_k8_ifrc_mhpss_evaluation",
+   "text": "y The procurement of PPE was difficult in such a competitive market and when the IFRC Secretariat system had limited experience of such procurement .",
+   "corpus_index": 195,
+   "section": 68,
+   "doc_sha256": "61f2f6c490b6d47eddd2247bc088ef6710a86bed7b40be50b326d5acc9e64d24"
+  },
+  {
+   "sentence_id": "batch7_0196",
+   "document_id": "io_k8_ifrc_mhpss_evaluation",
+   "text": "y There was generally positive feedback on the work of PMER, particularly the Federation-wide reporting team, during the COVID-19 response.",
+   "corpus_index": 196,
+   "section": 70,
+   "doc_sha256": "61f2f6c490b6d47eddd2247bc088ef6710a86bed7b40be50b326d5acc9e64d24"
+  },
+  {
+   "sentence_id": "batch7_0197",
+   "document_id": "io_k8_ifrc_mhpss_evaluation",
+   "text": "y The Information Management team in Geneva sees its raison d’etre as building capacity and creating an enabling environment across the IFRC-network.",
+   "corpus_index": 197,
+   "section": 75,
+   "doc_sha256": "61f2f6c490b6d47eddd2247bc088ef6710a86bed7b40be50b326d5acc9e64d24"
+  },
+  {
+   "sentence_id": "batch7_0198",
+   "document_id": "io_k8_ifrc_mhpss_evaluation",
+   "text": "y The COVID-19 response has accelerated the IFRC Secretariat’s engagement in Risk Management (RM).",
+   "corpus_index": 198,
+   "section": 79,
+   "doc_sha256": "61f2f6c490b6d47eddd2247bc088ef6710a86bed7b40be50b326d5acc9e64d24"
+  },
+  {
+   "sentence_id": "batch7_0199",
+   "document_id": "io_k8_ifrc_mhpss_evaluation",
+   "text": "y IFRC Secretariat collaboration and partnerships was primarily focused on Pillar 1 on health and WASH .",
+   "corpus_index": 199,
+   "section": 87,
+   "doc_sha256": "61f2f6c490b6d47eddd2247bc088ef6710a86bed7b40be50b326d5acc9e64d24"
+  }
+ ]
+}
